@@ -1,0 +1,118 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-09-25 21:01:09.072060",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+    "branch",
+    "posting_date",
+    "debit",
+    "credit",
+    "ref_doc",
+    "employee",
+    "amended_from",
+    "fiscal_year",
+    "month",
+    "is_opening",
+    "company"
+ ],
+ "fields": [
+    {
+    "fieldname": "branch",
+    "fieldtype": "Link",
+    "in_list_view": 1,
+    "label": "Branch",
+    "options": "Branch"
+    },
+    {
+    "fieldname": "posting_date",
+    "fieldtype": "Date",
+    "in_list_view": 1,
+    "label": "Posting Date",
+    "reqd": 1
+    },
+    {
+    "fieldname": "debit",
+    "fieldtype": "Currency",
+    "label": "Debit"
+    },
+    {
+    "fieldname": "credit",
+    "fieldtype": "Currency",
+    "label": "Credit"
+    },
+    {
+    "fieldname": "ref_doc",
+    "fieldtype": "Data",
+    "label": "Reference Document"
+    },
+    {
+    "fieldname": "employee",
+    "fieldtype": "Link",
+    "label": "Employee",
+    "options": "Employee"
+    },
+    {
+    "fieldname": "amended_from",
+    "fieldtype": "Link",
+    "label": "Amended From",
+    "no_copy": 1,
+    "options": "SWS Entry",
+    "print_hide": 1,
+    "read_only": 1
+    },
+    {
+    "fieldname": "fiscal_year",
+    "fieldtype": "Data",
+    "label": "Fiscal Year",
+    "read_only": 1
+    },
+    {
+    "fieldname": "month",
+    "fieldtype": "Data",
+    "label": "Month",
+    "read_only": 1
+    },
+    {
+    "default": "0",
+    "fieldname": "is_opening",
+    "fieldtype": "Check",
+    "label": "Is Opening"
+    },
+    {
+    "fieldname": "company",
+    "fieldtype": "Link",
+    "in_list_view": 1,
+    "label": "Company",
+    "options": "Company",
+    "reqd": 1
+    }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-09-25 21:01:09.072060",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "SWS Entry",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

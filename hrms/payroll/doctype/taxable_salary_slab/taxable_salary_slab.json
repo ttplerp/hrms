@@ -7,6 +7,7 @@
  "field_order": [
   "from_amount",
   "to_amount",
+  "tax",
   "percent_deduction",
   "condition",
   "column_break_5",
@@ -27,35 +28,49 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "To Amount",
-   "options": "currency"
+   "options": "currency",
+   "reqd": 1
   },
   {
    "default": "0",
    "fieldname": "percent_deduction",
    "fieldtype": "Percent",
-   "in_list_view": 1,
+   "hidden": 1,
    "label": "Percent Deduction",
-   "reqd": 1
+   "print_hide": 1
   },
   {
    "fieldname": "condition",
    "fieldtype": "Code",
-   "in_list_view": 1,
-   "label": "Condition"
+   "hidden": 1,
+   "label": "Condition",
+   "print_hide": 1
   },
   {
    "fieldname": "column_break_5",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "hidden": 1,
+   "print_hide": 1
   },
   {
    "fieldname": "html_6",
    "fieldtype": "HTML",
-   "options": "<h4>Condition Examples</h4>\n<ol>\n<li>Applying tax if employee born between 31-12-1937 and 01-01-1958 (Employees aged 60 to 80)<br>\n<code>Condition: date_of_birth&gt;date(1937, 12, 31) and date_of_birth&lt;date(1958, 01, 01)</code></li><br><li>Applying tax by employee gender<br>\n<code>Condition: gender==\"Male\"</code></li><br>\n<li>Applying tax by Salary Component<br>\n<code>Condition: base &gt; 10000</code></li></ol>"
+   "hidden": 1,
+   "options": "<h4>Condition Examples</h4>\n<ol>\n<li>Applying tax if employee born between 31-12-1937 and 01-01-1958 (Employees aged 60 to 80)<br>\n<code>Condition: date_of_birth&gt;date(1937, 12, 31) and date_of_birth&lt;date(1958, 01, 01)</code></li><br><li>Applying tax by employee gender<br>\n<code>Condition: gender==\"Male\"</code></li><br>\n<li>Applying tax by Salary Component<br>\n<code>Condition: base &gt; 10000</code></li></ol>",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "tax",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Tax",
+   "options": "currency",
+   "reqd": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-10-19 13:44:39.549337",
+ "modified": "2022-09-24 00:01:21.766343",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Taxable Salary Slab",
@@ -64,5 +79,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

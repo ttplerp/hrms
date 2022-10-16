@@ -6,11 +6,17 @@
  "engine": "InnoDB",
  "field_order": [
   "activity_name",
+  "remarks",
+  "column_break_2",
+  "status",
+  "sb_asset",
+  "asset",
+  "column_break_1",
+  "asset_name",
+  "sb_collector",
   "user",
-  "role",
-  "begin_on",
-  "duration",
   "column_break_3",
+  "role",
   "task",
   "task_weight",
   "required_for_employee_creation",
@@ -19,16 +25,12 @@
  ],
  "fields": [
   {
-   "columns": 3,
    "fieldname": "activity_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Activity Name",
-   "reqd": 1
+   "label": "Activity Name"
   },
   {
-   "columns": 2,
-   "depends_on": "eval:!doc.role",
    "fieldname": "user",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -36,10 +38,9 @@
    "options": "User"
   },
   {
-   "columns": 1,
-   "depends_on": "eval:!doc.user",
    "fieldname": "role",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Role",
    "options": "Role"
   },
@@ -50,6 +51,7 @@
   {
    "fieldname": "task",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Task",
    "no_copy": 1,
    "options": "Task",
@@ -58,11 +60,11 @@
   {
    "fieldname": "task_weight",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Task Weight"
   },
   {
    "default": "0",
-   "depends_on": "eval:['Employee Onboarding', 'Employee Onboarding Template'].includes(doc.parenttype)",
    "description": "Applicable in the case of Employee Onboarding",
    "fieldname": "required_for_employee_creation",
    "fieldtype": "Check",
@@ -78,18 +80,51 @@
    "label": "Description"
   },
   {
-   "columns": 2,
-   "fieldname": "duration",
-   "fieldtype": "Int",
-   "in_list_view": 1,
-   "label": "Duration (Days)"
+   "fieldname": "asset",
+   "fieldtype": "Link",
+   "label": "Asset",
+   "options": "Asset",
+   "reqd": 1
   },
   {
-   "columns": 2,
-   "fieldname": "begin_on",
-   "fieldtype": "Int",
-   "in_list_view": 1,
-   "label": "Begin On (Days)"
+   "fieldname": "sb_asset",
+   "fieldtype": "Section Break",
+   "label": "Asset Details"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "asset.asset_name",
+   "fieldname": "asset_name",
+   "fieldtype": "Data",
+   "label": "Asset Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_collector",
+   "fieldtype": "Section Break",
+   "label": "Collector's Details"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Pending",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Pending\nCompleted"
+  },
+  {
+   "allow_on_submit": 1,
+   "description": "If asset is either lost or out of order, please write a remark.",
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
   }
  ],
  "istable": 1,

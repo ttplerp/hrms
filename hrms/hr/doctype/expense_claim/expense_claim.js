@@ -69,7 +69,7 @@ cur_frm.add_fetch('expense_type','description','description');
 cur_frm.cscript.onload = function(doc) {
 	if (doc.__islocal) {
 		cur_frm.set_value("posting_date", frappe.datetime.get_today());
-		cur_frm.cscript.clear_sanctioned(doc);
+		// cur_frm.cscript.clear_sanctioned(doc);
 	}
 };
 
@@ -176,15 +176,15 @@ frappe.ui.form.on("Expense Claim", {
 			};
 		});
 
-		frm.set_query("expense_approver", function() {
-			return {
-				query: "hrms.hr.doctype.department_approver.department_approver.get_approvers",
-				filters: {
-					employee: frm.doc.employee,
-					doctype: frm.doc.doctype
-				}
-			};
-		});
+		// frm.set_query("expense_approver", function() {
+		// 	return {
+		// 		query: "hrms.hr.doctype.department_approver.department_approver.get_approvers",
+		// 		filters: {
+		// 			employee: frm.doc.employee,
+		// 			doctype: frm.doc.doctype
+		// 		}
+		// 	};
+		// });
 
 		frm.set_query("account_head", "taxes", function() {
 			return {
@@ -222,19 +222,20 @@ frappe.ui.form.on("Expense Claim", {
 	},
 
 	onload: function(frm) {
-		if (frm.doc.docstatus == 0) {
-			return frappe.call({
-				method: "hrms.hr.doctype.leave_application.leave_application.get_mandatory_approval",
-				args: {
-					doctype: frm.doc.doctype,
-				},
-				callback: function(r) {
-					if (!r.exc && r.message) {
-						frm.toggle_reqd("expense_approver", true);
-					}
-				}
-			});
-		}
+		// comented as approver not required
+		// if (frm.doc.docstatus == 0) {
+		// 	return frappe.call({
+		// 		method: "hrms.hr.doctype.leave_application.leave_application.get_mandatory_approval",
+		// 		args: {
+		// 			doctype: frm.doc.doctype,
+		// 		},
+		// 		callback: function(r) {
+		// 			if (!r.exc && r.message) {
+		// 				frm.toggle_reqd("expense_approver", true);
+		// 			}
+		// 		}
+		// 	});
+		// }
 	},
 
 	refresh: function(frm) {

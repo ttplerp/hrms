@@ -5,49 +5,79 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "employee",
-  "employee_name",
-  "column_break_3",
-  "department",
-  "designation"
+    "employee",
+    "employee_name",
+    "column_break_3",
+    "department",
+    "designation",
+    "salary_slip",
+    "section_break_7",
+    "status",
+    "error"  
  ],
  "fields": [
-  {
-   "fieldname": "employee",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Employee",
-   "options": "Employee"
-  },
-  {
-   "fetch_from": "employee.employee_name",
-   "fieldname": "employee_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Employee Name",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_3",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fetch_from": "employee.department",
-   "fieldname": "department",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Department",
-   "options": "Department",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.designation",
-   "fieldname": "designation",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Designation",
-   "read_only": 1
-  }
+    {
+    "fieldname": "employee",
+    "fieldtype": "Link",
+    "in_list_view": 1,
+    "label": "Employee",
+    "options": "Employee",
+    "read_only": 1
+    },
+    {
+    "fetch_from": "employee.employee_name",
+    "fieldname": "employee_name",
+    "fieldtype": "Data",
+    "label": "Employee Name",
+    "read_only": 1
+    },
+    {
+    "fieldname": "column_break_3",
+    "fieldtype": "Column Break"
+    },
+    {
+    "fetch_from": "employee.department",
+    "fieldname": "department",
+    "fieldtype": "Link",
+    "in_list_view": 1,
+    "label": "Department",
+    "options": "Department",
+    "read_only": 1
+    },
+    {
+    "fetch_from": "employee.designation",
+    "fieldname": "designation",
+    "fieldtype": "Data",
+    "in_list_view": 1,
+    "label": "Designation",
+    "read_only": 1
+    },
+    {
+    "fieldname": "salary_slip",
+    "fieldtype": "Data",
+    "in_list_view": 1,
+    "label": "Salary Slip",
+    "read_only": 1
+    },
+    {
+    "fieldname": "section_break_7",
+    "fieldtype": "Section Break"
+    },
+    {
+    "allow_in_quick_entry": 1,
+    "fieldname": "status",
+    "fieldtype": "Select",
+    "in_list_view": 1,
+    "label": "Status",
+    "options": "\nSuccess\nFailed",
+    "read_only": 1
+    },
+    {
+    "fieldname": "error",
+    "fieldtype": "Code",
+    "label": "Error",
+    "read_only": 1
+    }
  ],
  "istable": 1,
  "links": [],

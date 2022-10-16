@@ -1245,3 +1245,23 @@ def get_leave_approver(employee):
 		)
 
 	return leave_approver
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+
+	if user == "Administrator":
+		return
+	if "HR User" in user_roles or "HR Manager" in user_roles:
+		return
+
+	return """(
+		`tabLeave Application`.owner = '{user}'
+		or
+		exists(select 1
+				from `tabEmployee`
+				where `tabEmployee`.name = `tabLeave Application`.employee
+				and `tabEmployee`.user_id = '{user}')
+		or
+		(`tabLeave Application`.leave_approver = '{user}' and `tabLeave Application`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
+	)""".format(user=user)

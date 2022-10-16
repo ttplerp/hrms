@@ -1,0 +1,65 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2022-09-23 23:54:33.279399",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "from_date",
+  "number_of_hours",
+  "column_break_3",
+  "to_date",
+  "column_break_4",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "From Date/Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "To Date/Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "number_of_hours",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Number of Hours",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-09-24 13:38:34.602102",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Overtime Application Item",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

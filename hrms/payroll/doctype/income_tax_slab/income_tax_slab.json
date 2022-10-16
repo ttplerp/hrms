@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "autoname": "Prompt",
  "creation": "2020-03-17 16:50:35.564915",
  "doctype": "DocType",
@@ -7,8 +8,10 @@
  "engine": "InnoDB",
  "field_order": [
   "effective_from",
-  "company",
+  "effective_till",
+  "supporting_document",
   "column_break_3",
+  "company",
   "currency",
   "standard_tax_exemption_amount",
   "allow_tax_exemption",
@@ -36,6 +39,7 @@
    "description": "If enabled, Tax Exemption Declaration will be considered for income tax calculation.",
    "fieldname": "allow_tax_exemption",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Allow Tax Exemption"
   },
   {
@@ -53,6 +57,8 @@
    "read_only": 1
   },
   {
+   "allow_bulk_edit": 1,
+   "allow_in_quick_entry": 1,
    "fieldname": "slabs",
    "fieldtype": "Table",
    "label": "Taxable Salary Slabs",
@@ -77,13 +83,15 @@
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
   },
   {
    "collapsible": 1,
    "collapsible_depends_on": "other_taxes_and_charges",
    "fieldname": "taxes_and_charges_on_income_tax_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Taxes and Charges on Income Tax"
   },
   {
@@ -96,18 +104,29 @@
    "fetch_from": "company.default_currency",
    "fieldname": "currency",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Currency",
    "options": "Currency",
-   "print_hide": 1,
-   "reqd": 1
+   "print_hide": 1
+  },
+  {
+   "fieldname": "effective_till",
+   "fieldtype": "Date",
+   "label": "Effective Till"
+  },
+  {
+   "fieldname": "supporting_document",
+   "fieldtype": "Attach",
+   "label": "Supporting Document"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2021-03-31 22:42:08.139520",
+ "modified": "2022-09-24 00:02:41.244260",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Income Tax Slab",
+ "naming_rule": "Set by user",
  "owner": "Administrator",
  "permissions": [
   {
@@ -158,5 +177,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

@@ -8,9 +8,29 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "default_leave_policy",
   "default_salary_structure",
   "currency",
-  "default_base_pay"
+  "default_base_pay",
+  "government_grade",
+  "column_break_6",
+  "gis",
+  "dsa",
+  "security_deposit",
+  "sws_contribution",
+  "eligible_for_overtime",
+  "sb_payscale",
+  "lower_limit",
+  "column_break_14",
+  "increment_method",
+  "column_break_16",
+  "increment",
+  "column_break_18",
+  "upper_limit",
+  "sb_promotion_settings",
+  "next_promotion_years",
+  "column_break_22",
+  "promotion_grade"
  ],
  "fields": [
   {
@@ -23,6 +43,7 @@
    "depends_on": "default_salary_structure",
    "fieldname": "default_base_pay",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Default Base Pay",
    "options": "currency"
   },
@@ -34,11 +55,113 @@
    "label": "Currency",
    "options": "Currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "default_leave_policy",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Default Leave Policy",
+   "options": "Leave Policy"
+  },
+  {
+   "fieldname": "government_grade",
+   "fieldtype": "Data",
+   "label": "Government Grade "
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "dsa",
+   "fieldtype": "Currency",
+   "label": "DSA Per Day"
+  },
+  {
+   "fieldname": "gis",
+   "fieldtype": "Currency",
+   "label": "GIS"
+  },
+  {
+   "fieldname": "security_deposit",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Security Deposit"
+  },
+  {
+   "fieldname": "sws_contribution",
+   "fieldtype": "Currency",
+   "label": "SWS Contribution"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_overtime",
+   "fieldtype": "Check",
+   "label": "Eligible For Overtime"
+  },
+  {
+   "fieldname": "sb_payscale",
+   "fieldtype": "Section Break",
+   "label": "PAY SCALE"
+  },
+  {
+   "fieldname": "lower_limit",
+   "fieldtype": "Currency",
+   "label": "Lower Limit"
+  },
+  {
+   "fieldname": "increment_method",
+   "fieldtype": "Select",
+   "label": "Increment Method",
+   "options": "\nLumpsum\nPercent"
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "increment",
+   "fieldtype": "Currency",
+   "label": "Increment Value"
+  },
+  {
+   "fieldname": "column_break_18",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "upper_limit",
+   "fieldtype": "Currency",
+   "label": "Upper Limit"
+  },
+  {
+   "fieldname": "sb_promotion_settings",
+   "fieldtype": "Section Break",
+   "label": "PROMOTION SETTINGS"
+  },
+  {
+   "fieldname": "next_promotion_years",
+   "fieldtype": "Int",
+   "label": "No.of Years For Next Promotion"
+  },
+  {
+   "fieldname": "column_break_22",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promotion_grade",
+   "fieldtype": "Link",
+   "label": "Promote To Grade",
+   "options": "Employee Grade"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-05-06 15:42:10.395508",
+ "modified": "2022-09-14 09:46:17.223593",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Grade",

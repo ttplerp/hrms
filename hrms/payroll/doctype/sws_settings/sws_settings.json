@@ -1,0 +1,130 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-09-25 21:31:49.063300",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+    "section_break_1",
+    "salary_component",
+    "column_break_6",
+    "registration_fee",
+    "max_contribution",
+    "sb_registration_details",
+    "html_immediate",
+    "cont_type_immediate",
+    "cont_immediate",
+    "immediate",
+    "column_break_3",
+    "html_nonimmediate",
+    "cont_type_nonimmediate",
+    "cont_nonimmediate",
+    "nonimmediate"
+ ],
+ "fields": [
+    {
+    "fieldname": "section_break_1",
+    "fieldtype": "Section Break",
+    "label": "GENERAL SETTINGS"
+    },
+    {
+    "fieldname": "salary_component",
+    "fieldtype": "Link",
+    "label": "Salary Component",
+    "options": "Salary Component"
+    },
+    {
+    "fieldname": "sb_registration_details",
+    "fieldtype": "Section Break",
+    "label": "Contribution Settings"
+    },
+    {
+    "fieldname": "registration_fee",
+    "fieldtype": "Currency",
+    "in_list_view": 1,
+    "label": "Registration Fee",
+    "reqd": 1
+    },
+    {
+    "fieldname": "column_break_3",
+    "fieldtype": "Column Break"
+    },
+    {
+    "fieldname": "html_immediate",
+    "fieldtype": "HTML",
+    "options": "<h6 class=\"form-section-heading \">Contribution for Immediate Family Members</h6>"
+    },
+    {
+    "fieldname": "immediate",
+    "fieldtype": "Table MultiSelect",
+    "label": "Members covered in this plan",
+    "options": "SWS Contribution Immediate"
+    },
+    {
+    "fieldname": "nonimmediate",
+    "fieldtype": "Table MultiSelect",
+    "label": "Members covered in this plan",
+    "options": "SWS Contribution Nonimmediate"
+    },
+    {
+    "fieldname": "cont_type_immediate",
+    "fieldtype": "Select",
+    "label": "Contribution Type",
+    "options": "\nFlat\nPer Head"
+    },
+    {
+    "fieldname": "cont_immediate",
+    "fieldtype": "Currency",
+    "label": "Contribution/month"
+    },
+    {
+    "fieldname": "html_nonimmediate",
+    "fieldtype": "HTML",
+    "options": "<h6 class=\"form-section-heading \">Contribution for Non-Immediate Family Members</h6>"
+    },
+    {
+    "fieldname": "cont_type_nonimmediate",
+    "fieldtype": "Select",
+    "label": "Contribution Type",
+    "options": "\nFlat\nPer Head"
+    },
+    {
+    "fieldname": "cont_nonimmediate",
+    "fieldtype": "Currency",
+    "label": "Contribution/month"
+    },
+    {
+    "fieldname": "column_break_6",
+    "fieldtype": "Column Break"
+    },
+    {
+    "fieldname": "max_contribution",
+    "fieldtype": "Currency",
+    "label": "Max. Contribution/month"
+    }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2022-09-25 21:31:49.063300",
+ "modified_by": "Administrator",
+ "module": "Payroll",
+ "name": "SWS Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

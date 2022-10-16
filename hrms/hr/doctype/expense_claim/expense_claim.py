@@ -41,6 +41,7 @@ class ExpenseClaim(AccountsController):
 		self.set_cost_center()
 		self.calculate_taxes()
 		self.set_status()
+		# self.calculate_grand_total()
 		if self.task and not self.project:
 			self.project = frappe.db.get_value("Task", self.task, "project")
 
@@ -80,6 +81,9 @@ class ExpenseClaim(AccountsController):
 		else:
 			self.status = status
 
+	# def calculate_grand_total(self):
+	# 	self.grand_total = flt(self.total_sanctioned_amount) + flt(self.total_taxes_and_charges) - flt(self.total_advance_amount)
+		
 	def on_update(self):
 		share_doc_with_approver(self, self.expense_approver)
 
@@ -94,8 +98,9 @@ class ExpenseClaim(AccountsController):
 			self.cost_center = frappe.get_cached_value("Company", self.company, "cost_center")
 
 	def on_submit(self):
-		if self.approval_status == "Draft":
-			frappe.throw(_("""Approval Status must be 'Approved' or 'Rejected'"""))
+		# commented as approver not required
+		# if self.approval_status == "Draft":
+		# 	frappe.throw(_("""Approval Status must be 'Approved' or 'Rejected'"""))
 
 		self.update_task_and_project()
 		self.make_gl_entries()
@@ -167,7 +172,7 @@ class ExpenseClaim(AccountsController):
 					item=self,
 				)
 			)
-
+		# frappe.throw(str(gl_entry))
 		# expense entries
 		for data in self.expenses:
 			gl_entry.append(
@@ -182,7 +187,6 @@ class ExpenseClaim(AccountsController):
 					item=data,
 				)
 			)
-
 		for data in self.advances:
 			gl_entry.append(
 				self.get_gl_dict(
@@ -237,12 +241,27 @@ class ExpenseClaim(AccountsController):
 	def add_tax_gl_entries(self, gl_entries):
 		# tax table gl entries
 		for tax in self.get("taxes"):
+			# commented coz we need to credit the tax amount
+			# gl_entries.append(
+			# 	self.get_gl_dict(
+			# 		{
+			# 			"account": tax.account_head,
+			# 			"debit": tax.tax_amount,
+			# 			"debit_in_account_currency": tax.tax_amount,
+			# 			"against": self.employee,
+			# 			"cost_center": self.cost_center,
+			# 			"against_voucher_type": self.doctype,
+			# 			"against_voucher": self.name,
+			# 		},
+			# 		item=tax,
+			# 	)
+			# )
 			gl_entries.append(
 				self.get_gl_dict(
 					{
 						"account": tax.account_head,
-						"debit": tax.tax_amount,
-						"debit_in_account_currency": tax.tax_amount,
+						"credit": tax.tax_amount,
+						"credit_in_account_currency": tax.tax_amount,
 						"against": self.employee,
 						"cost_center": self.cost_center,
 						"against_voucher_type": self.doctype,
@@ -271,25 +290,27 @@ class ExpenseClaim(AccountsController):
 		for d in self.get("expenses"):
 			if self.approval_status == "Rejected":
 				d.sanctioned_amount = 0.0
-
 			self.total_claimed_amount += flt(d.amount)
 			self.total_sanctioned_amount += flt(d.sanctioned_amount)
-
 	@frappe.whitelist()
 	def calculate_taxes(self):
 		self.total_taxes_and_charges = 0
+		self.grand_total = flt(self.total_sanctioned_amount) + flt(self.total_taxes_and_charges) - flt(self.total_advance_amount)
 		for tax in self.taxes:
 			if tax.rate:
 				tax.tax_amount = flt(self.total_sanctioned_amount) * flt(tax.rate / 100)
-
-			tax.total = flt(tax.tax_amount) + flt(self.total_sanctioned_amount)
+			if tax.add_or_deduct == "Deduct":
+				tax.total = flt(self.total_sanctioned_amount) - flt(tax.tax_amount)
+			else:
+				tax.total = flt(tax.tax_amount) + flt(self.total_sanctioned_amount)
 			self.total_taxes_and_charges += flt(tax.tax_amount)
 
-		self.grand_total = (
-			flt(self.total_sanctioned_amount)
-			+ flt(self.total_taxes_and_charges)
-			- flt(self.total_advance_amount)
-		)
+			if tax.add_or_deduct == "Deduct":
+				self.grand_total = (flt(self.total_sanctioned_amount)- flt(self.total_taxes_and_charges)- flt(self.total_advance_amount))
+			else:
+				self.grand_total = (
+					flt(self.total_sanctioned_amount)+ flt(self.total_taxes_and_charges)- flt(self.total_advance_amount)
+				)
 
 	def validate_advances(self):
 		self.total_advance_amount = 0
@@ -320,7 +341,6 @@ class ExpenseClaim(AccountsController):
 				(flt(self.total_sanctioned_amount, precision) + flt(self.total_taxes_and_charges, precision)),
 				precision,
 			)
-
 			if flt(self.total_advance_amount, precision) > amount_with_taxes:
 				frappe.throw(_("Total advance amount cannot be greater than total sanctioned amount"))
 
@@ -450,7 +470,7 @@ def get_advances(employee, advance_id=None):
 		advance.name,
 		advance.posting_date,
 		advance.paid_amount,
-		advance.claimed_amount,
+		advance.pending_amount,
 		advance.advance_account,
 	)
 

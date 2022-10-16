@@ -7,6 +7,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "add_or_deduct",
   "account_head",
   "rate",
   "col_break1",
@@ -96,17 +97,25 @@
   {
    "fieldname": "dimension_col_break",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "add_or_deduct",
+   "fieldtype": "Select",
+   "label": "Add or Deduct",
+   "options": "Add\nDeduct"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2021-10-26 20:27:36.027728",
+ "modified": "2022-09-26 11:10:11.289218",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Taxes and Charges",
+ "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "ASC",
+ "states": [],
  "track_changes": 1
 }

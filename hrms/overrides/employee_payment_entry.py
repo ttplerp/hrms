@@ -25,7 +25,7 @@ class EmployeePaymentEntry(PaymentEntry):
 		elif self.party_type == "Shareholder":
 			return ("Journal Entry",)
 		elif self.party_type == "Employee":
-			return ("Expense Claim", "Journal Entry", "Employee Advance", "Gratuity")
+			return ("Expense Claim", "Journal Entry", "Employee Advance", "Gratuity", "Travel Request")
 
 	def set_missing_ref_details(self, force=False):
 		for d in self.get("references"):

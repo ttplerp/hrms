@@ -46,6 +46,16 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Overtime Application",
+   "link_count": 0,
+   "link_to": "Overtime Application",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Travel",
    "link_count": 2,
    "onboard": 0,
@@ -206,7 +216,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-08-22 20:49:16.004036",
+ "modified": "2022-09-26 12:06:01.018814",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claims",
@@ -215,7 +225,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 10.0,
+ "sequence_id": 12.0,
  "shortcuts": [
   {
    "color": "Orange",

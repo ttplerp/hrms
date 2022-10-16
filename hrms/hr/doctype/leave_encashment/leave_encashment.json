@@ -11,26 +11,51 @@
   "leave_period",
   "employee",
   "employee_name",
+  "designation",
   "department",
-  "company",
+  "division",
+  "section",
+  "employment_type",
+  "employee_group",
+  "grade",
   "column_break_4",
+  "encashment_date",
   "leave_type",
   "leave_allocation",
   "leave_balance",
   "encashable_days",
+  "encashment_days",
   "amended_from",
   "payroll",
-  "encashment_date",
+  "leave_encashment_type",
+  "basic_pay",
+  "gross_pay",
+  "flat_amount",
+  "salary_structure",
   "additional_salary",
-  "column_break_14",
-  "currency",
-  "encashment_amount"
+  "column_break_10",
+  "encashment_amount",
+  "encashment_tax",
+  "payable_amount",
+  "journal_entry",
+  "sb_approver",
+  "approver_name",
+  "column_break_15",
+  "approver",
+  "approver_designation",
+  "sb_remarks",
+  "remarks",
+  "sb_additional_information",
+  "company",
+  "business_activity",
+  "column_break_12",
+  "branch",
+  "cost_center"
  ],
  "fields": [
   {
    "fieldname": "leave_period",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Leave Period",
    "options": "Leave Period",
    "reqd": 1
@@ -38,7 +63,6 @@
   {
    "fieldname": "employee",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Employee",
    "options": "Employee",
    "reqd": 1
@@ -47,6 +71,7 @@
    "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Employee Name",
    "read_only": 1
   },
@@ -59,6 +84,7 @@
    "read_only": 1
   },
   {
+   "default": "Earned Leave",
    "fieldname": "leave_type",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -88,7 +114,7 @@
   {
    "fieldname": "encashable_days",
    "fieldtype": "Float",
-   "label": "Encashable days",
+   "label": "Encashable Days",
    "no_copy": 1,
    "read_only": 1
   },
@@ -104,22 +130,23 @@
   {
    "fieldname": "payroll",
    "fieldtype": "Section Break",
-   "label": "Payroll"
+   "label": "ENCASHMENT DETAILS"
   },
   {
    "fieldname": "encashment_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Encashment Amount",
+   "label": "Encashment Amount (After proration)",
    "no_copy": 1,
-   "options": "currency",
    "read_only": 1
   },
   {
    "default": "Today",
    "fieldname": "encashment_date",
    "fieldtype": "Date",
-   "label": "Encashment Date"
+   "in_list_view": 1,
+   "label": "Encashment Date",
+   "read_only": 1
   },
   {
    "fieldname": "additional_salary",
@@ -130,18 +157,73 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval:(doc.docstatus==1 || doc.employee)",
-   "fieldname": "currency",
+   "fetch_from": "employee.employment_type",
+   "fieldname": "employment_type",
    "fieldtype": "Link",
-   "label": "Currency",
-   "options": "Currency",
-   "print_hide": 1,
-   "read_only": 1,
-   "reqd": 1
+   "hidden": 1,
+   "label": "Employment Type",
+   "options": "Employment Type",
+   "read_only": 1
   },
   {
-   "fieldname": "column_break_14",
+   "fetch_from": "employee.employee_group",
+   "fieldname": "employee_group",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Employee Group",
+   "options": "Employee Group",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.grade",
+   "fieldname": "grade",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Grade",
+   "options": "Employee Grade",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.leave_encashment_type != \"Flat Amount\"",
+   "fieldname": "salary_structure",
+   "fieldtype": "Link",
+   "label": "Salary Structure",
+   "options": "Salary Structure",
+   "read_only": 1
+  },
+  {
+   "fieldname": "encashment_tax",
+   "fieldtype": "Currency",
+   "label": "Tax Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payable_amount",
+   "fieldtype": "Currency",
+   "label": "Payable Amount After Tax",
+   "read_only": 1
+  },
+  {
+   "fieldname": "leave_encashment_type",
+   "fieldtype": "Data",
+   "label": "Leave Encashment Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_10",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "journal_entry",
+   "fieldtype": "Data",
+   "label": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sb_additional_information",
+   "fieldtype": "Section Break",
+   "label": "ADDITIONAL INFORMATION"
   },
   {
    "fetch_from": "employee.company",
@@ -149,12 +231,131 @@
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.branch",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "label": "Designation",
+   "read_only": 1
+  },
+  {
+   "default": "OTB",
+   "fetch_from": "employee.business_activity",
+   "fieldname": "business_activity",
+   "fieldtype": "Link",
+   "label": "Business Activity",
+   "options": "Business Activity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_approver",
+   "fieldtype": "Section Break",
+   "label": "APPROVER DETAILS"
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "label": "Approver Email ID",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approver_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approver_designation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Approver Designation",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sb_remarks",
+   "fieldtype": "Section Break",
+   "label": "REMARKS"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Long Text"
+  },
+  {
+   "fetch_from": "employee.division",
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Division",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.section",
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Section",
+   "options": "Department"
+  },
+  {
+   "fieldname": "encashment_days",
+   "fieldtype": "Int",
+   "label": "Encashment Days",
    "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.leave_encashment_type == \"Basic Pay\"",
+   "fieldname": "basic_pay",
+   "fieldtype": "Currency",
+   "label": "Basic Pay",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.leave_encashment_type == \"Gross Pay\"",
+   "fieldname": "gross_pay",
+   "fieldtype": "Currency",
+   "label": "Gross Pay",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.leave_encashment_type == \"Flat Amount\"",
+   "fieldname": "flat_amount",
+   "fieldtype": "Currency",
+   "label": "Flat Amount",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-01-18 19:16:52.414356",
+ "modified": "2022-09-26 12:37:19.094683",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",
@@ -208,7 +409,6 @@
   },
   {
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -216,6 +416,7 @@
    "report": 1,
    "role": "Employee",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

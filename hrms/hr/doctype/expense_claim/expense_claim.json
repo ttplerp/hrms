@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
- "autoname": "naming_series:",
+ "autoname": "format:EXP-{YY}-{MM}-{DD}-{####}",
  "creation": "2013-01-10 16:34:14",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -12,6 +12,7 @@
   "employee_name",
   "department",
   "column_break_5",
+  "branch",
   "expense_approver",
   "approval_status",
   "delivery_trip",
@@ -56,11 +57,11 @@
   {
    "fieldname": "naming_series",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Series",
    "no_copy": 1,
    "options": "HR-EXP-.YYYY.-",
    "print_hide": 1,
-   "reqd": 1,
    "set_only_once": 1
   },
   {
@@ -101,6 +102,7 @@
   {
    "fieldname": "expense_approver",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Expense Approver",
    "options": "User"
   },
@@ -108,6 +110,7 @@
    "default": "Draft",
    "fieldname": "approval_status",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Approval Status",
    "no_copy": 1,
    "options": "Draft\nApproved\nRejected",
@@ -373,18 +376,26 @@
    "fieldtype": "Link",
    "label": "Delivery Trip",
    "options": "Delivery Trip"
+  },
+  {
+   "fetch_from": "employee.branch",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-money",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-11-22 16:26:57.787838",
+ "modified": "2022-09-25 21:59:16.205529",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",
  "name_case": "Title Case",
- "naming_rule": "By \"Naming Series\" field",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -445,6 +456,7 @@
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "timeline_field": "employee",
  "title_field": "title"
 }

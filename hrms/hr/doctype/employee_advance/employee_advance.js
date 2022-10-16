@@ -41,6 +41,14 @@ frappe.ui.form.on('Employee Advance', {
 				}
 			};
 		});
+
+		frm.set_query("reference", function() {
+			return {
+				filters: {
+					"employee": frm.doc.employee
+				}
+			};
+		});
 	},
 
 	refresh: function(frm) {
@@ -150,13 +158,56 @@ frappe.ui.form.on('Employee Advance', {
 		});
 	},
 
-	employee: function(frm) {
+	employee: function(frm, cdt, cdn) {
 		if (frm.doc.employee) {
 			frappe.run_serially([
-				() => frm.trigger('get_employee_currency'),
-				() => frm.trigger('get_pending_amount')
+				() => frm.trigger('get_pending_amount'),
+				() => frm.trigger('set_pay_details'),
 			]);
 		}
+	},
+
+	advance_amount: function(frm){
+		frappe.call({
+			method: "validate_advance_amount",
+			doc: frm.doc,
+			callback: function(r){
+				frm.refresh_field("advance_amount");
+				frm.refresh_field("recovery_start_date");
+				frm.refresh_field("recovery_end_date");
+				frm.refresh_field("monthly_deduction");
+				
+			}
+		})
+	},
+
+	deduction_month: function(frm){
+		frappe.call({
+			method: "validate_deduction_month",
+			doc: frm.doc,
+			callback: function(r){
+				frm.refresh_field("deduction_month");
+				frm.refresh_field("recovery_start_date");
+				frm.refresh_field("recovery_end_date");
+				frm.refresh_field("monthly_deduction");
+				
+			}
+		})
+	},
+
+	set_pay_details: function(frm){
+		frappe.call({
+			method: "set_pay_details",
+			doc: frm.doc,
+			callback: function(r){
+				frm.refresh_field("basic_pay");
+				frm.refresh_field("net_pay");
+				frm.refresh_field("deduction_month");
+				frm.refresh_field("max_advance_limit");
+				frm.refresh_field("monthly_deduction");
+				
+			}
+		})
 	},
 
 	get_pending_amount: function(frm) {
@@ -221,5 +272,9 @@ frappe.ui.form.on('Employee Advance', {
 					" = [?] " + company_currency);
 			}
 		});
+	},
+
+	advance_type: function(frm){
+		frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
 	}
 });

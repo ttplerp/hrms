@@ -2,81 +2,235 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "Prompt",
  "creation": "2013-03-07 18:50:29",
  "doctype": "DocType",
  "document_type": "Document",
  "engine": "InnoDB",
  "field_order": [
+  "employee",
+  "employee_name",
+  "employment_type",
+  "employee_group",
+  "employee_grade",
+  "designation",
+  "cb_3",
   "company",
+  "branch",
+  "cost_center",
+  "department",
+  "division",
+  "section",
   "letter_head",
-  "column_break1",
+  "cb_6",
   "is_active",
-  "payroll_frequency",
-  "currency",
   "is_default",
+  "from_date",
+  "to_date",
   "time_sheet_earning_detail",
   "salary_slip_based_on_timesheet",
-  "column_break_17",
+  "cb_9",
   "salary_component",
   "hour_rate",
-  "leave_encashment_amount_per_day",
-  "max_benefits",
+  "sb_eligibility",
+  "eligible_for_corporate_allowance",
+  "ca_method",
+  "ca",
+  "eligible_for_contract_allowance",
+  "contract_allowance_method",
+  "contract_allowance",
+  "eligible_for_communication_allowance",
+  "communication_allowance_method",
+  "communication_allowance",
+  "eligible_for_fuel_allowances",
+  "fuel_allowances_method",
+  "fuel_allowances",
+  "eligible_for_underground",
+  "underground_method",
+  "underground",
+  "eligible_for_shift",
+  "shift_method",
+  "shift",
+  "cb_10",
+  "eligible_for_difficulty",
+  "difficulty_method",
+  "difficulty",
+  "eligible_for_high_altitude",
+  "high_altitude_method",
+  "high_altitude",
+  "eligible_for_psa",
+  "psa_method",
+  "psa",
+  "eligible_for_mpi",
+  "mpi_method",
+  "mpi",
+  "eligible_for_deputation",
+  "deputation_method",
+  "deputation",
+  "cb_12",
+  "eligible_for_officiating_allowance",
+  "officiating_allowance_method",
+  "officiating_allowance",
+  "eligible_for_temporary_transfer_allowance",
+  "temporary_transfer_allowance_method",
+  "temporary_transfer_allowance",
+  "lumpsum_temp_transfer_amount",
+  "eligible_for_scarcity",
+  "scarcity_method",
+  "scarcity",
+  "eligible_for_cash_handling",
+  "cash_handling_method",
+  "cash_handling",
+  "eligible_for_honorarium",
+  "honorarium_method",
+  "honorarium",
+  "sb_other_benefits",
+  "eligible_for_gis",
+  "eligible_for_pf",
+  "eligible_for_health_contribution",
+  "eligible_for_tax",
+  "cb_16",
+  "eligible_for_leave_encashment",
+  "eligible_for_overtime_and_payment",
+  "eligible_for_sws",
+  "cb_17",
+  "eligible_for_ltc",
+  "eligible_for_pbva",
+  "eligible_for_annual_bonus",
   "earning_deduction",
   "earnings",
+  "cb_18",
   "deductions",
-  "conditions_and_formula_variable_and_example",
   "net_pay_detail",
   "total_earning",
   "total_deduction",
-  "column_break2",
   "net_pay",
-  "account",
-  "mode_of_payment",
-  "column_break_28",
-  "payment_account",
-  "amended_from"
+  "cb_21",
+  "business_activity",
+  "actual_basic"
  ],
  "fields": [
   {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_standard_filter": 1,
+   "label": "Employee",
+   "oldfieldname": "employee",
+   "oldfieldtype": "Link",
+   "options": "Employee",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name",
+   "oldfieldname": "employee_name",
+   "oldfieldtype": "Data",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employment_type",
+   "fieldtype": "Link",
+   "label": "Employment Type",
+   "options": "Employment Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_group",
+   "fieldtype": "Link",
+   "label": "Employee Group",
+   "options": "Employee Group",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_grade",
+   "fieldtype": "Link",
+   "label": "Employee Grade",
+   "options": "Employee Grade",
+   "read_only": 1
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "label": "Designation",
+   "oldfieldname": "designation",
+   "oldfieldtype": "Select",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
    "fieldname": "company",
    "fieldtype": "Link",
+   "hidden": 1,
+   "in_filter": 1,
    "label": "Company",
-   "options": "Company",
-   "remember_last_selected_value": 1,
-   "reqd": 1
+   "options": "Company"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_standard_filter": 1,
+   "label": "Branch",
+   "oldfieldname": "branch",
+   "oldfieldtype": "Select",
+   "options": "Branch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "label": "Department",
+   "oldfieldname": "department",
+   "oldfieldtype": "Select",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "business_activity",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Business Activity",
+   "options": "Business Activity",
+   "read_only": 1
   },
   {
    "fieldname": "letter_head",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Letter Head",
    "options": "Letter Head"
   },
   {
-   "fieldname": "column_break1",
-   "fieldtype": "Column Break",
-   "width": "50%"
-  },
-  {
-   "allow_on_submit": 1,
    "default": "Yes",
+   "depends_on": "eval:doc.employee",
    "fieldname": "is_active",
    "fieldtype": "Select",
+   "in_filter": 1,
    "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Is Active",
    "oldfieldname": "is_active",
    "oldfieldtype": "Select",
    "options": "\nYes\nNo",
    "reqd": 1
-  },
-  {
-   "default": "Monthly",
-   "depends_on": "eval:(!doc.salary_slip_based_on_timesheet)",
-   "fieldname": "payroll_frequency",
-   "fieldtype": "Select",
-   "label": "Payroll Frequency",
-   "options": "\nMonthly\nFortnightly\nBimonthly\nWeekly\nDaily"
   },
   {
    "default": "No",
@@ -90,51 +244,484 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:doc.employee",
+   "fetch_from": "employee.date_of_joining",
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date",
+   "oldfieldname": "from_date",
+   "oldfieldtype": "Date"
+  },
+  {
+   "depends_on": "eval:doc.employee && doc.is_active == \"No\"",
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "To Date",
+   "oldfieldname": "to_date",
+   "oldfieldtype": "Date"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_corporate_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Corporate Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_corporate_allowance",
+   "fieldname": "ca_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Corporate Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "default": "23",
+   "depends_on": "eval:doc.eligible_for_corporate_allowance==1",
+   "fieldname": "ca",
+   "fieldtype": "Int",
+   "label": "Value(Corporate Allowance)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_contract_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Contract allowance"
+  },
+  {
+   "depends_on": "eligible_for_contract_allowance",
+   "fieldname": "contract_allowance_method",
+   "fieldtype": "Select",
+   "label": "Payment Method(Contract)",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "default": "30",
+   "depends_on": "eval:doc.eligible_for_contract_allowance==1",
+   "fieldname": "contract_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Contranct)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_communication_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Communication Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_communication_allowance",
+   "fieldname": "communication_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Communication Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_communication_allowance==1",
+   "fieldname": "communication_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Communication)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_fuel_allowances",
+   "fieldtype": "Check",
+   "label": "Eligible for Fuel Allowances",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_fuel_allowances",
+   "fieldname": "fuel_allowances_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Fuel Allowances Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_fuel_allowances==1",
+   "fieldname": "fuel_allowances",
+   "fieldtype": "Currency",
+   "label": "Value(Fuel Allowance)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_underground",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Eligible for Underground Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_underground",
+   "fieldname": "underground_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Underground Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "default": "45",
+   "depends_on": "eval:doc.eligible_for_underground==1",
+   "fieldname": "underground",
+   "fieldtype": "Int",
+   "label": "Value(Underground)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_shift",
+   "fieldtype": "Check",
+   "label": "Eligible for Shift Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_shift",
+   "fieldname": "shift_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Shift Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_shift==1",
+   "fieldname": "shift",
+   "fieldtype": "Int",
+   "label": "Value(Shift Allowance)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_difficulty",
+   "fieldtype": "Check",
+   "label": "Eligible for Difficult Area Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_difficulty",
+   "fieldname": "difficulty_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Difficult Area Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_difficulty==1",
+   "fieldname": "difficulty",
+   "fieldtype": "Currency",
+   "label": "Value(Difficulty Allowance)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_high_altitude",
+   "fieldtype": "Check",
+   "label": "Eligible for High Altitude Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_high_altitude",
+   "fieldname": "high_altitude_method",
+   "fieldtype": "Select",
+   "label": "Eligible for High Altitude Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_high_altitude==1",
+   "fieldname": "high_altitude",
+   "fieldtype": "Currency",
+   "label": "Value(High Altitude)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_psa",
+   "fieldtype": "Check",
+   "label": "Eligible for PSA",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_psa",
+   "fieldname": "psa_method",
+   "fieldtype": "Select",
+   "label": "Eligible for PSA Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_psa==1",
+   "fieldname": "psa",
+   "fieldtype": "Int",
+   "label": "Value(PSA)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_mpi",
+   "fieldtype": "Check",
+   "label": "Eligible for MPI",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_mpi",
+   "fieldname": "mpi_method",
+   "fieldtype": "Select",
+   "label": "Eligible for MPI Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_mpi==1",
+   "fieldname": "mpi",
+   "fieldtype": "Int",
+   "label": "Value(MPI)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_deputation",
+   "fieldtype": "Check",
+   "label": "Eligible for Deputation",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_deputation",
+   "fieldname": "deputation_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Deputation Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_deputation==1",
+   "fieldname": "deputation",
+   "fieldtype": "Int",
+   "label": "Value(Deputation)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_officiating_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Officiating Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_officiating_allowance",
+   "fieldname": "officiating_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Officiating Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_officiating_allowance==1",
+   "fieldname": "officiating_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Officiating)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_temporary_transfer_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Temporary Transfer Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_temporary_transfer_allowance",
+   "fieldname": "temporary_transfer_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Temporary Transfer Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_temporary_transfer_allowance==1",
+   "fieldname": "temporary_transfer_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Temporary Transfer Allowance)",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "lumpsum_temp_transfer_amount",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Lumpsum Amount",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_scarcity",
+   "fieldtype": "Check",
+   "label": "Eligible for Scarcity Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_scarcity",
+   "fieldname": "scarcity_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Scarcity Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_scarcity==1",
+   "fieldname": "scarcity",
+   "fieldtype": "Int",
+   "label": "Value(Scarcity)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_cash_handling",
+   "fieldtype": "Check",
+   "label": "Eligible for Cash Handling Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_cash_handling",
+   "fieldname": "cash_handling_method",
+   "fieldtype": "Select",
+   "label": "Payment Method(Cash Handling)",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_cash_handling==1",
+   "fieldname": "cash_handling",
+   "fieldtype": "Currency",
+   "label": "Value(Cash Handling)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_honorarium",
+   "fieldtype": "Check",
+   "label": "Eligible for Honorarium",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_honorarium",
+   "fieldname": "honorarium_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Honorarium Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_honorarium",
+   "fieldname": "honorarium",
+   "fieldtype": "Currency",
+   "label": "Value(Honorarium)",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_pbva",
+   "fieldtype": "Check",
+   "label": "Eligible for PBVA",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_leave_encashment",
+   "fieldtype": "Check",
+   "label": "Eligible for Leave Encashment",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_ltc",
+   "fieldtype": "Check",
+   "label": "Eligible for LTC",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_overtime_and_payment",
+   "fieldtype": "Check",
+   "label": "Eligible for Overtime and Payment",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_gis",
+   "fieldtype": "Check",
+   "label": "Eligible for GIS",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_pf",
+   "fieldtype": "Check",
+   "label": "Eligible for PF",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_health_contribution",
+   "fieldtype": "Check",
+   "label": "Eligible for Health Contribution",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_annual_bonus",
+   "fieldtype": "Check",
+   "label": "Eligible for Annual Bonus",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_tax",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Eligible for Tax",
+   "print_hide": 1
+  },
+  {
    "fieldname": "time_sheet_earning_detail",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hidden": 1
   },
   {
    "default": "0",
    "fieldname": "salary_slip_based_on_timesheet",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Salary Slip Based on Timesheet"
-  },
-  {
-   "fieldname": "column_break_17",
-   "fieldtype": "Column Break"
   },
   {
    "description": "Salary Component for timesheet based payroll.",
    "fieldname": "salary_component",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Salary Component",
    "options": "Salary Component"
   },
   {
    "fieldname": "hour_rate",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Hour Rate",
-   "options": "currency"
-  },
-  {
-   "fieldname": "leave_encashment_amount_per_day",
-   "fieldtype": "Currency",
-   "label": "Leave Encashment Amount Per Day",
-   "options": "currency"
-  },
-  {
-   "fieldname": "max_benefits",
-   "fieldtype": "Currency",
-   "label": "Max Benefits (Amount)",
-   "options": "currency"
+   "precision": "2",
+   "print_hide": 1
   },
   {
    "description": "Salary breakup based on Earning and Deduction.",
    "fieldname": "earning_deduction",
    "fieldtype": "Section Break",
    "oldfieldname": "earning_deduction",
-   "oldfieldtype": "Section Break",
-   "precision": "2"
+   "oldfieldtype": "Section Break"
   },
   {
    "fieldname": "earnings",
@@ -154,95 +741,114 @@
   },
   {
    "fieldname": "net_pay_detail",
-   "fieldtype": "Section Break",
-   "options": "Simple"
-  },
-  {
-   "fieldname": "column_break2",
-   "fieldtype": "Column Break",
-   "width": "50%"
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "total_earning",
    "fieldtype": "Currency",
-   "hidden": 1,
    "label": "Total Earning",
-   "options": "currency",
+   "oldfieldname": "total_earning",
+   "oldfieldtype": "Currency",
+   "options": "Company:company:default_currency",
    "read_only": 1
   },
   {
    "fieldname": "total_deduction",
    "fieldtype": "Currency",
-   "hidden": 1,
    "label": "Total Deduction",
-   "options": "currency",
+   "oldfieldname": "total_deduction",
+   "oldfieldtype": "Currency",
+   "options": "Company:company:default_currency",
    "read_only": 1
   },
   {
    "fieldname": "net_pay",
    "fieldtype": "Currency",
-   "hidden": 1,
    "label": "Net Pay",
-   "options": "currency",
+   "options": "Company:company:default_currency",
    "read_only": 1
   },
   {
-   "fieldname": "account",
-   "fieldtype": "Section Break",
-   "label": "Account"
-  },
-  {
-   "fieldname": "mode_of_payment",
-   "fieldtype": "Link",
-   "label": "Mode of Payment",
-   "options": "Mode of Payment"
-  },
-  {
-   "fieldname": "column_break_28",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "payment_account",
-   "fieldtype": "Link",
-   "label": "Payment Account",
-   "options": "Account"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Salary Structure",
+   "fieldname": "actual_basic",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Actual Basic",
    "print_hide": 1,
    "read_only": 1
   },
   {
-   "fieldname": "conditions_and_formula_variable_and_example",
-   "fieldtype": "HTML",
-   "label": "Conditions and Formula variable and example"
+   "fieldname": "sb_other_benefits",
+   "fieldtype": "Section Break",
+   "label": "Other Benefits & Deductions",
+   "permlevel": 1
   },
   {
-   "fieldname": "currency",
+   "fieldname": "sb_eligibility",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_6",
+   "fieldtype": "Column Break",
+   "width": "50%"
+  },
+  {
+   "fieldname": "cb_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_18",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_21",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_sws",
+   "fieldtype": "Check",
+   "label": "Eligible for SWS",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "cb_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "branch.cost_center",
+   "fieldname": "cost_center",
    "fieldtype": "Link",
-   "label": "Currency",
-   "options": "Currency",
-   "reqd": 1
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2022-02-03 23:50:10.205676",
+ "modified": "2022-09-25 20:12:39.009052",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
- "naming_rule": "Set by user",
  "owner": "Administrator",
  "permissions": [
   {
-   "amend": 1,
-   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -251,12 +857,9 @@
    "report": 1,
    "role": "HR User",
    "share": 1,
-   "submit": 1,
    "write": 1
   },
   {
-   "amend": 1,
-   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -267,12 +870,12 @@
    "report": 1,
    "role": "HR Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

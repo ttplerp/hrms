@@ -26,6 +26,7 @@
   "restrict_backdated_leave_application",
   "role_allowed_to_create_backdated_leave_application",
   "column_break_29",
+  "returen_day_dsa_percent",
   "expense_approver_mandatory_in_expense_claim",
   "show_leaves_of_all_department_members_in_calendar",
   "auto_leave_encashment",
@@ -40,7 +41,11 @@
   "employee_exit_section",
   "exit_questionnaire_web_form",
   "column_break_34",
-  "exit_questionnaire_notification_template"
+  "exit_questionnaire_notification_template",
+  "overtime_settings_tab",
+  "overtime_limit_type",
+  "column_break_39",
+  "overtime_limit"
  ],
  "fields": [
   {
@@ -251,13 +256,38 @@
   {
    "fieldname": "column_break_34",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "returen_day_dsa_percent",
+   "fieldtype": "Percent",
+   "label": "Return Day DSA Percent"
+  },
+  {
+   "fieldname": "overtime_settings_tab",
+   "fieldtype": "Tab Break",
+   "label": "Overtime Settings"
+  },
+  {
+   "fieldname": "overtime_limit_type",
+   "fieldtype": "Select",
+   "label": "Overtime Limit Type",
+   "options": "\nPer Day\nPer Week\nPer Month"
+  },
+  {
+   "fieldname": "column_break_39",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "overtime_limit",
+   "fieldtype": "Int",
+   "label": "Overtime Limit In Hrs(Per Day)"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-12-05 14:48:10.884253",
+ "modified": "2022-09-24 13:46:06.995425",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
@@ -275,5 +305,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "ASC",
+ "states": [],
  "track_changes": 1
 }

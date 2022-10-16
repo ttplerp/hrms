@@ -171,7 +171,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-08-21 18:19:42.140946",
+ "modified": "2022-09-17 16:03:55.184405",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Recruitment",
@@ -186,7 +186,7 @@
   }
  ],
  "roles": [],
- "sequence_id": 9.0,
+ "sequence_id": 11.0,
  "shortcuts": [
   {
    "color": "Grey",
