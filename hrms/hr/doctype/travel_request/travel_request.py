@@ -152,9 +152,7 @@ class TravelRequest(AccountsController):
 			self.make_advance_payment()
 	@frappe.whitelist()
 	def make_advance_payment(self):
-		default_employee_advance_account = frappe.get_cached_value(
-				"Company", self.company, "default_employee_advance_account"
-			)
+		default_employee_advance_account = frappe.get_value("Company", self.company, "travel_advance_account")
 		doc = frappe.new_doc("Employee Advance")
 		doc.reference_type 	= self.doctype
 		doc.reference 		= self.name

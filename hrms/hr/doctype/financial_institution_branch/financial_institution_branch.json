@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:branch_name",
  "creation": "2022-10-03 14:52:32.879972",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -30,7 +31,8 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Branch Name",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "financial_system_code",
@@ -40,10 +42,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-03 14:53:02.984852",
+ "modified": "2022-10-19 14:32:50.748110",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution Branch",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

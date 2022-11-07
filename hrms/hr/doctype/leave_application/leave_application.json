@@ -258,7 +258,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2022-09-13 16:39:09.348088",
+ "modified": "2022-10-31 10:52:30.317935",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
@@ -290,11 +290,6 @@
    "share": 1,
    "submit": 1,
    "write": 1
-  },
-  {
-   "permlevel": 1,
-   "read": 1,
-   "role": "All"
   },
   {
    "amend": 1,

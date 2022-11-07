@@ -4,8 +4,11 @@
 frappe.ui.form.on('Employee Advance', {
 	setup: function(frm) {
 		frm.add_fetch("employee", "company", "company");
-		frm.add_fetch("company", "default_employee_advance_account", "advance_account");
-
+		if (frm.doc.advance_type == "Travel Advance"){
+			frm.add_fetch("company", "default_employee_advance_account", "advance_account");
+		}else{
+			frm.add_fetch("company", "travel_advance_account", "advance_account");
+		}
 		frm.set_query("employee", function() {
 			return {
 				filters: {
@@ -168,17 +171,19 @@ frappe.ui.form.on('Employee Advance', {
 	},
 
 	advance_amount: function(frm){
-		frappe.call({
-			method: "validate_advance_amount",
-			doc: frm.doc,
-			callback: function(r){
-				frm.refresh_field("advance_amount");
-				frm.refresh_field("recovery_start_date");
-				frm.refresh_field("recovery_end_date");
-				frm.refresh_field("monthly_deduction");
-				
-			}
-		})
+		if (frm.doc.advance_type != "Travel Advance"){
+			frappe.call({
+				method: "validate_advance_amount",
+				doc: frm.doc,
+				callback: function(r){
+					frm.refresh_field("advance_amount");
+					frm.refresh_field("recovery_start_date");
+					frm.refresh_field("recovery_end_date");
+					frm.refresh_field("monthly_deduction");
+					
+				}
+			})
+		}
 	},
 
 	deduction_month: function(frm){

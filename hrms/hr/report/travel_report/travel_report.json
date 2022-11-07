@@ -1,0 +1,42 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2022-10-31 10:12:54.736819",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "Sales",
+ "modified": "2022-10-31 10:12:54.736819",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Travel Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Expense Claim",
+ "report_name": "Travel Report",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Administrator"
+  },
+  {
+   "role": "HR Manager"
+  },
+  {
+   "role": "HR User"
+  },
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "Expense Approver"
+  },
+  {
+   "role": "Employee Self Service"
+  }
+ ]
+}

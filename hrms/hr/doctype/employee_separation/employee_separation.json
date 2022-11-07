@@ -6,151 +6,159 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-    "employee",
-    "employee_name",
-    "resignation_letter_date",
-    "boarding_status",
-    "notify_users_by_email",
-    "column_break_7",
-    "employee_separation_template",
-    "company",
-    "project",
-    "department",
-    "designation",
-    "employee_grade",
-    "table_for_activity",
-    "activities",
-    "section_break_14",
-    "exit_interview",
-    "workflow_state",
-    "amended_from"
-   ],
-   "fields": [
-    {
-     "fieldname": "employee",
-     "fieldtype": "Link",
-     "label": "Employee",
-     "options": "Employee"
-    },
-    {
-     "fetch_from": "employee.employee_name",
-     "fieldname": "employee_name",
-     "fieldtype": "Data",
-     "in_list_view": 1,
-     "label": "Employee Name"
-    },
-    {
-     "fetch_from": "employee.resignation_letter_date",
-     "fieldname": "resignation_letter_date",
-     "fieldtype": "Date",
-     "in_list_view": 1,
-     "label": "Resignation Letter Date"
-    },
-    {
-     "allow_on_submit": 1,
-     "fieldname": "boarding_status",
-     "fieldtype": "Select",
-     "label": "Status",
-     "options": "\nPending\nIn Process\nCompleted"
-    },
-    {
-     "allow_on_submit": 1,
-     "default": "0",
-     "fieldname": "notify_users_by_email",
-     "fieldtype": "Check",
-     "label": "Notify users by email"
-    },
-    {
-     "fieldname": "column_break_7",
-     "fieldtype": "Column Break"
-    },
-    {
-     "fieldname": "employee_separation_template",
-     "fieldtype": "Link",
-     "label": "Employee Separation Template",
-     "options": "Employee Separation Template"
-    },
-    {
-     "fetch_from": "employee.company",
-     "fieldname": "company",
-     "fieldtype": "Link",
-     "label": "Company",
-     "options": "Company"
-    },
-    {
-     "fieldname": "project",
-     "fieldtype": "Link",
-     "label": "Project",
-     "options": "Project",
-     "read_only": 1
-    },
-    {
-     "fetch_from": "employee.department",
-     "fieldname": "department",
-     "fieldtype": "Link",
-     "in_list_view": 1,
-     "label": "Department",
-     "options": "Department"
-    },
-    {
-     "fetch_from": "employee.designation",
-     "fieldname": "designation",
-     "fieldtype": "Link",
-     "in_list_view": 1,
-     "label": "Designation",
-     "options": "Designation"
-    },
-    {
-     "fetch_from": "employee.grade",
-     "fieldname": "employee_grade",
-     "fieldtype": "Link",
-     "label": "Employee Grade",
-     "options": "Employee Grade"
-    },
-    {
-     "fieldname": "table_for_activity",
-     "fieldtype": "Section Break"
-    },
-    {
-     "allow_on_submit": 1,
-     "fieldname": "activities",
-     "fieldtype": "Table",
-     "label": "Activities",
-     "options": "Employee Boarding Activity"
-    },
-    {
-     "fieldname": "section_break_14",
-     "fieldtype": "Section Break"
-    },
-    {
-     "fieldname": "exit_interview",
-     "fieldtype": "Text Editor",
-     "label": "Exit Interview Summary"
-    },
-    {
-     "fieldname": "amended_from",
-     "fieldtype": "Link",
-     "label": "Amended From",
-     "no_copy": 1,
-     "options": "Employee Separation",
-     "print_hide": 1,
-     "read_only": 1
-    },
-    {
-     "fieldname": "workflow_state",
-     "fieldtype": "Link",
-     "hidden": 1,
-     "label": "Workflow State",
-     "options": "Workflow State",
-     "read_only": 1
-    }
-],
+  "employee",
+  "employee_name",
+  "resignation_letter_date",
+  "boarding_status",
+  "notify_users_by_email",
+  "column_break_7",
+  "types_of_separation",
+  "employee_separation_template",
+  "company",
+  "project",
+  "department",
+  "designation",
+  "employee_grade",
+  "table_for_activity",
+  "activities",
+  "section_break_14",
+  "exit_interview",
+  "workflow_state",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name"
+  },
+  {
+   "fetch_from": "employee.resignation_letter_date",
+   "fieldname": "resignation_letter_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Resignation Letter Date"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "boarding_status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "\nPending\nIn Process\nCompleted"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "notify_users_by_email",
+   "fieldtype": "Check",
+   "label": "Notify users by email"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee_separation_template",
+   "fieldtype": "Link",
+   "label": "Employee Separation Template",
+   "options": "Employee Separation Template"
+  },
+  {
+   "fetch_from": "employee.company",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fetch_from": "employee.grade",
+   "fieldname": "employee_grade",
+   "fieldtype": "Link",
+   "label": "Employee Grade",
+   "options": "Employee Grade"
+  },
+  {
+   "fieldname": "table_for_activity",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "activities",
+   "fieldtype": "Table",
+   "label": "Activities",
+   "options": "Employee Boarding Activity"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "exit_interview",
+   "fieldtype": "Text Editor",
+   "label": "Exit Interview Summary"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Separation",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Workflow State",
+   "options": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "fieldname": "types_of_separation",
+   "fieldtype": "Select",
+   "label": "Types of Separation",
+   "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise"
+  }
+ ],
  "is_submittable": 1,
  "links": [],
- "modified": "2021-07-30 14:03:51.218791",
+ "modified": "2022-11-03 11:47:33.691025",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -167,11 +175,25 @@
    "share": 1,
    "submit": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "submit": 1,
+   "write": 1
   }
  ],
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name",
  "track_changes": 1
 }

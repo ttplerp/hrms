@@ -44,11 +44,9 @@ class EmployeeTransfer(Document):
 		employee.department = self.new_department if not cancel else self.old_department
 		employee.division	= self.new_division if not cancel else self.old_division
 		employee.designation= self.new_designation if not cancel else self.old_designation
-		employee.unit= self.new_unit if not cancel else self.old_unit
 		employee.section	= self.new_section if not cancel else self.old_section
 		employee.branch		= self.new_branch if not cancel else self.old_branch
 		employee.cost_center= self.new_cost_center if not cancel else self.old_cost_center
-		employee.region = self.new_region if not cancel else self.current_region
 		employee.reports_to = self.new_reports_to if not cancel and self.new_reports_to else self.old_reports_to
   
 		if cancel:
@@ -65,7 +63,6 @@ class EmployeeTransfer(Document):
 				'section': self.new_section,
 				'branch': self.new_branch,
 				'cost_center': self.new_cost_center,
-				'region': self.new_region,
 				'reports_to': self.new_reports_to,
 				'from_date': self.transfer_date,
 				'reference_doctype': self.doctype,
@@ -168,9 +165,7 @@ def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False)
 			"doctype": "Employee Benefits",
 		},
 	}
-
 	target_doc = get_mapped_doc("Employee Transfer", source_name, mapper, target_doc, update_item)
-
 	return target_doc
 
 	

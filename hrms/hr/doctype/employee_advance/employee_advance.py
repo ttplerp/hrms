@@ -23,13 +23,14 @@ class EmployeeAdvance(Document):
 		self.get("__onload").make_payment_via_journal_entry = frappe.db.get_single_value(
 			"Accounts Settings", "make_payment_via_journal_entry"
 		)
-
 	def validate(self):
 		validate_active_employee(self.employee)
 		self.set_status()
-		self.validate_advance_amount()
-		self.validate_deduction_month()
+		if self.advance_type != "Travel Advance":
+			self.validate_advance_amount()
+			self.validate_deduction_month()
 		self.update_defaults()
+		self.update_pending_amount()
 
 	def on_cancel(self):
 		self.ignore_linked_doctypes = "GL Entry"
@@ -45,6 +46,9 @@ class EmployeeAdvance(Document):
 
 	def update_defaults(self):
 		self.salary_component = "Salary Advance Deductions"
+		
+	def update_pending_amount(self):
+		self.pending_amount = self.advance_amount
 
 	def update_salary_structure(self, cancel=False):
 		if cancel:
@@ -105,14 +109,15 @@ class EmployeeAdvance(Document):
 					and salary_component ='Salary Advance Deductions'
 					and posting_date between'{2}' and '{3}' """.format(self.employee,self.name, year_start_date,self.recovery_end_date))[0][0]
 		# frappe.throw(str(pervious_advance))
+		# frappe.throw(str(self.basic_pay))
 		remaining_pay = flt(self.basic_pay) - flt(pervious_advance) 
 		# frappe.throw(str(remaining_pay))
 		if flt(self.advance_amount) <= 0:
 			frappe.throw("Enter valid <b>Advance Amount</b>")
-		elif flt(pervious_advance) == flt(self.basic_pay):
-			frappe.throw("Your <b>Salary Advance</b> was alrady claimed")
 		elif flt(self.advance_amount) >= (flt(remaining_pay)+1):
 			frappe.throw("<b>Advance Amount</b> should not be more than max amount limit")
+		elif flt(pervious_advance) == flt(self.basic_pay):
+			frappe.throw("Your <b>Salary Advance</b> was alrady claimed")
 		else:
 			self.max_no_of_installment = month_diff(self.recovery_end_date,self.recovery_start_date)
 			check_advance = flt(self.advance_amount) / flt(self.deduction_month)
@@ -477,3 +482,4 @@ def get_voucher_type(mode_of_payment=None):
 			voucher_type = "Bank Entry"
 
 	return voucher_type
+

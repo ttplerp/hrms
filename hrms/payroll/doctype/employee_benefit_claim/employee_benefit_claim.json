@@ -7,22 +7,56 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "branch",
+  "column_break_2",
+  "purpose",
+  "posting_date",
+  "data_4",
   "employee",
-  "employee_name",
   "department",
+  "division",
   "column_break_3",
-  "claim_date",
-  "currency",
+  "employee_name",
+  "designation",
+  "grade",
+  "cost_center",
+  "section_break_14",
+  "separation_date",
+  "reason_for_resignation",
+  "column_break_17",
+  "description",
+  "benefit_details_section",
+  "items",
+  "deduction_details_section",
+  "deduction_details",
+  "section_break_21",
+  "journal",
+  "column_break_23",
+  "total_amount",
+  "section_break_25",
   "company",
-  "benefit_type_and_amount",
+  "section_break_27",
+  "carraige_charges_doc",
+  "column_break_29",
+  "transfer_tada",
+  "section_break_31",
+  "approver",
+  "column_break_33",
+  "benefit_approver_name",
+  "column_break_35",
+  "benefit_approver_designation",
+  "reference_section",
+  "employee_separation_id",
+  "employee_transfer_id",
+  "section_break_9",
+  "hide_section",
+  "currency",
   "earning_component",
   "max_amount_eligible",
   "pay_against_benefit_claim",
   "claimed_amount",
   "salary_slip",
-  "amended_from",
-  "section_break_9",
-  "attachments"
+  "amended_from"
  ],
  "fields": [
   {
@@ -43,9 +77,8 @@
   {
    "fetch_from": "employee.department",
    "fieldname": "department",
-   "fieldtype": "Link",
+   "fieldtype": "Read Only",
    "label": "Department",
-   "options": "Department",
    "read_only": 1
   },
   {
@@ -53,25 +86,11 @@
    "fieldtype": "Column Break"
   },
   {
-   "default": "Today",
-   "fieldname": "claim_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Claim Date",
-   "reqd": 1
-  },
-  {
-   "fieldname": "benefit_type_and_amount",
-   "fieldtype": "Section Break",
-   "label": "Benefit Type and Amount"
-  },
-  {
    "fieldname": "earning_component",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Claim Benefit For",
-   "options": "Salary Component",
-   "reqd": 1
+   "options": "Salary Component"
   },
   {
    "fetch_from": "earning_component.max_benefit_amount",
@@ -95,8 +114,7 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Claimed Amount",
-   "options": "currency",
-   "reqd": 1
+   "options": "currency"
   },
   {
    "fieldname": "salary_slip",
@@ -117,12 +135,8 @@
   {
    "fieldname": "section_break_9",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Expense Proof"
-  },
-  {
-   "fieldname": "attachments",
-   "fieldtype": "Attach",
-   "label": "Attachments"
   },
   {
    "depends_on": "eval: doc.employee",
@@ -130,8 +144,7 @@
    "fieldtype": "Link",
    "label": "Currency",
    "options": "Currency",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fetch_from": "employee.company",
@@ -140,11 +153,200 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Processing Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Select",
+   "label": " Purpose",
+   "options": "\nTransfer\nSeparation\nUpgradation\nOthers"
+  },
+  {
+   "fieldname": "data_4",
+   "fieldtype": "Section Break",
+   "label": "Employee Details"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.division",
+   "fieldname": "division",
+   "fieldtype": "Read Only",
+   "label": "Division"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Read Only",
+   "label": "Designation"
+  },
+  {
+   "fetch_from": "employee.grade",
+   "fieldname": "grade",
+   "fieldtype": "Read Only",
+   "label": " Grade"
+  },
+  {
+   "fetch_from": "employee.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Read Only",
+   "label": " Cost Center"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "separation_date",
+   "fieldtype": "Date",
+   "label": "Separation/Transfer Date"
+  },
+  {
+   "fieldname": "reason_for_resignation",
+   "fieldtype": "Select",
+   "label": "Reason for Seperation",
+   "options": "\nVoluntary Resignation\nSuperannuation Age\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDeath\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract"
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "benefit_details_section",
+   "fieldtype": "Section Break",
+   "label": "Benefit Details"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Separation Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_21",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "journal",
+   "fieldtype": "Read Only",
+   "label": "Journal Entry"
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": " Total Amount"
+  },
+  {
+   "fieldname": "section_break_25",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_27",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "hide_section",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "HIDE"
+  },
+  {
+   "fieldname": "carraige_charges_doc",
+   "fieldtype": "Attach",
+   "label": "Carriage Charges Documents"
+  },
+  {
+   "fieldname": "column_break_29",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "transfer_tada",
+   "fieldtype": "Attach",
+   "label": "Transfer TADA"
+  },
+  {
+   "fieldname": "section_break_31",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "label": "Approver",
+   "options": "User"
+  },
+  {
+   "fieldname": "column_break_33",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "benefit_approver_name",
+   "fieldtype": "Data",
+   "label": "Approver Name"
+  },
+  {
+   "fieldname": "column_break_35",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "benefit_approver_designation",
+   "fieldtype": "Data",
+   "label": "Approver Designation"
+  },
+  {
+   "fieldname": "reference_section",
+   "fieldtype": "Section Break",
+   "label": "Reference"
+  },
+  {
+   "fieldname": "employee_separation_id",
+   "fieldtype": "Link",
+   "label": "Employee Separation ID",
+   "options": "Employee Separation"
+  },
+  {
+   "fieldname": "employee_transfer_id",
+   "fieldtype": "Link",
+   "label": "Employee Transfer ID",
+   "options": "Employee Separation"
+  },
+  {
+   "fieldname": "deduction_details_section",
+   "fieldtype": "Section Break",
+   "label": "Deduction Details"
+  },
+  {
+   "fieldname": "deduction_details",
+   "fieldtype": "Table",
+   "options": "Deduction Details"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-01-19 12:59:15.699118",
+ "modified": "2022-10-18 10:21:30.952916",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Employee Benefit Claim",

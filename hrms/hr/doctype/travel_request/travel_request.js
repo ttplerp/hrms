@@ -157,7 +157,6 @@ function update_total_claim(cdt, cdn){
 		},
 		callback: function(r) {
 			if(r.message) {
-				console.log("thats is the message")
 				console.log(r.message)
 				frappe.model.set_value(cdt, cdn,"actual_amount", flt(item.total_claim) * flt(r.message))
 			}
