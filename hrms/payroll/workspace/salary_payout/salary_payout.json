@@ -287,8 +287,8 @@
    "type": "Link"
   }
  ],
- "modified": "2022-11-05 18:36:52.677068",
- "modified_by": "Administrator",
+ "modified": "2022-11-07 17:13:28.334838",
+ "modified_by": "sonam.zangmo@thimphutechpark.bt",
  "module": "Payroll",
  "name": "Salary Payout",
  "owner": "Administrator",
@@ -296,7 +296,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 16.0,
+ "sequence_id": 14.0,
  "shortcuts": [
   {
    "color": "Red",

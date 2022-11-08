@@ -183,12 +183,12 @@
    "type": "Link"
   }
  ],
- "modified": "2022-11-05 18:36:52.020514",
- "modified_by": "Administrator",
+ "modified": "2022-11-07 17:13:28.004265",
+ "modified_by": "sonam.zangmo@thimphutechpark.bt",
  "module": "HR",
  "name": "Leaves",
  "owner": "Administrator",
- "parent_page": "HR",
+ "parent_page": "",
  "public": 1,
  "quick_lists": [],
  "roles": [],
