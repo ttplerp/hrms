@@ -31,11 +31,14 @@ class EmployeeAdvance(Document):
 			self.validate_deduction_month()
 		self.update_defaults()
 		self.update_pending_amount()
-
+		self.update_reference()
+		self.check_duplicate_advance()
+	
 	def on_cancel(self):
 		self.ignore_linked_doctypes = "GL Entry"
 		self.set_status(update=True)
 		self.update_travel_request()
+		self.update_reference(cancel = 1)
 
 	def on_submit(self):
 		if self.advance_type =="Travel Advance":
@@ -51,6 +54,30 @@ class EmployeeAdvance(Document):
 		
 	def update_pending_amount(self):
 		self.pending_amount = self.advance_amount
+
+	def update_reference(self, cancel = 0):
+		if self.advance_type == "Travel Advance" and cancel == 0:
+			if not frappe.db.get_value("Travel Request",self.reference,"employee_advance_reference"):
+				frappe.db.sql(""" 
+					update `tabTravel Request`
+					set employee_advance_reference = '{0}'
+					where name = '{1}'
+				""".format(self.name,self.reference))
+		if cancel == 1 and self.advance_type == "Travel Advance":
+			frappe.db.sql(""" 
+					update `tabTravel Request`
+					set employee_advance_reference = NULL
+					where name = '{}'
+				""".format(self.reference))
+	
+	def check_duplicate_advance(self):
+		if frappe.db.sql("""
+				select count(reference) 
+				from `tabEmployee Advance` 
+				where reference = '{}'
+				and name != '{}'
+			""".format(self.reference, self.name))[0][0] >= 1 :
+			frappe.throw("Advance for Travel Request '{}' is already created".format(self.name))
 
 	def update_salary_structure(self, cancel=False):
 		if cancel:

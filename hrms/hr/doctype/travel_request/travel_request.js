@@ -5,7 +5,7 @@ cur_frm.add_fetch("employee", "grade", "grade")
 
 frappe.ui.form.on('Travel Request', {
 	refresh: function(frm){
-		if (frm.doc.docstatus === 0 && !frm.doc.__islocal && cint(frm.doc.need_advance) == 1) {
+		if (frm.doc.docstatus === 0 && frm.doc.workflow_state == 'Draft' && !frm.doc.__islocal && cint(frm.doc.need_advance) == 1) {
 			cur_frm.add_custom_button('Request Advance', function() {
 				return frappe.call({
 					method: "make_advance_payment",
@@ -15,8 +15,8 @@ frappe.ui.form.on('Travel Request', {
 						frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
 					}
 				});
-			},__('Create'));
-			cur_frm.page.set_inner_btn_group_as_primary(__('Create'));
+			});
+			// cur_frm.page.set_inner_btn_group_as_primary(__('Create'));
 		}
 	},
 	onload: function(frm) {

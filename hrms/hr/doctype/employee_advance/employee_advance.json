@@ -267,7 +267,8 @@
    "fieldtype": "Dynamic Link",
    "label": "Reference",
    "mandatory_depends_on": "eval:doc.advance_type == \"Travel Advance\"",
-   "options": "reference_type"
+   "options": "reference_type",
+   "read_only": 1
   },
   {
    "fieldname": "advance_type",
@@ -331,10 +332,11 @@
    "read_only": 1
   },
   {
-   "depends_on": "max_advance_limit",
+   "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fieldname": "deduction_month",
    "fieldtype": "Float",
    "label": "No.of Installments",
+   "mandatory_depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "reqd": 1
   },
   {
@@ -350,6 +352,7 @@
    "label": "Recovery End Date"
   },
   {
+   "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fieldname": "monthly_deduction",
    "fieldtype": "Currency",
    "label": "Monthly Deduction",
@@ -435,7 +438,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-18 09:44:58.238140",
+ "modified": "2022-11-24 14:48:21.414449",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
