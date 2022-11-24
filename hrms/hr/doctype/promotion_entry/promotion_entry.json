@@ -1,15 +1,17 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-11-07 14:27:31.811822",
+ "autoname": "PROMO-.{fiscal_year}.-.#####",
+ "creation": "2022-11-08 15:49:06.862940",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "sb_payroll_period",
+  "sb_promotion_cycle",
   "fiscal_year",
   "month_name",
   "month",
+  "single_employee",
   "section_break_8",
   "branch",
   "department",
@@ -19,8 +21,8 @@
   "number_of_employees",
   "section_break_13",
   "employees",
-  "salary_increments_created",
-  "salary_increments_submitted",
+  "promotions_created",
+  "promotions_submitted",
   "section_break0",
   "posting_date",
   "company",
@@ -28,9 +30,9 @@
  ],
  "fields": [
   {
-   "fieldname": "sb_payroll_period",
+   "fieldname": "sb_promotion_cycle",
    "fieldtype": "Section Break",
-   "label": "Select Increment Cycle"
+   "label": "Select Promotion Cycle"
   },
   {
    "fieldname": "fiscal_year",
@@ -45,7 +47,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Month",
-   "options": "\nJanuary\nFebruary\nMarch\nApril\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
+   "options": "\nJanuary\nJuly",
    "reqd": 1
   },
   {
@@ -61,6 +63,7 @@
    "label": "Select Employees"
   },
   {
+   "fetch_from": "employee.branch",
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
@@ -77,12 +80,14 @@
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "employee.designation",
    "fieldname": "designation",
    "fieldtype": "Link",
    "label": "Designation",
    "options": "Designation"
   },
   {
+   "depends_on": "eval:doc.single_employee;",
    "fieldname": "employee",
    "fieldtype": "Link",
    "label": "Employee",
@@ -104,20 +109,20 @@
    "fieldname": "employees",
    "fieldtype": "Table",
    "label": "Employee Details",
-   "options": "Increment Employee Detail"
+   "options": "Promotion Employee Detail"
   },
   {
    "default": "0",
-   "fieldname": "salary_increments_created",
+   "fieldname": "promotions_created",
    "fieldtype": "Check",
-   "label": "Salary Increments Created",
+   "label": "Promotions Created",
    "read_only": 1
   },
   {
    "default": "0",
-   "fieldname": "salary_increments_submitted",
+   "fieldname": "promotions_submitted",
    "fieldtype": "Check",
-   "label": "Salary Increments Submitted",
+   "label": "Promotions Submitted",
    "read_only": 1
   },
   {
@@ -145,18 +150,25 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Increment Entry",
+   "options": "Promotion Entry",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "single_employee",
+   "fieldtype": "Check",
+   "label": "For Single Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-07 16:38:00.418971",
+ "modified": "2022-11-09 11:19:03.728910",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Increment Entry",
+ "name": "Promotion Entry",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

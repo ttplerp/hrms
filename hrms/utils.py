@@ -58,3 +58,32 @@ def before_tests():
 
 	enable_all_roles_and_domains()
 	frappe.db.commit()  # nosemgrep
+
+def update_employee(employee, details, date=None, cancel=False):
+	internal_work_history = {}
+	for a in details:
+		next_promotion_years = frappe.db.get_value("Employee Grade",a.new,"next_promotion_years")
+		if next_promotion_years and next_promotion_years > 0:
+			new_pro_date = add_years(date,int(frappe.db.get_value("Employee Grade",a.new,"next_promotion_years")))
+		else:
+			new_pro_date = None
+	# details.extend(frappe._dict({'fieldname': 'promotion_due_date', 'new': new_pro_date, 'current': date}))
+	
+	setattr(employee, 'promotion_due_date', new_pro_date)
+	internal_work_history['promotion_due_date'] = new_pro_date
+	for item in details:
+		fieldtype = frappe.get_meta("Employee").get_field(item.fieldname).fieldtype
+		new_data = item.new if not cancel else item.current
+		if fieldtype == "Date" and new_data:
+			new_data = getdate(new_data)
+		elif fieldtype =="Datetime" and new_data:
+			new_data = get_datetime(new_data)
+		setattr(employee, item.fieldname, new_data)
+		if item.fieldname in ["department", "designation", "branch", "grade", "promotion_due_date"]:
+			internal_work_history[item.fieldname] = item.new
+			internal_work_history["reference_doctype"] = item.parenttype
+			internal_work_history["reference_docname"] = item.parent
+	if internal_work_history and not cancel:
+		internal_work_history["from_date"] = date
+		employee.append("internal_work_history", internal_work_history)
+	return employee

@@ -28,6 +28,7 @@
   "purpose",
   "column_break_11",
   "max_advance_limit",
+  "total_advance",
   "advance_amount",
   "deduction_month",
   "monthly_deduction",
@@ -212,6 +213,7 @@
    "depends_on": "eval:cur_frm.doc.employee ",
    "fieldname": "pending_amount",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Pending Amount",
    "options": "currency",
    "read_only": 1
@@ -271,7 +273,7 @@
    "fieldname": "advance_type",
    "fieldtype": "Select",
    "label": "Advance Type",
-   "options": "\nSalary Advance\nTravel Advance\nOthers",
+   "options": "\nSalary Advance\nTravel Advance\nImprest Advance\nOthers",
    "reqd": 1
   },
   {
@@ -364,30 +366,34 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.advance_type == 'Salary Advance'",
+   "depends_on": "eval:doc.advance_type != \"Travel Advance\"",
    "fieldname": "approver_details_section",
    "fieldtype": "Section Break",
    "label": "APPROVER DETAILS"
   },
   {
    "fieldname": "advance_approver_name",
-   "fieldtype": "Data",
-   "label": "Approver Name"
+   "fieldtype": "Link",
+   "label": "Approver",
+   "options": "Employee"
   },
   {
    "fieldname": "column_break_42",
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "advance_approver_name.user_id",
    "fieldname": "advance_approver",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Approver Email ID",
-   "options": "User"
+   "read_only": 1
   },
   {
+   "fetch_from": "advance_approver_name.designation",
    "fieldname": "advance_approver_designation",
    "fieldtype": "Data",
-   "label": "Approver Designation"
+   "label": "Approver Designation",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
@@ -418,11 +424,18 @@
    "label": "Salary Component",
    "options": "Salary Component",
    "read_only": 1
+  },
+  {
+   "description": "<i>accumulated advance amount in a given recovery start and end date</i>",
+   "fieldname": "total_advance",
+   "fieldtype": "Currency",
+   "label": "Total Advance",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-31 15:32:38.044326",
+ "modified": "2022-11-18 09:44:58.238140",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

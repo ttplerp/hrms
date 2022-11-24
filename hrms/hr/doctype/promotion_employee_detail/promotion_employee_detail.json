@@ -1,0 +1,111 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2022-11-08 15:52:52.942784",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+    "employee",
+    "employee_name",
+    "designation",
+    "department",
+    "employee_grade",
+    "current_basic_pay",
+    "column_break_3",
+    "new_basic_pay",
+    "new_designation",
+    "new_employee_grade",
+    "employee_promotion"
+ ],
+ "fields": [
+    {
+        "fieldname": "employee",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "Employee",
+        "options": "Employee",
+        "read_only": 1
+       },
+       {
+        "fetch_from": "employee.employee_name",
+        "fieldname": "employee_name",
+        "fieldtype": "Data",
+        "label": "Employee Name",
+        "read_only": 1
+       },
+       {
+        "fetch_from": "employee.designation",
+        "fieldname": "designation",
+        "fieldtype": "Data",
+        "label": "Designation",
+        "read_only": 1
+       },
+       {
+        "fetch_from": "employee.department",
+        "fieldname": "department",
+        "fieldtype": "Link",
+        "label": "Department",
+        "options": "Department",
+        "read_only": 1
+       },
+       {
+        "fieldname": "employee_grade",
+        "fieldtype": "Data",
+        "label": "Employee Grade",
+        "read_only": 1
+       },
+       {
+        "fieldname": "current_basic_pay",
+        "fieldtype": "Currency",
+        "in_list_view": 1,
+        "label": "Current Basic Pay",
+        "read_only": 1
+       },
+       {
+        "fieldname": "column_break_3",
+        "fieldtype": "Column Break"
+       },
+       {
+        "fieldname": "new_basic_pay",
+        "fieldtype": "Currency",
+        "in_list_view": 1,
+        "label": "New Basic Pay",
+        "read_only": 1
+       },
+       {
+        "fieldname": "new_designation",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "New Designation",
+        "options": "Designation"
+       },
+       {
+        "fieldname": "new_employee_grade",
+        "fieldtype": "Link",
+        "in_list_view": 1,
+        "label": "New Employee Grade",
+        "options": "Employee Grade",
+        "read_only": 1
+       },
+       {
+        "fieldname": "employee_promotion",
+        "fieldtype": "Data",
+        "label": "Employee Promotion",
+        "read_only": 1
+       }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-11-08 15:52:52.942784",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Promotion Employee Detail",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

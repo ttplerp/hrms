@@ -505,6 +505,18 @@ class SalarySlip(TransactionBase):
 				timesheet.flags.ignore_validate_update_after_submit = True
 				timesheet.set_status()
 				timesheet.save()
+				
+def unlink_ref_doc_from_salary_slip(doc, method=None):
+	"""Unlinks accrual Journal Entry from Salary Slips on cancellation"""
+	linked_ss = frappe.db.sql_list(
+		"""select name from `tabSalary Slip`
+	where journal_entry=%s and docstatus < 2""",
+		(doc.name),
+	)
+	if linked_ss:
+		for ss in linked_ss:
+			ss_doc = frappe.get_doc("Salary Slip", ss)
+			frappe.db.set_value("Salary Slip", ss_doc.name, "journal_entry", "")
 
 # Following code added by SHIV on 2020/09/21
 def get_permission_query_conditions(user):

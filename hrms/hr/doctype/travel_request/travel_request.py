@@ -13,9 +13,11 @@ from frappe.utils import date_diff, flt, cint, nowdate
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 from erpnext.accounts.general_ledger import make_gl_entries
 from erpnext.controllers.accounts_controller import AccountsController
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
 class TravelRequest(AccountsController):
 	def validate(self):
+		validate_workflow_states(self)
 		validate_active_employee(self.employee)
 		self.validate_travel_dates()
 		self.set_dsa_percent()
@@ -23,6 +25,8 @@ class TravelRequest(AccountsController):
 		self.update_amount()
 		self.update_total_amount()
 		self.validate_advance_amount()
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
 	def on_update(self):
 		self.check_date_overlap()
 		self.check_duplicate_requests()
@@ -30,9 +34,12 @@ class TravelRequest(AccountsController):
 	def on_submit(self):
 		self.check_date()
 		self.make_employee_advance()
-		self.post_expense_claim()	
+		self.post_expense_claim()
+		notify_workflow_states(self)
+
 	def on_cancel(self):
-		pass
+		notify_workflow_states(self)
+
 	def validate_advance_amount(self):
 		if flt(self.advance_amount) > flt(self.total_travel_amount) * flt(0.9):
 			frappe.msgprint("Advance amount cannot be greater than 90% of the <b>Total Travel Amount</b>",title="Excess Advance Amount",indicator="red",raise_exception=True)

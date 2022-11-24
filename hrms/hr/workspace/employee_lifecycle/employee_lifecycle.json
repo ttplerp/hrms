@@ -203,54 +203,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Fleet Management",
-   "link_count": 4,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Driver",
-   "link_count": 0,
-   "link_to": "Driver",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vehicle",
-   "link_count": 0,
-   "link_to": "Vehicle",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vehicle Log",
-   "link_count": 0,
-   "link_to": "Vehicle Log",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Vehicle Expenses",
-   "link_count": 0,
-   "link_to": "Vehicle Expenses",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Daily Work Summary",
    "link_count": 3,
    "onboard": 0,
@@ -317,9 +269,9 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Employee Information",
+   "label": "Employee Analytics",
    "link_count": 0,
-   "link_to": "Employee Information",
+   "link_to": "Employee Analytics",
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
@@ -327,16 +279,16 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "Employee Analytics",
+   "label": "Employee Information Report",
    "link_count": 0,
-   "link_to": "Employee Analytics",
+   "link_to": "Employee Information Report",
    "link_type": "Report",
-   "onboard": 0,
+   "onboard": 1,
    "type": "Link"
   }
  ],
- "modified": "2022-11-07 17:13:27.515973",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2022-11-23 11:31:12.663513",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Lifecycle",
  "owner": "Administrator",
@@ -360,7 +312,7 @@
   }
  ],
  "roles": [],
- "sequence_id": 9.0,
+ "sequence_id": 13.0,
  "shortcuts": [
   {
    "color": "Grey",

@@ -776,58 +776,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Other Reports",
-   "link_count": 0,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Information",
-   "link_count": 0,
-   "link_to": "Employee Information",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Birthday",
-   "link_count": 0,
-   "link_to": "Employee Birthday",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employees Working on a Holiday",
-   "link_count": 0,
-   "link_to": "Employees working on a holiday",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Daily Work Summary",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Daily Work Summary Replies",
-   "link_count": 0,
-   "link_to": "Daily Work Summary Replies",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Key Reports",
    "link_count": 7,
    "onboard": 0,
@@ -953,8 +901,26 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "LTC, PBVA and Bonus Report",
+   "link_count": 0,
+   "link_to": "LTC Process Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Setup",
-   "link_count": 4,
+   "link_count": 5,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -1004,8 +970,80 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Dzongkhag",
+   "link_count": 0,
+   "link_to": "Dzongkhag",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Other Reports",
+   "link_count": 5,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Information",
+   "link_count": 0,
+   "link_to": "Employee Information",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Birthday",
+   "link_count": 0,
+   "link_to": "Employee Birthday",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employees Working on a Holiday",
+   "link_count": 0,
+   "link_to": "Employees working on a holiday",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Daily Work Summary",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Daily Work Summary Replies",
+   "link_count": 0,
+   "link_to": "Daily Work Summary Replies",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Information Report",
+   "link_count": 0,
+   "link_to": "Employee Information Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Employee",
-   "link_count": 3,
+   "link_count": 4,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -1042,24 +1080,16 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Reports",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "LTC, PBVA and Bonus Report",
+   "label": "Employee Advance",
    "link_count": 0,
-   "link_to": "LTC Process Report",
-   "link_type": "Report",
+   "link_to": "Employee Advance",
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2022-11-07 17:13:27.198730",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2022-11-23 11:31:12.366517",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
  "owner": "Administrator",
@@ -1068,7 +1098,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 8.0,
+ "sequence_id": 12.0,
  "shortcuts": [
   {
    "doc_view": "Dashboard",

@@ -1,9 +1,9 @@
-// Copyright (c) 2017, Frappe Technologies Pvt. Ltd. and contributors
+// Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
 var in_progress = false;
 
-frappe.ui.form.on('Increment Entry', {
+frappe.ui.form.on('Promotion Entry', {
 	onload: function (frm) {
 		if (!frm.doc.posting_date) {
 			frm.doc.posting_date = frappe.datetime.nowdate();
@@ -19,8 +19,9 @@ frappe.ui.form.on('Increment Entry', {
 	},
 
 	refresh: function(frm) {
+		console.log("here")
 		if (frm.doc.docstatus == 0) {
-			if(!frm.is_new()) {
+			if(!frm.is_new() && frm.doc.single_employee == 0) {
 				frm.page.clear_primary_action();
 				frm.add_custom_button(__("Get Employees"),
 					function() {
@@ -29,7 +30,7 @@ frappe.ui.form.on('Increment Entry', {
 				).toggleClass('btn-primary', !(frm.doc.employees || []).length);
 			}
 			if ((frm.doc.employees || []).length) {
-				frm.page.set_primary_action(__('Create Salary Increments'), () => {
+				frm.page.set_primary_action(__('Create Employee Promotion'), () => {
 					frm.save('Submit').then(()=>{
 						frm.page.clear_primary_action();
 						frm.refresh();
@@ -50,6 +51,10 @@ frappe.ui.form.on('Increment Entry', {
 			method: 'fill_employee_details',
 			callback: function(r) {
 				if (r.docs[0].employees){
+					frappe.call({
+						method: "check_increment_cycle",
+						doc: frm.doc
+					})
 					frm.save();
 					frm.refresh();
 				}
@@ -57,10 +62,10 @@ frappe.ui.form.on('Increment Entry', {
 		})
 	},
 
-	create_salary_increments: function(frm) {
+	create_employee_promotions: function(frm) {
 		frm.call({
 			doc: frm.doc,
-			method: "create_salary_increments",
+			method: "create_employee_promotions",
 			callback: function(r) {
 				frm.refresh();
 				frm.toolbar.refresh();
@@ -69,10 +74,9 @@ frappe.ui.form.on('Increment Entry', {
 	},
 
 	add_context_buttons: function(frm) {
-
-		if(frm.doc.salary_increments_created && frm.doc.salary_increments_submitted == 0) {
-			frm.add_custom_button(__("Submit Salary Increment"), function() {
-				submit_salary_increment(frm);
+		if(frm.doc.promotions_created && !frm.doc.promotions_submitted) {
+			frm.add_custom_button(__("Submit Employee Promotion"), function() {
+				submit_employee_promotions(frm);
 			}).addClass("btn-primary");
 		}
 	},
@@ -106,19 +110,18 @@ frappe.ui.form.on('Increment Entry', {
 		frm.refresh();
 	},
 });
-
 // Submit salary slips
 
-const submit_salary_increment = function (frm) {
-	frappe.confirm(__('This will submit Salary Increment. Do you want to proceed?'),
+const submit_employee_promotions = function (frm) {
+	frappe.confirm(__('This will submit Employee Promotion. Do you want to proceed?'),
 		function() {
 			frappe.call({
-				method: 'submit_salary_increments',
+				method: 'submit_employee_promotions',
 				args: {},
 				callback: function() {frm.events.refresh(frm);},
 				doc: frm.doc,
 				freeze: true,
-				freeze_message: 'Submitting Salary Increments...'
+				freeze_message: 'Submitting Employee Promotions...'
 			});
 		},
 		function() {

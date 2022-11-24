@@ -30,6 +30,9 @@
   "expense_approver_mandatory_in_expense_claim",
   "show_leaves_of_all_department_members_in_calendar",
   "auto_leave_encashment",
+  "sb_travel",
+  "authorization_approval_notification_template",
+  "authorization_status_notification_template",
   "hiring_settings_section",
   "check_vacancies",
   "send_interview_reminder",
@@ -45,7 +48,10 @@
   "overtime_settings_tab",
   "overtime_limit_type",
   "column_break_39",
-  "overtime_limit"
+  "overtime_limit",
+  "sb_approver",
+  "hr_approver",
+  "hr_approver_name"
  ],
  "fields": [
   {
@@ -281,13 +287,47 @@
    "fieldname": "overtime_limit",
    "fieldtype": "Int",
    "label": "Overtime Limit In Hrs(Per Day)"
+  },
+  {
+   "fieldname": "sb_travel",
+   "fieldtype": "Section Break",
+   "label": "Travel Settings"
+  },
+  {
+   "fieldname": "authorization_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Authorization Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "authorization_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Authorization Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "hr_approver",
+   "fieldtype": "Link",
+   "label": "HR Approver",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "hr_approver.employee_name",
+   "fieldname": "hr_approver_name",
+   "fieldtype": "Data",
+   "label": "HR Approver Name"
+  },
+  {
+   "fieldname": "sb_approver",
+   "fieldtype": "Tab Break",
+   "label": "Approver Settings"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-09-24 13:46:06.995425",
+ "modified": "2022-11-18 15:03:37.672088",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

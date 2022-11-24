@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestIncrementEntry(FrappeTestCase):
+class TestDzongkhag(FrappeTestCase):
 	pass

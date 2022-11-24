@@ -181,7 +181,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Reports",
-   "link_count": 4,
+   "link_count": 6,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -224,10 +224,30 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Overtime Report",
+   "link_count": 0,
+   "link_to": "Overtime Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Advance Report",
+   "link_count": 0,
+   "link_to": "Employee Advance Report",
+   "link_type": "Report",
+   "onboard": 1,
+   "type": "Link"
   }
  ],
- "modified": "2022-11-07 17:13:27.847791",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2022-11-23 11:31:12.964544",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claims",
  "owner": "Administrator",
@@ -235,7 +255,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 11.0,
+ "sequence_id": 15.0,
  "shortcuts": [
   {
    "color": "Orange",
