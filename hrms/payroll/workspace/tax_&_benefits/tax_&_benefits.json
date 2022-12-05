@@ -31,24 +31,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Employee Benefit Claim",
-   "link_count": 0,
-   "link_to": "Employee Benefit Claim",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Reports",
-   "link_count": 2,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Income Tax Computation",
    "link_count": 0,
    "link_to": "Income Tax Computation",
@@ -65,14 +47,6 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Tax Setup",
-   "link_count": 3,
-   "onboard": 0,
-   "type": "Card Break"
   },
   {
    "hidden": 0,
@@ -107,14 +81,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Exemption",
-   "link_count": 2,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Employee Tax Exemption Declaration",
    "link_count": 0,
    "link_to": "Employee Tax Exemption Declaration",
@@ -133,7 +99,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-11-24 10:29:41.333264",
+ "modified": "2022-11-28 18:33:02.236237",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Tax & Benefits",

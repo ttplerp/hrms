@@ -1,0 +1,53 @@
+
+<h3 class="text-center">State Mining Corporation Ltd.</h3>
+<h4 class="text-center">{%= __(report.report_name) %} for the Year: {%= filters.fiscal_year %}</h4>
+
+<table style="width: 100%;">
+	<tr>
+		<td>Widthholding Agency:</td><td colspan="3" style="text-align: left"><strong>State Mining Corporation Ltd.</strong></td>
+		<td>Agency TPN: </td><td><strong>SAC00307</strong></td>
+	</tr>
+	<tr>
+		<td>Employee:</td><td><strong>{%= filters.employee %}:{%= filters.e_name %}</strong></td>
+		<td>Citizen ID: </td><td><strong>{%= filters.cid %}</strong></td>
+		<td>TPN No: </td><td><strong>{%= filters.tpn %}</strong></td>
+	</tr>
+</table>
+
+<hr>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			{% for(var i=0, l=report.columns.length; i<l; i++) { %}
+				<th class="text-right">{%= report.columns[i].label %}</th>
+			{% } %}
+		</tr>
+	</thead>
+	<tbody>
+		{% for(var j=0, k=data.length; j<k; j++) { %}
+			{%
+				var row = data[j];
+			%}
+			<tr>
+				{% for(var i=0, l=report.columns.length; i<l; i++) { %}
+					<td class="text-right">
+						{% var fieldname = report.columns[i].fieldname; %}
+						{% if (!is_null(row[fieldname])) { %}
+							{% if (i > 1 && i < 10) { %}
+								{%= parseFloat(row[fieldname]).toFixed(2) %}
+							{% } else { %}
+								{%= row[fieldname] %}
+							{% } %}
+						{% } %}
+					</td>
+				{% } %}
+			</tr>
+		{% } %}
+	</tbody>
+</table>
+<div>
+I hereby certify that the information given in this certificate is true and correct to the best of my knowledge. In case any information is found untrue and false, I shall be liable for fines and penalities as per chapter 5, General Provisions of the Income Tax Act of the Kindom of Bhutan, 2001
+</div>
+<div style="margin-top: 100px; float: right;">
+	Name and Signature of Disbursing Officer
+</div>

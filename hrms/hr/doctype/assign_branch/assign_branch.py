@@ -7,7 +7,7 @@ from frappe.model.document import Document
 class AssignBranch(Document):
 	def validate(self):
 		self.assign_name()	
-		self.check_mandatory()
+		# self.check_mandatory()
 		self.check_employee_duplicate()
 		self.check_duplicate()
 

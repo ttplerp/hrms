@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "SINC-.{fiscal_year}.-.#####",
  "creation": "2022-11-07 14:27:31.811822",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -153,10 +154,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-10 16:07:20.643506",
+ "modified": "2022-11-28 12:19:15.048131",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Increment Entry",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -168,6 +170,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
    "share": 1,
    "submit": 1,
    "write": 1

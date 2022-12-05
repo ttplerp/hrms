@@ -38,6 +38,7 @@ class EmployeeBoardingController(Document):
 				"expected_start_date": self.date_of_joining
 				if self.doctype == "Employee Onboarding"
 				else self.resignation_letter_date,
+				'status': "Open",
 				"department": self.department,
 				"company": self.company,
 			}
@@ -56,7 +57,7 @@ class EmployeeBoardingController(Document):
 			if activity.task:
 				continue
 
-			dates = self.get_task_dates(activity, holiday_list)
+			# dates = self.get_task_dates(activity, holiday_list)
 
 			task = frappe.get_doc(
 				{
@@ -66,6 +67,7 @@ class EmployeeBoardingController(Document):
 					"description": activity.description,
 					"department": self.department,
 					"company": self.company,
+					"status": 'Open',
 					"task_weight": activity.task_weight,
 					"exp_start_date": dates[0],
 					"exp_end_date": dates[1],

@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:benefit_type",
  "creation": "2022-10-17 11:37:31.159683",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -8,7 +9,8 @@
  "field_order": [
   "benefit_type",
   "read_only_2",
-  "gl_account"
+  "gl_account",
+  "tax_applicable"
  ],
  "fields": [
   {
@@ -16,7 +18,8 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Benefit Type",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "read_only_2",
@@ -30,14 +33,21 @@
    "label": "GL Account",
    "options": "Account",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "tax_applicable",
+   "fieldtype": "Check",
+   "label": "Tax Applicable"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-17 11:37:51.754186",
+ "modified": "2022-11-28 20:58:09.238144",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Benefit Type",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

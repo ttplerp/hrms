@@ -1,7 +1,7 @@
 import requests
 
 import frappe
-from frappe.utils import now_datetime
+from frappe.utils import now_datetime, add_years
 
 from erpnext.setup.utils import enable_all_roles_and_domains
 
@@ -61,14 +61,12 @@ def before_tests():
 
 def update_employee(employee, details, date=None, cancel=False):
 	internal_work_history = {}
+	new_pro_date = None
 	for a in details:
 		next_promotion_years = frappe.db.get_value("Employee Grade",a.new,"next_promotion_years")
 		if next_promotion_years and next_promotion_years > 0:
 			new_pro_date = add_years(date,int(frappe.db.get_value("Employee Grade",a.new,"next_promotion_years")))
-		else:
-			new_pro_date = None
 	# details.extend(frappe._dict({'fieldname': 'promotion_due_date', 'new': new_pro_date, 'current': date}))
-	
 	setattr(employee, 'promotion_due_date', new_pro_date)
 	internal_work_history['promotion_due_date'] = new_pro_date
 	for item in details:

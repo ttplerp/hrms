@@ -11,6 +11,7 @@ from hrms.hr.hr_custom_functions import get_salary_tax
 class Bonus(Document):
 	def validate(self):
 		self.validate_duplicate()
+		self.validate_bonus_amount()
 		self.calculate_values()
 
 	def on_submit(self):
@@ -33,6 +34,14 @@ class Bonus(Document):
 		doc = frappe.db.sql("select name from `tabBonus` where docstatus != 1 and fiscal_year = \'"+str(self.fiscal_year)+"\' and name != \'"+str(self.name)+"\'")	
 		if doc:
 			frappe.throw("Can not create multiple Bonuses for the same year")
+
+	def validate_bonus_amount(self):
+		if self.items:
+			count = 1
+			for a in self.get("items"):
+				if not a.amount or a.amount == 0:
+					frappe.throw("Bonus amount for Employee {} ({}) at row {} cannot be 0".format(a.employee, a.employee_name, count))
+				count += 1
 
 	def calculate_values(self):
 		if self.items:
@@ -210,9 +219,7 @@ class Bonus(Document):
 						"credit_in_account_currency": flt(cc_amount[key]['tax']),
 						"credit": flt(cc_amount[key]['tax']),
 					})
-
 		je.insert()
-
 		self.db_set("journal_entry", je.name)
 
 	def on_cancel(self):

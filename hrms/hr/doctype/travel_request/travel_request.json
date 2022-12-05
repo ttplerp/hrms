@@ -32,6 +32,7 @@
   "itinerary",
   "travel_advance_details_section",
   "currency",
+  "exchange_rate",
   "need_advance",
   "advance_reference",
   "column_break_35",
@@ -40,8 +41,10 @@
   "advance_amount_nu",
   "costing_details",
   "total_travel_amount",
+  "base_total_travel_amount",
   "column_break_33",
   "balance_amount",
+  "base_balance_amount",
   "costings",
   "accounting_dimensions_section",
   "company",
@@ -62,6 +65,7 @@
   "travel_claim_date",
   "total_claim_amount",
   "column_break_2",
+  "ex_reference",
   "additional_information_section",
   "other_details",
   "employee_advance_reference",
@@ -198,7 +202,8 @@
   {
    "fieldname": "itinerary",
    "fieldtype": "Table",
-   "options": "Travel Itinerary"
+   "options": "Travel Itinerary",
+   "read_only_depends_on": "workflow_state == \"Approved\""
   },
   {
    "fieldname": "costing_details",
@@ -349,7 +354,8 @@
    "depends_on": "need_advance",
    "fieldname": "advance_amount",
    "fieldtype": "Currency",
-   "label": "Advance Amount"
+   "label": "Advance Amount",
+   "read_only_depends_on": "employee_advance_reference"
   },
   {
    "depends_on": "eval:doc.currency != 'BTN'",
@@ -448,6 +454,7 @@
    "fieldname": "total_travel_amount",
    "fieldtype": "Currency",
    "label": "Total Travel Amount",
+   "options": "currency",
    "read_only": 1
   },
   {
@@ -458,6 +465,7 @@
    "fieldname": "balance_amount",
    "fieldtype": "Currency",
    "label": "Balance Amount",
+   "options": "currency",
    "read_only": 1
   },
   {
@@ -500,11 +508,38 @@
    "fieldtype": "Data",
    "label": "Employee Advance Reference",
    "read_only": 1
+  },
+  {
+   "fieldname": "ex_reference",
+   "fieldtype": "Data",
+   "label": "Expense Claim Reference",
+   "read_only": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "exchange_rate",
+   "fieldtype": "Currency",
+   "label": "Exchange Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "base_total_travel_amount",
+   "fieldtype": "Currency",
+   "label": "Total Travel Amount (Company Currency)",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "base_balance_amount",
+   "fieldtype": "Currency",
+   "label": "Balance Amount(Company Currency)",
+   "options": "Company:company:default_currency",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-24 12:58:15.824759",
+ "modified": "2022-11-25 22:48:48.047483",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",
@@ -535,6 +570,19 @@
    "read": 1,
    "report": 1,
    "role": "Employee",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Expense Approver",
+   "set_user_permissions": 1,
    "share": 1,
    "submit": 1,
    "write": 1

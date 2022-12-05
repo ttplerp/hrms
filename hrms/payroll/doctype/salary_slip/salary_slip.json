@@ -70,7 +70,10 @@
   "employee_subgroup",
   "actual_basic",
   "payroll_entry",
-  "journal_entry"
+  "journal_entry",
+  "sb_ot_details",
+  "ot_items",
+  "ot_total"
  ],
  "fields": [
   {
@@ -547,13 +550,32 @@
    "label": "PF Tiers",
    "options": "\n1\n2",
    "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sb_ot_details",
+   "fieldtype": "Section Break",
+   "label": "OT Details"
+  },
+  {
+   "fieldname": "ot_items",
+   "fieldtype": "Table",
+   "label": "OT Details",
+   "options": "Overtime Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ot_total",
+   "fieldtype": "Currency",
+   "label": "Overtime Amount",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-25 11:27:09.104923",
+ "modified": "2022-11-26 17:26:13.635975",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",

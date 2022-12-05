@@ -66,6 +66,7 @@ frappe.ui.form.on("Leave Application", {
 					}
 					if (!r.exc && r.message['leave_approver']) {
 						frm.set_value('leave_approver', r.message['leave_approver']);
+						frm.set_value('leave_approver_name', r.message['leave_approver_name']);
 					}
 					lwps = r.message["lwps"];
 				}

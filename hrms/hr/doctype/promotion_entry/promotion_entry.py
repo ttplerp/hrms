@@ -34,10 +34,11 @@ class PromotionEntry(Document):
 		self.check_increment_cycle()
 
 	def on_cancel(self):
-		if self.promotions_submitted == 1:
-			frappe.throw("Please cancel employee promotions first.")
+		# if self.promotions_submitted == 1:
+		# 	frappe.throw("Please cancel employee promotions first.")
 		self.remove_employee_promotions()
 
+	@frappe.whitelist()
 	def check_increment_cycle(self):
 		same_cycle = []
 		for a in self.employees:
@@ -182,7 +183,7 @@ class PromotionEntry(Document):
 		amount = new_basic_multiple + new_lower_limit
 		return new_grade, amount
 
-
+	@frappe.whitelist()
 	def fill_employee_details(self):
 		self.set('employees', [])
 		employees = self.get_emp_list()
@@ -230,6 +231,7 @@ class PromotionEntry(Document):
 			if not self.get(fieldname):
 				frappe.throw(_("Please set {0}").format(self.meta.get_label(fieldname)))
 
+	@frappe.whitelist()
 	def create_employee_promotions(self):
 		"""
 			Creates promotion for selected employees if already not created
@@ -253,6 +255,7 @@ class PromotionEntry(Document):
 				# since this method is called via frm.call this doc needs to be updated manually
 				self.reload()
 
+	@frappe.whitelist()
 	def get_employee_promotion_list(self, ep_status, as_dict=False):
 		"""
 			Returns list of employee promotions based on selected criteria
@@ -271,18 +274,20 @@ class PromotionEntry(Document):
 		""" % ('%s', '%s', cond, '%s'), (self.month_name, ep_status, self.name), as_dict=as_dict)
 		return ep_list
 
+	@frappe.whitelist()
 	def remove_employee_promotions(self):
 		self.check_permission('write')
 		ep_list = self.get_employee_promotion_list(ep_status=0)
-		if len(ep_list) > 300:
+		if len(ep_list) > 500:
 			frappe.enqueue(remove_employee_promotions_for_employees, timeout=600, promotion_entry=self, employee_promotions=ep_list)
 		else:
 			remove_employee_promotions_for_employees(self, ep_list, publish_progress=False)
 
+	@frappe.whitelist()
 	def submit_employee_promotions(self):
 		self.check_permission('write')
 		ep_list = self.get_employee_promotion_list(ep_status=0)
-		if len(ep_list) > 300:
+		if len(ep_list) > 500:
 			frappe.enqueue(submit_employee_promotions_for_employees, timeout=600, promotion_entry=self, employee_promotions=ep_list)
 		else:
 			submit_employee_promotions_for_employees(self, ep_list, publish_progress=False)

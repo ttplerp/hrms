@@ -54,6 +54,7 @@ class SalarySlip(TransactionBase):
 		if self.employee:
 			self.set("earnings", [])
 			self.set("deductions", [])
+			self.set('ot_items', []) #Added by Kinley on 2022/11/26
 			self.set("items", [])   #Added by SHIV on 2018/09/28
 			self.set_month_dates()
 			self.validate_dates()
@@ -432,7 +433,18 @@ class SalarySlip(TransactionBase):
 		# Ver 1.0 Ends
 		self.update_deduction_balance()
 		self.post_sws_entry()
+		self.update_ot()
 
+
+	def update_ot(self, cancel = False):
+		processed = 1
+		ss_name = self.name
+		if cancel:
+			processed = 0
+			ss_name = ''
+		for a in self.ot_items:
+			frappe.db.sql(""" update `tabOvertime Application` set processed = '{0}', salary_slip = '{3}'  where name = '{1}' and employee = '{2}' 
+		""".format(processed, a.reference, self.employee, ss_name))
 
 	def post_sws_entry(self):
 		sws = frappe.db.get_single_value("SWS Settings", "salary_component")
@@ -458,6 +470,7 @@ class SalarySlip(TransactionBase):
 		self.update_status()
 		self.update_deduction_balance()
 		self.delete_sws_entry()
+		self.update_ot(cancel = True)
 
 	def delete_sws_entry(self):
 		frappe.db.sql("delete from `tabSWS Entry` where ref_doc = %s", self.name)

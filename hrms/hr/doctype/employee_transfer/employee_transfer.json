@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "TRN-.YYYY.-.#####",
  "creation": "2022-10-13 13:47:54.585171",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -54,7 +55,7 @@
   "create_new_employee_id",
   "new_employee_id",
   "sb_benefits",
-  "employee_benefits_status",
+  "employee_benefit_claim_status",
   "workflow_state",
   "amended_from"
  ],
@@ -153,18 +154,18 @@
   {
    "fieldname": "sb_supervisor_details",
    "fieldtype": "Section Break",
-   "label": "Supervisor Details"
+   "label": "Approver Details"
   },
   {
    "fieldname": "supervisor_name",
    "fieldtype": "Data",
-   "label": "Supervisor Name",
+   "label": "Approver Name",
    "read_only": 1
   },
   {
    "fieldname": "supervisor_designation",
    "fieldtype": "Data",
-   "label": "Supervisor Designation",
+   "label": "Approver Designation",
    "read_only": 1
   },
   {
@@ -174,7 +175,7 @@
   {
    "fieldname": "supervisor",
    "fieldtype": "Link",
-   "label": "Supervisor",
+   "label": "Approver",
    "options": "User",
    "read_only": 1
   },
@@ -202,12 +203,14 @@
   {
    "fieldname": "new_department",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "New Department",
    "options": "Department"
   },
   {
    "fieldname": "new_division",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "New Division",
    "options": "Department"
   },
@@ -215,6 +218,7 @@
    "fetch_from": "section",
    "fieldname": "new_section",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "New Section",
    "options": "Department"
   },
@@ -348,15 +352,6 @@
    "label": "Employee Benefits"
   },
   {
-   "allow_on_submit": 1,
-   "default": "Not Claimed",
-   "fieldname": "employee_benefits_status",
-   "fieldtype": "Select",
-   "label": "Employee Benefits Status",
-   "options": "Not Claimed\nClaimed",
-   "read_only": 1
-  },
-  {
    "fetch_from": "employee.designation",
    "fieldname": "old_designation",
    "fieldtype": "Link",
@@ -369,7 +364,7 @@
    "fieldname": "old_unit",
    "fieldtype": "Link",
    "label": "Current Unit",
-   "options": "Unit",
+   "options": "Department",
    "read_only": 1
   },
   {
@@ -381,9 +376,9 @@
   {
    "fieldname": "new_unit",
    "fieldtype": "Link",
-   "hidden": 1,
+   "ignore_user_permissions": 1,
    "label": "New Unit",
-   "options": "Unit"
+   "options": "Department"
   },
   {
    "fetch_from": "employee.region",
@@ -399,15 +394,25 @@
    "hidden": 1,
    "label": "New Region",
    "options": "Region"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Not Claimed",
+   "fieldname": "employee_benefit_claim_status",
+   "fieldtype": "Select",
+   "label": "Employee Benefit Claim Status",
+   "options": "Not Claimed\nClaimed",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-03 11:47:15.707100",
+ "modified": "2022-11-30 17:42:45.227579",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

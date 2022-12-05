@@ -13,6 +13,7 @@ from datetime import date
 from hrms.payroll.doctype.salary_structure.salary_structure import get_basic_and_gross_pay, get_salary_tax
 from hrms.hr.hr_custom_functions import get_salary_tax
 from hrms.hr.doctype.leave_application.leave_application import get_leave_balance_on, get_leaves_for_period
+import math
 
 class EmployeeBenefitClaim(Document):
 	def validate(self):
@@ -35,32 +36,33 @@ class EmployeeBenefitClaim(Document):
 
 	def check_duplicates(self):
 		if self.employee_separation_id:
-			for r in frappe.db.get_all("Employee Benefits", {"employee_separation_id": self.employee_separation_id, \
+			for r in frappe.db.get_all("Employee Benefit Claim", {"employee_separation_id": self.employee_separation_id, \
 					"name": ("!=", self.name), "docstatus": ("!=", 2)}):
-				frappe.throw(_("Separation Benefits for this employee already processed via {}").format(frappe.get_desk_link("Employee Benefits", r.name)))
+				frappe.throw(_("Separation Benefits for this employee already processed via {}").format(frappe.get_desk_link("Employee Benefit Claim", r.name)))
 		
 		if self.employee_transfer_id:
-			for r in frappe.db.get_all("Employee Benefits", {"employee_transfer_id": self.employee_transfer_id, \
+			for r in frappe.db.get_all("Employee Benefit Claim", {"employee_transfer_id": self.employee_transfer_id, \
 					"name": ("!=", self.name), "docstatus": ("!=", 2)}):
-				frappe.throw(_("Transfer Benefits for this employee already processed via {}").format(frappe.get_desk_link("Employee Benefits", r.name)))
+				frappe.throw(_("Transfer Benefits for this employee already processed via {}").format(frappe.get_desk_link("Employee Benefit Claim", r.name)))
 
 	def update_reference(self):
 		if self.employee_separation_id:
 			id = frappe.get_doc("Employee Separation",self.employee_separation_id)
-			id.employee_benefits_status = "Claimed"
+			id.employee_benefit_claim_status = "Claimed"
+			id.benefit_claim_reference = self.name
 			id.save()
 		elif self.employee_transfer_id:
 			id = frappe.get_doc("Employee Transfer",self.employee_transfer_id)
-			id.employee_benefits_status = "Claimed"
+			id.employee_benefit_claim_status = "Claimed"
 			id.save()
 		 
-		if self.deduction_details:
-			for a in self.deduction_details:
-				if a.deduction_type in ("Festival Advance Deduction", "Salary Advance Deduction"):
-					ssd = frappe.db.sql("select name from `tabSalary Detail` where salary_component = '{0}' and parent = '{1}' and total_outstanding_amount > 0""".format(a.deduction_type, a.salary_structure_id))[0][0]
-					doc = frappe.get_doc("Salary Detail", ssd)
-					doc.db_set("total_outstanding_amount",flt(doc.total_outstanding_amount,2)-flt(a.amount,2))
-					doc.db_set("total_deducted_amount",flt(doc.total_deducted_amount,2)+flt(a.amount,2))
+		# if self.deduction_details:
+		# 	for a in self.deduction_details:
+		# 		if a.deduction_type in ("Salary Advance Deduction"):
+		# 			ssd = frappe.db.sql("select name from `tabSalary Detail` where salary_component = '{0}' and parent = '{1}' and total_outstanding_amount > 0""".format(a.deduction_type, a.salary_structure_id))[0][0]
+		# 			doc = frappe.get_doc("Salary Detail", ssd)
+		# 			doc.db_set("total_outstanding_amount",flt(doc.total_outstanding_amount,2)-flt(a.amount,2))
+		# 			doc.db_set("total_deducted_amount",flt(doc.total_deducted_amount,2)+flt(a.amount,2))
 
 	def validate_benefits(self):
 		emp = frappe.db.sql("""SELECT employment_type, grade, employee_group, date_of_joining,
@@ -100,11 +102,11 @@ class EmployeeBenefitClaim(Document):
 			self.total_amount 			+= flt(e.amount,2)
 			self.total_deducted_amount 	+= flt(e.tax_amount,2)
 
-		for d in self.deduction_details:
-			d.amount = flt(d.amount,2)
-			if flt(d.amount) < 0:
-				frappe.throw(_("Row#{}: Invalid <b>Amount</b> for <b>{}</b>").format(d.idx, d.deduction_type), title="Deduction Details")
-			self.total_deducted_amount += flt(d.amount)
+		# for d in self.deduction_details:
+		# 	d.amount = flt(d.amount,2)
+		# 	if flt(d.amount) < 0:
+		# 		frappe.throw(_("Row#{}: Invalid <b>Amount</b> for <b>{}</b>").format(d.idx, d.deduction_type), title="Deduction Details")
+		# 	self.total_deducted_amount += flt(d.amount)
 
 		# if flt(self.total_deducted_amount,2) > flt(self.total_amount):
 		# 	frappe.throw(_("<b>Total Deduction Amount</b> cannot be more than Total Benefits"))
@@ -146,7 +148,7 @@ class EmployeeBenefitClaim(Document):
 				"party": party,
 				"cost_center": emp.cost_center,
 				"business_activity": emp.business_activity,
-				"reference_type": "Employee Benefits",
+				"reference_type": "Employee Benefit Claim",
 				"reference_name": self.name,
 			})
 
@@ -157,32 +159,32 @@ class EmployeeBenefitClaim(Document):
 					"credit": flt(a.tax_amount,2),
 					"cost_center": emp.cost_center,
 					"business_activity": emp.business_activity,
-					"reference_type": "Employee Benefits",
+					"reference_type": "Employee Benefit Claim",
 					"reference_name": self.name,
 				})
 
-		# Deductions
-		for b in self.deduction_details:
-			if not flt(b.amount):
-				continue
+		# # Deductions
+		# for b in self.deduction_details:
+		# 	if not flt(b.amount):
+		# 		continue
 
-			account_type = frappe.db.get_value("Account", b.deduction_account, "account_type")
-			party_type, party = None, None
-			if account_type in ('Payable', 'Receivable'):
-				party_type = "Employee"
-				party = self.employee
+		# 	account_type = frappe.db.get_value("Account", b.deduction_account, "account_type")
+		# 	party_type, party = None, None
+		# 	if account_type in ('Payable', 'Receivable'):
+		# 		party_type = "Employee"
+		# 		party = self.employee
 
-			je.append("accounts", {
-				"account": b.deduction_account,
-				"credit_in_account_currency": flt(b.amount,2),
-				"credit": flt(b.amount,2),
-				"party_type": party_type,
-				"party": party,
-				"cost_center": emp.cost_center,
-				"business_activity": emp.business_activity,
-				"reference_type": "Employee Benefits",
-				"reference_name": self.name,
-			})
+		# 	je.append("accounts", {
+		# 		"account": b.deduction_account,
+		# 		"credit_in_account_currency": flt(b.amount,2),
+		# 		"credit": flt(b.amount,2),
+		# 		"party_type": party_type,
+		# 		"party": party,
+		# 		"cost_center": emp.cost_center,
+		# 		"business_activity": emp.business_activity,
+		# 		"reference_type": "Employee Benefit Claim",
+		# 		"reference_name": self.name,
+		# 	})
 
 		# Credit Account
 		je.append("accounts", {
@@ -191,7 +193,7 @@ class EmployeeBenefitClaim(Document):
 			"credit" if flt(self.net_amount) > 0 else "debit": abs(flt(self.net_amount,2)),
 			"cost_center": emp.cost_center,
 			"business_activity": emp.business_activity,
-			"reference_type": "Employee Benefits",
+			"reference_type": "Employee Benefit Claim",
 			"reference_name": self.name,
 		})
 		je.insert()
@@ -199,7 +201,61 @@ class EmployeeBenefitClaim(Document):
 	def check_journal_entry(self):
 		if self.journal and frappe.db.exists("Journal Entry", {"name": self.journal, "docstatus": ("!=",2)}):
 			frappe.throw("Cancel {} before cancelling this document".format(frappe.get_desk_link("Journal Entry", self.journal)))
-			
+
+	@frappe.whitelist()
+	def get_leave_encashment_amount(self, employee, date):
+		basic_pay = amount = 0
+		query = "select amount from `tabSalary Structure` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and is_active='Yes'"
+		data = frappe.db.sql(query, as_dict=True)
+		if not data:
+			frappe.throw("Basic Salary is not been assigned to the employee.")
+		else:
+			for a in data:
+				basic_pay += a.amount
+		leave_balance = get_leave_balance_on(employee, "Earned Leave", date)
+		amount = (flt(basic_pay)/30.0) * flt(leave_balance)
+		encashment_tax = get_salary_tax(amount)
+		return amount, leave_balance, encashment_tax
+
+	@frappe.whitelist()
+	def get_gratuity_amount(self, employee):
+		basic_pay = amount = 0
+		query = "select amount from `tabSalary Structure` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and is_active='Yes'"
+		data = frappe.db.sql(query, as_dict=True)
+		if not data:
+			frappe.throw("Basic Salary is not been assigned to the employee.")
+		else:
+			for a in data:
+				basic_pay += a.amount
+		date_of_joining = frappe.db.get_value("Employee", employee, "date_of_joining")
+		employee_group = frappe.db.get_value("Employee", employee, "employee_group")
+		today_date = date.today()
+		years_in_service = flt(((today_date - date_of_joining).days)/364)
+		years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
+		if frappe.db.get_value("Employee", employee, "employment_type") != "Contract":
+			if years_in_service < 5 and employee_group != "ESP":
+				frappe.throw("Should have minimum of 5 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
+		elif employee_group == "ESP" and years_in_service < 1:
+			frappe.throw("ESP Employee should have minimum of 1 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
+		if years_in_service > 0:
+			amount = flt(basic_pay) * years_in_service
+		return amount
+
+	@frappe.whitelist()
+	def get_basic_pay(self, employee):
+		if not frappe.db.exists("Salary Structure", {"employee": employee, "is_active": "Yes"}):
+			frappe.throw(_("Active Salary Structure not found for {}").format("Employee", employee))
+
+		amount = frappe.db.sql("""SELECT SUM(amount) 
+					FROM `tabSalary Structure` s, `tabSalary Detail` d 
+					WHERE s.name = d.parent 
+					AND s.employee = "{employee}" 
+					AND d.salary_component = 'Basic Pay'
+					AND is_active='Yes'""".format(employee=employee))[0][0]
+		tax = get_salary_tax(amount)
+
+		return flt(amount,2), flt(tax, 2)
+
 	def check_leave_encashment(self):
 		for a in self.items:
 			if a.benefit_type == "Balance EL reimbursement":
@@ -237,27 +293,98 @@ class EmployeeBenefitClaim(Document):
 					self.create_additional_leave_ledger_entry(doc, balance, nowdate())
 
 
-	def update_employee(self):
-		emp = frappe.get_doc("Employee", self.employee)
-		if emp.status != "Left":
-			emp.status = "Left"
-			emp.relieving_date = self.separation_date
-			emp.reason_for_resignation = self.reason_for_resignation
-			history = emp.append("internal_work_history")
-			history.reference_doctype = "Employee Separation"
-			history.reference_docname = self.employee_separation_id
-			history.from_date = self.separation_date
-			emp.save()
+	def update_employee(self, cancel=0):
+		if cancel == 0:
+			emp = frappe.get_doc("Employee", self.employee)
+			if emp.status != "Left":
+				emp.status = "Left"
+				emp.relieving_date = self.separation_date
+				emp.reason_for_resignation = self.reason_for_resignation
+				history = emp.append("internal_work_history")
+				history.reference_doctype = "Employee Separation"
+				history.reference_docname = self.employee_separation_id
+				history.from_date = self.separation_date
+				emp.save()
+			sst = frappe.db.sql("""
+				select name from `tabSalary Structure` where employee = '{}'
+				and is_active = 'Yes'
+			""", as_dict=1)
+			if sst:
+				for a in sst:
+					frappe.db.sql("""update `tabSalary Structure` set is_active = 'Yes'
+					where name = '{}'""".format(a.name))
 			
+		# for a in self.items:
+		# 	doc = frappe.new_doc("Separation Benefits")
+		# 	doc.parent = self.employee
+		# 	doc.parentfield = "separation_benefits"
+		# 	doc.parenttype = "Employee"
+		# 	doc.s_b_type = a.benefit_type
+		# 	doc.s_b_currency = a.amount
+		# 	doc.save()
+		leave_encashed = 0
 		for a in self.items:
-			doc = frappe.new_doc("Separation Benefits")
-			doc.parent = self.employee
-			doc.parentfield = "separation_benefits"
-			doc.parenttype = "Employee"
-			doc.s_b_type = a.benefit_type
-			doc.s_b_currency = a.amount
-			doc.save()
+			if a.benefit_type == "Leave Encashment":
+				leave_encashed = 1
+		if leave_encashed == 1 and self.purpose == "Employee Separation":
+			doc = frappe.get_doc("Employee Separation", self.employee_separation_id)
+			frappe.db.sql("""
+				update `tabEmployee` set leave_encashed = '{}'
+				reason_for_leaving = '{}'
+				feedback = '{}'
+				encashment_date = '{}'
+				where name = '{}'
+			""".format('Yes' if cancel == 0 else '', doc.reason_for_separation if cancel == 0 else None, doc.exit_interview if cancel == 0 else None, self.separation_date if cancel == 0 else '', self.employee))
+		if leave_encashed == 0 and self.purpose == "Employee Separation":
+			doc = frappe.get_doc("Employee Separation", self.employee_separation_id)
+			frappe.db.sql("""
+				update `tabEmployee` set leave_encashed = '{}'
+				reason_for_leaving = '{}'
+				feedback = '{}'
+				where name = '{}'
+			""".format('YNo' if cancel == 0 else '', doc.reason_for_separation if cancel == 0 else None, doc.exit_interview if cancel == 0 else None, self.employee))
+		
 
+
+
+@frappe.whitelist()
+def get_leave_encashment_amount(employee, date):
+	basic_pay = amount = 0
+	query = "select amount from `tabSalary Structure` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and is_active='Yes'"
+	data = frappe.db.sql(query, as_dict=True)
+	if not data:
+		frappe.throw("Basic Salary is not been assigned to the employee.")
+	else:
+		for a in data:
+			basic_pay += a.amount
+	leave_balance = get_leave_balance_on(employee, "Earned Leave", date)
+	amount = (flt(basic_pay)/30.0) * flt(leave_balance)
+	encashment_tax = get_salary_tax(amount)
+	return amount, leave_balance, encashment_tax
+
+@frappe.whitelist()
+def get_gratuity_amount(employee):
+	basic_pay = amount = 0
+	query = "select amount from `tabSalary Structure` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and is_active='Yes'"
+	data = frappe.db.sql(query, as_dict=True)
+	if not data:
+		frappe.throw("Basic Salary is not been assigned to the employee.")
+	else:
+		for a in data:
+			basic_pay += a.amount
+	date_of_joining = frappe.db.get_value("Employee", employee, "date_of_joining")
+	employee_group = frappe.db.get_value("Employee", employee, "employee_group")
+	today_date = date.today()
+	years_in_service = flt(((today_date - date_of_joining).days)/364)
+	years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
+	if frappe.db.get_value("Employee", employee, "employment_type") != "Contract":
+		if years_in_service < 5 and employee_group != "ESP":
+			frappe.throw("Should have minimum of 5 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
+	elif employee_group == "ESP" and years_in_service < 1:
+		frappe.throw("ESP Employee should have minimum of 1 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
+	if years_in_service > 0:
+		amount = flt(basic_pay) * years_in_service
+	return amount
 
 @frappe.whitelist()
 def get_transfer_grant(employee):
@@ -269,20 +396,6 @@ def get_transfer_grant(employee):
 				WHERE s.name = d.parent 
 				AND s.employee = "{employee}" 
 				AND d.salary_component IN ('Basic Pay','Banking Allowance','Corporate Allowance') 
-				AND is_active='Yes'""".format(employee=employee))[0][0]
-	return flt(amount,2)
-
-
-@frappe.whitelist()
-def get_basic_pay(employee):
-	if not frappe.db.exists("Salary Structure", {"employee": employee, "is_active": "Yes"}):
-		frappe.throw(_("Active Salary Structure not found for {}").format("Employee", employee))
-
-	amount = frappe.db.sql("""SELECT SUM(amount) 
-				FROM `tabSalary Structure` s, `tabSalary Detail` d 
-				WHERE s.name = d.parent 
-				AND s.employee = "{employee}" 
-				AND d.salary_component = 'Basic Pay'
 				AND is_active='Yes'""".format(employee=employee))[0][0]
 	return flt(amount,2)
 

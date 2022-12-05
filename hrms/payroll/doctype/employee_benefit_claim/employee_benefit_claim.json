@@ -217,6 +217,7 @@
    "label": "Separation/Transfer Date"
   },
   {
+   "depends_on": "eval:doc.purpose == \"Separation\";",
    "fieldname": "reason_for_resignation",
    "fieldtype": "Select",
    "label": "Reason for Seperation",
@@ -331,7 +332,7 @@
    "fieldname": "employee_transfer_id",
    "fieldtype": "Link",
    "label": "Employee Transfer ID",
-   "options": "Employee Separation"
+   "options": "Employee Transfer"
   },
   {
    "fieldname": "deduction_details_section",
@@ -346,7 +347,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-18 10:21:30.952916",
+ "modified": "2022-11-30 10:37:57.240294",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Employee Benefit Claim",

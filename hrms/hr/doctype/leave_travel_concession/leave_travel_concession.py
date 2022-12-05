@@ -28,16 +28,20 @@ class LeaveTravelConcession(Document):
 		self.post_journal_entry(cc_amount)
 
 	def validate_duplicate(self):
+		emp_list = ", ".join("'"+a.employee+"'" for a in self.items)
 		doc = frappe.db.sql("""select 
-						name 
+						a.name 
 					from 
-						`tabLeave Travel Concession` 
-					where 
-						docstatus != 1 
-						and fiscal_year = \'"+str(self.fiscal_year)+"\' 
-						and name != \'"+str(self.name)+"\'""" )		
+						`tabLeave Travel Concession` a,
+						`tabLTC Details` b 
+					where
+						a.name = b.parent
+						and a.docstatus = 1 
+						and a.fiscal_year = \'"+str(self.fiscal_year)+"\' 
+						and a.name != \'"+str(self.name)+"\'
+						and b.employee in ({})""".format(emp_list))		
 		if doc:
-			frappe.throw("Cannot create multiple LTC for the same year")
+			frappe.throw("Cannot create multiple LTC for the same year. One or more employees LTC already processed.")
 
 	def calculate_values(self):
 		if self.items:
@@ -65,6 +69,7 @@ class LeaveTravelConcession(Document):
 		
 		if not expense_bank_account:
 			frappe.throw("Setup Expense Bank Account in Branch")
+		total_credit = 0
 		for key in cc_amount.keys():
 			values = key.split(":")
 			je.append("accounts", {
@@ -73,19 +78,20 @@ class LeaveTravelConcession(Document):
 					"reference_name": self.name,
 					"cost_center": values[0],
 					"business_activity": values[1],
-					"debit_in_account_currency": flt(cc_amount[key]),
-					"debit": flt(cc_amount[key]),
+					"debit_in_account_currency": flt(cc_amount[key],2),
+					"debit": flt(cc_amount[key],2),
 				})
+			total_credit += flt(cc_amount[key])
 		
-			je.append("accounts", {
-					"account": expense_bank_account,
-					"cost_center": values[0],
-					"business_activity": values[1],
-					"credit_in_account_currency": flt(cc_amount[key]),
-					"credit": flt(cc_amount[key]),
-					"reference_type": self.doctype,
-					"reference_name": self.name,
-				})
+		je.append("accounts", {
+				"account": expense_bank_account,
+				"cost_center": frappe.db.get_value("Branch",self.branch,"cost_center"),
+				"business_activity": "Common",
+				"credit_in_account_currency": total_credit,
+				"credit": total_credit,
+				"reference_type": self.doctype,
+				"reference_name": self.name,
+			})
 
 		je.insert()
 

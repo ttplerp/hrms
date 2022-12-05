@@ -475,6 +475,33 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 					'bank_account_type': d.bank_account_type,
 					'bank_branch': d.bank_branch,
 				})
+		#Getting Approved OTs
+		ot_details = frappe.db.sql("""select  * from `tabOvertime Application` where docstatus = 1 and employee = '{0}' 
+			and processed = 0 and workflow_state = 'Approved' and posting_date <= '{1}'""".format(source.employee, end_date), as_dict =1)
+		# frappe.throw(str(ot_details))
+		total_overtime_amount = 0.0
+		for d in ot_details:
+			row = target.append("ot_items",{})
+			row.reference    = d.name
+			row.ot_date      = d.posting_date
+			row.hourly_rate  = d.rate
+			row.total_hours  = d.total_hours
+			row.total_amount = d.total_amount
+			total_overtime_amount += flt(d.total_amount)
+		target.ot_total = round(flt(total_overtime_amount))
+		if total_overtime_amount:
+			calc_map['earnings'].append({
+				'salary_component': 'Overtime Allowance',
+				'from_date' : start_date,
+				'to_date': end_date,
+				'amount': round(flt(total_overtime_amount)),
+				'default_amount': round(flt(total_overtime_amount)),
+				'total_days_in_month' : flt(days_in_month),
+				'working_days': flt(working_days),
+				'leave_without_pay': flt(lwp),
+				'payment_days': flt(payment_days)
+				})
+		#ends ot logic
 
 		for e in calc_map['earnings']:
 			if e['salary_component'] == 'Basic Pay':
@@ -490,6 +517,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 
 		# Calculating PF, Group Insurance Scheme, Health Contribution
 		sws_amt = pf_amt = gis_amt = health_cont_amt = 0.00
+		# frappe.msgprint(str(source.employee)+" "+str(calc_map))
 		for d in calc_map['deductions']:
 			if not flt(gross_amt):
 				d['amount'] = 0

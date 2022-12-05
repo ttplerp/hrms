@@ -170,7 +170,8 @@ class PayrollEntry(Document):
 				"month": self.month
 			})
 			if len(emp_list) > 300:
-				frappe.enqueue(create_salary_slips_for_employees, timeout=600, employees=emp_list, args=args)
+				# frappe.enqueue(create_salary_slips_for_employees, timeout=600, employees=emp_list, args=args)
+				create_salary_slips_for_employees(emp_list, args, publish_progress=True)
 			else:
 				create_salary_slips_for_employees(emp_list, args, publish_progress=False)
 				# since this method is called via frm.call this doc needs to be updated manually
@@ -193,8 +194,10 @@ class PayrollEntry(Document):
 	def remove_salary_slips(self):
 		self.check_permission('write')
 		ss_list = self.get_sal_slip_list(ss_status=0)
+		remove_salary_slips_for_employees(self, ss_list, publish_progress=False)
+
 		if len(ss_list) > 300:
-			frappe.enqueue(remove_salary_slips_for_employees, timeout=600, payroll_entry=self, salary_slips=ss_list)
+			remove_salary_slips_for_employees(self, ss_list, publish_progress=False)
 		else:
 			remove_salary_slips_for_employees(self, ss_list, publish_progress=False)
 
@@ -743,7 +746,8 @@ class PayrollEntry(Document):
 				"reference_name": self.name,
 				"salary_component": "Net Pay"
 			})
-
+		# if frappe.session.user == "Administrator":
+		# 	frappe.throw(str(posting))
 		# Final Posting to accounts
 		if posting:
 			jv_name, v_title = None, ""

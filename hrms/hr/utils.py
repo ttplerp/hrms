@@ -6,6 +6,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import (
 	add_days,
+	add_years,
 	cstr,
 	flt,
 	format_datetime,

@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from dateutil.relativedelta import relativedelta
-from frappe.utils import cint, flt, nowdate, add_days, getdate, fmt_money, add_to_date, DATE_FORMAT, date_diff, get_last_day
+from frappe.utils import cint, flt, nowdate, add_days, add_years, getdate, fmt_money, add_to_date, DATE_FORMAT, date_diff, get_last_day
 from frappe import _
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
@@ -120,7 +120,8 @@ class IncrementEntry(Document):
 				"month": self.month_name
 			})
 			if len(emp_list) > 300:
-				frappe.enqueue(create_salary_increments_for_employees, timeout=600, employees=emp_list, args=args)
+				# frappe.enqueue(create_salary_increments_for_employees, timeout=600, employees=emp_list, args=args)
+				create_salary_increments_for_employees(emp_list, args, publish_progress=False)
 			else:
 				create_salary_increments_for_employees(emp_list, args, publish_progress=False)
 				# since this method is called via frm.call this doc needs to be updated manually
@@ -139,19 +140,23 @@ class IncrementEntry(Document):
 		""" % ('%s', cond, '%s'), (si_status, self.name), as_dict=as_dict)
 		return si_list
 
+	@frappe.whitelist()
 	def remove_salary_increments(self):
 		self.check_permission('write')
 		si_list = self.get_sal_increment_list(si_status=0)
 		if len(si_list) > 300:
-			frappe.enqueue(remove_salary_increments_for_employees, timeout=600, increment_entry=self, salary_increments=si_list)
+			# frappe.enqueue(remove_salary_increments_for_employees, timeout=600, increment_entry=self, salary_increments=si_list)
+			remove_salary_increments_for_employees(self, si_list, publish_progress=False)
 		else:
 			remove_salary_increments_for_employees(self, si_list, publish_progress=False)
 
+	@frappe.whitelist()
 	def submit_salary_increments(self):
 		self.check_permission('write')
 		si_list = self.get_sal_increment_list(si_status=0)
 		if len(si_list) > 300:
-			frappe.enqueue(submit_salary_increments_for_employees, timeout=600, increment_entry=self, salary_increments=si_list)
+			# frappe.enqueue(submit_salary_increments_for_employees, timeout=600, increment_entry=self, salary_increments=si_list)
+			submit_salary_increments_for_employee(self, si_list, publish_progress=False)
 		else:
 			submit_salary_increments_for_employees(self, si_list, publish_progress=False)
 

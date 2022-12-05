@@ -5,12 +5,17 @@ import frappe
 from frappe import _
 from frappe.utils import getdate,flt,cint,today,add_to_date
 from frappe.model.document import Document
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
 class OvertimeApplication(Document):
 	def validate(self):
+		validate_workflow_states(self)
 		self.validate_dates()
 		self.calculate_totals()
 		self.validate_eligible_creteria()
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
+		self.processed = 0
 
 	def validate_eligible_creteria(self):
 		if "Employee" not in frappe.get_roles(frappe.session.user):
@@ -44,6 +49,11 @@ class OvertimeApplication(Document):
 			self.total_hours = flt(self.actual_hours)
 		self.total_amount = round(flt(self.total_hours)*flt(self.rate),0)
 
+	def on_cancel(self):
+		notify_workflow_states(self)
+
+	def on_submit(self):
+		notify_workflow_states(self)
 	# Dont allow duplicate dates
 	##
 	def validate_dates(self):				

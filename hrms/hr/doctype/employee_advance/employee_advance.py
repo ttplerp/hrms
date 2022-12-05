@@ -25,6 +25,7 @@ class EmployeeAdvance(Document):
 		)
 	def validate(self):
 		validate_active_employee(self.employee)
+		self.validate_employment_status()
 		self.set_status()
 		if self.advance_type != "Travel Advance" and self.advance_type != "Imprest Advance" :
 			self.validate_advance_amount()
@@ -39,16 +40,12 @@ class EmployeeAdvance(Document):
 		self.set_status(update=True)
 		self.update_travel_request()
 		self.update_reference(cancel = 1)
-
+		self.update_salary_structure(True)
 	def on_submit(self):
 		if self.advance_type =="Travel Advance":
 			self.update_travel_request()
 		if self.advance_type =="Salary Advance":
 			self.update_salary_structure()
-
-	def on_cancel(self):
-		self.update_salary_structure(True)
-
 	def update_defaults(self):
 		self.salary_component = "Salary Advance Deductions"
 		
@@ -57,7 +54,7 @@ class EmployeeAdvance(Document):
 
 	def update_reference(self, cancel = 0):
 		if self.advance_type == "Travel Advance" and cancel == 0:
-			if not frappe.db.get_value("Travel Request",self.reference,"employee_advance_reference"):
+			if not frappe.db.get_value("Travel Request",self.reference,"employee_advance_reference") and self.status == "Paid":
 				frappe.db.sql(""" 
 					update `tabTravel Request`
 					set employee_advance_reference = '{0}'
@@ -69,13 +66,21 @@ class EmployeeAdvance(Document):
 					set employee_advance_reference = NULL
 					where name = '{}'
 				""".format(self.reference))
-	
+
+	@frappe.whitelist()
+	def validate_employment_status(self):
+		if self.advance_type == "Salary Advance":
+			employment_type = frappe.db.get_value("Employee",self.employee,"employment_status")
+			if employment_type == "Probation":
+				frappe.throw("Employee {}({}) who is in Probation Period is not eligible for Salary Advance.")
+
 	def check_duplicate_advance(self):
 		if frappe.db.sql("""
 				select count(reference) 
 				from `tabEmployee Advance` 
 				where reference = '{}'
 				and name != '{}'
+				and docstatus != 2
 			""".format(self.reference, self.name))[0][0] >= 1 :
 			frappe.throw("Advance for Travel Request '{}' is already created".format(self.name))
 
@@ -226,11 +231,16 @@ class EmployeeAdvance(Document):
 	def update_travel_request(self):
 		if self.reference_type == "Travel Request":
 			doc = frappe.get_doc(self.reference_type,self.reference)
-			if self.docstatus == 1:
-				doc.advance_amount += flt(self.advance_amount)
-			elif self.docstatus == 2:
-				doc.advance_amount -= flt(self.advance_amount)
-			doc.save(ignore_permissions=True)
+			if self.docstatus == 2:
+				advance_amount = doc.advance_amount - flt(self.advance_amount)
+				frappe.db.sql("""
+					update `tabTravel Request` set need_advance = 0,
+					advance_amount = {}
+					where name = '{}'
+				""".format(advance_amount, self.reference))
+				if advance_amount != 0:
+					frappe.throw("Advance Amount in Travel Request doesn't match with Advance Amount in Employee Advance")
+			# doc.save(ignore_permissions=True)
 
 	def set_status(self, update=False):
 		precision = self.precision("paid_amount")
@@ -265,8 +275,12 @@ class EmployeeAdvance(Document):
 
 		if update:
 			self.db_set("status", status)
+			if self.status == "Paid" and self.reference_type == "Travel Request":
+				self.update_reference()
 		else:
 			self.status = status
+			if self.status == "Paid" and self.reference_type == "Travel Request":
+				self.update_reference()
 
 	def set_total_advance_paid(self):
 		gle = frappe.qb.DocType("GL Entry")

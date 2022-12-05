@@ -62,11 +62,83 @@ frappe.ui.form.on("Separation Item", {
 		let item = locals[cdt][cdn];
 
 		reset_benefit_record(frm, cdt, cdn);
-		if(item.benefit_type == "Transfer Grant"){
-			set_transfer_grant(frm, cdt, cdn);
-		} else if (item.benefit_type == "Balance EL reimbursement"){
+		if (item.benefit_type == "Balance EL reimbursement"){
 			set_earned_leave_balance(frm, cdt, cdn);
 		}
+		else if (item.benefit_type == "Pay" || item.benefit_type == "Transfer Grant" || item.benefit_type == "Travelling Allowance"){
+			set_basic_pay(frm, cdt, cdn);
+		}
+		if(item.benefit_type != "Carriage Charges"){
+			frappe.model.set_value(cdt, cdn, "distance", null);
+			frappe.model.set_value(cdt, cdn, "terrain_rate", null);
+			frappe.model.set_value(cdt, cdn, "load_capacity", null);
+		}
+		if(frm.doc.purpose != "Separation" && frm.doc.purpose != "Upgradation"){
+			if(item.benefit_type == "Leave Encashment"){
+				frappe.model.set_value(cdt, cdn, "amount", null);
+				frappe.model.set_value(cdt, cdn, "earned_leave_balance", null);
+				frappe.model.set_value(cdt, cdn, "benefit_type", null);
+				frm.refresh_fields();
+				frappe.throw("Leave Encashment cannot be claimed for Transfer.")
+			}
+			if(item.benefit_type == "Gratuity"){
+				frappe.model.set_value(cdt, cdn, "amount", null);
+				frappe.model.set_value(cdt, cdn, "benefit_type", null);
+				frm.refresh_fields();
+				frappe.throw("Gratuity cannot be claimed for Transfer.")
+			}
+		}
+		if(item.benefit_type == "Gratuity"){
+			return frappe.call({
+				method: "get_gratuity_amount",
+				doc: frm.doc,
+				args: {"employee": frm.doc.employee},
+				callback: function(r) {
+					console.log(r.message);
+					if(r.message) {
+						frappe.model.set_value(cdt, cdn,"amount", r.message);
+					}
+					cur_frm.refresh_fields()
+				}
+			});
+		}
+		else if (item.benefit_type == "Leave Encashment"){
+			if(frm.doc.purpose == "Separation"){
+				if(frm.doc.separation_date && frm.doc.employee){
+					return frappe.call({
+						method: "get_leave_encashment_amount",
+						doc: frm.doc,
+						args: {"employee": frm.doc.employee, "date":frm.doc.separation_date},
+						callback: function(r) {
+							console.log(r.message);
+							if(r.message) {
+								frappe.model.set_value(cdt, cdn,"amount", r.message[0]);
+								frappe.model.set_value(cdt, cdn,"earned_leave_balance", r.message[1]);
+								frappe.model.set_value(cdt, cdn,"tax_amount", r.message[2]);
+							}
+							cur_frm.refresh_fields()
+						}
+					});
+				}
+				else{
+					// frappe.msgprint("Employee and Separation Date fields cannot be blank")
+				}
+			}
+
+		}
+		// if(item.benefit_type == "Carriage Charges"){
+		// 	if(item.terrain_rate && item.distance != 0 && item.load_capacity){
+		// 		console.log("here")
+		// 		frappe.model.set_value(cdt, cdn, "amount",flt(item.terrain_rate)*flt(item.distance)*flt(item.load_capacity))
+		// 	}
+		// 	// else{
+		// 	// 	frappe.throw("For calculation of carriage charges Terrain Rate, Distance and Load Capacity are mandatory")
+		// 	// }
+		// }
+		if(item.benefit_type != "Leave Encashment"){
+			frappe.model.set_value(cdt, cdn, "earned_leave_balance", null);
+		}
+		frm.refresh_fields();
 	},
 
 	"earned_leave_balance": function(frm, cdt, cdn){
@@ -132,23 +204,23 @@ var reset_benefit_record = function(frm, cdt, cdn){
 	frappe.model.set_value(cdt, cdn,"net_amount", 0);
 }
 
-var set_transfer_grant = function(frm, cdt, cdn){
-	return frappe.call({
-		method: "get_transfer_grant",
-		args: {"employee": frm.doc.employee},
-		callback: function(r) {
-			if(r.message) {
-				frappe.model.set_value(cdt, cdn,"actual_amount", flt(r.message,2));
-				frappe.model.set_value(cdt, cdn,"amount", flt(r.message,2));
-				frappe.model.set_value(cdt, cdn,"earned_leave_balance", null);
-				frappe.model.set_value(cdt, cdn,"actual_earned_leave_balance", null);
-				frappe.model.set_value(cdt, cdn,"tax_amount", 0);
-				frappe.model.set_value(cdt, cdn,"net_amount", flt(r.message,2));
-			}
-			cur_frm.refresh_fields()
-		}
-	});
-}
+// var set_transfer_grant = function(frm, cdt, cdn){
+// 	return frappe.call({
+// 		method: "get_transfer_grant",
+// 		args: {"employee": frm.doc.employee},
+// 		callback: function(r) {
+// 			if(r.message) {
+// 				frappe.model.set_value(cdt, cdn,"actual_amount", flt(r.message,2));
+// 				frappe.model.set_value(cdt, cdn,"amount", flt(r.message,2));
+// 				frappe.model.set_value(cdt, cdn,"earned_leave_balance", null);
+// 				frappe.model.set_value(cdt, cdn,"actual_earned_leave_balance", null);
+// 				frappe.model.set_value(cdt, cdn,"tax_amount", 0);
+// 				frappe.model.set_value(cdt, cdn,"net_amount", flt(r.message,2));
+// 			}
+// 			cur_frm.refresh_fields()
+// 		}
+// 	});
+// }
 
 var set_earned_leave_balance = function(frm, cdt, cdn){
 	if(frm.doc.purpose == "Separation" && frm.doc.separation_date && frm.doc.employee){
@@ -166,6 +238,32 @@ var set_earned_leave_balance = function(frm, cdt, cdn){
 				cur_frm.refresh_fields()
 			}
 		});
+	}
+}
+var set_basic_pay = function(frm, cdt, cdn){
+	var item = locals[cdt][cdn];
+	if((frm.doc.purpose == "Separation" || frm.doc.purpose == "Transfer")&& frm.doc.employee){
+		return frappe.call({
+			method: "get_basic_pay",
+			doc: frm.doc,
+			args: {"employee": frm.doc.employee}, 
+			callback: function(r) {
+				if(r.message) {
+					frappe.model.set_value(cdt, cdn,"amount", flt(r.message[0]));
+					console.log(item.apply_tax)
+					if(item.apply_tax==1){
+						frappe.model.set_value(cdt, cdn,"tax_amount", flt(r.message[1]));
+						frappe.model.set_value(cdt, cdn,"net_amount", flt(r.message[0]-r.message[1]));
+					}
+					else{
+						frappe.model.set_value(cdt, cdn,"net_amount", flt(r.message[0]));
+						frappe.model.set_value(cdt, cdn,"tax_amount", 0);
+					}
+				}
+				cur_frm.refresh_fields()
+			}
+		});
+		
 	}
 }
 var set_el_reimbursement = function(frm, cdt, cdn){
@@ -193,7 +291,7 @@ var set_el_reimbursement = function(frm, cdt, cdn){
 var set_tax_amount = function(frm, cdt, cdn){
 	let row = locals[cdt][cdn];
 	if(flt(row.amount) > 0){
-		if(cint(row.tax_applicable)){
+		if(row.apply_tax == 1){
 			frappe.call({
 				method: "hrms.hr.hr_custom_functions.get_salary_tax",
 				args: {
@@ -229,8 +327,8 @@ var set_total = function(frm){
 	})
 
 	frm.set_value("total_amount", flt(total_earning));
-	frm.set_value("total_deducted_amount", flt(total_deduction));
-	frm.set_value("net_amount", flt(total_earning)-flt(total_deduction));
+	// frm.set_value("total_deducted_amount", flt(total_deduction));
+	// frm.set_value("net_amount", flt(total_earning)-flt(total_deduction));
 }
 
 var get_outstanding_amount = function(frm, cdt, cdn){

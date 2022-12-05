@@ -784,10 +784,11 @@ def get_leave_details(employee, date):
 
 	# is used in set query
 	lwp = frappe.get_list("Leave Type", filters={"is_lwp": 1}, pluck="name")
-
+	leave_approver = get_leave_approver(employee)
 	return {
 		"leave_allocation": leave_allocation,
 		"leave_approver": get_leave_approver(employee),
+		"leave_approver_name": frappe.db.get_value("Employee",{"user_id": leave_approver},"employee_name"),
 		"lwps": lwp,
 	}
 

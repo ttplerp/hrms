@@ -11,7 +11,6 @@ class OfficiatingEmployee(Document):
 	def validate(self):
 		if self.employee == self.officiate:
 			frappe.throw("Both Employee and Officiating Employee can not be same person")
-
 		#em_list = frappe.db.sql("select employee, employee_name from tabEmployee where status = 'Active' and reports_to = \'" + str(self.employee) + "\'", as_dict=True)
 		#self.set('items', [])
 

@@ -901,24 +901,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Reports",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "LTC, PBVA and Bonus Report",
-   "link_count": 0,
-   "link_to": "LTC Process Report",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Setup",
    "link_count": 5,
    "onboard": 0,
@@ -1043,7 +1025,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Employee",
-   "link_count": 4,
+   "link_count": 5,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -1086,9 +1068,47 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Officiating Employee",
+   "link_count": 0,
+   "link_to": "Officiating Employee",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "LTC, PBVA and Bonus Report",
+   "link_count": 0,
+   "link_to": "LTC Process Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee TDS Certificate",
+   "link_count": 0,
+   "link_to": "Employee TDS Certificate",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-11-24 10:29:40.083679",
+ "modified": "2022-11-28 23:29:08.017285",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",

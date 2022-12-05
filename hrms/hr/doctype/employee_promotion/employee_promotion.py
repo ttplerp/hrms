@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import getdate, nowdate
+from frappe.utils import getdate, nowdate, add_years
 from hrms.utils import update_employee
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -45,15 +45,15 @@ class EmployeePromotion(Document):
 			for a in self.promotion_details:
 				if a.property == "Grade":
 					employee.grade = a.current
-					new_pro_date = add_years(date,int(frappe.db.get_value("Employee Grade",a.new,"next_promotion_years")))
-					employee.promotion_due_date = employee.promotion_due_date - relativedelta(years=int(new_pro_date))
-				elif a.property == "Designation":
+					new_pro_date = add_years(self.promotion_date,int(frappe.db.get_value("Employee Grade",a.new,"next_promotion_years")))
+					employee.promotion_due_date = self.promotion_date
+				if a.property == "Designation":
 					employee.designation = a.current
 			employee.save(ignore_permissions=True)
 			frappe.db.sql("""delete from `tabEmployee Internal Work History` 
 				where reference_doctype = "{}" and reference_docname = "{}"
 				""".format(self.doctype, self.name))
-		salary_structure = frappe.db.sql("select ss.name from `tabSalary Structure` ss where ss.employee = '{0}' and ss.is_acive = 1".format(self.employee))
+		salary_structure = frappe.db.sql("select ss.name from `tabSalary Structure` ss where ss.employee = '{0}' and ss.is_active = 'Yes'".format(self.employee),as_dict=1)
 		if not salary_structure:
 			frappe.throw("No Active Salary Structure for selected employee.")
 		sst = frappe.get_doc("Salary Structure", salary_structure[0].name)
