@@ -10,7 +10,7 @@
   "bank_name",
   "short_form",
   "column_break_3",
-  "payment_in_bob_account",
+  "loan_payment_in_bob_account",
   "bank_account_type",
   "account_holder_name",
   "account_no",
@@ -91,14 +91,14 @@
   },
   {
    "default": "0",
-   "fieldname": "payment_in_bob_account",
+   "fieldname": "loan_payment_in_bob_account",
    "fieldtype": "Check",
    "label": "Employee Loan Payment in BOB Account"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-22 12:03:17.108050",
+ "modified": "2022-12-22 12:08:52.137150",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution",
