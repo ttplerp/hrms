@@ -80,10 +80,6 @@ frappe.ui.form.on('Payroll Entry', {
 		}else{
 			cur_frm.page.clear_actions();
 		}
-		// if (frm.doc.docstatus == 1) {
-		// 	if (frm.custom_buttons) frm.clear_custom_buttons();
-		// 	frm.events.add_context_buttons(frm);
-		// }
 	},
 
 	get_employee_details: function (frm) {
@@ -99,11 +95,11 @@ frappe.ui.form.on('Payroll Entry', {
 					frm.refresh_field("employees");
 					frm.dirty();
 					// Following code commented by SHIV on 2020/10/20
-					/*
+					
 					if(r.docs[0].validate_attendance){
-						render_employee_attendance(frm, r.message);
+						render_employee_attendance(frm, r.message[0], r.message[1]);
 					}
-					*/
+					
 				}
 			},
 			freeze: true,
@@ -180,16 +176,6 @@ frappe.ui.form.on('Payroll Entry', {
 				}
 			};
 		});
-		// doesn't work when in Draft
-		// var status = {"Draft": "tomato",
-		// 		"Failed": "red",
-		// 		"Success": "green",
-		// 		"Cancelled": "black"
-		// 		};
-		// frm.set_indicator_formatter('status',
-		// 	function(doc) {
-		// 		return status[doc.status];
-		// });
 	},
 
 	// Disabled by SHIV on 2020/10/20
@@ -237,10 +223,6 @@ frappe.ui.form.on('Payroll Entry', {
 		frm.events.clear_employee_table(frm);
 	},
 
-	project: function (frm) {
-		frm.events.clear_employee_table(frm);
-	},
-
 	salary_slip_based_on_timesheet: function (frm) {
 		frm.toggle_reqd(['payroll_frequency'], !frm.doc.salary_slip_based_on_timesheet);
 	},
@@ -278,14 +260,14 @@ frappe.ui.form.on('Payroll Entry', {
 			}
 		});
 	},
-
+*/
 	validate_attendance: function(frm){
 		if(frm.doc.validate_attendance && frm.doc.employees){
 			frappe.call({
 				method: 'validate_employee_attendance',
 				args: {},
 				callback: function(r) {
-					render_employee_attendance(frm, r.message);
+					render_employee_attendance(frm, r.message[0], r.message[1]);
 				},
 				doc: frm.doc,
 				freeze: true,
@@ -295,7 +277,7 @@ frappe.ui.form.on('Payroll Entry', {
 			frm.fields_dict.attendance_detail_html.html("");
 		}
 	},
-	*/
+	
 	// Ver.2020.10.20 Ends
 
 	clear_employee_table: function (frm) {
@@ -353,38 +335,6 @@ let make_accounting_entry = function (frm) {
 		freeze_message: '<span style="color:white; background-color: red; padding: 10px 50px; border-radius: 5px;">Creating Payment Entries...</span>'
 	});
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // var in_progress = false;
 
@@ -507,16 +457,6 @@ let make_accounting_entry = function (frm) {
 // 		});
 // 	},
 
-// 	create_salary_slips: function (frm) {
-// 		frm.call({
-// 			doc: frm.doc,
-// 			method: "create_salary_slips",
-// 			callback: function () {
-// 				frm.reload_doc();
-// 				frm.toolbar.refresh();
-// 			}
-// 		});
-// 	},
 
 // 	add_context_buttons: function (frm) {
 // 		if (frm.doc.salary_slips_submitted || (frm.doc.__onload && frm.doc.__onload.submitted_ss)) {
@@ -794,10 +734,10 @@ let make_accounting_entry = function (frm) {
 // 	}
 // };
 
-// let render_employee_attendance = function (frm, data) {
-// 	frm.fields_dict.attendance_detail_html.html(
-// 		frappe.render_template('employees_to_mark_attendance', {
-// 			data: data
-// 		})
-// 	);
-// };
+let render_employee_attendance = function (frm, data, template) {
+	frm.fields_dict.attendance_detail_html.html(
+		frappe.render_template(template, {
+			data: data
+		})
+	);
+};

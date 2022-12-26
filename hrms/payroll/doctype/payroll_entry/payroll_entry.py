@@ -30,11 +30,11 @@ class PayrollEntry(Document):
 
 	def before_submit(self):
 		# ver.2020.10.20 Begins, following code is commented by SHIV on 2020/10/20
-		'''
-		if self.validate_attendance:
-			if self.validate_employee_attendance():
-				frappe.throw(_("Cannot Submit, Employees left to mark attendance"))
-		'''
+		
+		# if self.validate_attendance:
+		# 	if self.validate_employee_attendance():
+		# 		frappe.throw(_("Cannot Submit, Employees left to mark attendance"))
+		
 		# ver.2020.10.20 Ends
 		pass
 
@@ -101,10 +101,10 @@ class PayrollEntry(Document):
 		self.number_of_employees = len(employees)
 		return self.number_of_employees
 		# ver.2020.10.20 Begins, following code is commented by SHIV on 2020/10/20
-		'''
+		
 		if self.validate_attendance:
 			return self.validate_employee_attendance()
-		'''
+		
 		# ver.2020.10.20 Ends
 
 	def get_filter_condition(self):
@@ -170,9 +170,10 @@ class PayrollEntry(Document):
 				"month": self.month
 			})
 			if len(emp_list) > 300:
-				frappe.enqueue(create_salary_slips_for_employees, timeout=600, employees=emp_list, args=args)
+				# frappe.enqueue(create_salary_slips_for_employees, timeout=600, employees=emp_list, args=args)
+				create_salary_slips_for_employees(emp_list, args, self.validate_attendance, publish_progress=True)
 			else:
-				create_salary_slips_for_employees(emp_list, args, publish_progress=False)
+				create_salary_slips_for_employees(emp_list, args, self.validate_attendance, publish_progress=False)
 				# since this method is called via frm.call this doc needs to be updated manually
 				self.reload()
 
@@ -193,8 +194,10 @@ class PayrollEntry(Document):
 	def remove_salary_slips(self):
 		self.check_permission('write')
 		ss_list = self.get_sal_slip_list(ss_status=0)
+		remove_salary_slips_for_employees(self, ss_list, publish_progress=False)
+
 		if len(ss_list) > 300:
-			frappe.enqueue(remove_salary_slips_for_employees, timeout=600, payroll_entry=self, salary_slips=ss_list)
+			remove_salary_slips_for_employees(self, ss_list, publish_progress=False)
 		else:
 			remove_salary_slips_for_employees(self, ss_list, publish_progress=False)
 
@@ -212,20 +215,33 @@ class PayrollEntry(Document):
 			for ss in submitted_ss:
 				ss.email_salary_slip()
 
+	@frappe.whitelist()
+	def validate_employee_attendance(self):
+		employees_to_mark_attendance = []
+		days_in_payroll, days_holiday, days_attendance_marked = 0, 0, 0
+		for employee_detail in self.employees:
+			# frappe.msgprint(str(employee_detail))
+			employee_joining_date = frappe.db.get_value(
+				"Employee", employee_detail.employee, "date_of_joining"
+			)
+			start_date = self.start_date
+			if employee_joining_date > getdate(self.start_date):
+				start_date = employee_joining_date
+			days_holiday = self.get_count_holidays_of_employee(employee_detail.employee, start_date)
+			days_attendance_marked = self.get_count_employee_attendance(
+				employee_detail.employee, start_date
+			)
+			days_in_payroll = date_diff(self.end_date, start_date) + 1
+			if days_in_payroll > days_holiday + days_attendance_marked:
+				employees_to_mark_attendance.append(
+					{"employee": employee_detail.employee, "employee_name": employee_detail.employee_name}
+				)
+		html = frappe.db.get_value("Print Format", "Employee Attendance", "html")
+		#frappe.msgprint(str(employees_to_mark_attendance))
+		return employees_to_mark_attendance, html
+
 	# ver.2020.10.21 Begins, following code commented by SHIV on 2020.10.21
 	'''
-	def get_loan_details(self):
-		"""
-			Get loan details from submitted salary slip based on selected criteria
-		"""
-		cond = self.get_filter_condition()
-		return frappe.db.sql(""" select eld.loan_account, eld.loan,
-				eld.interest_income_account, eld.principal_amount, eld.interest_amount, eld.total_payment,t1.employee
-			from
-				`tabSalary Slip` t1, `tabSalary Slip Loan` eld
-			where
-				t1.docstatus = 1 and t1.name = eld.parent and start_date >= %s and end_date <= %s %s
-			""" % ('%s', '%s', cond), (self.start_date, self.end_date), as_dict=True) or []
 
 	def get_salary_component_account(self, salary_component):
 		account = frappe.db.get_value("Salary Component Account",
@@ -366,37 +382,6 @@ class PayrollEntry(Document):
 
 	# ver.2020.10.22 Begins, following code commented by SHIV on 2020/10/22
 	'''
-	def make_payment_entry(self):
-		self.check_permission('write')
-
-		cond = self.get_filter_condition()
-		salary_slip_name_list = frappe.db.sql(""" select t1.name from `tabSalary Slip` t1
-			where t1.docstatus = 1 and start_date >= %s and end_date <= %s %s
-			""" % ('%s', '%s', cond), (self.start_date, self.end_date), as_list = True)
-
-		if salary_slip_name_list and len(salary_slip_name_list) > 0:
-			salary_slip_total = 0
-			for salary_slip_name in salary_slip_name_list:
-				salary_slip = frappe.get_doc("Salary Slip", salary_slip_name[0])
-				for sal_detail in salary_slip.earnings:
-					is_flexible_benefit, only_tax_impact, creat_separate_je, statistical_component = frappe.db.get_value("Salary Component", sal_detail.salary_component,
-						['is_flexible_benefit', 'only_tax_impact', 'create_separate_payment_entry_against_benefit_claim', 'statistical_component'])
-					if only_tax_impact != 1 and statistical_component != 1:
-						if is_flexible_benefit == 1 and creat_separate_je == 1:
-							self.create_journal_entry(sal_detail.amount, sal_detail.salary_component)
-						else:
-							salary_slip_total += sal_detail.amount
-				for sal_detail in salary_slip.deductions:
-					statistical_component = frappe.db.get_value("Salary Component", sal_detail.salary_component, 'statistical_component')
-					if statistical_component != 1:
-						salary_slip_total -= sal_detail.amount
-
-				#loan deduction from bank entry during payroll
-				salary_slip_total -= salary_slip.total_loan_repayment
-
-			if salary_slip_total > 0:
-				self.create_journal_entry(salary_slip_total, "salary")
-
 	def create_journal_entry(self, je_payment_amount, user_remark):
 		default_payroll_payable_account = self.get_default_payroll_payable_account()
 		precision = frappe.get_precision("Journal Entry Account", "debit_in_account_currency")
@@ -437,43 +422,30 @@ class PayrollEntry(Document):
 		self.update(get_start_end_dates(self.payroll_frequency,
 			self.start_date or self.posting_date, self.company))
 
-	# ver.2020.10.20 Begins, following code is commented by SHIV on 2020/10/20
-	'''
-	def validate_employee_attendance(self):
-		employees_to_mark_attendance = []
-		days_in_payroll, days_holiday, days_attendance_marked = 0, 0, 0
-		for employee_detail in self.employees:
-			days_holiday = self.get_count_holidays_of_employee(employee_detail.employee)
-			days_attendance_marked = self.get_count_employee_attendance(employee_detail.employee)
-			days_in_payroll = date_diff(self.end_date, self.start_date) + 1
-			if days_in_payroll > days_holiday + days_attendance_marked:
-				employees_to_mark_attendance.append({
-					"employee": employee_detail.employee,
-					"employee_name": employee_detail.employee_name
-					})
-		return employees_to_mark_attendance
-
-	def get_count_holidays_of_employee(self, employee):
+	def get_count_holidays_of_employee(self, employee, start_date):
 		holiday_list = get_holiday_list_for_employee(employee)
 		holidays = 0
 		if holiday_list:
-			days = frappe.db.sql("""select count(*) from tabHoliday where
-				parent=%s and holiday_date between %s and %s""", (holiday_list,
-				self.start_date, self.end_date))
+			days = frappe.db.sql(
+				"""select count(*) from tabHoliday where
+				parent=%s and holiday_date between %s and %s""",
+				(holiday_list, start_date, self.end_date),
+			)
 			if days and days[0][0]:
 				holidays = days[0][0]
 		return holidays
 
-	def get_count_employee_attendance(self, employee):
+	def get_count_employee_attendance(self, employee, start_date):
 		marked_days = 0
-		attendances = frappe.db.sql("""select count(*) from tabAttendance where
-			employee=%s and docstatus=1 and attendance_date between %s and %s""",
-			(employee, self.start_date, self.end_date))
+		attendances = frappe.get_all(
+			"Attendance",
+			fields=["count(*)"],
+			filters={"employee": employee, "attendance_date": ("between", [start_date, self.end_date])},
+			as_list=1,
+		)
 		if attendances and attendances[0][0]:
 			marked_days = attendances[0][0]
 		return marked_days
-	'''
-	# ver.2020.10.20 Ends
 
 	def get_cc_wise_entries(self, salary_component_pf):
 		# Filters
@@ -743,7 +715,8 @@ class PayrollEntry(Document):
 				"reference_name": self.name,
 				"salary_component": "Net Pay"
 			})
-
+		# if frappe.session.user == "Administrator":
+		# 	frappe.throw(str(posting))
 		# Final Posting to accounts
 		if posting:
 			jv_name, v_title = None, ""
@@ -936,7 +909,8 @@ def remove_salary_slips_for_employees(payroll_entry, salary_slips, publish_progr
 	payroll_entry.reload()
 
 # following method is created by SHIV on 2020/10/20
-def create_salary_slips_for_employees(employees, args, title=None, publish_progress=True):
+@frappe.whitelist()
+def create_salary_slips_for_employees(employees, args, validate_attendance, title=None, publish_progress=True):
 	salary_slips_exists_for = get_existing_salary_slips(employees, args)
 	count=0
 	successful = 0
@@ -1014,6 +988,7 @@ def get_existing_salary_slips(employees, args):
 			and employee in (%s)
 	""" % ('%s', '%s', '%s', ', '.join(['%s']*len(employees))),
 		[args.company, args.start_date, args.end_date] + employees)
+
 
 # ver.2020.10.21 Begins
 # following code is created by SHIV on 2020/10/21
@@ -1187,12 +1162,7 @@ def get_emp_component_amount(payroll_entry, salary_component):
 # 		self.set_status(update=True, status="Submitted")
 # 		self.create_salary_slips()
 
-# 	def before_submit(self):
-# 		self.validate_employee_details()
-# 		self.validate_payroll_payable_account()
-# 		if self.validate_attendance:
-# 			if self.validate_employee_attendance():
-# 				frappe.throw(_("Cannot Submit, Employees left to mark attendance"))
+
 
 # 	def set_status(self, status=None, update=False):
 # 		if not status:
@@ -1305,9 +1275,7 @@ def get_emp_component_amount(payroll_entry, salary_component):
 # 		for d in employees:
 # 			self.append("employees", d)
 
-# 		self.number_of_employees = len(self.employees)
-# 		if self.validate_attendance:
-# 			return self.validate_employee_attendance()
+
 
 # 	def check_mandatory(self):
 # 		for fieldname in ["company", "start_date", "end_date"]:
@@ -1732,53 +1700,6 @@ def get_emp_component_amount(payroll_entry, salary_component):
 # 		self.update(
 # 			get_start_end_dates(self.payroll_frequency, self.start_date or self.posting_date, self.company)
 # 		)
-
-# 	@frappe.whitelist()
-# 	def validate_employee_attendance(self):
-# 		employees_to_mark_attendance = []
-# 		days_in_payroll, days_holiday, days_attendance_marked = 0, 0, 0
-# 		for employee_detail in self.employees:
-# 			employee_joining_date = frappe.db.get_value(
-# 				"Employee", employee_detail.employee, "date_of_joining"
-# 			)
-# 			start_date = self.start_date
-# 			if employee_joining_date > getdate(self.start_date):
-# 				start_date = employee_joining_date
-# 			days_holiday = self.get_count_holidays_of_employee(employee_detail.employee, start_date)
-# 			days_attendance_marked = self.get_count_employee_attendance(
-# 				employee_detail.employee, start_date
-# 			)
-# 			days_in_payroll = date_diff(self.end_date, start_date) + 1
-# 			if days_in_payroll > days_holiday + days_attendance_marked:
-# 				employees_to_mark_attendance.append(
-# 					{"employee": employee_detail.employee, "employee_name": employee_detail.employee_name}
-# 				)
-# 		return employees_to_mark_attendance
-
-# 	def get_count_holidays_of_employee(self, employee, start_date):
-# 		holiday_list = get_holiday_list_for_employee(employee)
-# 		holidays = 0
-# 		if holiday_list:
-# 			days = frappe.db.sql(
-# 				"""select count(*) from tabHoliday where
-# 				parent=%s and holiday_date between %s and %s""",
-# 				(holiday_list, start_date, self.end_date),
-# 			)
-# 			if days and days[0][0]:
-# 				holidays = days[0][0]
-# 		return holidays
-
-# 	def get_count_employee_attendance(self, employee, start_date):
-# 		marked_days = 0
-# 		attendances = frappe.get_all(
-# 			"Attendance",
-# 			fields=["count(*)"],
-# 			filters={"employee": employee, "attendance_date": ("between", [start_date, self.end_date])},
-# 			as_list=1,
-# 		)
-# 		if attendances and attendances[0][0]:
-# 			marked_days = attendances[0][0]
-# 		return marked_days
 
 
 # def get_sal_struct(
