@@ -634,7 +634,7 @@ def get_post_install_patches():
 		"erpnext.patches.v13_0.update_employee_advance_status",
 		"erpnext.patches.v13_0.update_expense_claim_status_for_paid_advances",
 		"erpnext.patches.v14_0.delete_employee_transfer_property_doctype",
-		"erpnext.patches.v13_0.set_payroll_entry_status",
+		#"erpnext.patches.v13_0.set_payroll_entry_status",
 		# HRMS
 		"create_country_fixtures",
 	)
