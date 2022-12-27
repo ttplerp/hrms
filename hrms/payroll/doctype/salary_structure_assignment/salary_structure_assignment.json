@@ -76,7 +76,6 @@
    "in_standard_filter": 1,
    "label": "Salary Structure",
    "options": "Salary Structure",
-   "reqd": 1,
    "search_index": 1
   },
   {
@@ -140,8 +139,7 @@
    "label": "Currency",
    "options": "Currency",
    "print_hide": 1,
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "depends_on": "employee",
@@ -175,7 +173,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-05-06 12:18:36.972336",
+ "modified": "2022-12-09 16:56:42.301390",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure Assignment",

@@ -31,6 +31,7 @@ from hrms.hr.utils import (
 	share_doc_with_approver,
 	validate_active_employee,
 )
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
 
 class LeaveDayBlockedError(frappe.ValidationError):
@@ -65,6 +66,7 @@ class LeaveApplication(Document):
 		return _("{0}: From {0} of type {1}").format(self.employee_name, self.leave_type)
 
 	def validate(self):
+		validate_workflow_states(self)
 		validate_active_employee(self.employee)
 		set_employee_name(self)
 		self.validate_dates()
@@ -79,12 +81,14 @@ class LeaveApplication(Document):
 		if frappe.db.get_value("Leave Type", self.leave_type, "is_optional_leave"):
 			self.validate_optional_leave()
 		self.validate_applicable_after()
+		notify_workflow_states(self)
 
 	def on_update(self):
 		if self.status == "Open" and self.docstatus < 1:
 			# notify leave approver about creation
 			if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
-				self.notify_leave_approver()
+				# self.notify_leave_approver()
+				notify_workflow_states(self)
 
 		share_doc_with_approver(self, self.leave_approver)
 

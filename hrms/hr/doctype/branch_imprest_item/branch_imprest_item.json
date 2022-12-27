@@ -1,0 +1,57 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2022-12-20 13:40:37.576746",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "imprest_type",
+  "imprest_status",
+  "imprest_limit",
+  "default"
+ ],
+ "fields": [
+  {
+   "fieldname": "imprest_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Imprest Type",
+   "options": "Imprest Type"
+  },
+  {
+   "fieldname": "imprest_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Imprest Status",
+   "options": "Open\nClosed"
+  },
+  {
+   "fieldname": "imprest_limit",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Imprest Limit"
+  },
+  {
+   "default": "0",
+   "description": "* If default, value gets auto populated in Imprest Receipt & Recoup entries.",
+   "fieldname": "default",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Default?"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-12-20 13:40:37.576746",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Branch Imprest Item",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -8,6 +8,7 @@ frappe.ui.form.on('Employee Transfer', {
 			return {
 				"filters": {
 					"company": frm.doc.company,
+					"is_section":0,
 					"is_division": 0
 				}
 			};
@@ -15,30 +16,37 @@ frappe.ui.form.on('Employee Transfer', {
 		frm.set_query("new_division", function() {
 			return {
 				"filters": {
-					"department": frm.doc.new_department,
+					"company": frm.doc.company,
+					"parent_department":frm.doc.new_department,
+					"disabled":0,
+					"is_division":1,
+					"is_section":0
 				}
 			};
 		});
 		frm.set_query("new_section", function() {
 			return {
 				"filters": {
-					"department": frm.doc.new_department,
-					"division": frm.doc.new_division
+					"company": frm.doc.company,
+					"parent_department":frm.doc.new_division,
+					"disabled":0,
+					"is_division":0,
+					"is_section":1
 				}
 			};
 		});
 	},
-	refresh: function(frm) {
-		enable_disable(frm);
-		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed"){
-			frm.add_custom_button("Create Employee Benefit", function(){
-				frappe.model.open_mapped_doc({
-					method: "erpnext.hr.doctype.employee_transfer.employee_transfer.make_employee_benefit",
-					frm: me.frm
-				})
-			});
-		}
-	},
+	// refresh: function(frm) {
+	// 	enable_disable(frm);
+	// 	if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed"){
+	// 		frm.add_custom_button("Create Employee Benefit", function(){
+	// 			frappe.model.open_mapped_doc({
+	// 				method: "hrms.hr.doctype.employee_transfer.employee_transfer.make_employee_benefit",
+	// 				frm: me.frm
+	// 			})
+	// 		});
+	// 	}
+	// },
 	new_department: function(frm){
 		frm.set_value("new_division", null);
 		frm.set_value("new_section", null);

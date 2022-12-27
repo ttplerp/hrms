@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:short_form",
  "creation": "2022-10-03 14:52:51.171102",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -33,7 +34,8 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Short Form",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "column_break_3",
@@ -86,7 +88,7 @@
   {
    "fieldname": "bank_code",
    "fieldtype": "Data",
-   "label": "Bank Code"
+   "label": "Bank/IFS Code"
   },
   {
    "fieldname": "bank_status",
@@ -96,10 +98,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-03 14:56:21.808584",
+ "modified": "2022-12-21 13:09:02.182114",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -111,6 +114,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
    "share": 1,
    "write": 1
   }

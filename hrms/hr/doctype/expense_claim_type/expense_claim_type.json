@@ -48,10 +48,11 @@
  "icon": "fa fa-flag",
  "idx": 1,
  "links": [],
- "modified": "2020-09-18 17:26:09.703215",
+ "modified": "2022-11-29 12:20:21.324883",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Type",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -67,8 +68,22 @@
   {
    "read": 1,
    "role": "Employee"
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "select": 1,
+   "share": 1,
+   "write": 1
   }
  ],
  "sort_field": "modified",
- "sort_order": "ASC"
+ "sort_order": "ASC",
+ "states": []
 }

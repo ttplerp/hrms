@@ -10,7 +10,8 @@ class EmployeeSeparation(EmployeeBoardingController):
 		super(EmployeeSeparation, self).validate()
 
 	def on_submit(self):
-		super(EmployeeSeparation, self).on_submit()
+		# super(EmployeeSeparation, self).on_submit()
+		pass
 
 	def on_update_after_submit(self):
 		self.create_task_and_notify_user()

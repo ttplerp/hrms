@@ -5,12 +5,42 @@ import frappe
 from frappe import _
 from frappe.utils import getdate,flt,cint,today,add_to_date
 from frappe.model.document import Document
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
 class OvertimeApplication(Document):
 	def validate(self):
+		validate_workflow_states(self)
 		self.validate_dates()
-		self.calculate_totals()
+		#self.calculate_totals()
 		self.validate_eligible_creteria()
+		self.calculate_item_amount()
+		self.calculate_total_amount()
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
+		self.processed = 0
+
+	def on_cancel(self):
+		notify_workflow_states(self)
+
+	def on_submit(self):
+		notify_workflow_states(self)
+	@frappe.whitelist()
+	def calculate_item_amount(self):
+		for item in self.items:
+			#frappe.msgprint("gg:{}".format(str(item)))
+			if item.overtime_type not in ("Sunday Overtime (Half Day)","Sunday Overtime (Full Day)"):
+				if item.ot_rate and item.number_of_hours:
+						item.ot_amount = flt(item.ot_rate) * flt(item.number_of_hours)
+			else:
+				if item.ot_rate:
+					item.ot_amount = flt(item.ot_rate)
+
+	def calculate_total_amount(self):
+		total = 0
+		for amount in self.items:
+			total += flt(amount.ot_amount)
+		self.total_amount = total
+
 
 	def validate_eligible_creteria(self):
 		if "Employee" not in frappe.get_roles(frappe.session.user):
@@ -67,6 +97,33 @@ class OvertimeApplication(Document):
 						and %(from_date)s <= oai.to_date and %(to_date)s >= oai.from_date
 					""", {"employee": self.employee, "name": self.name, "from_date": a.from_date, "to_date": a.to_date}, as_dict=True):
 				frappe.throw(_("Row#{}: Dates are overlapping with another request {}").format(a.idx, frappe.get_desk_link("Overtime Application", i.name)))
+
+# @frappe.whitelist()
+# def check_for_grade(employee, grade, employee_group):
+# 	data = frappe.db.get_all("Rate Base on Grade", fields= ["employee_grade"])
+				
+# 	grade_list = []
+# 	for i in data:
+# 		if i.employee_grade:
+# 			grade_list.append(i)
+# 	for grade in grade_list:
+# 		if grade.employee_grade == grade:
+# 			if frappe.db.sql("""
+# 								select 1
+# 								from `tabSite Employee Group`
+# 								where employee_group = '{}'
+# 								""".format(employee_group)):
+# 								# rate = frappe.db.sql("select site_rate from `tabRate Base on Grade`")[0][0]
+# 								# frappe.msgprint("rate:{}".format(rate))
+# 				return 120
+# 			elif frappe.db.sql("""
+# 								select 1
+# 								from `tabWorkshop Employee Group`
+# 								where employee_group= '{}'
+# 								""".format(employee_group)):
+# 								# rate = frappe.db.sql("select workshop_rate from `tabRate Base on Grade`")[0][0]
+# 								# frappe.msgprint("se{}".format(rate))
+# 				return 80
 
 def get_permission_query_conditions(user):
 	if not user: user = frappe.session.user

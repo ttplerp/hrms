@@ -54,6 +54,7 @@ class SalarySlip(TransactionBase):
 		if self.employee:
 			self.set("earnings", [])
 			self.set("deductions", [])
+			self.set('ot_items', []) #Added by Kinley on 2022/12/07
 			self.set("items", [])   #Added by SHIV on 2018/09/28
 			self.set_month_dates()
 			self.validate_dates()
@@ -199,17 +200,22 @@ class SalarySlip(TransactionBase):
 			if end_date < start_date:
 					return {}
 			else:
+					attendance = 0
 					days_in_month= date_diff(self.end_date, self.start_date) + 1
 					holidays     = self.get_holidays_for_employee(self.start_date, self.end_date)
 					working_days = date_diff(end_date, start_date) + 1
 					calc_holidays= self.get_holidays_for_employee(start_date, end_date)
 					lwp          = self.calculate_lwp(holidays, start_date, end_date)
-					
 					if not cint(frappe.db.get_value("HR Settings", None, "include_holidays_in_total_working_days")):
 							days_in_month -= len(holidays)
 							working_days  -= len(calc_holidays)
-
-					payment_days = flt(working_days)-flt(lwp) 
+					if frappe.db.get_value("Payroll Entry", self.payroll_entry, 'validate_attendance') == 1:
+						attendance = frappe.db.sql("""
+							select count(a.name) from `tabAttendance` a where a.status = 'Absent'
+							and a.attendance_date between '{}' and '{}'
+							and a.employee = '{}'
+						""".format(start_date, end_date, self.employee))[0][0]
+					payment_days = flt(working_days)-flt(lwp) - flt(attendance)
 
 		self.total_days_in_month = days_in_month
 		self.leave_without_pay = lwp
@@ -432,7 +438,17 @@ class SalarySlip(TransactionBase):
 		# Ver 1.0 Ends
 		self.update_deduction_balance()
 		self.post_sws_entry()
+		self.update_ot()
 
+	def update_ot(self, cancel = False):
+		processed = 1
+		ss_name = self.name
+		if cancel:
+			processed = 0
+			ss_name = ''
+		for a in self.ot_items:
+			frappe.db.sql(""" update `tabOvertime Application` set processed = '{0}', salary_slip = '{3}'  where name = '{1}' and employee = '{2}' 
+		""".format(processed, a.reference, self.employee, ss_name))
 
 	def post_sws_entry(self):
 		sws = frappe.db.get_single_value("SWS Settings", "salary_component")
@@ -458,6 +474,7 @@ class SalarySlip(TransactionBase):
 		self.update_status()
 		self.update_deduction_balance()
 		self.delete_sws_entry()
+		self.update_ot(cancel = True)
 
 	def delete_sws_entry(self):
 		frappe.db.sql("delete from `tabSWS Entry` where ref_doc = %s", self.name)
@@ -2273,17 +2290,17 @@ def make_last_pay_certificate(source_name, target_doc=None, skip_item_mapping=Fa
 # 				)
 
 
-# def unlink_ref_doc_from_salary_slip(doc, method=None):
-# 	"""Unlinks accrual Journal Entry from Salary Slips on cancellation"""
-# 	linked_ss = frappe.db.sql_list(
-# 		"""select name from `tabSalary Slip`
-# 	where journal_entry=%s and docstatus < 2""",
-# 		(doc.name),
-# 	)
-# 	if linked_ss:
-# 		for ss in linked_ss:
-# 			ss_doc = frappe.get_doc("Salary Slip", ss)
-# 			frappe.db.set_value("Salary Slip", ss_doc.name, "journal_entry", "")
+def unlink_ref_doc_from_salary_slip(doc, method=None):
+	"""Unlinks accrual Journal Entry from Salary Slips on cancellation"""
+	linked_ss = frappe.db.sql_list(
+		"""select name from `tabSalary Slip`
+	where journal_entry=%s and docstatus < 2""",
+		(doc.name),
+	)
+	if linked_ss:
+		for ss in linked_ss:
+			ss_doc = frappe.get_doc("Salary Slip", ss)
+			frappe.db.set_value("Salary Slip", ss_doc.name, "journal_entry", "")
 
 
 # def generate_password_for_pdf(policy_template, employee):

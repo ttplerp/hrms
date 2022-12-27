@@ -37,7 +37,7 @@
   "encashment_amount",
   "encashment_tax",
   "payable_amount",
-  "journal_entry",
+  "expense_claim",
   "sb_approver",
   "approver_name",
   "column_break_15",
@@ -214,12 +214,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "journal_entry",
-   "fieldtype": "Data",
-   "label": "Journal Entry",
-   "read_only": 1
-  },
-  {
    "collapsible": 1,
    "fieldname": "sb_additional_information",
    "fieldtype": "Section Break",
@@ -351,11 +345,18 @@
    "fieldtype": "Currency",
    "label": "Flat Amount",
    "read_only": 1
+  },
+  {
+   "fieldname": "expense_claim",
+   "fieldtype": "Link",
+   "label": "Expense Claim",
+   "options": "Expense Claim",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-26 12:37:19.094683",
+ "modified": "2022-12-14 10:51:05.318039",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",

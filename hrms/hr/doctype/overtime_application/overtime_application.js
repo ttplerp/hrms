@@ -24,21 +24,6 @@ frappe.ui.form.on('Overtime Application', {
 			frm.set_value("approver_name", frappe.user.full_name(frm.doc.approver));
 		}
 	},
-	employee: function(frm) {
-		if (frm.doc.employee) {
-			frappe.call({
-				method: "erpnext.setup.doctype.employee.employee.get_overtime_rate",
-				args: {
-					employee: frm.doc.employee,
-				},
-				callback: function(r) {
-					if(r.message) {
-						frm.set_value("rate", r.message)
-					}
-				}
-			})
-		}
-	},
 	rate: function(frm) {
 		frm.set_value("total_amount", flt(frm.doc.rate) * flt(frm.doc.total_hours))
 	},
@@ -62,7 +47,11 @@ frappe.ui.form.on('Overtime Application', {
 });
 frappe.ui.form.on("Overtime Application Item", {
 	"number_of_hours": function(frm, cdt, cdn) {
-		calculate_time(frm, cdt, cdn);
+		var item = locals[cdt][cdn];
+		if(item.overtime_type != "Sunday Overtime (Half Day)" && item.overtime_type != "Sunday Overtime (Full Day)"){
+			calculate_time(frm, cdt, cdn);
+			calculate_amount(frm, cdt, cdn);
+		}
 	},
 	"from_date": function(frm, cdt, cdn) {
 		var child = locals[cdt][cdn]
@@ -84,18 +73,65 @@ frappe.ui.form.on("Overtime Application Item", {
 	items_remove: function(frm, cdt, cdn) {
 		calculate_time(frm, cdt, cdn);
 	},
+	"overtime_type": function(frm, cdt, cdn){
+		get_rate_base_on_overtime_type(frm, cdt, cdn);
+		calculate_time(frm, cdt, cdn);
+	}
 	
 })
 
+function calculate_amount(frm, cdt, cdn){
+	frappe.call({
+		method: "calculate_item_amount",
+		doc: frm.doc,
+		callback: function(r){
+			frm.refresh_fields();
+		}
+	})
+}
+
+function get_rate_base_on_overtime_type(frm, cdt, cdn){
+	var item = locals[cdt][cdn];
+	frm.doc.items.forEach(function(d){
+		//if (d.overtime_type === "Overtime (Normal Rate)"){
+		frappe.call({
+			method: "erpnext.setup.doctype.employee.employee.get_rate",
+			args: {
+					employee: frm.doc.employee,
+					overtime_type: d.overtime_type,
+				},
+			callback: function(r){
+				frappe.model.set_value(cdt, cdn, "ot_rate", r.message);
+				if(item.overtime_type == "Sunday Overtime (Half Day)" || item.overtime_type == "Sunday Overtime (Full Day)"){
+					frappe.model.set_value(cdt, cdn, "ot_amount", r.message);
+				}
+				frm.refresh_fields();
+			}
+		})
+	})
+}
+
 function calculate_time(frm, cdt, cdn) {
+	var item = locals[cdt][cdn];
+	var total_amount = 0;
 	var total_time = 0;
+	if(item.overtime_type == "Sunday Overtime (Half Day)"){
+		console.log("inside 1")
+		frappe.model.set_value(cdt, cdn, "number_of_hours", 4);
+	}
+	else if(item.overtime_type == "Sunday Overtime (Full Day)"){
+		console.log("inside 2")
+		frappe.model.set_value(cdt, cdn, "number_of_hours", 8);
+	}
 	frm.doc.items.forEach(function(d) {
 		if(d.number_of_hours) {
 			total_time += d.number_of_hours
+			total_amount = d.ot_amount
 		}	
 	})
 	frm.set_value("total_hours", total_time)
-	frm.set_value("total_amount", total_time * frm.doc.rate)
+	frm.set_value("total_amount", total_amount)
+
 	cur_frm.refresh_field("total_hours")
 	cur_frm.refresh_field("total_amount")
 }

@@ -21,6 +21,7 @@
   "default_amount",
   "default",
   "is_loan_component",
+  "disable_attendance_check",
   "is_pf_deductible",
   "sb_posting_settings",
   "make_party_entry",
@@ -198,12 +199,18 @@
    "fieldtype": "Data",
    "label": "Abbreviation",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "disable_attendance_check",
+   "fieldtype": "Check",
+   "label": "Disable Attendance Check"
   }
  ],
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-24 18:34:45.287141",
+ "modified": "2022-12-12 23:18:02.678878",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",

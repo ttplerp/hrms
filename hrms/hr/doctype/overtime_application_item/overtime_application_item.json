@@ -6,27 +6,33 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "overtime_type",
+  "section_break_6",
   "from_date",
   "number_of_hours",
   "column_break_3",
   "to_date",
   "column_break_4",
+  "ot_rate",
+  "ot_amount",
   "remarks"
  ],
  "fields": [
   {
+   "depends_on": "eval:doc.overtime_type != 'Sunday Overtime (Half Day)' && doc.overtime_type != 'Sunday Overtime (Full Day)';",
    "fieldname": "from_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
    "label": "From Date/Time",
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.overtime_type != 'Sunday Overtime (Half Day)' && doc.overtime_type != 'Sunday Overtime (Full Day)';"
   },
   {
+   "depends_on": "eval:doc.overtime_type != 'Sunday Overtime (Half Day)' && doc.overtime_type != 'Sunday Overtime (Full Day)';",
    "fieldname": "to_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
    "label": "To Date/Time",
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.overtime_type != 'Sunday Overtime (Half Day)' && doc.overtime_type != 'Sunday Overtime (Full Day)';"
   },
   {
    "fieldname": "number_of_hours",
@@ -47,12 +53,35 @@
   {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "overtime_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Overtime Type",
+   "options": "Overtime (Normal Rate)\nSunday Overtime (Half Day)\nSunday Overtime (Full Day)"
+  },
+  {
+   "fieldname": "ot_rate",
+   "fieldtype": "Currency",
+   "label": "Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ot_amount",
+   "fieldtype": "Currency",
+   "label": "Amount",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-09-24 13:38:34.602102",
+ "modified": "2022-12-16 12:27:29.980540",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application Item",

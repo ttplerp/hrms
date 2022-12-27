@@ -5,142 +5,142 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-    "reference_doctype",
-    "reference_docname",
-    "region",
-    "branch",
-    "cost_center",
-    "department",
-    "division",
-    "section",
-    "column_break_5",
-    "designation",
-    "grade",
-    "reports_to",
-    "from_date",
-    "to_date",
-    "promotion_due_date",
-    "business_activity"
-   ],
-   "fields": [
-    {
-     "fieldname": "branch",
-     "fieldtype": "Link",
-     "in_list_view": 1,
-     "label": "Branch",
-     "oldfieldname": "branch",
-     "oldfieldtype": "Select",
-     "options": "Branch"
-    },
-    {
-     "fieldname": "cost_center",
-     "fieldtype": "Link",
-     "label": "Cost Center",
-     "options": "Cost Center",
-     "read_only": 1
-    },
-    {
-     "fieldname": "department",
-     "fieldtype": "Link",
-     "in_list_view": 1,
-     "label": "Department",
-     "oldfieldname": "department",
-     "oldfieldtype": "Select",
-     "options": "Department"
-    },
-    {
-     "fieldname": "designation",
-     "fieldtype": "Link",
-     "label": "Designation",
-     "oldfieldname": "designation",
-     "oldfieldtype": "Select",
-     "options": "Designation"
-    },
-    {
-     "fieldname": "business_activity",
-     "fieldtype": "Link",
-     "label": "Business Activity",
-     "options": "Business Activity",
-     "read_only": 1
-    },
-    {
-     "fieldname": "column_break_5",
-     "fieldtype": "Column Break"
-    },
-    {
-     "fieldname": "from_date",
-     "fieldtype": "Date",
-     "in_list_view": 1,
-     "label": "From Date",
-     "oldfieldname": "from_date",
-     "oldfieldtype": "Date"
-    },
-    {
-     "fieldname": "to_date",
-     "fieldtype": "Date",
-     "hidden": 1,
-     "label": "To Date",
-     "oldfieldname": "to_date",
-     "oldfieldtype": "Date"
-    },
-    {
-     "allow_in_quick_entry": 1,
-     "fieldname": "reference_doctype",
-     "fieldtype": "Link",
-     "in_list_view": 1,
-     "label": "Reference Doctype",
-     "options": "DocType",
-     "read_only": 1
-    },
-    {
-     "fieldname": "reference_docname",
-     "fieldtype": "Dynamic Link",
-     "label": "Reference Docname",
-     "options": "reference_doctype",
-     "read_only": 1
-    },
-    {
-     "fieldname": "grade",
-     "fieldtype": "Link",
-     "in_list_view": 1,
-     "label": "Grade",
-     "options": "Employee Grade"
-    },
-    {
-     "fieldname": "reports_to",
-     "fieldtype": "Link",
-     "label": "Reports to",
-     "options": "Employee"
-    },
-    {
-     "fieldname": "division",
-     "fieldtype": "Link",
-     "label": "Division",
-     "options": "Division"
-    },
-    {
-     "fieldname": "section",
-     "fieldtype": "Link",
-     "label": "Section",
-     "options": "Section"
-    },
-    {
-     "fieldname": "promotion_due_date",
-     "fieldtype": "Date",
-     "label": "Next Promotion Date"
-    },
-    {
-     "fieldname": "region",
-     "fieldtype": "Link",
-     "label": "Region",
-     "options": "Region",
-     "read_only": 1
-    }
-   ],
+  "reference_doctype",
+  "reference_docname",
+  "region",
+  "branch",
+  "cost_center",
+  "department",
+  "division",
+  "section",
+  "column_break_5",
+  "designation",
+  "grade",
+  "reports_to",
+  "from_date",
+  "to_date",
+  "promotion_due_date",
+  "business_activity"
+ ],
+ "fields": [
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Branch",
+   "oldfieldname": "branch",
+   "oldfieldtype": "Select",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Department",
+   "oldfieldname": "department",
+   "oldfieldtype": "Select",
+   "options": "Department"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "oldfieldname": "designation",
+   "oldfieldtype": "Select",
+   "options": "Designation"
+  },
+  {
+   "fieldname": "business_activity",
+   "fieldtype": "Link",
+   "label": "Business Activity",
+   "options": "Business Activity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date",
+   "oldfieldname": "from_date",
+   "oldfieldtype": "Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "To Date",
+   "oldfieldname": "to_date",
+   "oldfieldtype": "Date"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "reference_doctype",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Reference Doctype",
+   "options": "DocType",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reference_docname",
+   "fieldtype": "Dynamic Link",
+   "label": "Reference Docname",
+   "options": "reference_doctype",
+   "read_only": 1
+  },
+  {
+   "fieldname": "grade",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Grade",
+   "options": "Employee Grade"
+  },
+  {
+   "fieldname": "reports_to",
+   "fieldtype": "Link",
+   "label": "Reports to",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department"
+  },
+  {
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "options": "Department"
+  },
+  {
+   "fieldname": "promotion_due_date",
+   "fieldtype": "Date",
+   "label": "Next Promotion Date"
+  },
+  {
+   "fieldname": "region",
+   "fieldtype": "Link",
+   "label": "Region",
+   "options": "Region",
+   "read_only": 1
+  }
+ ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-10-13 16:00:04.719884",
+ "modified": "2022-10-17 14:04:55.848545",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Internal Work History",

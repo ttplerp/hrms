@@ -39,6 +39,7 @@
   "sb_remarks",
   "remarks",
   "amended_from",
+  "processed",
   "sb_additional_info",
   "company",
   "payment_made",
@@ -152,18 +153,18 @@
   {
    "fieldname": "rate",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Hourly Rate",
    "precision": "2",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "total_hours",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Total Hours Accepted for Payment",
    "precision": "2",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "total_amount",
@@ -271,6 +272,7 @@
   {
    "fieldname": "actual_hours",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Total Hours Claimed",
    "read_only": 1
   },
@@ -310,12 +312,18 @@
    "label": "Salary Component",
    "options": "Salary Component",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "processed",
+   "fieldtype": "Check",
+   "label": "Processed"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-26 11:59:31.077592",
+ "modified": "2022-12-13 11:19:29.683730",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",

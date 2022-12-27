@@ -189,7 +189,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Transfer Type",
-   "options": "\nPersonal Request\nManagement Transfer\nMutual Swipe\nIn the interest of company\nDisciplinary Transfer\nUpgraded and Transferred",
+   "options": "\nManagement Transfer",
    "reqd": 1
   },
   {
@@ -209,14 +209,14 @@
    "fieldname": "new_division",
    "fieldtype": "Link",
    "label": "New Division",
-   "options": "Division"
+   "options": "Department"
   },
   {
    "fetch_from": "section",
    "fieldname": "new_section",
    "fieldtype": "Link",
    "label": "New Section",
-   "options": "Section"
+   "options": "Department"
   },
   {
    "fieldname": "new_branch",
@@ -381,6 +381,7 @@
   {
    "fieldname": "new_unit",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "New Unit",
    "options": "Unit"
   },
@@ -395,6 +396,7 @@
   {
    "fieldname": "new_region",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "New Region",
    "options": "Region"
   }
@@ -402,7 +404,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-14 10:06:41.619231",
+ "modified": "2022-12-13 11:34:40.898866",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer",
@@ -418,6 +420,19 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

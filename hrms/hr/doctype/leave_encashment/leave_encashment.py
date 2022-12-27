@@ -12,18 +12,19 @@ from hrms.hr.doctype.leave_ledger_entry.leave_ledger_entry import create_leave_l
 from hrms.hr.utils import set_employee_name, validate_active_employee
 from hrms.payroll.doctype.salary_structure.salary_structure import get_basic_and_gross_pay, get_salary_tax
 from hrms.hr.hr_custom_functions import get_salary_tax
-
-
-
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
 class LeaveEncashment(Document):
 	def validate(self):
+		validate_workflow_states(self)
 		set_employee_name(self)
 		validate_active_employee(self.employee)
 		self.get_leave_details_for_encashment()
 		self.check_duplicate_entry()
 		if not self.encashment_date:
 			self.encashment_date = getdate(nowdate())
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
 
 
 	def before_submit(self):
@@ -33,6 +34,7 @@ class LeaveEncashment(Document):
 	def on_submit(self):
 		self.post_expense_claim()
 		self.create_leave_ledger_entry()
+		notify_workflow_states(self)
 		# if not self.leave_allocation:
 		# 	self.leave_allocation = self.get_leave_allocation().get("name")
 		# additional_salary = frappe.new_doc("Additional Salary")
@@ -103,8 +105,11 @@ class LeaveEncashment(Document):
 			"description":	"Leave Encashment Tax"
 		})
 		expense_claim.docstatus = 0
+
 		expense_claim.save(ignore_permissions=True)
 		expense_claim.submit()
+		self.db_set("expense_claim", expense_claim.name)
+		frappe.db.commit()
 		frappe.msgprint(
 			_("Expense Claim record {0} created")
 			.format("<a href='/app/Form/Expense Claim/{0}'>{0}</a>")

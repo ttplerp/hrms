@@ -44,7 +44,8 @@
    "in_list_view": 1,
    "label": "User",
    "options": "User",
-   "read_only": 1
+   "read_only": 1,
+   "unique": 1
   },
   {
    "fieldname": "current_branch",
@@ -85,10 +86,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-27 01:04:40.152558",
+ "modified": "2022-11-29 12:34:48.802078",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Assign Branch",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

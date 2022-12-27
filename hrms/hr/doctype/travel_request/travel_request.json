@@ -297,6 +297,7 @@
    "read_only": 1
   },
   {
+   "fetch_from": "employee.grade",
    "fieldname": "grade",
    "fieldtype": "Link",
    "label": "Grade",
@@ -496,7 +497,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-27 11:10:56.144050",
+ "modified": "2022-12-13 14:25:27.153452",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",

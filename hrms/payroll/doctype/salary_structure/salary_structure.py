@@ -225,7 +225,6 @@ class SalaryStructure(Document):
 						table but amounts do not match, then update the respective row.
 		'''
 		self.validate_salary_component()
-
 		basic_pay = comm_allowance = gis_amt = pf_amt = health_cont_amt = tax_amt = basic_pay_arrears = payscale_lower_limit= 0
 		total_earning = total_deduction = net_pay = 0
 		payscale_lower_limit = frappe.db.get_value("Employee Grade", frappe.db.get_value("Employee",self.employee,"grade"), "lower_limit")
@@ -250,7 +249,7 @@ class SalaryStructure(Document):
 				if ed_item.from_date and ed_item.to_date and str(ed_item.to_date) < str(ed_item.from_date):
 					frappe.throw(_("<b>Row#{}:</b> Invalid <b>From Date</b> for <b>{}</b> under <b>{}s</b>").format(ed_item.idx, ed_item.salary_component, tbl_list[ed]))
 
-				ed_item.amount = roundoff(ed_item.amount)
+				# ed_item.amount = roundoff(ed_item.amount)
 				amount = ed_item.amount
 
 				if ed_item.salary_component not in ed_map:
@@ -263,7 +262,7 @@ class SalaryStructure(Document):
 						# Following condition added by SHIV on 2019/04/29
 						elif frappe.db.exists("Salary Component", {"name": ed_item.salary_component, "is_pf_deductible": 1}):
 							basic_pay_arrears += flt(ed_item.amount)
-						total_earning += round(amount)
+						total_earning += amount
 					else:
 						''' Ver.3.0.191212 Begins '''
 						# Following line commented and subsequent if condition added by SHIV on 2019/12/12
@@ -273,7 +272,7 @@ class SalaryStructure(Document):
 							total_deduction += amount
 						else:
 							if flt(ed_item.total_deductible_amount) != flt(ed_item.total_deducted_amount):
-								total_deduction += round(amount)
+								total_deduction += amount
 						''' Ver3.0.191212 Ends '''
 				else:
 					for m in sst_map[ed]:
@@ -304,26 +303,27 @@ class SalaryStructure(Document):
 						else:
 							calc_amt = flt(self.get(m['field_value']))
 						
-						calc_amt = roundoff(calc_amt)
+						# calc_amt = roundoff(calc_amt)
 						comm_allowance += flt(calc_amt) if m['name'] == 'Communication Allowance' else 0
 						total_earning += calc_amt
 						calc_map.append({'salary_component': m['name'], 'amount': calc_amt})
 				else:
 					if self.get(m['field_name']) and m['name'] == 'SWS':
 						sws_amt = flt(settings.get('sws_contribution'))
-						calc_amt = roundoff(sws_amt)
+						calc_amt = sws_amt
 						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
 					elif self.get(m['field_name']) and m['name'] == 'GIS':
 						gis_amt = flt(settings.get("gis"))
-						calc_amt = roundoff(gis_amt)
+						calc_amt = gis_amt
 						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
 					elif self.get(m['field_name']) and m['name'] == 'PF':
 						pf_amt = (flt(basic_pay)+flt(basic_pay_arrears))*flt(settings.get("employee_pf"))*0.01
-						calc_amt = roundoff(pf_amt)
+						calc_amt = pf_amt
 						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
 					elif self.get(m['field_name']) and m['name'] == 'Health Contribution':
 						health_cont_amt = flt(total_earning)*flt(settings.get("health_contribution"))*0.01
-						calc_amt = roundoff(health_cont_amt)
+						calc_amt = health_cont_amt
+						# frappe.msgprint(str(health_cont_amt))
 						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
 					else:
 						calc_amt = 0
@@ -332,8 +332,13 @@ class SalaryStructure(Document):
 
 			# Calculating Salary Tax
 			if ed == 'deductions':
-				calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
-				calc_amt = roundoff(calc_amt)
+				if frappe.db.get_value("Employee", self.employee, "employee_group") != "Non National (Temporary)":
+					calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
+					# calc_amt = roundoff(calc_amt)
+				else:
+					#Edited by Kinley on 16/12/2022 for Non National Temporary Employees(3% tax on basic)
+					calc_amt = flt(total_earning)*0.03
+					# calc_amt = roundoff(calc_amt)
 				total_deduction += calc_amt
 				calc_map.append({'salary_component': 'Salary Tax', 'amount': flt(calc_amt)})
 
@@ -397,6 +402,14 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 		for key in ('earnings', 'deductions'):
 			for d in source.get(key):
 				amount = flt(d.amount)
+				if frappe.db.get_value("Payroll Entry",target.payroll_entry,"validate_attendance") == 1 and frappe.db.get_value("Salary Component", d.salary_component, "disable_attendance_check") == 0:
+					per_day = flt(d.amount)/30
+					attendance = frappe.db.sql("""
+						select count(a.name) from `tabAttendance` a where a.status = 'Absent'
+						and a.attendance_date between '{}' and '{}'
+						and a.employee = '{}'
+					""".format(start_date, end_date, source.employee))[0][0]
+					amount = d.amount - (flt(per_day)*flt(attendance))
 				deductible_amt = 0.0
 				deducted_amt = 0.0
 				outstanding_amt = 0.0
@@ -441,13 +454,12 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 
 				# Leave without pay
 				calc_amount = flt(amount)
-				if key == "earnings":
+				if key == "earnings" and frappe.db.get_value("Salary Component", d.salary_component, "disable_attendance_check") == 0:
 					if d.depends_on_lwp:
-						calc_amount = round(flt(amount)*flt(payment_days)/flt(days_in_month))
+						calc_amount = flt(amount)*flt(payment_days)/flt(days_in_month)
 					else:
-						calc_amount = round(flt(amount)*(flt(working_days)/flt(days_in_month)))
-				calc_amount = roundoff(calc_amount)
-
+						calc_amount = flt(amount)*(flt(working_days)/flt(days_in_month))
+				# calc_amount = roundoff(calc_amount)
 				# following condition added by SHIV on 2021/05/28
 				if not flt(calc_amount):
 					continue
@@ -476,6 +488,34 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 					'bank_branch': d.bank_branch,
 				})
 
+		#Getting Approved OTs
+		ot_details = frappe.db.sql("""select  * from `tabOvertime Application` where docstatus = 1 and employee = '{0}' 
+			and processed = 0 and workflow_state = 'Approved' and posting_date <= '{1}'""".format(source.employee, end_date), as_dict =1)
+		# frappe.throw(str(ot_details))
+		total_overtime_amount = 0.0
+		for d in ot_details:
+			row = target.append("ot_items",{})
+			row.reference    = d.name
+			row.ot_date      = d.posting_date
+			row.hourly_rate  = d.rate
+			row.total_hours  = d.total_hours
+			row.total_amount = d.total_amount
+			total_overtime_amount += flt(d.total_amount)
+		target.ot_total = flt(total_overtime_amount)
+		if total_overtime_amount:
+			calc_map['earnings'].append({
+				'salary_component': 'Overtime Allowance',
+				'from_date' : start_date,
+				'to_date': end_date,
+				'amount': flt(total_overtime_amount),
+				'default_amount': flt(total_overtime_amount),
+				'total_days_in_month' : flt(days_in_month),
+				'working_days': flt(working_days),
+				'leave_without_pay': flt(lwp),
+				'payment_days': flt(payment_days)
+				})
+		#ends ot logic
+
 		for e in calc_map['earnings']:
 			if e['salary_component'] == 'Basic Pay':
 				basic_amt = (flt(e['amount']))
@@ -497,27 +537,27 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				if d['salary_component'] == 'SWS':
 					# sws_amt = flt(get_sws_contribution(source.employee, end_date))
 					sws_amt = flt(settings.get("sws_contribution"))
-					calc_amt = roundoff(sws_amt)
+					calc_amt = sws_amt
 					d['amount'] = calc_amt
 				if d['salary_component'] == 'PF':
 					percent = flt(settings.get("employee_pf"))
 					pf_amt = (flt(basic_amt)+flt(basic_pay_arrears))*flt(percent)*0.01
-					calc_amt = roundoff(pf_amt)
+					calc_amt = pf_amt
 					# added by phuntsho on feb April 6th 2021
 					# calculate employer pf
 					employer_percent = flt(settings.get("employer_pf"))
 					employer_pf_amount = (flt(basic_amt)+flt(basic_pay_arrears))*flt(employer_percent)*0.01
-					employer_pf_amount = roundoff(employer_pf_amount)
+					employer_pf_amount = employer_pf_amount
 					target.employer_pf = employer_pf_amount
 					# ----- end of code by phuntsho -----
 					d['amount'] = calc_amt
 				if d['salary_component'] == 'GIS':
 					gis_amt = flt(settings.get("gis"))
-					calc_amt = roundoff(gis_amt)
+					calc_amt = gis_amt
 					d['amount'] = calc_amt
 				if d['salary_component'] == 'Health Contribution':
 					health_cont_amt = flt(gross_amt)*flt(settings.get("health_contribution"))*0.01
-					calc_amt = roundoff(health_cont_amt)
+					calc_amt = health_cont_amt
 					d['amount'] = calc_amt
 
 		# Calculating Salary Tax
@@ -529,7 +569,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				if d['salary_component'] == 'Salary Tax':
 					if not tax_included:
 						tax_amt = get_salary_tax(math.floor(flt(gross_amt) - flt(gis_amt) - flt(pf_amt) - (flt(comm_amt) * 0.5)))
-						tax_amt = roundoff(tax_amt)
+						# tax_amt = roundoff(tax_amt)
 						d['amount'] = flt(tax_amt)
 						tax_included = 1
 

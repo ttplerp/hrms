@@ -163,7 +163,7 @@ erpnext.expense_claim = {
 frappe.ui.form.on("Expense Claim", {
 	setup: function(frm) {
 		frm.add_fetch("company", "cost_center", "cost_center");
-		frm.add_fetch("company", "default_expense_claim_payable_account", "payable_account");
+		// frm.add_fetch("company", "default_expense_claim_payable_account", "payable_account");
 
 		frm.set_query("employee_advance", "advances", function() {
 			return {
@@ -197,12 +197,12 @@ frappe.ui.form.on("Expense Claim", {
 
 		frm.set_query("payable_account", function() {
 			return {
-				filters: {
-					"report_type": "Balance Sheet",
-					"account_type": "Payable",
-					"company": frm.doc.company,
-					"is_group": 0
-				}
+				filters: [
+					// "report_type": "Balance Sheet",
+					['account_type', 'in', ["Expense Account", "Payable"]],
+					["company", "=", frm.doc.company],
+					["is_group","=", 0]
+				]
 			};
 		});
 

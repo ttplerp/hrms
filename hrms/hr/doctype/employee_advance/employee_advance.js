@@ -162,11 +162,20 @@ frappe.ui.form.on('Employee Advance', {
 		if (frm.doc.employee) {
 			frappe.run_serially([
 				() => frm.trigger('get_pending_amount'),
-				() => frm.trigger('set_pay_details'),
+				() => frm.trigger('set_pay_details')
+				//() => frm.trigger('get_accumulated_advance_amount_from_employee_advance')
 			]);
 		}
 	},
+	advance_type: function(frm, cdt, cdn) {
+		if (frm.doc.employee) {
+			frappe.run_serially([
+				() => frm.trigger('get_accumulated_advance_amount_from_employee_advance'),
+				frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
+			]);
 
+		}
+	},
 	advance_amount: function(frm){
 		frappe.call({
 			method: "validate_advance_amount",
@@ -206,6 +215,16 @@ frappe.ui.form.on('Employee Advance', {
 				frm.refresh_field("max_advance_limit");
 				frm.refresh_field("monthly_deduction");
 				
+			}
+		})
+	},
+
+	get_accumulated_advance_amount_from_employee_advance: function(frm){
+		frappe.call({
+			method: "get_accumulated_advance_amount",
+			doc: frm.doc,
+			callback: function(r){
+				frm.refresh_field("total_advance")
 			}
 		})
 	},
@@ -274,7 +293,7 @@ frappe.ui.form.on('Employee Advance', {
 		});
 	},
 
-	advance_type: function(frm){
-		frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
-	}
+	// to_the_travel_advance: function(frm){
+	// 	frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
+	// }
 });
