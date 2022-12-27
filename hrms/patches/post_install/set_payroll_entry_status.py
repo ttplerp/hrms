@@ -3,7 +3,6 @@ from frappe.query_builder import Case
 
 
 def execute():
-    return 
 	PayrollEntry = frappe.qb.DocType("Payroll Entry")
 
 	(

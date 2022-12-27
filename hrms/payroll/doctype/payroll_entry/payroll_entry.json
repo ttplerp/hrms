@@ -55,7 +55,8 @@
   "posting_date",
   "payroll_frequency",
   "column_break1",
-  "company"
+  "company",
+  "status"
  ],
  "fields": [
   {
@@ -348,12 +349,17 @@
    "fieldtype": "Table",
    "options": "Payroll Employee Failed",
    "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "Status"
   }
  ],
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-09 17:39:15.673628",
+ "modified": "2022-12-27 11:49:29.053030",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",
