@@ -35,7 +35,6 @@ def get_data(
 	ranges = get_ranges()
 
 	age_range, values = get_employees_by_age(age_list, ranges)
-
 	return {
 		"labels": age_range,
 		"datasets": [
