@@ -150,6 +150,7 @@ class SalaryStructure(Document):
 			frappe.throw(_("Net pay cannot be negative"))
 
 	def validate_employee(self):
+		return
 		old_employee = frappe.db.get_value("Salary Structure", self.name, "employee")
 		if old_employee and self.employee != old_employee:
 			frappe.throw(_("Employee can not be changed"))
