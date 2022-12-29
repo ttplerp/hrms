@@ -118,8 +118,7 @@
    "oldfieldname": "employee",
    "oldfieldtype": "Link",
    "options": "Employee",
-   "reqd": 1,
-   "set_only_once": 1
+   "reqd": 1
   },
   {
    "fieldname": "employee_name",
@@ -842,7 +841,7 @@
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2022-09-25 20:12:39.009052",
+ "modified": "2022-12-29 20:28:53.611249",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
