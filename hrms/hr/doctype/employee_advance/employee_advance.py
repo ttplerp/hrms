@@ -12,6 +12,7 @@ import erpnext
 from erpnext.accounts.doctype.journal_entry.journal_entry import get_default_bank_cash_account
 from hrms.payroll.doctype.salary_structure.salary_structure import get_basic_and_gross_pay, get_salary_tax
 from hrms.hr.utils import validate_active_employee
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
 
 class EmployeeAdvanceOverPayment(frappe.ValidationError):
@@ -24,6 +25,7 @@ class EmployeeAdvance(Document):
 			"Accounts Settings", "make_payment_via_journal_entry"
 		)
 	def validate(self):
+		validate_workflow_states(self)
 		validate_active_employee(self.employee)
 		self.validate_employment_status()
 		self.set_status()
@@ -34,6 +36,8 @@ class EmployeeAdvance(Document):
 		self.update_pending_amount()
 		self.update_reference()
 		self.check_duplicate_advance()
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
 	
 	def on_cancel(self):
 		self.ignore_linked_doctypes = "GL Entry"
@@ -46,6 +50,7 @@ class EmployeeAdvance(Document):
 			self.update_travel_request()
 		if self.advance_type =="Salary Advance":
 			self.update_salary_structure()
+		notify_workflow_states(self)
 	def update_defaults(self):
 		self.salary_component = "Salary Advance Deductions"
 		
