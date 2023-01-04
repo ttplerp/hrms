@@ -1,0 +1,38 @@
+{
+ "based_on": "",
+ "chart_name": "Employee Leave Balance",
+ "chart_type": "Custom",
+ "color": "#761ACB",
+ "creation": "2022-12-15 16:53:52.450161",
+ "custom_options": "{\n\t\"barOptions\": {\"spaceRatio\": 0},\n\t\"axisOptions\": {\n\t\t\"xIsSeries\": 1,\n\t\t\"interval\":5\n\t}\n}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[]",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "last_synced_on": "2022-12-16 09:56:21.524214",
+ "modified": "2022-12-16 10:07:17.936660",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Leave Balance",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "parent_document_type": "",
+ "roles": [
+  {
+   "role": "Employee"
+  }
+ ],
+ "source": "Employee Leave Balance",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "y_axis": []
+}

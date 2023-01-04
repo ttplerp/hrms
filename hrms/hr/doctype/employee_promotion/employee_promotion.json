@@ -13,12 +13,26 @@
   "column_break_3",
   "promotion_date",
   "company",
-  "details_section",
-  "promotion_details",
+  "fiscal_year",
+  "month",
   "salary_details_section",
-  "current_ctc",
+  "current_lower_limit",
+  "new_lower_limit",
   "column_break_12",
-  "revised_ctc",
+  "current_increment_value",
+  "new_increment_value",
+  "column_break_13",
+  "current_upper_limit",
+  "new_upper_limit",
+  "column_break_14",
+  "current_basic_pay",
+  "new_basic_pay",
+  "details_section",
+  "get_details",
+  "current_grade",
+  "promote_to_grade",
+  "promotion_details",
+  "promotion_entry",
   "amended_from"
  ],
  "fields": [
@@ -101,25 +115,118 @@
    "read_only": 1
   },
   {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Year",
+   "options": "Fiscal Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "month",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Month",
+   "options": "January\nJuly",
+   "reqd": 1
+  },
+  {
    "fetch_from": "employee.ctc",
    "fetch_if_empty": 1,
-   "fieldname": "current_ctc",
+   "fieldname": "current_lower_limit",
    "fieldtype": "Currency",
-   "label": "Current CTC",
+   "label": "Current Lower Limit",
    "mandatory_depends_on": "revised_ctc",
-   "options": "salary_currency"
+   "options": "salary_currency",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "new_lower_limit",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "New Lower Limit",
+   "precision": "2"
   },
   {
    "depends_on": "current_ctc",
-   "fieldname": "revised_ctc",
+   "fieldname": "current_increment_value",
    "fieldtype": "Currency",
-   "label": "Revised CTC",
+   "label": "Current Increment Value",
    "options": "salary_currency"
+  },
+  {
+   "fieldname": "new_increment_value",
+   "fieldtype": "Currency",
+   "label": "New Increment Value",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "current_upper_limit",
+   "fieldtype": "Currency",
+   "label": "Current Upper Limit",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "new_upper_limit",
+   "fieldtype": "Currency",
+   "label": "New Upper Limit",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "current_basic_pay",
+   "fieldtype": "Currency",
+   "label": "Current Basic Pay",
+   "read_only": 1
+  },
+  {
+   "fieldname": "new_basic_pay",
+   "fieldtype": "Currency",
+   "label": "New Basic Pay",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "promotion_entry",
+   "fieldtype": "Link",
+   "label": "Promotion Entry",
+   "options": "Promotion Entry"
+  },
+  {
+   "depends_on": "eval:doc.docstatus == 0;",
+   "fieldname": "get_details",
+   "fieldtype": "Button",
+   "label": "Get Details"
+  },
+  {
+   "fieldname": "current_grade",
+   "fieldtype": "Link",
+   "label": "Current Grade",
+   "options": "Employee Grade",
+   "read_only": 1
+  },
+  {
+   "fieldname": "promote_to_grade",
+   "fieldtype": "Link",
+   "label": "Promote To Grade",
+   "options": "Employee Grade",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-04-22 18:47:10.168744",
+ "modified": "2022-11-28 14:29:58.243077",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Promotion",

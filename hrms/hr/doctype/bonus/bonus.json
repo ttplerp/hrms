@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "BONUS.YY.###",
  "creation": "2022-10-12 12:03:41.105648",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -152,10 +153,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-10-12 15:26:19.799294",
+ "modified": "2022-11-28 12:21:16.578970",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Bonus",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

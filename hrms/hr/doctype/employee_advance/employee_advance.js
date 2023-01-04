@@ -55,6 +55,12 @@ frappe.ui.form.on('Employee Advance', {
 	},
 
 	refresh: function(frm) {
+		if(frm.doc.employee){
+			frappe.call({
+				method:"validate_employment_status",
+				doc: frm.doc
+			})
+		}
 		if (frm.doc.docstatus === 1 &&
 			(flt(frm.doc.paid_amount) < flt(frm.doc.advance_amount)) &&
 			frappe.model.can_create("Payment Entry")) {
@@ -132,7 +138,8 @@ frappe.ui.form.on('Employee Advance', {
 				"employee_advance_name": frm.doc.name,
 				"posting_date": frm.doc.posting_date,
 				"paid_amount": frm.doc.paid_amount,
-				"claimed_amount": frm.doc.claimed_amount
+				"claimed_amount": frm.doc.claimed_amount,
+				"advance_type":frm.doc.advance_type,
 			},
 			callback: function(r) {
 				const doclist = frappe.model.sync(r.message);
@@ -163,15 +170,44 @@ frappe.ui.form.on('Employee Advance', {
 
 	employee: function(frm, cdt, cdn) {
 		if (frm.doc.employee) {
+			frappe.call({
+				method:"validate_employment_status",
+				doc: frm.doc
+			})
 			frappe.run_serially([
 				() => frm.trigger('get_pending_amount'),
 				() => frm.trigger('set_pay_details'),
+				//() => frm.trigger('get_accumulated_advance_amount_from_employee_advance')
 			]);
 		}
 	},
+	advance_type: function(frm, cdt, cdn) {
+		if (frm.doc.employee) {
+			frappe.call({
+				method:"validate_employment_status",
+				doc: frm.doc
+			})
+			frappe.run_serially([
+				() => frm.trigger('get_accumulated_advance_amount_from_employee_advance'),
+				frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
+			]);
+
+		}
+		frappe.call({
+			method: "hrms.hr.doctype.employee_advance.employee_advance.select_account",
+			args: {
+				"advance_type": frm.doc.advance_type,
+				"company": frm.doc.company
+			},
+			callback: function(r) {
+				frm.set_value("advance_account", r.message);
+				frm.refresh_field("advance_account");
+			}
+		});
+	},
 
 	advance_amount: function(frm){
-		if (frm.doc.advance_type != "Travel Advance"){
+		if (frm.doc.advance_type == "Salary Advance"){
 			frappe.call({
 				method: "validate_advance_amount",
 				doc: frm.doc,
@@ -214,7 +250,15 @@ frappe.ui.form.on('Employee Advance', {
 			}
 		})
 	},
-
+	get_accumulated_advance_amount_from_employee_advance: function(frm){
+		frappe.call({
+			method: "get_accumulated_advance_amount",
+			doc: frm.doc,
+			callback: function(r){
+				frm.refresh_field("total_advance")
+			}
+		})
+	},
 	get_pending_amount: function(frm) {
 		frappe.call({
 			method: "hrms.hr.doctype.employee_advance.employee_advance.get_pending_amount",
@@ -279,7 +323,7 @@ frappe.ui.form.on('Employee Advance', {
 		});
 	},
 
-	advance_type: function(frm){
-		frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
-	}
+	// advance_type: function(frm){
+	// 	frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
+	// }
 });

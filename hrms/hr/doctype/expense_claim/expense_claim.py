@@ -33,6 +33,7 @@ class ExpenseClaim(AccountsController):
 	def validate(self):
 		validate_active_employee(self.employee)
 		set_employee_name(self)
+		self.validate_references()
 		self.validate_sanctioned_amount()
 		self.calculate_total_amount()
 		self.validate_advances()
@@ -44,6 +45,11 @@ class ExpenseClaim(AccountsController):
 		# self.calculate_grand_total()
 		if self.task and not self.project:
 			self.project = frappe.db.get_value("Task", self.task, "project")
+
+	def validate_references(self):
+		for a in self.expenses:
+			if a.expense_type in ('Leave Encashment','Travel','Meeting & Seminars','Training','Travel') and not a.reference:
+				frappe.throw("Cannot create Expense Claim for {} directly from Expense Claim.".format(a.expense_type),title="Invalid Operation")
 
 	def set_status(self, update=False):
 		status = {"0": "Draft", "1": "Submitted", "2": "Cancelled"}[cstr(self.docstatus or 0)]
@@ -110,6 +116,13 @@ class ExpenseClaim(AccountsController):
 
 		self.set_status(update=True)
 		self.update_claimed_amount_in_employee_advance()
+		self.set_travel_reference()
+	def before_cancel(self):
+		for a in self.expenses:
+			if a.reference_type == 'Leave Encashment':
+				frappe.db.sql("""
+					update `tabLeave Encashment` set expense_claim = NULL where name = '{}'
+				""".format(a.reference))
 
 	def on_cancel(self):
 		self.update_task_and_project()
@@ -121,7 +134,7 @@ class ExpenseClaim(AccountsController):
 			update_reimbursed_amount(self, -1 * self.grand_total)
 
 		self.update_claimed_amount_in_employee_advance()
-
+		self.set_travel_reference(cancel = True)
 	def update_claimed_amount_in_employee_advance(self):
 		for d in self.get("advances"):
 			frappe.get_doc("Employee Advance", d.employee_advance).update_claimed_amount()
@@ -334,7 +347,7 @@ class ExpenseClaim(AccountsController):
 				)
 
 			self.total_advance_amount += flt(d.allocated_amount)
-
+		# frappe.throw(str(self.total_advance_amount)+" "+str(self.total_sanctioned_amount))
 		if self.total_advance_amount:
 			precision = self.precision("total_advance_amount")
 			amount_with_taxes = flt(
@@ -358,6 +371,20 @@ class ExpenseClaim(AccountsController):
 					"account"
 				]
 
+	def set_travel_reference(self, cancel = 0):
+		for item in self.get("expenses"):
+			if item.reference_type == "Travel Request" and cancel == 0:
+				frappe.db.sql("""
+					update `tabTravel Request` 
+					set ex_reference = '{}'
+					where name = '{}'
+				""".format(self.name, item.reference))
+			elif item.reference_type == "Travel Request" and cancel == True:
+				frappe.db.sql("""
+					update `tabTravel Request` 
+					set ex_reference = NULL
+					where name = '{}'
+				""".format(item.reference))
 
 def update_reimbursed_amount(doc, amount):
 	doc.total_amount_reimbursed += amount

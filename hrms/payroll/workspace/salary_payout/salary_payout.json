@@ -222,7 +222,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Payroll Reports",
-   "link_count": 6,
+   "link_count": 11,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -285,10 +285,60 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Monthly Salary Register",
+   "link_count": 0,
+   "link_to": "Monthly Salary Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Loan Report",
+   "link_count": 0,
+   "link_to": "Loan Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "GIS Report",
+   "link_count": 0,
+   "link_to": "GIS Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Tax and Health Contribution Report",
+   "link_count": 0,
+   "link_to": "Tax and Health Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Payable Report",
+   "link_count": 0,
+   "link_to": "Salary Payable Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-11-07 17:13:28.334838",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2022-12-21 12:24:39.384187",
+ "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Payout",
  "owner": "Administrator",
@@ -296,7 +346,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 14.0,
+ "sequence_id": 10.0,
  "shortcuts": [
   {
    "color": "Red",

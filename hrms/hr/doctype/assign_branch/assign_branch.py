@@ -7,7 +7,7 @@ from frappe.model.document import Document
 class AssignBranch(Document):
 	def validate(self):
 		self.assign_name()	
-		self.check_mandatory()
+		# self.check_mandatory()
 		self.check_employee_duplicate()
 		self.check_duplicate()
 
@@ -26,6 +26,7 @@ class AssignBranch(Document):
 			self.user = emp.user_id
 			self.company = emp.company
 			self.current_branch = emp.branch
+			self.employee_name = emp.employee_name
 		else:
 			frappe.throw("Employee ID is Mandatory")
 

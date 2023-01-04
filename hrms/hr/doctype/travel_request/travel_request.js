@@ -5,7 +5,7 @@ cur_frm.add_fetch("employee", "grade", "grade")
 
 frappe.ui.form.on('Travel Request', {
 	refresh: function(frm){
-		if (frm.doc.docstatus === 0 && !frm.doc.__islocal && cint(frm.doc.need_advance) == 1) {
+		if (frm.doc.docstatus === 0 && (frm.doc.workflow_state == 'Draft' || frm.doc.workflow_state == "Rejected") && !frm.doc.__islocal && cint(frm.doc.need_advance) == 1) {
 			cur_frm.add_custom_button('Request Advance', function() {
 				return frappe.call({
 					method: "make_advance_payment",
@@ -15,8 +15,8 @@ frappe.ui.form.on('Travel Request', {
 						frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
 					}
 				});
-			},__('Create'));
-			cur_frm.page.set_inner_btn_group_as_primary(__('Create'));
+			});
+			// cur_frm.page.set_inner_btn_group_as_primary(__('Create'));
 		}
 	},
 	onload: function(frm) {
@@ -83,6 +83,12 @@ frappe.ui.form.on("Travel Itinerary", {
 	},
 	"mileage_amount": function(frm, cdt,cdn){
 		update_total(frm,cdt, cdn);
+	},
+	"dsa": function(frm, cdt, cdn){
+		update_total_claim(cdt, cdn)
+	},
+	"dsa_percent": function(frm, cdt, cdn){
+		update_total_claim(cdt, cdn)
 	},
 	"currency": function(frm, cdt,cdn){
 		update_total_claim(cdt, cdn);
@@ -158,7 +164,11 @@ function update_total_claim(cdt, cdn){
 		callback: function(r) {
 			if(r.message) {
 				console.log(r.message)
-				frappe.model.set_value(cdt, cdn,"actual_amount", flt(item.total_claim) * flt(r.message))
+				console.log(r.message)
+				frappe.model.set_value(cdt, cdn, "exchange_rate", flt(r.message))
+				frappe.model.set_value(cdt, cdn, "actual_amount", flt(r.message) * ((flt(item.dsa_percent)/100) * flt(item.no_days_actual) * flt(item.dsa)))
+				frappe.model.set_value(cdt, cdn, "amount", flt(item.dsa) * (flt(item.dsa_percent)/100) * flt(item.no_days_actual))
+				// frappe.model.set_value(cdt, cdn,"actual_amount", flt(item.total_claim) * flt(r.message))
 			}
 		}
 	})
@@ -175,6 +185,7 @@ function update_advance_amount(frm) {
 		callback: function(r) {
 			if(r.message) {
 				frm.set_value("advance_amount_nu", flt(frm.doc.advance_amount) * flt(r.message))
+				frm.set_value("exchange_rate", flt(r.message))
 			}
 		}
 	})

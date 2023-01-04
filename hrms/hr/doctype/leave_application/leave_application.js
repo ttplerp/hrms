@@ -1,23 +1,23 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
 
-cur_frm.add_fetch('employee', 'employee_name', 'employee_name');
-cur_frm.add_fetch('employee', 'company', 'company');
+// cur_frm.add_fetch('employee', 'employee_name', 'employee_name');
+// cur_frm.add_fetch('employee', 'company', 'company');
 
 frappe.ui.form.on("Leave Application", {
-	setup: function(frm) {
-		frm.set_query("leave_approver", function() {
-			return {
-				query: "hrms.hr.doctype.department_approver.department_approver.get_approvers",
-				filters: {
-					employee: frm.doc.employee,
-					doctype: frm.doc.doctype
-				}
-			};
-		});
+	// setup: function(frm) {
+	// 	frm.set_query("leave_approver", function() {
+	// 		return {
+	// 			query: "hrms.hr.doctype.department_approver.department_approver.get_approvers",
+	// 			filters: {
+	// 				employee: frm.doc.employee,
+	// 				doctype: frm.doc.doctype
+	// 			}
+	// 		};
+	// 	});
 
-		frm.set_query("employee", erpnext.queries.employee);
-	},
+	// 	frm.set_query("employee", erpnext.queries.employee);
+	// },
 	onload: function(frm) {
 		// Ignore cancellation of doctype on cancel all.
 		frm.ignore_doctypes_on_cancel_all = ["Leave Ledger Entry"];
@@ -33,7 +33,7 @@ frappe.ui.form.on("Leave Application", {
 				},
 				callback: function(r) {
 					if (!r.exc && r.message) {
-						frm.toggle_reqd("leave_approver", true);
+						// frm.toggle_reqd("leave_approver", true);
 					}
 				}
 			});
@@ -66,6 +66,7 @@ frappe.ui.form.on("Leave Application", {
 					}
 					if (!r.exc && r.message['leave_approver']) {
 						frm.set_value('leave_approver', r.message['leave_approver']);
+						frm.set_value('leave_approver_name', r.message['leave_approver_name']);
 					}
 					lwps = r.message["lwps"];
 				}

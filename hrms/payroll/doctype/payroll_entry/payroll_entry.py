@@ -9,6 +9,7 @@ from frappe import _
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
 from erpnext.accounts.doctype.business_activity.business_activity import get_default_ba
+from datetime import date
 # from erpnext.accounts.doctype.hr_accounts_settings.hr_accounts_settings import get_bank_account
 
 class PayrollEntry(Document):
@@ -70,7 +71,7 @@ class PayrollEntry(Document):
 
 		cond = self.get_filter_condition()
 		cond += self.get_joining_relieving_condition()
-   
+
 		emp_list = frappe.db.sql("""
 			select t1.name as employee, t1.employee_name, t1.department, t1.designation
 			from `tabEmployee` t1
@@ -80,6 +81,8 @@ class PayrollEntry(Document):
 					and t3.docstatus != 2
 					and t3.fiscal_year = '{}'
 					and t3.month = '{}')
+			and exists(select 1 from `tabSalary Structure` t4 where t4.employee = t1.name and t4.docstatus != 2)
+			and t1.disable_payroll_entry != 1 and t1.status = 'Active'	
 			{}
 			order by t1.branch, t1.name
 		""".format(self.fiscal_year, self.month, cond), as_dict=True)
@@ -132,7 +135,7 @@ class PayrollEntry(Document):
 		months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 		month = str(int(months.index(self.month_name))+1).rjust(2,"0")
 
-		month_start_date = "-".join([str(self.fiscal_year), month, "01"])
+		month_start_date = "-".join([str(date.today().year), month, "01"])
 		month_end_date   = get_last_day(month_start_date)
 
 		self.start_date = month_start_date

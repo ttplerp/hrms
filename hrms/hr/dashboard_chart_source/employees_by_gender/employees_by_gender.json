@@ -1,0 +1,13 @@
+{
+ "creation": "2022-12-16 16:56:46.761296",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart Source",
+ "idx": 0,
+ "modified": "2022-12-16 16:56:46.761296",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employees by Gender",
+ "owner": "Administrator",
+ "source_name": "Employees by Gender",
+ "timeseries": 0
+}

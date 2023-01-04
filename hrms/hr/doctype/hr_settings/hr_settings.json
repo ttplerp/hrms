@@ -13,6 +13,7 @@
   "retirement_age",
   "reminders_section",
   "send_birthday_reminders",
+  "enable_bulk_overtime_payment",
   "column_break_11",
   "send_work_anniversary_reminders",
   "column_break_18",
@@ -30,6 +31,9 @@
   "expense_approver_mandatory_in_expense_claim",
   "show_leaves_of_all_department_members_in_calendar",
   "auto_leave_encashment",
+  "sb_travel",
+  "authorization_approval_notification_template",
+  "authorization_status_notification_template",
   "hiring_settings_section",
   "check_vacancies",
   "send_interview_reminder",
@@ -45,7 +49,30 @@
   "overtime_settings_tab",
   "overtime_limit_type",
   "column_break_39",
-  "overtime_limit"
+  "overtime_limit",
+  "sb_approver",
+  "hrgm",
+  "hr_approver",
+  "cb_01",
+  "hrgm_name",
+  "hr_approver_name",
+  "tb_notifications",
+  "sb_encashment_settings",
+  "encashment_approval_notification_template",
+  "encashment_status_notification_template",
+  "sb_employee_separation",
+  "employee_separation_approval_notification_template",
+  "employee_separation_status_notification_template",
+  "cb_ns_01",
+  "sb_overtime",
+  "overtime_approval_notification_template",
+  "overtime_status_notification_template",
+  "sb_employee_benefits",
+  "benefits_approval_notification_template",
+  "benefits_status_notification_template",
+  "sb_employee_transfer",
+  "employee_transfer_approval_notification_template",
+  "employee_transfer_status_notification_template"
  ],
  "fields": [
   {
@@ -281,13 +308,165 @@
    "fieldname": "overtime_limit",
    "fieldtype": "Int",
    "label": "Overtime Limit In Hrs(Per Day)"
+  },
+  {
+   "fieldname": "sb_travel",
+   "fieldtype": "Section Break",
+   "label": "Travel Settings"
+  },
+  {
+   "fieldname": "authorization_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Authorization Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "authorization_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Authorization Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "hr_approver",
+   "fieldtype": "Link",
+   "label": "HR Approver",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "hr_approver.employee_name",
+   "fieldname": "hr_approver_name",
+   "fieldtype": "Data",
+   "label": "HR Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_approver",
+   "fieldtype": "Tab Break",
+   "label": "Approver Settings"
+  },
+  {
+   "fieldname": "tb_notifications",
+   "fieldtype": "Tab Break",
+   "label": "Notification Templates"
+  },
+  {
+   "fieldname": "sb_encashment_settings",
+   "fieldtype": "Section Break",
+   "label": "Leave Encashment Settings"
+  },
+  {
+   "fieldname": "encashment_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Encashment Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "encashment_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Encashment Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "sb_employee_separation",
+   "fieldtype": "Section Break",
+   "label": "Employee Separation Settings"
+  },
+  {
+   "fieldname": "employee_separation_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Separation Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "employee_separation_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Separation Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_bulk_overtime_payment",
+   "fieldtype": "Check",
+   "label": "Enable Bulk Overtime Payment"
+  },
+  {
+   "fieldname": "sb_overtime",
+   "fieldtype": "Section Break",
+   "label": "Overtime Notification Settings"
+  },
+  {
+   "fieldname": "overtime_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Overtime Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "overtime_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Overtime Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "cb_ns_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb_employee_benefits",
+   "fieldtype": "Section Break",
+   "label": "Employee Benefit Settings"
+  },
+  {
+   "fieldname": "benefits_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Benefits Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "benefits_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Benefits Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "sb_employee_transfer",
+   "fieldtype": "Section Break",
+   "label": "Employee Transfer Notification"
+  },
+  {
+   "fieldname": "employee_transfer_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Transfer Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "employee_transfer_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Transfer Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "hrgm",
+   "fieldtype": "Link",
+   "label": "HRGM",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "hrgm.employee_name",
+   "fieldname": "hrgm_name",
+   "fieldtype": "Data",
+   "label": "HRGM Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_01",
+   "fieldtype": "Column Break"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-09-24 13:46:06.995425",
+ "modified": "2022-12-16 10:56:09.565869",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

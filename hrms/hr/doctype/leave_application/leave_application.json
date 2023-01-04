@@ -25,14 +25,17 @@
   "description",
   "section_break_7",
   "leave_approver",
-  "leave_approver_name",
   "column_break_18",
+  "leave_approver_name",
+  "column_break_20",
+  "leave_approver_designation",
   "status",
   "salary_slip",
   "sb10",
   "posting_date",
   "follow_via_email",
   "color",
+  "workflow_state",
   "column_break_17",
   "branch",
   "company",
@@ -171,12 +174,12 @@
    "default": "Open",
    "fieldname": "status",
    "fieldtype": "Select",
+   "hidden": 1,
    "in_standard_filter": 1,
    "label": "Status",
    "no_copy": 1,
    "options": "Open\nApproved\nRejected\nCancelled",
-   "permlevel": 1,
-   "reqd": 1
+   "permlevel": 1
   },
   {
    "fieldname": "sb10",
@@ -215,6 +218,7 @@
   {
    "fieldname": "salary_slip",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Salary Slip",
    "options": "Salary Slip",
    "print_hide": 1
@@ -246,11 +250,30 @@
    "read_only": 1
   },
   {
+   "fetch_from": "employee.branch",
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
    "options": "Branch",
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "leave_approver_designation",
+   "fieldtype": "Link",
+   "label": "Leave Approver Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "label": "Workflow State",
+   "options": "Workflow State",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-calendar",
@@ -258,7 +281,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2022-10-31 10:52:30.317935",
+ "modified": "2022-12-26 17:03:39.609033",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",

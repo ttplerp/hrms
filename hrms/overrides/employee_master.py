@@ -10,14 +10,36 @@ from erpnext.setup.doctype.employee.employee import Employee
 
 
 class EmployeeMaster(Employee):
+	# def autoname(self):
+	# 	# naming done with combination with joining year, month and 4 digits series
+	# 	if self.old_id:
+	# 		self.empoyee =	self.name = self.old_id
+	# 		return
+	# 	year_month = str(self.date_of_joining)[2:4] + str(self.date_of_joining)[5:7]
+	# 	name = make_autoname('EMP.####')[3:]
+	# 	self.employee = self.name = year_month + name
+	
 	def autoname(self):
-		# naming done with combination with joining year, month and 4 digits series
 		if self.old_id:
-			self.empoyee =	self.name = self.old_id
+			self.employee = self.name = self.old_id
 			return
-		year_month = str(self.date_of_joining)[2:4] + str(self.date_of_joining)[5:7]
-		name = make_autoname('EMP.####')[3:]
-		self.employee = self.name = year_month + name
+		else:
+			series_seq = ""
+			if self.employee_group == 'Trainers - DSP':
+				series_seq = 'TNR'
+			elif self.employee_group == 'Tech & Facilitation Team - DSP': 
+				series_seq = 'DEP'
+			elif self.employee_group == 'Steering Committee - DSP':
+				series_seq = 'STC'
+			elif self.employee_group == 'Volunteer - DSP':
+				series_seq = 'VOL'
+			elif self.employee_group == "Employees Under DSP Payroll - DSP":
+				series_seq = 'EMP'
+			else:
+				series_seq = 'EID'
+
+			self.name = make_autoname(str(series_seq) + '.YY.MM.###')
+			self.employee = self.name
 
 def validate_onboarding_process(doc, method=None):
 	"""Validates Employee Creation for linked Employee Onboarding"""

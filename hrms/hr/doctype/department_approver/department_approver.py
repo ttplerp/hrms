@@ -24,7 +24,8 @@ def get_approvers(doctype, txt, searchfield, start, page_len, filters):
 	employee = frappe.get_value(
 		"Employee",
 		filters.get("employee"),
-		["employee_name", "department", "leave_approver", "expense_approver", "shift_request_approver"],
+		["employee_name", "department", "leave_approver"],
+		# ["employee_name", "department", "leave_approver", "expense_approver", "shift_request_approver"],
 		as_dict=True,
 	)
 

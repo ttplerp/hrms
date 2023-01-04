@@ -13,40 +13,87 @@ from frappe.utils import date_diff, flt, cint, nowdate
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 from erpnext.accounts.general_ledger import make_gl_entries
 from erpnext.controllers.accounts_controller import AccountsController
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
+from datetime import datetime
 
 class TravelRequest(AccountsController):
 	def validate(self):
+		validate_workflow_states(self)
 		validate_active_employee(self.employee)
 		self.validate_travel_dates()
+		self.check_leave_applications()
 		self.set_dsa_percent()
 		self.set_currency_exchange()
 		self.update_amount()
 		self.update_total_amount()
 		self.validate_advance_amount()
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
 	def on_update(self):
+		self.validate_travel_dates(update=True)
+		self.check_leave_applications()
 		self.check_date_overlap()
 		self.check_duplicate_requests()
 		
 	def on_submit(self):
 		self.check_date()
 		self.make_employee_advance()
-		self.post_expense_claim()	
+		self.post_expense_claim()
+		notify_workflow_states(self)
+
 	def on_cancel(self):
-		pass
+		notify_workflow_states(self)
+
 	def validate_advance_amount(self):
 		if flt(self.advance_amount) > flt(self.total_travel_amount) * flt(0.9):
 			frappe.msgprint("Advance amount cannot be greater than 90% of the <b>Total Travel Amount</b>",title="Excess Advance Amount",indicator="red",raise_exception=True)
+		elif flt(self.advance_amount) <= 0 and self.need_advance == 1:
+			frappe.throw("Advance amount cannot be: {}".format(self.advance_amount))
 	def set_dsa_percent(self):
 		for item in self.get("itinerary"):
 			if len(self.itinerary) == 1 or item.idx == len(self.itinerary) or cint(item.return_same_day) == 1:
 				item.dsa_percent = cint(frappe.db.get_single_value("HR Settings","returen_day_dsa_percent"))
 
+	##
+	# Check if the dates are used under Leave Application
+	##
+	def check_leave_applications(self):
+		las = frappe.db.sql("""select t1.name from `tabLeave Application` t1 
+				where t1.employee = "{employee}"
+				and t1.docstatus != 2 and  case when t1.half_day = 1 then t1.from_date = t1.to_date end
+				and exists(select 1
+						from `tabTravel Itinerary` t2
+						where t2.parent = "{travel_authorization}"
+						and (
+							(t1.from_date <= t2.to_date and t1.to_date >= t2.from_date)
+							or
+							(t2.from_date <= t1.to_date and t2.to_date >= t1.from_date)
+						)
+				)
+		""".format(travel_authorization = self.name, employee = self.employee), as_dict=True)
+		for t in las:
+			frappe.throw("The dates in your current travel request have been used in leave application {}".format(frappe.get_desk_link("Leave Application", t.name)))
+
+	def check_advance(self):
+		if self.need_advance == 1:
+			
+			if (self.employee_advance_reference and not frappe.db.exists("Employee Advance", self.employee_advance_reference)) or not self.employee_advance_reference:
+				self.db_set("employee_advance_reference",None)
+				frappe.db.commit()
+				# frappe.throw("Cannot Apply whithout claiming travel advance")
+			else:
+				if frappe.db.get_value("Employee Advance",self.employee_advance_reference,"status") != "Paid":
+					frappe.throw("Cannot Apply whithout claiming travel advance")
+
 	def update_total_amount(self):
-		total = 0
+		total = base_total = 0
 		for item in self.get("itinerary"):
 			total = flt(total)+flt(item.total_claim)
+			base_total = flt(base_total)+(flt(item.actual_amount) if item.actual_amount else item.amount)
 		self.total_travel_amount = total
+		self.base_total_travel_amount = base_total
 		self.balance_amount = flt(self.total_travel_amount) - flt(self.advance_amount)
+		self.base_balance_amount = flt(self.base_total_travel_amount) - flt(self.advance_amount_nu)
 
 	def set_currency_exchange(self):
 		for item in self.get("itinerary"):
@@ -60,9 +107,9 @@ class TravelRequest(AccountsController):
 				item.actual_amount = flt(item.total_claim) * flt(exchnage_rate)
 	def check_date(self):
 		for item in self.get("itinerary"):
-			las_date = item.to_date
-		if nowdate() <= las_date:
-			frappe.throw("You cannot Calim Travel before '{}'".format(las_date))
+			las_date = item.from_date
+		if datetime.strptime(nowdate(),"%Y-%m-%d").date() <= datetime.strptime(str(las_date),"%Y-%m-%d").date():
+			frappe.throw("You cannot Claim Travel before '{}'".format(las_date))
 
 	def check_duplicate_requests(self):
 		# check if the travel dates are already used in other travel request
@@ -101,31 +148,7 @@ class TravelRequest(AccountsController):
 			if d.overlap_idx >= 0:
 				frappe.throw(_("Row#{}: Dates are overlapping with dates in Row#{}").format(d.idx, d.overlap_idx))
 	
-		# for item in self.get("itinerary"):
-		# 	from_date = item.from_date
-		# 	idx = len(self.itinerary)
-		# 	to_date = frappe.db.sql("""select to_date 
-		# 			from `tabTravel Itinerary` 
-		# 			where parent = '{}'
-		# 			and idx = '{}' """.format(self.name, idx), as_dict=True)
-		# 	frappe.throw(str(to_date))
-		# 	tas = frappe.db.sql("""select a.name
-		# 			from `tabTravel Request` a, `tabTravel Itinerary` b
-		# 			where a.employee = %s
-		# 			and a.name != %s
-		# 			and a.docstatus = 1
-		# 			and a.name = b.parent
-		# 			and (b.from_date between %s and %s or %s between b.from_date and b.to_date or %s between b.from_date and b.to_date)
-		# 			""", (str(self.employee), str(self.name), str(from_date), str(to_date), str(from_date), str(to_date)), as_dict=True)
-			
-		# 	if tas:
-		# 		frappe.throw("The dates in your current Travel Request has already been claimed in " + str(tas[0].name))
-				
-		# 	las = frappe.db.sql("select name from `tabLeave Application` where docstatus = 1 and employee = %s and (from_date between %s and %s or to_date between %s and %s)", (str(self.employee), str(from_date), str(to_date), str(from_date), str(to_date)), as_dict=True)					
-		# 	if las:
-		# 		frappe.throw("The dates in your current travel Request has been used in leave application " + str(las[0].name))
-
-	def validate_travel_dates(self):
+	def validate_travel_dates(self, update=False):
 		for item in self.get("itinerary"):
 			if cint(item.halt):
 				if not item.halt_at:
@@ -138,6 +161,33 @@ class TravelRequest(AccountsController):
 				if not (item.travel_from and item.travel_to):
 					frappe.throw(_("Row#{0}: <b>Travel From</b> and <b>Travel To</b> are mandatory").format(item.idx))
 				item.to_date = item.from_date
+			from_date = item.from_date
+			to_date   = item.from_date if not item.to_date else item.to_date
+			item.no_days   = date_diff(to_date, from_date) + 1
+			if update:
+				frappe.db.set_value("Travel Itinerary", item.name, "no_days", item.no_days)
+		if self.itinerary:
+			# check if the travel dates are already used in other travel authorization
+			tas = frappe.db.sql("""select t3.idx, t1.name, t2.date, t2.till_date
+					from 
+						`tabTravel Request` t1, 
+						`tabTravel Itinerary` t2,
+						`tabTravel Itinerary` t3
+					where t1.employee = "{employee}"
+					and t1.docstatus != 2
+					and t1.name != "{travel_authorization}"
+					and t2.parent = t1.name
+					and t3.parent = "{travel_authorization}"
+					and (
+						(t2.from_date <= t3.to_date and t2.to_date >= t3.from_date)
+						or
+						(t3.from_date <= t2.to_date and t3.to_date >= t2.from_date)
+					)
+			""".format(travel_authorization = self.name, employee = self.employee), as_dict=True)
+			for t in tas:
+				frappe.throw("Row#{}: The dates in your current Travel Request have already been claimed in {} between {} and {}"\
+					.format(t.idx, frappe.get_desk_link("Travel Request", t.name), t.date, t.till_date))
+	
 	
 	def update_amount(self):
 		for item in self.get("itinerary"):
@@ -197,13 +247,16 @@ class TravelRequest(AccountsController):
 				default_account = frappe.db.get_value("Company",self.company,"training_out_country_account")
 			else:
 				default_account = frappe.db.get_value("Company",self.company,"travel_out_country_account")
-
+		if self.employee_advance_reference:
+			sanctioned_amount = self.base_balance_amount
+		else:
+			sanctioned_amount = self.base_total_travel_amount
 		expense_claim.append('expenses',{
 			"expense_date":			nowdate(),
 			"expense_type":			self.purpose_of_travel,
 			"default_account":		default_account,
-			"amount":				self.total_travel_amount,
-			"sanctioned_amount":	self.total_travel_amount,
+			"amount":				self.base_total_travel_amount,
+			"sanctioned_amount":	self.base_total_travel_amount,
 			"reference_type":		self.doctype,
 			"reference":			self.name,
 			"cost_center":			self.cost_center or default_cost_center
@@ -249,12 +302,14 @@ class TravelRequest(AccountsController):
 
 @frappe.whitelist()
 def get_exchange_rate(from_currency, to_currency, posting_date):
+	if not posting_date:
+		frappe.msgprint("Please select Date")
 	ex_rate = frappe.db.sql("""select exchange_rate 
 		from `tabCurrency Exchange`
 		where from_currency = '{from_currency}'
 		and to_currency = '{to_currency}'
-		and `date` = '{posting_date}'
-		order by `date` desc
+		and date = '{posting_date}'
+		order by date desc
 		limit 1
 	""".format(from_currency=from_currency, to_currency=to_currency, posting_date=posting_date), as_dict=False)
 	if not ex_rate:

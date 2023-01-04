@@ -31,7 +31,7 @@ from hrms.hr.utils import (
 	share_doc_with_approver,
 	validate_active_employee,
 )
-
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
 class LeaveDayBlockedError(frappe.ValidationError):
 	pass
@@ -66,19 +66,22 @@ class LeaveApplication(Document):
 
 	def validate(self):
 		validate_active_employee(self.employee)
+		validate_workflow_states(self)
 		set_employee_name(self)
 		self.validate_dates()
 		self.validate_balance_leaves()
 		self.validate_leave_overlap()
 		self.validate_max_days()
-		self.show_block_day_warning()
-		self.validate_block_days()
+		# self.show_block_day_warning()
+		# self.validate_block_days()
 		self.validate_salary_processed_days()
 		self.validate_attendance()
 		self.set_half_day_date()
 		if frappe.db.get_value("Leave Type", self.leave_type, "is_optional_leave"):
 			self.validate_optional_leave()
 		self.validate_applicable_after()
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
 
 	def on_update(self):
 		if self.status == "Open" and self.docstatus < 1:
@@ -89,6 +92,8 @@ class LeaveApplication(Document):
 		share_doc_with_approver(self, self.leave_approver)
 
 	def on_submit(self):
+		#Added by Kinley 2022/11/16
+		notify_workflow_states(self)
 		if self.status in ["Open", "Cancelled"]:
 			frappe.throw(
 				_("Only Leave Applications with status 'Approved' and 'Rejected' can be submitted")
@@ -96,7 +101,6 @@ class LeaveApplication(Document):
 
 		self.validate_back_dated_application()
 		self.update_attendance()
-
 		# notify leave applier about approval
 		if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
 			self.notify_employee()
@@ -108,10 +112,11 @@ class LeaveApplication(Document):
 		self.status = "Cancelled"
 
 	def on_cancel(self):
+		notify_workflow_states(self)
 		self.create_leave_ledger_entry(submit=False)
-		# notify leave applier about cancellation
-		if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
-			self.notify_employee()
+		# notify leave applier about cancellation (Hidden by Kinley since custom workflow introduced 2022/11/16)
+		# if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
+		# 	self.notify_employee()
 		self.cancel_attendance()
 
 	def validate_applicable_after(self):
@@ -779,10 +784,11 @@ def get_leave_details(employee, date):
 
 	# is used in set query
 	lwp = frappe.get_list("Leave Type", filters={"is_lwp": 1}, pluck="name")
-
+	leave_approver = get_leave_approver(employee)
 	return {
 		"leave_allocation": leave_allocation,
 		"leave_approver": get_leave_approver(employee),
+		"leave_approver_name": frappe.db.get_value("Employee",{"user_id": leave_approver},"employee_name"),
 		"lwps": lwp,
 	}
 

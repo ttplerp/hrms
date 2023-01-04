@@ -9,15 +9,19 @@ from frappe.model.document import Document
 from frappe.utils import getdate
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
 class EmployeeTransfer(Document):
 	def validate(self):
+		validate_workflow_states(self)
 		self.check_duplicate()
 		self.validate_transfer_date()
 
 		self.validate_employee_eligibility()
 		if frappe.get_value("Employee", self.employee, "status") == "Left":
 			frappe.throw(_("Cannot transfer Employee with status Left"))
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
   
 	def before_submit(self):
 		if getdate(self.transfer_date) > getdate():
@@ -26,6 +30,8 @@ class EmployeeTransfer(Document):
 
 	def on_submit(self):
 		self.update_employee_master()
+		validate_workflow_states(self)
+
 		
 	def on_cancel(self):
 		self.update_employee_master(cancel=True)
@@ -48,6 +54,9 @@ class EmployeeTransfer(Document):
 		employee.branch		= self.new_branch if not cancel else self.old_branch
 		employee.cost_center= self.new_cost_center if not cancel else self.old_cost_center
 		employee.reports_to = self.new_reports_to if not cancel and self.new_reports_to else self.old_reports_to
+		employee.expense_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")
+		employee.leave_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")
+		employee.shift_request_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")
   
 		if cancel:
 			for t in frappe.db.get_all("Employee Transfer", {"employee": self.employee, "name": ("!=", self.name),
@@ -157,12 +166,12 @@ class EmployeeTransfer(Document):
 @frappe.whitelist()
 def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False):
 	def update_item(source, target):
-		# target.purpose = "Separation"
+		target.purpose = "Transfer"
 		target.employee_transfer_id = source.name
 
 	mapper = {
 		"Employee Transfer": {
-			"doctype": "Employee Benefits",
+			"doctype": "Employee Benefit Claim",
 		},
 	}
 	target_doc = get_mapped_doc("Employee Transfer", source_name, mapper, target_doc, update_item)

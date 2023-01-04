@@ -23,6 +23,14 @@ frappe.ui.form.on('Employee Separation', {
 				frappe.set_route('List', 'Task', {project: frm.doc.project});
 			},__("View"));
 		}
+		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefit_claim_status == "Not Claimed"){
+			frm.add_custom_button("Create Employee Benefit", function(){
+				frappe.model.open_mapped_doc({
+					method: "hrms.hr.doctype.employee_separation.employee_separation.make_employee_benefit",
+					frm: me.frm
+				})
+			});
+		}
 	},
 
 	employee_separation_template: function(frm) {

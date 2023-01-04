@@ -149,47 +149,47 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Monthly Attendance Sheet",
    "link_count": 0,
    "link_to": "Monthly Attendance Sheet",
    "link_type": "Report",
-   "onboard": 0,
+   "onboard": 1,
    "type": "Link"
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Employee Hours Utilization Based On Timesheet",
    "link_count": 0,
    "link_to": "Employee Hours Utilization Based On Timesheet",
    "link_type": "Report",
-   "onboard": 0,
+   "onboard": 1,
    "type": "Link"
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Project Profitability",
    "link_count": 0,
    "link_to": "Project Profitability",
    "link_type": "Report",
-   "onboard": 0,
+   "onboard": 1,
    "type": "Link"
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Employees working on a holiday",
    "link_count": 0,
    "link_to": "Employees working on a holiday",
    "link_type": "Report",
-   "onboard": 0,
+   "onboard": 1,
    "type": "Link"
   }
  ],
- "modified": "2022-11-07 17:13:27.695985",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2022-12-13 11:13:09.710154",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "Shift & Attendance",
  "owner": "Administrator",
@@ -197,7 +197,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 10.0,
+ "sequence_id": 5.0,
  "shortcuts": [
   {
    "color": "Grey",
