@@ -61,14 +61,16 @@ frappe.ui.form.on('Employee Advance', {
 				doc: frm.doc
 			})
 		}
-		if (frm.doc.docstatus === 1 &&
-			(flt(frm.doc.paid_amount) < flt(frm.doc.advance_amount)) &&
-			frappe.model.can_create("Payment Entry")) {
-			frm.add_custom_button(__('Payment'),
-				function () {
-					frm.events.make_payment_entry(frm);
-				}, __('Create'));
-		} else if (
+		// commanted by rinzin on 4/01/2023
+		// if (frm.doc.docstatus === 1 &&
+		// 	(flt(frm.doc.paid_amount) < flt(frm.doc.advance_amount)) &&
+		// 	frappe.model.can_create("Payment Entry")) {
+		// 	frm.add_custom_button(__('Payment'),
+		// 		function () {
+		// 			frm.events.make_payment_entry(frm);
+		// 		}, __('Create'));
+		// } 
+		if (
 			frm.doc.docstatus === 1 &&
 			flt(frm.doc.claimed_amount) < flt(frm.doc.paid_amount) - flt(frm.doc.return_amount) &&
 			frappe.model.can_create("Expense Claim")
@@ -98,6 +100,13 @@ frappe.ui.form.on('Employee Advance', {
 		}
 	},
 
+	"cr_journal": function(frm) {
+		frappe.call({
+			method: "make_bank_entry",
+			doc: frm.doc
+		});
+	},
+
 	make_deduction_via_additional_salary: function(frm) {
 		frappe.call({
 			method: "hrms.hr.doctype.employee_advance.employee_advance.create_return_through_additional_salary",
@@ -111,23 +120,24 @@ frappe.ui.form.on('Employee Advance', {
 		});
 	},
 
-	make_payment_entry: function(frm) {
-		let method = "hrms.overrides.employee_payment_entry.get_payment_entry_for_employee";
-		if (frm.doc.__onload && frm.doc.__onload.make_payment_via_journal_entry) {
-			method = "hrms.hr.doctype.employee_advance.employee_advance.make_bank_entry";
-		}
-		return frappe.call({
-			method: method,
-			args: {
-				"dt": frm.doc.doctype,
-				"dn": frm.doc.name
-			},
-			callback: function(r) {
-				var doclist = frappe.model.sync(r.message);
-				frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
-			}
-		});
-	},
+	// commanted by rinzin on 4/01/2023
+	// make_payment_entry: function(frm) {
+	// 	let method = "hrms.overrides.employee_payment_entry.get_payment_entry_for_employee";
+	// 	if (frm.doc.__onload && frm.doc.__onload.make_payment_via_journal_entry) {
+	// 		method = "hrms.hr.doctype.employee_advance.employee_advance.make_bank_entry";
+	// 	}
+	// 	return frappe.call({
+	// 		method: method,
+	// 		args: {
+	// 			"dt": frm.doc.doctype,
+	// 			"dn": frm.doc.name
+	// 		},
+	// 		callback: function(r) {
+	// 			var doclist = frappe.model.sync(r.message);
+	// 			frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
+	// 		}
+	// 	});
+	// },
 
 	make_expense_claim: function(frm) {
 		return frappe.call({

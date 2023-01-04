@@ -57,9 +57,11 @@
   "advance_approver",
   "advance_approver_designation",
   "section_break_26",
+  "je_reference",
   "salary_structure",
   "salary_component",
-  "column_break_28"
+  "column_break_28",
+  "cr_journal"
  ],
  "fields": [
   {
@@ -437,11 +439,23 @@
    "fieldtype": "Currency",
    "label": "Total Advance",
    "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "je_reference",
+   "fieldtype": "Data",
+   "label": "JE Reference",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cr_journal",
+   "fieldtype": "Button",
+   "label": "Create Journal Entry"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-02 16:51:15.512240",
+ "modified": "2023-01-04 16:46:02.978438",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
