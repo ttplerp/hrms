@@ -168,7 +168,7 @@ class TravelRequest(AccountsController):
 				frappe.db.set_value("Travel Itinerary", item.name, "no_days", item.no_days)
 		if self.itinerary:
 			# check if the travel dates are already used in other travel authorization
-			tas = frappe.db.sql("""select t3.idx, t1.name, t2.from_date, t2.till_date
+			tas = frappe.db.sql("""select t3.idx, t1.name, t2.from_date, t2.to_date
 					from 
 						`tabTravel Request` t1, 
 						`tabTravel Itinerary` t2,
