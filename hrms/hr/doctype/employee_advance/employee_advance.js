@@ -100,12 +100,12 @@ frappe.ui.form.on('Employee Advance', {
 		}
 	},
 
-	"cr_journal": function(frm) {
-		frappe.call({
-			method: "make_bank_entry",
-			doc: frm.doc
-		});
-	},
+	// "cr_journal": function(frm) {
+	// 	frappe.call({
+	// 		method: "make_bank_entry",
+	// 		doc: frm.doc
+	// 	});
+	// },
 
 	make_deduction_via_additional_salary: function(frm) {
 		frappe.call({

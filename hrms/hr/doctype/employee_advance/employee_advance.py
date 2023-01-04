@@ -358,7 +358,7 @@ class EmployeeAdvance(Document):
 		frappe.db.set_value("Employee Advance", self.name, "claimed_amount", flt(claimed_amount))
 		self.reload()
 		self.set_status(update=True)
-	@frappe.whitelist()
+
 	def make_bank_entry(self):
 		doc = frappe.get_doc(self.doctype, self.name)
 		payment_account = get_default_bank_cash_account(
@@ -420,6 +420,7 @@ class EmployeeAdvance(Document):
 		je.ignore_permissions=0
 		je.insert()
 		frappe.db.set_value(self.doctype, self.name, "je_reference", je.name)
+		
 @frappe.whitelist()
 def get_pending_amount(employee, posting_date):
 	employee_due_amount = frappe.get_all(

@@ -441,7 +441,6 @@
    "read_only": 1
   },
   {
-   "allow_on_submit": 1,
    "fieldname": "je_reference",
    "fieldtype": "Data",
    "label": "JE Reference",
@@ -450,12 +449,13 @@
   {
    "fieldname": "cr_journal",
    "fieldtype": "Button",
+   "hidden": 1,
    "label": "Create Journal Entry"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-04 16:46:02.978438",
+ "modified": "2023-01-04 17:44:54.834845",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
