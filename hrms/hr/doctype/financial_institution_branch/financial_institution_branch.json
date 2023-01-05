@@ -2,7 +2,6 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:branch_name",
  "creation": "2022-10-03 14:52:32.879972",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -44,11 +43,10 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-01-05 12:32:40.890005",
+ "modified": "2023-01-05 12:51:09.137272",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution Branch",
- "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
