@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:branch_name",
  "creation": "2022-10-03 14:52:32.879972",
@@ -24,7 +25,8 @@
   {
    "fieldname": "short_form",
    "fieldtype": "Data",
-   "label": "Short Form"
+   "label": "Short Form",
+   "read_only": 1
   },
   {
    "fieldname": "branch_name",
@@ -42,7 +44,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-19 14:32:50.748110",
+ "modified": "2023-01-05 12:32:40.890005",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution Branch",
