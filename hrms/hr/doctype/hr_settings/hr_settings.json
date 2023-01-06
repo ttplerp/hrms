@@ -59,20 +59,72 @@
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
+  "column_break_54",
   "encashment_status_notification_template",
+  "section_break_56",
+  "material_request_approval_notification_template",
+  "column_break_58",
+  "material_request_status_notification_template",
   "sb_employee_separation",
   "employee_separation_approval_notification_template",
+  "column_break_62",
   "employee_separation_status_notification_template",
-  "cb_ns_01",
   "sb_overtime",
   "overtime_approval_notification_template",
+  "cb_ns_01",
   "overtime_status_notification_template",
   "sb_employee_benefits",
   "benefits_approval_notification_template",
+  "column_break_70",
   "benefits_status_notification_template",
   "sb_employee_transfer",
   "employee_transfer_approval_notification_template",
-  "employee_transfer_status_notification_template"
+  "column_break_74",
+  "employee_transfer_status_notification_template",
+  "employee_advance_section",
+  "employee_advance_approval_notification_template",
+  "column_break_78",
+  "employee_advance_status_notification_template",
+  "asset_movement_settings_section",
+  "asset_movement_approval_notification_template",
+  "asset_movement_column",
+  "asset_movement_status_notification_template",
+  "repair_and_services_settings_section",
+  "repair_and_services_approval_notification_template",
+  "column_break_86",
+  "repair_and_services_status_notification_template",
+  "budget_reappropiation_settings_section",
+  "budget_reappropiation_approval_notification_template",
+  "column_break_90",
+  "budget_reappropiation_status_notification_template",
+  "vehicle_request_settings_section",
+  "vehicle_request_approval_notification_template",
+  "column_break_94",
+  "vehicle_request_status_notification_template",
+  "eme_invoice_settings_section",
+  "eme_invoice_approval_notification_template",
+  "column_break_98",
+  "eme_invoice_status_notification_template",
+  "coal_raising_payment_settings_section",
+  "coal_raising_payment_approval_notification_template",
+  "column_break_102",
+  "coal_raising_payment_status_notification_template",
+  "leave_application_settings_section",
+  "leave_application_approval_notification_template",
+  "column_break_106",
+  "leave_application_status_notification_template",
+  "travel_request_settings_section",
+  "travel_request_approval_notification_template",
+  "column_break_110",
+  "travel_request_status_notification_template",
+  "utility_bill_settings_section",
+  "utility_bill_approval_notification_template",
+  "column_break_114",
+  "utility_bill_status_notification_template",
+  "bank_payment_settings_section",
+  "bank_payment_approval_notification_template",
+  "column_break_118",
+  "bank_payment_status_notification_template"
  ],
  "fields": [
   {
@@ -460,13 +512,281 @@
   {
    "fieldname": "cb_01",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee_advance_section",
+   "fieldtype": "Section Break",
+   "label": "Employee Advance"
+  },
+  {
+   "fieldname": "employee_advance_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Advance Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "employee_advance_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Advance Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "asset_movement_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "asset_movement_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Asset Movement Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "asset_movement_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Asset Movement Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "material_request_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Material Request Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "material_request_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Material Request Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_54",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_56",
+   "fieldtype": "Section Break",
+   "label": "Material Request Settings"
+  },
+  {
+   "fieldname": "column_break_58",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_62",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_70",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_74",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_78",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "asset_movement_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Asset Movement Settings"
+  },
+  {
+   "fieldname": "repair_and_services_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Repair and Services Settings"
+  },
+  {
+   "fieldname": "repair_and_services_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Repair and Services Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_86",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "repair_and_services_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Repair and Services Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "budget_reappropiation_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Budget Reappropiation Settings"
+  },
+  {
+   "fieldname": "budget_reappropiation_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Budget Reappropiation Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_90",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "budget_reappropiation_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Budget Reappropiation Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "vehicle_request_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Vehicle Request Settings"
+  },
+  {
+   "fieldname": "vehicle_request_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Vehicle Request Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_94",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "vehicle_request_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Vehicle Request Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "eme_invoice_settings_section",
+   "fieldtype": "Section Break",
+   "label": "EME Invoice Settings"
+  },
+  {
+   "fieldname": "eme_invoice_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "EME Invoice Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_98",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "eme_invoice_status_notification_template",
+   "fieldtype": "Link",
+   "label": "EME Invoice Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "coal_raising_payment_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Coal Raising Payment Settings"
+  },
+  {
+   "fieldname": "coal_raising_payment_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Coal Raising Payment Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_102",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "coal_raising_payment_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Coal Raising Payment Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "leave_application_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Leave Application Settings"
+  },
+  {
+   "fieldname": "leave_application_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Leave Application Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_106",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "leave_application_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Leave Application Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "travel_request_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Travel Request Settings"
+  },
+  {
+   "fieldname": "travel_request_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Travel Request Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_110",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "travel_request_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Travel Request Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "utility_bill_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Utility Bill Settings"
+  },
+  {
+   "fieldname": "utility_bill_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Utility Bill Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_114",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "utility_bill_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Utility Bill Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "bank_payment_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Bank Payment Settings"
+  },
+  {
+   "fieldname": "bank_payment_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Bank Payment Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_118",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bank_payment_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Bank Payment Status Notification Template",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-12-16 10:56:09.565869",
+ "modified": "2023-01-06 15:12:52.936620",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
