@@ -14,12 +14,12 @@ class EmployeeAttendanceTool(Document):
 
 
 @frappe.whitelist()
-def get_employees(date, department=None, branch=None, company=None):
+def get_employees(date, department=None, branch=None, company=None, division=None, section=None, unit=None):
 	attendance_not_marked = []
 	attendance_marked = []
 	filters = {"status": "Active", "date_of_joining": ["<=", date]}
 
-	for field, value in {"department": department, "branch": branch, "company": company}.items():
+	for field, value in {"department": department, "branch": branch, "company": company, "division": division, "section": section, "unit": unit}.items():
 		if value:
 			filters[field] = value
 

@@ -6,6 +6,51 @@ frappe.ui.form.on("Employee Attendance Tool", {
 	onload: function(frm) {
 		frm.set_value("date", frappe.datetime.get_today());
 		erpnext.employee_attendance_tool.load_employees(frm);
+		frm.set_query("department", function() {
+			return {
+				"filters": {
+					"company": frm.doc.company,
+					"disabled":0,
+					"is_division":0,
+					"is_section":0,
+					"is_unit":0
+				}
+			};
+		});
+		frm.set_query("division", function() {
+			return {
+				"filters": {
+					"company": frm.doc.company,
+					"parent_department": frm.doc.department,
+					"disabled":0,
+					"is_division":1,
+					"is_section":0
+				}
+			};
+		});
+		frm.set_query("section", function() {
+			return {
+				"filters": {
+					"parent_department": frm.doc.division,
+					"company": frm.doc.company,
+					"disabled":0,
+					"is_division":0,
+					"is_section":1
+				}
+			};
+		});
+		frm.set_query("unit", function() {
+			return {
+				"filters": {
+					"parent_department": frm.doc.section,
+					"company": frm.doc.company,
+					"disabled":0,
+					"is_division":0,
+					"is_unit":1,
+					"is_section":0
+				}
+			};
+		});
 	},
 
 	date: function(frm) {
@@ -22,6 +67,15 @@ frappe.ui.form.on("Employee Attendance Tool", {
 
 	company: function(frm) {
 		erpnext.employee_attendance_tool.load_employees(frm);
+	},
+	division: function(frm){
+		erpnext.employee_attendance_tool.load_employees(frm);
+	},
+	section: function(frm){
+		erpnext.employee_attendance_tool.load_employees(frm);
+	},
+	unit: function(frm){
+		erpnext.employee_attendance_tool.load_employees(frm);
 	}
 
 });
@@ -36,7 +90,10 @@ erpnext.employee_attendance_tool = {
 					date: frm.doc.date,
 					department: frm.doc.department,
 					branch: frm.doc.branch,
-					company: frm.doc.company
+					company: frm.doc.company,
+					division: frm.doc.division,
+					section: frm.doc.section,
+					unit: frm.doc.unit
 				},
 				callback: function(r) {
 					if(r.message['unmarked'].length > 0) {
