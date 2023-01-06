@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "sb_payroll_period",
+  "company",
   "fiscal_year",
   "month_name",
   "month",
@@ -53,9 +54,7 @@
   "section_break0",
   "column_break0",
   "posting_date",
-  "payroll_frequency",
-  "column_break1",
-  "company"
+  "payroll_frequency"
  ],
  "fields": [
   {
@@ -83,11 +82,6 @@
    "hidden": 1,
    "label": "Payroll Frequency",
    "options": "\nMonthly\nFortnightly\nBimonthly\nWeekly\nDaily"
-  },
-  {
-   "fieldname": "column_break1",
-   "fieldtype": "Column Break",
-   "width": "50%"
   },
   {
    "fieldname": "company",
@@ -163,6 +157,7 @@
    "default": "0",
    "fieldname": "salary_slip_based_on_timesheet",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Salary Slip Based on Timesheet"
   },
   {
@@ -353,7 +348,7 @@
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-27 11:58:32.421198",
+ "modified": "2023-01-06 17:02:16.459151",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",
