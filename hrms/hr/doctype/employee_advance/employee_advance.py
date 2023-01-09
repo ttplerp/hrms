@@ -37,6 +37,7 @@ class EmployeeAdvance(Document):
 		self.update_pending_amount()
 		self.update_reference()
 		self.check_duplicate_advance()
+		self.select_advance_account()
 		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
 	
@@ -53,6 +54,17 @@ class EmployeeAdvance(Document):
 			self.update_salary_structure()
 		self.make_bank_entry()
 		notify_workflow_states(self)
+
+	def select_advance_account(self):
+		if self.advance_type == "Salary Advance":
+			self.advance_account = frappe.db.get_value("Company", self.company, "salary_advance_account")
+		elif self.advance_type == "Travel Advance":
+			self.advance_account = frappe.db.get_value("Company", self.company, "travel_advance_account")
+		elif self.advance_type == "Imprest Advance":
+			self.advance_account = frappe.db.get_value("Company", self.company, "imprest_advance_account")
+		else:
+			account = ""
+			
 	def update_defaults(self):
 		self.salary_component = "Salary Advance Deductions"
 		
