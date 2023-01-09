@@ -72,6 +72,7 @@ frappe.ui.form.on('Employee Advance', {
 		// } 
 		if (
 			frm.doc.docstatus === 1 &&
+			frm.doc.advance_type === "Imprest Advance" &&
 			flt(frm.doc.claimed_amount) < flt(frm.doc.paid_amount) - flt(frm.doc.return_amount) &&
 			frappe.model.can_create("Expense Claim")
 		) {
@@ -83,7 +84,6 @@ frappe.ui.form.on('Employee Advance', {
 				__('Create')
 			);
 		}
-
 		if (
 			frm.doc.docstatus === 1
 			&& (flt(frm.doc.claimed_amount) < flt(frm.doc.paid_amount) - flt(frm.doc.return_amount))
@@ -99,13 +99,6 @@ frappe.ui.form.on('Employee Advance', {
 			}
 		}
 	},
-
-	// "cr_journal": function(frm) {
-	// 	frappe.call({
-	// 		method: "make_bank_entry",
-	// 		doc: frm.doc
-	// 	});
-	// },
 
 	make_deduction_via_additional_salary: function(frm) {
 		frappe.call({

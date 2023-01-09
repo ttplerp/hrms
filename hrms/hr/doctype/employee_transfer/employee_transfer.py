@@ -13,14 +13,15 @@ from erpnext.custom_workflow import validate_workflow_states, notify_workflow_st
 
 class EmployeeTransfer(Document):
 	def validate(self):
-		validate_workflow_states(self)
+		if self.transfer_type == "Personal Request":
+			validate_workflow_states(self)
 		self.check_duplicate()
 		self.validate_transfer_date()
 
 		self.validate_employee_eligibility()
 		if frappe.get_value("Employee", self.employee, "status") == "Left":
 			frappe.throw(_("Cannot transfer Employee with status Left"))
-		if self.workflow_state != "Approved":
+		if self.workflow_state != "Approved" and self.transfer_type == "Personal Request":
 			notify_workflow_states(self)
   
 	def before_submit(self):
@@ -30,7 +31,8 @@ class EmployeeTransfer(Document):
 
 	def on_submit(self):
 		self.update_employee_master()
-		validate_workflow_states(self)
+		if self.transfer_type == "Personal Request":
+			validate_workflow_states(self)
 
 		
 	def on_cancel(self):
