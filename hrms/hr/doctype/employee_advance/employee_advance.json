@@ -381,7 +381,8 @@
    "fieldname": "advance_approver_name",
    "fieldtype": "Link",
    "label": "Approver",
-   "options": "Employee"
+   "options": "Employee",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_42",
@@ -455,7 +456,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-04 17:44:54.834845",
+ "modified": "2023-01-10 17:32:33.920479",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
