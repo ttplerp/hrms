@@ -429,7 +429,7 @@ class EmployeeAdvance(Document):
 				"exchange_rate": flt(paying_exchange_rate),
 			},
 		)
-		je.ignore_permissions=1
+		je.flags.ignore_permissions=1
 		je.insert()
 		frappe.db.set_value(self.doctype, self.name, "je_reference", je.name)
 		
