@@ -13,11 +13,11 @@ class EmployeeMaster(Employee):
 	def autoname(self):
 		# naming done with combination with joining year, month and 4 digits series
 		if self.old_id:
-			self.empoyee =	self.name = self.old_id
+			self.employee =	self.name = self.old_id
 			return
 		year_month = str(self.date_of_joining)[2:4] + str(self.date_of_joining)[5:7]
 		name = make_autoname('EMP.####')[3:]
-		self.employee = self.name = year_month + name
+		self.employee = self.name = 'HR-EMP-' + year_month + name
 
 def validate_onboarding_process(doc, method=None):
 	"""Validates Employee Creation for linked Employee Onboarding"""
