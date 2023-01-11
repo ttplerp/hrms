@@ -429,7 +429,7 @@ class EmployeeAdvance(Document):
 				"exchange_rate": flt(paying_exchange_rate),
 			},
 		)
-		je.ignore_permissions=0
+		je.ignore_permissions=1
 		je.insert()
 		frappe.db.set_value(self.doctype, self.name, "je_reference", je.name)
 		
@@ -572,3 +572,23 @@ def select_account(advance_type, company):
 	else:
 		account = ""
 	return account
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+
+	if user == "Administrator":
+		return
+	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles:
+		return
+
+	return """(
+		`tabEmployee Advance`.owner = '{user}'
+		or
+		exists(select 1
+				from `tabEmployee`
+				where `tabEmployee`.name = `tabLeave Application`.employee
+				and `tabEmployee`.user_id = '{user}')
+		or
+		(`tabEmployee Advance`.advance_approver = '{user}' and `tabEmployee Advance`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
+	)""".format(user=user)
