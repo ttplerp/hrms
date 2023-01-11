@@ -53,9 +53,11 @@
   "sb_approver",
   "hrgm",
   "hr_approver",
+  "fd_head",
   "cb_01",
   "hrgm_name",
   "hr_approver_name",
+  "fd_head_user_id",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -460,13 +462,27 @@
   {
    "fieldname": "cb_01",
    "fieldtype": "Column Break"
+  },
+  {
+   "description": "For DSP. Used for MR Workflow to notify after Approval.",
+   "fieldname": "fd_head",
+   "fieldtype": "Link",
+   "label": "FD Head",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "fd_head.user_id",
+   "fieldname": "fd_head_user_id",
+   "fieldtype": "Data",
+   "label": "FD Head User Id",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-12-16 10:56:09.565869",
+ "modified": "2023-01-05 15:21:24.853668",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

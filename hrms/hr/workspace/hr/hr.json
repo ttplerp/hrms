@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"HR Dashboard\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Dashboard\",\"col\":3}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"HR Dashboard\",\"col\":3}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}}]",
  "creation": "2020-03-02 15:48:58.322521",
  "docstatus": 0,
  "doctype": "Workspace",
@@ -776,8 +776,101 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Other Reports",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Information",
+   "link_count": 0,
+   "link_to": "Employee Information",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Birthday",
+   "link_count": 0,
+   "link_to": "Employee Birthday",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employees Working on a Holiday",
+   "link_count": 0,
+   "link_to": "Employees working on a holiday",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Daily Work Summary",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Daily Work Summary Replies",
+   "link_count": 0,
+   "link_to": "Daily Work Summary Replies",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Settings",
+   "link_count": 3,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "HR Settings",
+   "link_count": 0,
+   "link_to": "HR Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Daily Work Summary Group",
+   "link_count": 0,
+   "link_to": "Daily Work Summary Group",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Team Updates",
+   "link_count": 0,
+   "link_to": "team-updates",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Key Reports",
-   "link_count": 7,
+   "link_count": 6,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -837,17 +930,6 @@
    "type": "Link"
   },
   {
-   "dependencies": "Employee Advance",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Advance Summary",
-   "link_count": 0,
-   "link_to": "Employee Advance Summary",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
    "hidden": 0,
    "is_query_report": 0,
    "label": "Employee Exits",
@@ -860,41 +942,58 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Settings",
-   "link_count": 3,
+   "label": "Employee",
+   "link_count": 5,
    "onboard": 0,
    "type": "Card Break"
   },
   {
-   "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
-   "label": "HR Settings",
+   "label": "Employee",
    "link_count": 0,
-   "link_to": "HR Settings",
+   "link_to": "Employee",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   },
   {
-   "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Daily Work Summary Group",
+   "label": "Employee Group",
    "link_count": 0,
-   "link_to": "Daily Work Summary Group",
+   "link_to": "Employee Group",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   },
   {
-   "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Team Updates",
+   "label": "Employee Grade",
    "link_count": 0,
-   "link_to": "team-updates",
-   "link_type": "Page",
+   "link_to": "Employee Grade",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employment Type",
+   "link_count": 0,
+   "link_to": "Employment Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Desuup",
+   "link_count": 0,
+   "link_to": "Desuup",
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   },
@@ -952,164 +1051,16 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Dzongkhag",
+   "label": "Warehouse",
    "link_count": 0,
-   "link_to": "Dzongkhag",
+   "link_to": "Warehouse",
    "link_type": "DocType",
    "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Other Reports",
-   "link_count": 5,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Information",
-   "link_count": 0,
-   "link_to": "Employee Information",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Birthday",
-   "link_count": 0,
-   "link_to": "Employee Birthday",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employees Working on a Holiday",
-   "link_count": 0,
-   "link_to": "Employees working on a holiday",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Daily Work Summary",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Daily Work Summary Replies",
-   "link_count": 0,
-   "link_to": "Daily Work Summary Replies",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Information Report",
-   "link_count": 0,
-   "link_to": "Employee Information Report",
-   "link_type": "Report",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee",
-   "link_count": 5,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee",
-   "link_count": 0,
-   "link_to": "Employee",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Group",
-   "link_count": 0,
-   "link_to": "Employee Group",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Grade",
-   "link_count": 0,
-   "link_to": "Employee Grade",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Advance",
-   "link_count": 0,
-   "link_to": "Employee Advance",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Officiating Employee",
-   "link_count": 0,
-   "link_to": "Officiating Employee",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Reports",
-   "link_count": 2,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "LTC, PBVA and Bonus Report",
-   "link_count": 0,
-   "link_to": "LTC Process Report",
-   "link_type": "Report",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee TDS Certificate",
-   "link_count": 0,
-   "link_to": "Employee TDS Certificate",
-   "link_type": "Report",
-   "onboard": 1,
    "type": "Link"
   }
  ],
- "modified": "2022-12-15 14:05:23.975738",
- "modified_by": "Administrator",
+ "modified": "2023-01-10 10:51:43.683519",
+ "modified_by": "pema.dhendup@thimphutechpark.bt",
  "module": "HR",
  "name": "HR",
  "owner": "Administrator",
@@ -1136,13 +1087,6 @@
    "link_to": "Employee",
    "stats_filter": "{\"status\":\"Active\"}",
    "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Recruitment Dashboard",
-   "link_to": "Recruitment",
-   "type": "Dashboard"
   }
  ],
  "title": "HR"
