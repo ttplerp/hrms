@@ -10,6 +10,7 @@
   "section_break_1",
   "status",
   "column_break_1",
+  "company",
   "rejection_reason",
   "section_break_2",
   "employee",
@@ -41,7 +42,6 @@
   "amended_from",
   "processed",
   "sb_additional_info",
-  "company",
   "payment_made",
   "salary_component",
   "column_break_20",
@@ -230,12 +230,10 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "employee.company",
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
-   "options": "Company",
-   "read_only": 1
+   "options": "Company"
   },
   {
    "fetch_from": "employee.employment_type",
@@ -323,7 +321,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-13 11:19:29.683730",
+ "modified": "2023-01-12 13:17:16.072286",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",
