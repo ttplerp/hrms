@@ -579,7 +579,7 @@ def get_permission_query_conditions(user):
 
 	if user == "Administrator":
 		return
-	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles:
+	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "System Manager" in user_roles:
 		return
 
 	return """(
@@ -587,8 +587,8 @@ def get_permission_query_conditions(user):
 		or
 		exists(select 1
 				from `tabEmployee`
-				where `tabEmployee`.name = `tabLeave Application`.employee
+				where `tabEmployee`.name = `tabEmployee Advance`.employee
 				and `tabEmployee`.user_id = '{user}')
 		or
-		(`tabEmployee Advance`.advance_approver = '{user}' and `tabEmployee Advance`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
+		(`tabEmployee Advance`.advance_approver_name = '{user}' and `tabEmployee Advance`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
 	)""".format(user=user)
