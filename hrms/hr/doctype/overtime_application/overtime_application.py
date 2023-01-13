@@ -18,6 +18,12 @@ class OvertimeApplication(Document):
 		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
 		self.processed = 0
+		self.check_user_creation()
+
+	def check_user_creation(self):
+		user_id = frappe.db.get_value("Employee", self.employee, "user_id")
+		if not user_id:
+			frappe.throw("Please create user before applying Overtime for " +str(self.employee) +":"+ str(self.employee_name))
 
 	def on_cancel(self):
 		notify_workflow_states(self)

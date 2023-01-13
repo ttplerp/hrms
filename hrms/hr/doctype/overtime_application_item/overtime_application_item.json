@@ -63,7 +63,8 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Overtime Type",
-   "options": "Overtime (Normal Rate)\nSunday Overtime (Half Day)\nSunday Overtime (Full Day)"
+   "options": "\nOvertime (Normal Rate)\nSunday Overtime (Half Day)\nSunday Overtime (Full Day)",
+   "reqd": 1
   },
   {
    "fieldname": "ot_rate",
@@ -81,7 +82,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-12-16 12:27:29.980540",
+ "modified": "2023-01-13 17:33:20.292549",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application Item",
