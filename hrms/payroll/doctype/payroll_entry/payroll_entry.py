@@ -170,8 +170,7 @@ class PayrollEntry(Document):
 				"month": self.month
 			})
 			if len(emp_list) > 300:
-				# frappe.enqueue(create_salary_slips_for_employees, timeout=600, employees=emp_list, args=args)
-				create_salary_slips_for_employees(emp_list, args, publish_progress=True)
+				frappe.enqueue(create_salary_slips_for_employees, timeout=600, employees=emp_list, args=args)
 			else:
 				create_salary_slips_for_employees(emp_list, args, publish_progress=False)
 				# since this method is called via frm.call this doc needs to be updated manually

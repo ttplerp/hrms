@@ -26,7 +26,7 @@ class OvertimeApplication(Document):
 	def calculate_totals(self):			
 		settings = frappe.get_single("HR Settings")
 		overtime_limit_type, overtime_limit = settings.overtime_limit_type, flt(settings.overtime_limit)
-
+		total_amount = 0
 		total_hours = 0
 		for i in self.get("items"):
 			total_hours += flt(i.number_of_hours)
@@ -39,7 +39,8 @@ class OvertimeApplication(Document):
 				month_start_date = add_to_date(i.to_date, months=-1)
 			elif overtime_limit_type == "Per Year":
 				month_start_date = add_to_date(i.to_date, years=-1)
-		
+			i.amount = flt(i.rate) * flt(i.number_of_hours)
+			total_amount += i.amount
 		self.actual_hours = flt(total_hours)
 		if flt(total_hours) > flt(overtime_limit):
 			frappe.throw(_("Only {} hours accepted for payment").format(overtime_limit))
@@ -47,7 +48,7 @@ class OvertimeApplication(Document):
 			self.total_hours_lapsed = flt(total_hours) - flt(overtime_limit)
 		else:
 			self.total_hours = flt(self.actual_hours)
-		self.total_amount = round(flt(self.total_hours)*flt(self.rate),0)
+		self.total_amount = round(total_amount,0)
 
 	def on_cancel(self):
 		notify_workflow_states(self)

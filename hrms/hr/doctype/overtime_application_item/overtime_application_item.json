@@ -10,7 +10,9 @@
   "number_of_hours",
   "column_break_3",
   "to_date",
+  "rate",
   "column_break_4",
+  "amount",
   "remarks"
  ],
  "fields": [
@@ -47,12 +49,26 @@
   {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Hourly Rate",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-09-24 13:38:34.602102",
+ "modified": "2023-01-13 22:31:43.183126",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application Item",

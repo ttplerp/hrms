@@ -24,21 +24,7 @@ frappe.ui.form.on('Overtime Application', {
 			frm.set_value("approver_name", frappe.user.full_name(frm.doc.approver));
 		}
 	},
-	employee: function(frm) {
-		if (frm.doc.employee) {
-			frappe.call({
-				method: "erpnext.setup.doctype.employee.employee.get_overtime_rate",
-				args: {
-					employee: frm.doc.employee,
-				},
-				callback: function(r) {
-					if(r.message) {
-						frm.set_value("rate", r.message)
-					}
-				}
-			})
-		}
-	},
+	
 	rate: function(frm) {
 		frm.set_value("total_amount", flt(frm.doc.rate) * flt(frm.doc.total_hours))
 	},
@@ -62,7 +48,11 @@ frappe.ui.form.on('Overtime Application', {
 });
 frappe.ui.form.on("Overtime Application Item", {
 	"number_of_hours": function(frm, cdt, cdn) {
+		calculate_amount(frm, cdt, cdn)
 		calculate_time(frm, cdt, cdn);
+	},
+	"rate":function(frm, cdt, cdn){
+		calculate_amount(frm, cdt, cdn)
 	},
 	"from_date": function(frm, cdt, cdn) {
 		var child = locals[cdt][cdn]
@@ -70,14 +60,29 @@ frappe.ui.form.on("Overtime Application Item", {
 		if(child.to_date && child.from_date) {
 			frappe.model.set_value(cdt, cdn, "number_of_hours", hours);
 		}
+		if (frm.doc.employee) {
+			frappe.call({
+				method: "erpnext.setup.doctype.employee.employee.get_overtime_rate",
+				args: {
+					employee: frm.doc.employee,
+					posting_date:child.from_date
+				},
+				callback: function(r) {
+					if(r.message) {
+						// frm.set_value("rate", r.message)
+						frappe.model.set_value(cdt, cdn, "rate", r.message);
+					}
+				}
+			})
+		}
 	},
 	
 	"to_date": function(frm, cdt, cdn) {
         	var child = locals[cdt][cdn]
         	var hours = moment(child.to_date).diff(moment(child.from_date), "seconds") / 3600;
         	if(child.to_date && child.from_date) {
-		frappe.model.set_value(cdt, cdn, "number_of_hours", hours);
-		}
+				frappe.model.set_value(cdt, cdn, "number_of_hours", hours);
+				}
         },
 
 
@@ -86,16 +91,23 @@ frappe.ui.form.on("Overtime Application Item", {
 	},
 	
 })
-
+function calculate_amount(frm, cdt, cdn){
+	let row = locals[cdt][cdn]
+	if (row.number_of_hours && row.rate){
+		frappe.model.set_value(cdt, cdn, "amount", row.rate * row.number_of_hours);
+	}
+}
 function calculate_time(frm, cdt, cdn) {
-	var total_time = 0;
+	let total_time = 0;
+	let total_amount = 0
 	frm.doc.items.forEach(function(d) {
-		if(d.number_of_hours) {
+		if(d.number_of_hours && d.rate) {
 			total_time += d.number_of_hours
+			total_amount += d.amount
 		}	
 	})
 	frm.set_value("total_hours", total_time)
-	frm.set_value("total_amount", total_time * frm.doc.rate)
+	frm.set_value("total_amount", total_amount)
 	cur_frm.refresh_field("total_hours")
 	cur_frm.refresh_field("total_amount")
 }
