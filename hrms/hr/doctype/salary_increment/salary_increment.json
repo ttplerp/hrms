@@ -17,8 +17,6 @@
   "company",
   "branch",
   "department",
-  "division",
-  "section",
   "designation",
   "column_break_7",
   "fiscal_year",
@@ -114,20 +112,6 @@
    "fieldtype": "Link",
    "label": "Department",
    "options": "Department",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.division",
-   "fieldname": "division",
-   "fieldtype": "Data",
-   "label": "Division",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.section",
-   "fieldname": "section",
-   "fieldtype": "Data",
-   "label": "Section",
    "read_only": 1
   },
   {
@@ -311,7 +295,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-17 12:33:35.532163",
+ "modified": "2023-01-17 13:02:49.639602",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Salary Increment",
