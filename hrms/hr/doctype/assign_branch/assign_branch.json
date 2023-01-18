@@ -23,7 +23,7 @@
    "fieldname": "employee_type",
    "fieldtype": "Select",
    "label": "Employee Type",
-   "options": "Employee\nDES Employee\nMuster Roll Employee",
+   "options": "Employee",
    "reqd": 1
   },
   {
@@ -93,7 +93,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-22 10:23:05.323994",
+ "modified": "2023-01-13 10:19:20.130385",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Assign Branch",

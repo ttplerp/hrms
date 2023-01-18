@@ -20,6 +20,13 @@
   "dispatch_no",
   "to_whom",
   "place",
+  "sb_14",
+  "desuup",
+  "cid",
+  "purpose",
+  "cb_17",
+  "desuup_name",
+  "mobile",
   "section_break_11",
   "address",
   "remarks"
@@ -120,12 +127,53 @@
    "label": "Amended From",
    "options": "Dispatch",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.dispatch_type == 'Out-Going';",
+   "fieldname": "sb_14",
+   "fieldtype": "Section Break",
+   "label": "Desuup Details"
+  },
+  {
+   "fieldname": "desuup",
+   "fieldtype": "Link",
+   "label": "Desuup",
+   "options": "Desuup"
+  },
+  {
+   "fetch_from": "desuup.cid_number",
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "label": "CID"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Select",
+   "label": "Purpose",
+   "options": "\nStudies\nEmployment\nTraining\nScholarship\nMarriage Certificate"
+  },
+  {
+   "fieldname": "cb_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "desuup.desuup_name",
+   "fieldname": "desuup_name",
+   "fieldtype": "Data",
+   "label": "Desuup Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "desuup.mobile_number",
+   "fieldname": "mobile",
+   "fieldtype": "Data",
+   "label": "Mobile No."
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-17 15:25:29.213580",
+ "modified": "2023-01-18 14:06:55.114631",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dispatch",

@@ -337,7 +337,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-12-21 12:24:39.384187",
+ "modified": "2023-01-13 10:59:15.509114",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Payout",
@@ -346,7 +346,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 10.0,
+ "sequence_id": 11.0,
  "shortcuts": [
   {
    "color": "Red",

@@ -13,9 +13,9 @@
  "idx": 0,
  "is_public": 1,
  "is_standard": 1,
- "last_synced_on": "2022-12-16 14:59:26.925796",
- "modified": "2022-12-16 15:00:34.141832",
- "modified_by": "Administrator",
+ "last_synced_on": "2023-01-13 10:24:58.764204",
+ "modified": "2023-01-13 10:25:10.357249",
+ "modified_by": "sangay.dorji@thimphutechpark.bt",
  "module": "HR",
  "name": "Department Wise Employee Count",
  "number_of_groups": 0,
@@ -24,7 +24,7 @@
  "time_interval": "Yearly",
  "timeseries": 0,
  "timespan": "Last Year",
- "type": "Bar",
+ "type": "Pie",
  "use_report_chart": 0,
  "y_axis": []
 }

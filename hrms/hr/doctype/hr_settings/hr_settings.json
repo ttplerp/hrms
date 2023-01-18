@@ -54,10 +54,12 @@
   "hrgm",
   "hr_approver",
   "fd_head",
+  "notesheet_approver",
   "cb_01",
   "hrgm_name",
   "hr_approver_name",
   "fd_head_user_id",
+  "notesheet_approver_name",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -476,13 +478,26 @@
    "fieldtype": "Data",
    "label": "FD Head User Id",
    "read_only": 1
+  },
+  {
+   "fieldname": "notesheet_approver",
+   "fieldtype": "Link",
+   "label": "Notesheet Approver",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "notesheet_approver.employee_name",
+   "fieldname": "notesheet_approver_name",
+   "fieldtype": "Data",
+   "label": "Notesheet Approver Name",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-05 15:21:24.853668",
+ "modified": "2023-01-13 10:59:58.998226",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
