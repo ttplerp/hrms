@@ -66,7 +66,7 @@ class LeaveApplication(Document):
 		return _("{0}: From {0} of type {1}").format(self.employee_name, self.leave_type)
 
 	def validate(self):
-		validate_workflow_states(self)
+		#validate_workflow_states(self)
 		validate_active_employee(self.employee)
 		set_employee_name(self)
 		self.validate_dates()
@@ -81,7 +81,7 @@ class LeaveApplication(Document):
 		if frappe.db.get_value("Leave Type", self.leave_type, "is_optional_leave"):
 			self.validate_optional_leave()
 		self.validate_applicable_after()
-		notify_workflow_states(self)
+		#notify_workflow_states(self)
 
 	def on_update(self):
 		if self.status == "Open" and self.docstatus < 1:
