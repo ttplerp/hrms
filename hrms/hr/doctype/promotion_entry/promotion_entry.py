@@ -172,15 +172,33 @@ class PromotionEntry(Document):
 		if not new_grade:
 			frappe.throw("Promote to Grade not set for Employee {}".format(employee))
 		new_lower_limit = frappe.db.get_value("Employee Grade", new_grade, "lower_limit")
+		frappe.msgprint("nll: " + str(new_lower_limit))
 		new_increment = frappe.db.get_value("Employee Grade", new_grade, "increment")
+		# frappe.msgprint("ni: " + str(new_increment))
+
 		new_upper_limit = frappe.db.get_value("Employee Grade", new_grade, "upper_limit")
-		bp_diff = flt(basic_pay) - flt(new_lower_limit)
-		new_increment_div = flt(bp_diff) / flt(new_increment)
-		if new_increment_div < 0:
-			new_increment_div = -1 * new_increment_div
-		new_increment_div = math.floor(new_increment_div) + 2
-		new_basic_multiple = new_increment_div * new_increment
-		amount = new_basic_multiple + new_lower_limit
+		# frappe.msgprint("bp: " + str(basic_pay))
+		if flt(basic_pay,2) > flt(new_lower_limit): 
+			bp_diff = flt(basic_pay) - flt(new_lower_limit)
+			# frappe.msgprint("bp_diff: " + str(bp_diff))
+			new_increment_div = flt(bp_diff) / flt(new_increment)
+			if new_increment_div < 0:
+				frappe.msgprint('here')
+				new_increment_div = -1 * new_increment_div
+			# frappe.msgprint("nid: " + str(new_increment_div))
+
+			new_increment_div = math.floor(new_increment_div) + 2
+			# frappe.msgprint("nid__11: " + str(new_increment_div))
+
+			new_basic_multiple = new_increment_div * new_increment
+			# frappe.msgprint("nbm1: " + str(new_basic_multiple))
+	
+			amount = new_basic_multiple + new_lower_limit
+		else:
+			amount = new_lower_limit
+		# frappe.msgprint(str(new_basic_multiple))
+		# frappe.msgprint(str(new_lower_limit))
+		# frappe.msgprint(str(amount))
 		return new_grade, amount
 
 	@frappe.whitelist()
@@ -268,9 +286,9 @@ class PromotionEntry(Document):
 		# """.format(self.month_name, ep_status, cond, self.name)
 		# frappe.throw(query)
 		ep_list = frappe.db.sql("""
-			select t1.name from `tabEmployee Promotion` t1, `tabEmployee` t2
-			where t1.employee = t2.name and t2.promotion_cycle = %s and t1.docstatus = %s %s
-			and t1.promotion_entry = %s
+			select t2.name from `tabEmployee Promotion` t2, `tabEmployee` t1
+			where t2.employee = t1.name and t1.promotion_cycle = %s and t2.docstatus = %s %s
+			and t2.promotion_entry = %s
 		""" % ('%s', '%s', cond, '%s'), (self.month_name, ep_status, self.name), as_dict=as_dict)
 		return ep_list
 
