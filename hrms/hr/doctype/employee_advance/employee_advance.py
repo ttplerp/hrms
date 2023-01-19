@@ -172,6 +172,7 @@ class EmployeeAdvance(Document):
 					where employee = '{0}'
 					and docstatus !=2
 					and name !='{1}'
+					and advance_type = 'Salary Advance'
 					and salary_component ='Salary Advance Deductions'
 					and posting_date between'{2}' and '{3}' """.format(self.employee,self.name, year_start_date,self.recovery_end_date))[0][0]
 	
