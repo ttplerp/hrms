@@ -140,9 +140,7 @@ class ExpenseClaim(AccountsController):
 	def post_accounts_entry(self):
 		if not self.cost_center:
 			frappe.throw("Setup Cost Center for employee in Employee Information")
-		expense_claim_type = ""
-		for a in self.expenses:
-			expense_claim_type = a.expense_type
+
 		expense_bank_account = frappe.db.get_value("Branch", self.branch, "expense_bank_account")
 		if not expense_bank_account:
 			expense_bank_account = frappe.db.get_single_value("Company", self.company, "default_bank_account")
@@ -170,22 +168,22 @@ class ExpenseClaim(AccountsController):
 			jeb.posting_date = today()
 			jeb.branch = self.branch
 			jeb_cost_center = frappe.db.get_value("Branch", jeb.branch, "cost_center")
-			jeb.append("accounts", {
-					"account": employee_payable_account,
-					"reference_type": "Expense Claim",
-					"reference_name": self.name,
-					"cost_center": self.cost_center,
-					"debit_in_account_currency": self.total_claimed_amount,
-					"debit": self.total_claimed_amount,
-					"business_activity": "Common",
-					"party_type": "Employee",
-					"party": self.employee
-				})
-
+			for a in self.expenses:
+				jeb.append("accounts", {
+						"account": employee_payable_account,
+						"reference_type": a.reference_type if a.reference_type else None,
+						"reference_name": a.reference if a .reference else None,
+						"cost_center": a.cost_center,
+						"debit_in_account_currency": ,
+						"debit": a.amount,
+						"business_activity": "Common",
+						"party_type": "Employee",
+						"party": self.employee
+					})
 			jeb.append("accounts", {
 					"account": expense_bank_account,
 					"cost_center": self.cost_center,
-					"reference_type": "Leave Encashment",
+					"reference_type": "Expense Claim",
 					"reference_name": self.name,
 					"credit_in_account_currency": self.total_claimed_amount,
 					"credit": self.total_claimed_amount,
