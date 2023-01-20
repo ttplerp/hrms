@@ -19,7 +19,6 @@ from hrms.hr.utils import set_employee_name, share_doc_with_approver, validate_a
 class InvalidExpenseApproverError(frappe.ValidationError):
 	pass
 
-
 class ExpenseApproverIdentityError(frappe.ValidationError):
 	pass
 
@@ -33,6 +32,7 @@ class ExpenseClaim(AccountsController):
 	def validate(self):
 		validate_active_employee(self.employee)
 		set_employee_name(self)
+
 		self.validate_references()
 		self.validate_sanctioned_amount()
 		self.calculate_total_amount()
@@ -45,6 +45,14 @@ class ExpenseClaim(AccountsController):
 		# self.calculate_grand_total()
 		if self.task and not self.project:
 			self.project = frappe.db.get_value("Task", self.task, "project")
+		
+		self.validate_amount()
+
+	def validate_amount(self):
+		if flt(self.total_sanctioned_amount) == 0:
+			fr
+		
+		pass
 
 	def validate_references(self):
 		for a in self.expenses:
@@ -176,8 +184,8 @@ class ExpenseClaim(AccountsController):
 					"reference_type": "Expense Claim",
 					"reference_name": self.name,
 					"cost_center": self.cost_center,
-					"debit_in_account_currency": self.total_claimed_amount,
-					"debit": self.total_claimed_amount,
+					"debit_in_account_currency": self.grand_total,
+					"debit": self.grand_total,
 					"business_activity": "Common",
 					"party_type": "Employee",
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
@@ -188,8 +196,8 @@ class ExpenseClaim(AccountsController):
 					"cost_center": self.cost_center,
 					"reference_type": "Expense Claim",
 					"reference_name": self.name,
-					"credit_in_account_currency": self.total_claimed_amount,
-					"credit": self.total_claimed_amount,
+					"credit_in_account_currency": self.grand_total,
+					"credit": self.grand_total,
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
 					"business_activity": "Common",
 				})
