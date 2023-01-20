@@ -6,7 +6,7 @@ import frappe
 from frappe import _
 from frappe.model.mapper import get_mapped_doc
 from frappe.query_builder.functions import Sum
-from frappe.utils import cstr, flt, get_link_to_form
+from frappe.utils import cstr, flt, get_link_to_form, today
 
 import erpnext
 from erpnext.accounts.doctype.sales_invoice.sales_invoice import get_bank_cash_account
