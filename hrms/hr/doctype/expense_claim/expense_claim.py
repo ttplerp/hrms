@@ -160,7 +160,7 @@ class ExpenseClaim(AccountsController):
 		if flt(self.total_claimed_amount) > 0:
 			jeb = frappe.new_doc("Journal Entry")
 			jeb.flags.ignore_permissions = 1
-			jeb.title = "Leave Encashment Payment(" + self.employee_name + "  " + self.name + ")"
+			jeb.title = "Expsense Claim Payment(" + self.employee_name + "  " + self.name + ")"
 			jeb.voucher_type = "Bank Entry"
 			jeb.naming_series = "ACC-JV-.YYYY.-"
 			expense_claim_type = ""
