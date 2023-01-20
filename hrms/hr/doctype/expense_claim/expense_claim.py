@@ -187,8 +187,8 @@ class ExpenseClaim(AccountsController):
 					"cost_center": self.cost_center,
 					"reference_type": "Leave Encashment",
 					"reference_name": self.name,
-					"credit_in_account_currency": self.payable_amount,
-					"credit": self.payable_amount,
+					"credit_in_account_currency": self.total_claimed_amount,
+					"credit": self.total_claimed_amount,
 					"business_activity": "Common",
 				})
 			jeb.insert()
