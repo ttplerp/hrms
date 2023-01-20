@@ -110,7 +110,7 @@ class ExpenseClaim(AccountsController):
 
 		self.update_task_and_project()
 		self.make_gl_entries()
-
+		self.post_accounts_entry()
 		if self.is_paid:
 			update_reimbursed_amount(self, self.grand_total)
 
@@ -194,38 +194,6 @@ class ExpenseClaim(AccountsController):
 			jeb.insert()
 
 			payment_journal = str(jeb.name)
-		#----Tax JE
-		# if flt(self.encashment_tax)>0:
-		# 	jet = frappe.new_doc("Journal Entry")
-		# 	jet.flags.ignore_permissions = 1
-		# 	jet.title =  "Employee Benefits Tax(" + str(self.employee_name) + ": " + self.name + ")"
-		# 	jet.voucher_type = "Bank Entry"
-		# 	jet.naming_series = "Bank Payment Voucher"
-		# 	jet.remark = 'Beneift Tax against : ' + self.name
-		# 	jet.posting_date = today()
-		# 	jet.branch = self.branch
-		# 	jet.append("accounts", {
-		# 			"account": tax_account,
-		# 			"cost_center": self.cost_center,
-		# 			"debit_in_account_currency": flt(self.encashment_tax),
-		# 			"debit": flt(self.encashment_tax),
-		# 			"reference_type": "Journal Entry",
-		# 			"reference_name": je.name,
-		# 			"business_activity": self.business_activity,
-		# 			"party_check":0
-		# 	})
-		# 	jet.append("accounts", {
-		# 			"account": expense_bank_account,
-		# 			"cost_center": self.cost_center,
-		# 			"credit_in_account_currency": flt(self.encashment_tax),
-		# 			"credit": flt(self.encashment_tax),
-		# 			"business_activity": self.business_activity,
-		# 			"reference_type": self.doctype,
-		# 			"reference_name": self.name,
-		# 	})
-		# 	jet.insert()
-
-		# 	je_references = je_references + ", "+ str(jet.name)
 
 		self.db_set("payment_journal", payment_journal)
 		frappe.db.commit()
