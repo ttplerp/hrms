@@ -165,7 +165,7 @@ class ExpenseClaim(AccountsController):
 			jeb.naming_series = "ACC-JV-.YYYY.-"
 			expense_claim_type = ""
 			for b in self.expenses:
-				expense_claim_type = b.expense_claim_type
+				expense_claim_type = b.expense_type
 			jeb.remark = 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name
 			jeb.user_remark = 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name
 			jeb.posting_date = today()
