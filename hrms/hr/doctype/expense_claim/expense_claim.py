@@ -163,23 +163,26 @@ class ExpenseClaim(AccountsController):
 			jeb.title = "Leave Encashment Payment(" + self.employee_name + "  " + self.name + ")"
 			jeb.voucher_type = "Bank Entry"
 			jeb.naming_series = "ACC-JV-.YYYY.-"
-			jeb.remark = 'Payment against Leave Encashment : ' + self.name
-			jeb.user_remark = 'Payment against Leave Encashment: ' + self.name
+			expense_claim_type = ""
+			for b in self.expenses:
+				expense_claim_type = b.expense_claim_type
+			jeb.remark = 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name
+			jeb.user_remark = 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name
 			jeb.posting_date = today()
 			jeb.branch = self.branch
 			jeb_cost_center = frappe.db.get_value("Branch", jeb.branch, "cost_center")
-			for a in self.expenses:
-				jeb.append("accounts", {
-						"account": employee_payable_account,
-						"reference_type": a.reference_type if a.reference_type else None,
-						"reference_name": a.reference if a.reference else None,
-						"cost_center": a.cost_center,
-						"debit_in_account_currency": a.amount,
-						"debit": a.amount,
-						"business_activity": "Common",
-						"party_type": "Employee",
-						"party": self.employee
-					})
+			jeb.append("accounts", {
+					"account": employee_payable_account,
+					"reference_type": "Expense Claim",
+					"reference_name": self.name,
+					"cost_center": self.cost_center,
+					"debit_in_account_currency": self.total_claimed_amount,
+					"debit": self.total_claimed_amount,
+					"business_activity": "Common",
+					"party_type": "Employee",
+					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
+					"party": self.employee
+				})
 			jeb.append("accounts", {
 					"account": expense_bank_account,
 					"cost_center": self.cost_center,
@@ -187,6 +190,7 @@ class ExpenseClaim(AccountsController):
 					"reference_name": self.name,
 					"credit_in_account_currency": self.total_claimed_amount,
 					"credit": self.total_claimed_amount,
+					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
 					"business_activity": "Common",
 				})
 			jeb.insert()
