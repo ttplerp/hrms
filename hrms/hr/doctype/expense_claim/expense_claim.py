@@ -172,9 +172,9 @@ class ExpenseClaim(AccountsController):
 				jeb.append("accounts", {
 						"account": employee_payable_account,
 						"reference_type": a.reference_type if a.reference_type else None,
-						"reference_name": a.reference if a .reference else None,
+						"reference_name": a.reference if a.reference else None,
 						"cost_center": a.cost_center,
-						"debit_in_account_currency": ,
+						"debit_in_account_currency": a.amount,
 						"debit": a.amount,
 						"business_activity": "Common",
 						"party_type": "Employee",
