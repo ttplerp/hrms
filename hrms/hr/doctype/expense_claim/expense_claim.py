@@ -48,7 +48,7 @@ class ExpenseClaim(AccountsController):
 
 	def validate_references(self):
 		for a in self.expenses:
-			if a.expense_type in ('Leave Encashment','Travel','Meeting & Seminars','Training','Travel') and not a.reference:
+			if a.expense_type in ('Leave Encashment','Travel','Meeting & Seminars','Training') and not a.reference:
 				frappe.throw("Cannot create Expense Claim for {} directly from Expense Claim.".format(a.expense_type),title="Invalid Operation")
 
 	def set_status(self, update=False):
@@ -135,6 +135,101 @@ class ExpenseClaim(AccountsController):
 
 		self.update_claimed_amount_in_employee_advance()
 		self.set_travel_reference(cancel = True)
+
+	# Following method added by SHIV on 2020/10/02
+	def post_accounts_entry(self):
+		if not self.cost_center:
+			frappe.throw("Setup Cost Center for employee in Employee Information")
+		expense_claim_type = ""
+		for a in self.expenses:
+			expense_claim_type = a.expense_type
+		expense_bank_account = frappe.db.get_value("Branch", self.branch, "expense_bank_account")
+		if not expense_bank_account:
+			expense_bank_account = frappe.db.get_single_value("Company", self.company, "default_bank_account")
+			if not expense_bank_account:
+				frappe.throw("Setup Expense Bank Account in Branch or Default Expense Bank Account in Company Accounts Settings")
+
+		# expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
+		employee_payable_account = frappe.db.get_value("Company", self.company, "employee_payable_account")
+		# if not expense_account:
+		# 	frappe.throw("Setup Leave Encashment Account in Company Settings")
+
+		# tax_account = frappe.db.get_value("Company", self.company, "salary_tax_account")
+		# if not tax_account:
+		# 	frappe.throw("Setup Tax Account in Company Settings")
+
+		#Payment Journal Entry
+		if flt(self.total_claimed_amount) > 0:
+			jeb = frappe.new_doc("Journal Entry")
+			jeb.flags.ignore_permissions = 1
+			jeb.title = "Leave Encashment Payment(" + self.employee_name + "  " + self.name + ")"
+			jeb.voucher_type = "Bank Entry"
+			jeb.naming_series = "ACC-JV-.YYYY.-"
+			jeb.remark = 'Payment against Leave Encashment : ' + self.name
+			jeb.user_remark = 'Payment against Leave Encashment: ' + self.name
+			jeb.posting_date = today()
+			jeb.branch = self.branch
+			jeb_cost_center = frappe.db.get_value("Branch", jeb.branch, "cost_center")
+			jeb.append("accounts", {
+					"account": employee_payable_account,
+					"reference_type": "Expense Claim",
+					"reference_name": self.name,
+					"cost_center": self.cost_center,
+					"debit_in_account_currency": self.total_claimed_amount,
+					"debit": self.total_claimed_amount,
+					"business_activity": "Common",
+					"party_type": "Employee",
+					"party": self.employee
+				})
+
+			jeb.append("accounts", {
+					"account": expense_bank_account,
+					"cost_center": self.cost_center,
+					"reference_type": "Leave Encashment",
+					"reference_name": self.name,
+					"credit_in_account_currency": self.payable_amount,
+					"credit": self.payable_amount,
+					"business_activity": "Common",
+				})
+			jeb.insert()
+
+			payment_journal = str(jeb.name)
+		#----Tax JE
+		# if flt(self.encashment_tax)>0:
+		# 	jet = frappe.new_doc("Journal Entry")
+		# 	jet.flags.ignore_permissions = 1
+		# 	jet.title =  "Employee Benefits Tax(" + str(self.employee_name) + ": " + self.name + ")"
+		# 	jet.voucher_type = "Bank Entry"
+		# 	jet.naming_series = "Bank Payment Voucher"
+		# 	jet.remark = 'Beneift Tax against : ' + self.name
+		# 	jet.posting_date = today()
+		# 	jet.branch = self.branch
+		# 	jet.append("accounts", {
+		# 			"account": tax_account,
+		# 			"cost_center": self.cost_center,
+		# 			"debit_in_account_currency": flt(self.encashment_tax),
+		# 			"debit": flt(self.encashment_tax),
+		# 			"reference_type": "Journal Entry",
+		# 			"reference_name": je.name,
+		# 			"business_activity": self.business_activity,
+		# 			"party_check":0
+		# 	})
+		# 	jet.append("accounts", {
+		# 			"account": expense_bank_account,
+		# 			"cost_center": self.cost_center,
+		# 			"credit_in_account_currency": flt(self.encashment_tax),
+		# 			"credit": flt(self.encashment_tax),
+		# 			"business_activity": self.business_activity,
+		# 			"reference_type": self.doctype,
+		# 			"reference_name": self.name,
+		# 	})
+		# 	jet.insert()
+
+		# 	je_references = je_references + ", "+ str(jet.name)
+
+		self.db_set("payment_journal", payment_journal)
+		frappe.db.commit()
+
 	def update_claimed_amount_in_employee_advance(self):
 		for d in self.get("advances"):
 			frappe.get_doc("Employee Advance", d.employee_advance).update_claimed_amount()
