@@ -76,8 +76,8 @@ class SalaryIncrement(Document):
 		self.company            = doc.company
 		self.branch             = doc.branch
 		self.department         = doc.department
-		self.division           = doc.division
-		self.section            = doc.section
+		# self.division           = doc.division
+		# self.section            = doc.section
 		self.designation		= doc.designation
 
 	# Following method created by SHIV on 2018/10/10
