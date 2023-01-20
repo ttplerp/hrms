@@ -19,6 +19,7 @@ from hrms.hr.utils import set_employee_name, share_doc_with_approver, validate_a
 class InvalidExpenseApproverError(frappe.ValidationError):
 	pass
 
+
 class ExpenseApproverIdentityError(frappe.ValidationError):
 	pass
 
@@ -32,7 +33,6 @@ class ExpenseClaim(AccountsController):
 	def validate(self):
 		validate_active_employee(self.employee)
 		set_employee_name(self)
-
 		self.validate_references()
 		self.validate_sanctioned_amount()
 		self.calculate_total_amount()
@@ -45,14 +45,6 @@ class ExpenseClaim(AccountsController):
 		# self.calculate_grand_total()
 		if self.task and not self.project:
 			self.project = frappe.db.get_value("Task", self.task, "project")
-		
-		self.validate_amount()
-
-	def validate_amount(self):
-		if flt(self.total_sanctioned_amount) == 0:
-			fr
-		
-		pass
 
 	def validate_references(self):
 		for a in self.expenses:
@@ -115,7 +107,8 @@ class ExpenseClaim(AccountsController):
 		# commented as approver not required
 		# if self.approval_status == "Draft":
 		# 	frappe.throw(_("""Approval Status must be 'Approved' or 'Rejected'"""))
-
+	
+		self.check_for_total_sanctioned_amount()
 		self.update_task_and_project()
 		self.make_gl_entries()
 		self.post_accounts_entry()
@@ -125,6 +118,11 @@ class ExpenseClaim(AccountsController):
 		self.set_status(update=True)
 		self.update_claimed_amount_in_employee_advance()
 		self.set_travel_reference()
+	
+	def check_for_total_sanctioned_amount(self):
+		if flt(self.total_sanctioned_amount) == 0:
+			frappe.throw("The <b>Total Sanctioned Amount</b> cannot be less than or equal to 0")
+
 	def before_cancel(self):
 		for a in self.expenses:
 			if a.reference_type == 'Leave Encashment':
@@ -168,7 +166,7 @@ class ExpenseClaim(AccountsController):
 		if flt(self.total_claimed_amount) > 0:
 			jeb = frappe.new_doc("Journal Entry")
 			jeb.flags.ignore_permissions = 1
-			jeb.title = "Expsense Claim Payment(" + self.employee_name + "  " + self.name + ")"
+			jeb.title = "Expense Claim Payment(" + self.employee_name + "  " + self.name + ")"
 			jeb.voucher_type = "Bank Entry"
 			jeb.naming_series = "ACC-JV-.YYYY.-"
 			expense_claim_type = ""
@@ -184,8 +182,8 @@ class ExpenseClaim(AccountsController):
 					"reference_type": "Expense Claim",
 					"reference_name": self.name,
 					"cost_center": self.cost_center,
-					"debit_in_account_currency": self.grand_total,
-					"debit": self.grand_total,
+					"debit_in_account_currency": self.total_claimed_amount,
+					"debit": self.total_claimed_amount,
 					"business_activity": "Common",
 					"party_type": "Employee",
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
@@ -196,8 +194,8 @@ class ExpenseClaim(AccountsController):
 					"cost_center": self.cost_center,
 					"reference_type": "Expense Claim",
 					"reference_name": self.name,
-					"credit_in_account_currency": self.grand_total,
-					"credit": self.grand_total,
+					"credit_in_account_currency": self.total_claimed_amount,
+					"credit": self.total_claimed_amount,
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
 					"business_activity": "Common",
 				})
