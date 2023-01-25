@@ -47,7 +47,7 @@ class EmployeeTransfer(Document):
 		employee.section	= self.new_section if not cancel else self.old_section
 		employee.branch		= self.new_branch if not cancel else self.old_branch
 		employee.cost_center= self.new_cost_center if not cancel else self.old_cost_center
-		employee.expense_approver = self.new_reports_to if not cancel and self.new_reports_to else self.old_reports_to
+		employee.expense_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")
   
 		if cancel:
 			for t in frappe.db.get_all("Employee Transfer", {"employee": self.employee, "name": ("!=", self.name),
