@@ -7,6 +7,8 @@ frappe.ui.form.on('Assign Branch', {
 	// }
 	get_all_branch: function(frm) {
 		//load_accounts(frm.doc.company)
+		frm.clear_table("items");
+		frm.refresh_field("items");
 		return frappe.call({
 			method: "get_all_branches",
 			doc: frm.doc,
