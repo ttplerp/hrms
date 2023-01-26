@@ -17,8 +17,7 @@ class AssignBranch(Document):
 			frappe.throw("User Id is Mandatory")	
 
 	def on_update(self):
-		# self.assign_branch()
-		pass
+		self.assign_branch()
 	
 	def assign_name(self):
 		if self.employee:
@@ -47,7 +46,7 @@ class AssignBranch(Document):
 		for doc, names in user_perms.items():
 			if doc == 'Branch':
 				for a in names:
-					frappe.permissions.remove_user_permission(doc, a, self.user)
+					frappe.permissions.remove_user_permission(doc, a.doc, self.user)
 			
 		#Add the branch permissions back as per assigned branches
 		frappe.permissions.add_user_permission("Branch", self.current_branch, self.user)
