@@ -262,6 +262,7 @@
    "fetch_from": "employee.department",
    "fieldname": "department",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Department",
    "options": "Department",
    "read_only": 1
@@ -320,7 +321,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-13 18:47:29.118046",
+ "modified": "2023-01-30 16:32:17.181128",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",
