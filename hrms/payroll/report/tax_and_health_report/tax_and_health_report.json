@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-28 15:38:50.843664",
+ "modified": "2023-01-30 15:51:06.096936",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Tax and Health Report",
@@ -34,6 +34,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

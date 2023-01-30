@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-28 12:29:10.473948",
+ "modified": "2023-01-30 15:52:11.915825",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Loan Report",
@@ -34,6 +34,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "SMCL Letter Head",
- "modified": "2022-11-28 22:48:26.900414",
+ "modified": "2023-01-30 15:53:04.444242",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee TDS Certificate",
@@ -31,6 +31,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

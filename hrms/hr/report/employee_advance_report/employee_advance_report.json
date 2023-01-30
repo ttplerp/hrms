@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-31 15:11:49.025507",
+ "modified": "2023-01-30 15:53:20.541120",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance Report",
@@ -28,6 +28,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

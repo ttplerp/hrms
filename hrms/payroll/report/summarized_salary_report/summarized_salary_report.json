@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-31 15:08:22.043411",
+ "modified": "2023-01-30 15:48:47.007094",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Summarized Salary Report",
@@ -31,6 +31,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

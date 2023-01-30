@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-31 09:42:42.430607",
+ "modified": "2023-01-30 15:54:23.701869",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "LTC Process Report",
@@ -34,6 +34,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-28 15:54:58.021278",
+ "modified": "2023-01-30 15:50:49.901470",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Payable Report",
@@ -34,6 +34,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

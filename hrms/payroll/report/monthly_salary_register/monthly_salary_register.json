@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-28 11:06:56.736040",
+ "modified": "2023-01-30 15:52:33.983039",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Monthly Salary Register",
@@ -34,6 +34,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

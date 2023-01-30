@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-31 11:23:12.749252",
+ "modified": "2023-01-30 15:53:52.458970",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Report",
@@ -28,6 +28,9 @@
   },
   {
    "role": "Employee"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

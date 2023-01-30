@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-28 15:16:42.652243",
+ "modified": "2023-01-30 15:51:36.342598",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "GIS Report",
@@ -37,6 +37,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Manager"
   }
  ]
 }

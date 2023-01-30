@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2022-10-28 14:24:30.673774",
+ "modified": "2023-01-30 15:51:53.024968",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "PF Report",
@@ -34,6 +34,9 @@
   },
   {
    "role": "Employee Self Service"
+  },
+  {
+   "role": "Accounts Master"
   }
  ]
 }
