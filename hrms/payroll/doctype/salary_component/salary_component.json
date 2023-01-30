@@ -23,6 +23,8 @@
   "is_loan_component",
   "disable_attendance_check",
   "is_pf_deductible",
+  "sb_accounts",
+  "items",
   "sb_posting_settings",
   "make_party_entry",
   "colume_break_5",
@@ -57,7 +59,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "GL Head",
-   "options": "Account"
+   "options": "Account",
+   "read_only": 1
   },
   {
    "fieldname": "col_break",
@@ -205,12 +208,23 @@
    "fieldname": "disable_attendance_check",
    "fieldtype": "Check",
    "label": "Disable Attendance Check"
+  },
+  {
+   "fieldname": "sb_accounts",
+   "fieldtype": "Section Break",
+   "label": "Accounts"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Salary Component Accounts",
+   "options": "Salary Component Account"
   }
  ],
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-12 23:18:02.678878",
+ "modified": "2023-01-26 12:18:17.497682",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",

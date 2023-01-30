@@ -464,7 +464,7 @@ class PayrollEntry(Document):
 					when sc.type = 'Earning' then 0
 					else ifnull(sc.is_remittable,0)
 				end)                       as is_remittable,
-				sc.gl_head                 as gl_head,
+				sca.account                 as gl_head,
 				sum(ifnull(sd.amount,0))   as amount,
 				(case
 					when ifnull(sc.make_party_entry,0) = 1 then 'Payable'
@@ -482,12 +482,15 @@ class PayrollEntry(Document):
 				`tabSalary Slip` t1,
 				`tabSalary Detail` sd,
 				`tabSalary Component` sc,
+				`tabSalary Component Account` sca,
 				`tabCompany` c
 			where t1.fiscal_year = '{0}'
 			  and t1.month       = '{1}'
 			  and t1.docstatus   = 1
 			  and sd.parent      = t1.name
 			  and sd.salary_component = '{2}'
+			  and sca.parent = sc.name
+			  and sca.company = t1.company
 			  and sc.name        = sd.salary_component
 			  and c.name         = t1.company
 			  and t1.payroll_entry = '{3}'
@@ -497,10 +500,12 @@ class PayrollEntry(Document):
 						and ped.employee = t1.employee)
 			group by 
 				t1.cost_center,
+				t1.company,
 				(case when sc.type = 'Earning' then sc.type else ifnull(sc.clubbed_component,sc.name) end),
 				sc.type,
 				(case when sc.type = 'Earning' then 0 else ifnull(sc.is_remittable,0) end),
-				sc.gl_head,
+				sca.account,
+				sca.company,
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Payable' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Employee' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then t1.employee else 'Other' end)
@@ -565,7 +570,7 @@ class PayrollEntry(Document):
 					when sc.type = 'Earning' then 0
 					else ifnull(sc.is_remittable,0)
 				end)                       as is_remittable,
-				sc.gl_head                 as gl_head,
+				sca.account                 as gl_head,
 				sum(ifnull(sd.amount,0))   as amount,
 				(case
 					when ifnull(sc.make_party_entry,0) = 1 then 'Payable'
@@ -583,13 +588,16 @@ class PayrollEntry(Document):
 				`tabSalary Slip` t1,
 				`tabSalary Detail` sd,
 				`tabSalary Component` sc,
+				`tabSalary Component Account` sca,
 				`tabCompany` c
 			where t1.fiscal_year = '{0}'
 			  and t1.month       = '{1}'
 			  and t1.docstatus   = 1
 			  and sd.parent      = t1.name
 			  and sc.name        = sd.salary_component
+			  and sca.parent	 = sc.name
 			  and c.name         = t1.company
+			  and sca.company	 = t1.company
 			  and t1.payroll_entry = '{2}'
 			  and exists(select 1
 						from `tabPayroll Employee Detail` ped
@@ -607,7 +615,8 @@ class PayrollEntry(Document):
 				(case when sc.type = 'Earning' then sc.type else ifnull(sc.clubbed_component,sc.name) end),
 				sc.type,
 				(case when sc.type = 'Earning' then 0 else ifnull(sc.is_remittable,0) end),
-				sc.gl_head,
+				sca.account,
+				sca.company,
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Payable' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Employee' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then t1.employee else 'Other' end)
@@ -928,14 +937,14 @@ def create_salary_slips_for_employees(employees, args, validate_attendance, titl
 				"employee": emp.employee
 			})
 
-			try:
-				ss = frappe.get_doc(args)
-				ss.insert()
-				successful += 1
-			except Exception as e:
-				frappe.throw(_("{}").format(e))
-				error = str(e)
-				failed += 1
+			# try:
+			ss = frappe.get_doc(args)
+			ss.insert()
+			successful += 1
+			# except Exception as e:
+				# frappe.throw(_("{}").format(e))
+				# error = str(e)
+				# failed += 1
 			count+=1
 
 			ped = frappe.get_doc("Payroll Employee Detail", emp.name)
