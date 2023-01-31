@@ -6,7 +6,7 @@ import frappe
 from frappe import _
 from frappe.model.mapper import get_mapped_doc
 from frappe.query_builder.functions import Sum
-from frappe.utils import cstr, flt, get_link_to_form, today
+from frappe.utils import cstr, flt, get_link_to_form, today, cint
 
 import erpnext
 from erpnext.accounts.doctype.sales_invoice.sales_invoice import get_bank_cash_account
@@ -42,6 +42,7 @@ class ExpenseClaim(AccountsController):
 		self.set_cost_center()
 		self.calculate_taxes()
 		self.set_status()
+		self.update_ref_doc()
 		# self.calculate_grand_total()
 		if self.task and not self.project:
 			self.project = frappe.db.get_value("Task", self.task, "project")
@@ -118,6 +119,7 @@ class ExpenseClaim(AccountsController):
 		self.set_status(update=True)
 		self.update_claimed_amount_in_employee_advance()
 		self.set_travel_reference()
+		self.update_ref_doc()
 	
 	def check_for_total_sanctioned_amount(self):
 		if flt(self.total_sanctioned_amount) == 0:
@@ -139,8 +141,27 @@ class ExpenseClaim(AccountsController):
 		if self.is_paid:
 			update_reimbursed_amount(self, -1 * self.grand_total)
 
-		self.update_claimed_amount_in_employee_advance()
+		self.update_claimed_amount_in_employee_advance(cancel = True)
 		self.set_travel_reference(cancel = True)
+	
+	def update_ref_doc(self):
+		for d in self.expenses:
+			ref = d.expense_type
+		self.ref_doc = ref
+		# reference = frappe.db.sql("""
+		# 						select expense_type 
+		# 						from 
+		# 							`tabExpense Claim Detail` 
+		# 						where 
+		# 							parent = "{0}"
+		# # 						""".format(self.name),as_dict=True)
+		# frappe.throw(str(ref))
+		# frappe.db.sql("""
+		# 			update 
+		# 				`tabExpense Claim`
+		# 			set ref_doc ="{0}"
+		# 			where name ="{1}"
+		# 		""".format(reference,self.name))
 
 	# Following method added by SHIV on 2020/10/02
 	def post_accounts_entry(self):
@@ -149,19 +170,31 @@ class ExpenseClaim(AccountsController):
 
 		expense_bank_account = frappe.db.get_value("Branch", self.branch, "expense_bank_account")
 		if not expense_bank_account:
-			expense_bank_account = frappe.db.get_single_value("Company", self.company, "default_bank_account")
+			# expense_bank_account = frappe.db.get_single_value("Company", self.company, "default_bank_account")
+			expense_bank_account = frappe.db.get_value("Company", {'name': self.company}, "default_bank_account")
 			if not expense_bank_account:
 				frappe.throw("Setup Expense Bank Account in Branch or Default Expense Bank Account in Company Accounts Settings")
 
 		# expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
 		employee_payable_account = frappe.db.get_value("Company", self.company, "employee_payable_account")
+		
+		# accounts for imprest settlement
+		account_imprest = frappe.db.get_value("Company", self.company,"imprest_advance_account")
+		mis_account = ''
+		for data in self.expenses:
+			mis_account = data.default_account
+		
+		ec_type = ''
+		for d in self.expenses:
+			ec_type = d.expense_type
+		
 		# if not expense_account:
 		# 	frappe.throw("Setup Leave Encashment Account in Company Settings")
 
 		# tax_account = frappe.db.get_value("Company", self.company, "salary_tax_account")
 		# if not tax_account:
 		# 	frappe.throw("Setup Tax Account in Company Settings")
-
+		
 		#Payment Journal Entry
 		if flt(self.total_claimed_amount) > 0:
 			jeb = frappe.new_doc("Journal Entry")
@@ -177,7 +210,46 @@ class ExpenseClaim(AccountsController):
 			jeb.posting_date = today()
 			jeb.branch = self.branch
 			jeb_cost_center = frappe.db.get_value("Branch", jeb.branch, "cost_center")
-			jeb.append("accounts", {
+
+			# for imprest claim settlement
+			if ec_type == 'Imprest':
+				jeb.append("accounts", {
+					"account": mis_account,
+					"cost_center": self.cost_center,
+					"reference_type": "Expense Claim",
+					"reference_name": self.name,
+					"debit_in_account_currency": self.total_claimed_amount,
+					"debit": self.total_claimed_amount,
+					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
+					"business_activity": "Common",
+				})
+				jeb.append("accounts", {
+					"account": account_imprest,
+					"reference_type": "Expense Claim",
+					"reference_name": self.name,
+					"cost_center": self.cost_center,
+					"credit_in_account_currency": self.total_advance_amount if self.total_advance_amount > 0 else self.total_claimed_amount,
+					"credit": self.total_advance_amount if self.total_advance_amount > 0 else self.total_claimed_amount,
+					"business_activity": "Common",
+					"party_type": "Employee",
+					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
+					"party": self.employee
+				})
+				if self.total_advance_amount > 0 and flt(self.total_advance_amount) != self.total_claimed_amount:
+					jeb.append("accounts", {
+						"account": employee_payable_account,
+						"cost_center": self.cost_center,
+						"reference_type": "Expense Claim",
+						"reference_name": self.name,
+						"credit_in_account_currency": self.grand_total,
+						"credit": self.grand_total,
+						"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
+						"business_activity": "Common",
+						"party_type": "Employee",
+						"party": self.employee
+					})
+			else:
+				jeb.append("accounts", {
 					"account": employee_payable_account,
 					"reference_type": "Expense Claim",
 					"reference_name": self.name,
@@ -189,7 +261,7 @@ class ExpenseClaim(AccountsController):
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
 					"party": self.employee
 				})
-			jeb.append("accounts", {
+				jeb.append("accounts", {
 					"account": expense_bank_account,
 					"cost_center": self.cost_center,
 					"reference_type": "Expense Claim",
@@ -199,6 +271,7 @@ class ExpenseClaim(AccountsController):
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
 					"business_activity": "Common",
 				})
+
 			jeb.insert()
 
 			payment_journal = str(jeb.name)
@@ -206,9 +279,14 @@ class ExpenseClaim(AccountsController):
 		self.db_set("payment_journal", payment_journal)
 		frappe.db.commit()
 
-	def update_claimed_amount_in_employee_advance(self):
-		for d in self.get("advances"):
-			frappe.get_doc("Employee Advance", d.employee_advance).update_claimed_amount()
+	def update_claimed_amount_in_employee_advance(self, cancel = False):
+		if cancel == False:
+			for d in self.get("advances"):
+				frappe.get_doc("Employee Advance", d.employee_advance).update_claimed_amount()
+		else:
+			for d in self.get("advances"):
+				frappe.get_doc("Employee Advance", d.employee_advance).update_claimed_amount(cancel=1)
+
 
 	def update_task_and_project(self):
 		if self.task:
@@ -230,9 +308,14 @@ class ExpenseClaim(AccountsController):
 			frappe.get_doc("Project", self.project).update_project()
 
 	def make_gl_entries(self, cancel=False):
-		if flt(self.total_sanctioned_amount) > 0:
-			gl_entries = self.get_gl_entries()
-			make_gl_entries(gl_entries, cancel)
+		ec_type = ''
+		for d in self.expenses:
+			ec_type = d.expense_type
+		
+		if ec_type != 'Imprest':
+			if flt(self.total_sanctioned_amount) > 0:
+				gl_entries = self.get_gl_entries()
+				make_gl_entries(gl_entries, cancel)
 
 	def get_gl_entries(self):
 		gl_entry = []
@@ -570,6 +653,7 @@ def get_advances(employee, advance_id=None):
 		advance.paid_amount,
 		advance.pending_amount,
 		advance.advance_account,
+		advance.claimed_amount
 	)
 
 	if not advance_id:
@@ -577,6 +661,8 @@ def get_advances(employee, advance_id=None):
 			(advance.docstatus == 1)
 			& (advance.employee == employee)
 			& (advance.paid_amount > 0)
+			& (advance.expenses_claimed == 0)
+			& (advance.advance_type == 'Imprest Advance')
 			& (advance.status.notin(["Claimed", "Returned", "Partly Claimed and Returned"]))
 		)
 	else:
@@ -639,14 +725,17 @@ def validate_expense_claim_in_jv(doc, method=None):
 	"""Validates Expense Claim amount in Journal Entry"""
 	for d in doc.accounts:
 		if d.reference_type == "Expense Claim":
-			outstanding_amt = get_outstanding_amount_for_claim(d.reference_name)
-			if d.debit > outstanding_amt:
-				frappe.throw(
-					_(
-						"Row No {0}: Amount cannot be greater than the Outstanding Amount against Expense Claim {1}. Outstanding Amount is {2}"
-					).format(d.idx, d.reference_name, outstanding_amt)
-				)
-
+			# added by Dendup to override the function in case of Imprest Settlement
+			ex_claim = frappe.get_doc('Expense Claim', d.reference_name)
+			for row in ex_claim.get('expenses'):
+				if row.expense_type != 'Imprest':
+					outstanding_amt = get_outstanding_amount_for_claim(d.reference_name)
+					if d.debit > outstanding_amt:
+						frappe.throw(
+							_(
+								"Row No {0}: Amount cannot be greater than the Outstanding Amount against Expense Claim {1}. Outstanding Amount is {2}"
+							).format(d.idx, d.reference_name, outstanding_amt)
+						)
 
 @frappe.whitelist()
 def make_expense_claim_for_delivery_trip(source_name, target_doc=None):

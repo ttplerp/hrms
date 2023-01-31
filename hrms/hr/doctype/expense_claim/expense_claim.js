@@ -55,7 +55,7 @@ frappe.ui.form.on('Expense Claim Detail', {
 			callback: function(r) {
 				if (r.message) {
 					d.default_account = r.message.account;
-					d.cost_center = r.message.cost_center;
+					// d.cost_center = r.message.cost_center;
 				}
 			}
 		});
@@ -272,10 +272,13 @@ frappe.ui.form.on("Expense Claim", {
 	},
 
 	grand_total: function(frm) {
+		console.log('here')
 		frm.trigger("update_employee_advance_claimed_amount");
 	},
 
 	update_employee_advance_claimed_amount: function(frm) {
+		console.log('here 2222')
+
 		let amount_to_be_allocated = frm.doc.grand_total;
 		$.each(frm.doc.advances || [], function(i, advance){
 			if (amount_to_be_allocated >= advance.unclaimed_amount){
@@ -323,9 +326,9 @@ frappe.ui.form.on("Expense Claim", {
 		erpnext.expense_claim.set_title(frm);
 	},
 
-	employee: function(frm) {
-		frm.events.get_advances(frm);
-	},
+	// employee: function(frm) {
+	// 	frm.events.get_advances(frm);
+	// },
 
 	cost_center: function(frm) {
 		frm.events.set_child_cost_center(frm);
@@ -372,6 +375,8 @@ frappe.ui.form.on("Expense Claim", {
 							row.posting_date = d.posting_date;
 							row.advance_account = d.advance_account;
 							row.advance_paid = d.paid_amount;
+							console.log(d.claimed_amount)
+							console.log(d.paid_amount)
 							row.unclaimed_amount = flt(d.paid_amount) - flt(d.claimed_amount);
 							row.allocated_amount = 0;
 						});
@@ -394,7 +399,12 @@ frappe.ui.form.on("Expense Claim Detail", {
 		frm.trigger("get_taxes");
 		frm.trigger("calculate_grand_total");
 	},
-
+	expense_type: function(frm, cdt, cdn) {
+		var row = locals[cdt][cdn];
+		if (row.expense_type == "Imprest"){
+			frm.trigger("get_advances");
+		}
+	},
 	cost_center: function(frm, cdt, cdn) {
 		erpnext.utils.copy_value_in_all_rows(frm.doc, cdt, cdn, "expenses", "cost_center");
 	}
