@@ -62,7 +62,7 @@ def get_data(filters):
 			sum(
 			   (case when t2.parentfield = 'earnings' then ifnull(t2.amount,0) else 0 end)
 			   - (case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end)
-			   - (case when t2.salary_component = 'Group Insurance Scheme' then ifnull(t2.amount,0) else 0 end)
+			   - (case when t2.salary_component = 'GIS' then ifnull(t2.amount,0) else 0 end)
 			) as netpay,
 			sum(case when t2.salary_component = 'Salary Tax' then ifnull(t2.amount,0) else 0 end) as salarytax,
 			sum(case when t2.salary_component = 'Health Contribution' then ifnull(t2.amount,0) else 0 end) as healthcont,
