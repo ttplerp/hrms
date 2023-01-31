@@ -14,6 +14,7 @@
   "month",
   "column_break_40",
   "processing_branch",
+  "jv_entry_type",
   "section_break_8",
   "branch",
   "department",
@@ -343,12 +344,19 @@
    "fieldtype": "Table",
    "options": "Payroll Employee Failed",
    "read_only": 1
+  },
+  {
+   "fieldname": "jv_entry_type",
+   "fieldtype": "Select",
+   "label": "JV Entry Type",
+   "options": "\nBank Entry\nCash Entry",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-06 17:02:16.459151",
+ "modified": "2023-01-31 17:30:44.324400",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",
