@@ -350,15 +350,14 @@ class EmployeeAdvance(Document):
 		self.db_set("return_amount", return_amount)
 		self.set_status(update=True)
 
-	def update_claimed_amount(self):
+	def update_claimed_amount(self, cancel=0):
 		claimed_amount = (
 			frappe.db.sql(
 				"""
-			SELECT sum(ifnull(allocated_amount, 0))
+			SELECT sum(ifnull(eca.allocated_amount, 0))
 			FROM `tabExpense Claim Advance` eca, `tabExpense Claim` ec
 			WHERE
 				eca.employee_advance = %s
-				AND ec.approval_status="Approved"
 				AND ec.name = eca.parent
 				AND ec.docstatus=1
 				AND eca.allocated_amount > 0
@@ -369,6 +368,14 @@ class EmployeeAdvance(Document):
 		)
 
 		frappe.db.set_value("Employee Advance", self.name, "claimed_amount", flt(claimed_amount))
+
+		# added by Dendup for imprest settlement
+		if cint(cancel) == 0:
+			if flt(self.paid_amount) == flt(claimed_amount):
+				frappe.db.set_value("Employee Advance", self.name, "expenses_claimed", 1)
+		else:
+			frappe.db.set_value("Employee Advance", self.name, "expenses_claimed", 0)
+
 		self.reload()
 		self.set_status(update=True)
 
