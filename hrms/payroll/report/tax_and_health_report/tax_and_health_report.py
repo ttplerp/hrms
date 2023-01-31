@@ -58,7 +58,7 @@ def get_data(filters):
 			sum(case when t2.salary_component = 'Salary  Arrears' then ifnull(t2.amount,0) else 0 end) as arrears,
 			sum(case when t2.parentfield = 'earnings' then ifnull(t2.amount,0) else 0 end) as grosspay,
 			sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as pfamount,
-			sum(case when t2.salary_component = 'Group Insurance Scheme' then ifnull(t2.amount,0) else 0 end) as gisamount,
+			sum(case when t2.salary_component = 'GIS' then ifnull(t2.amount,0) else 0 end) as gisamount,
 			sum(
 			   (case when t2.parentfield = 'earnings' then ifnull(t2.amount,0) else 0 end)
 			   - (case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end)
