@@ -736,7 +736,7 @@ class PayrollEntry(Document):
 					v_naming_series = "Journal Voucher"
 				else:
 					v_title         = "To Bank" if i == "to_bank" else i
-					v_voucher_type  = self.jv_entry_type,
+					v_voucher_type  = self.jv_entry_type
 					v_naming_series = "Bank Payment Voucher" if self.jv_entry_type == "Bank Entry" else "Cash Payment Entry"
 
 				if v_title:
