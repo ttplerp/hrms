@@ -30,24 +30,24 @@ class OvertimeApplication(Document):
 		total_hours = 0
 		for i in self.get("items"):
 			total_hours += flt(i.number_of_hours)
-			if flt(i.number_of_hours) > flt(overtime_limit):
-				frappe.throw(_("Row#{}: Number of Hours cannot be more than {} hours").format(i.idx, overtime_limit))
+			# if flt(i.number_of_hours) > flt(overtime_limit):
+			# 	frappe.throw(_("Row#{}: Number of Hours cannot be more than {} hours").format(i.idx, overtime_limit))
 
-			if overtime_limit_type == "Per Day":
-				month_start_date = add_to_date(i.to_date, days=-1)
-			elif overtime_limit_type == "Per Month":
-				month_start_date = add_to_date(i.to_date, months=-1)
-			elif overtime_limit_type == "Per Year":
-				month_start_date = add_to_date(i.to_date, years=-1)
+			# if overtime_limit_type == "Per Day":
+			# 	month_start_date = add_to_date(i.to_date, days=-1)
+			# elif overtime_limit_type == "Per Month":
+			# 	month_start_date = add_to_date(i.to_date, months=-1)
+			# elif overtime_limit_type == "Per Year":
+			# 	month_start_date = add_to_date(i.to_date, years=-1)
 			i.amount = flt(i.rate) * flt(i.number_of_hours)
 			total_amount += i.amount
 		self.actual_hours = flt(total_hours)
-		if flt(total_hours) > flt(overtime_limit):
-			frappe.throw(_("Only {} hours accepted for payment").format(overtime_limit))
-			self.total_hours = flt(overtime_limit)
-			self.total_hours_lapsed = flt(total_hours) - flt(overtime_limit)
-		else:
-			self.total_hours = flt(self.actual_hours)
+		# if flt(total_hours) > flt(overtime_limit):
+		# 	frappe.throw(_("Only {} hours accepted for payment").format(overtime_limit))
+		# 	self.total_hours = flt(overtime_limit)
+		# 	self.total_hours_lapsed = flt(total_hours) - flt(overtime_limit)
+		# else:
+		self.total_hours = flt(self.actual_hours)
 		self.total_amount = round(total_amount,0)
 
 	def on_cancel(self):
