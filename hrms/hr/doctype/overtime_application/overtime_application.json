@@ -17,6 +17,7 @@
   "employee_name",
   "department",
   "branch",
+  "unit",
   "column_break_3",
   "employment_type",
   "employee_group",
@@ -316,12 +317,20 @@
    "fieldname": "processed",
    "fieldtype": "Check",
    "label": "Processed"
+  },
+  {
+   "fetch_from": "employee.unit",
+   "fieldname": "unit",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Unit",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-30 16:32:17.181128",
+ "modified": "2023-02-01 17:44:27.262848",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",
