@@ -725,7 +725,7 @@ class PayrollEntry(Document):
 				"salary_component": "Net Pay"
 			})
 		# if frappe.session.user == "Administrator":
-		# 	frappe.throw(str(posting))
+		# 	frappe.throw("posting: "+str(posting))
 		# Final Posting to accounts
 		if posting:
 			jv_name, v_title = None, ""
@@ -735,7 +735,8 @@ class PayrollEntry(Document):
 					v_voucher_type  = "Journal Entry"
 					v_naming_series = "Journal Voucher"
 				else:
-					v_title         = "To Bank" if i == "to_bank" else i
+					#v_title         = "To Bank" if i == "to_bank" else i
+					v_title         = "To Cash" if i == "to_bank" else i
 					v_voucher_type  = self.jv_entry_type
 					v_naming_series = "Bank Payment Voucher" if self.jv_entry_type == "Bank Entry" else "Cash Payment Entry"
 
