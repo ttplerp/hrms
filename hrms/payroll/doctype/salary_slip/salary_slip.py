@@ -2273,17 +2273,17 @@ def make_last_pay_certificate(source_name, target_doc=None, skip_item_mapping=Fa
 # 				)
 
 
-# def unlink_ref_doc_from_salary_slip(doc, method=None):
-# 	"""Unlinks accrual Journal Entry from Salary Slips on cancellation"""
-# 	linked_ss = frappe.db.sql_list(
-# 		"""select name from `tabSalary Slip`
-# 	where journal_entry=%s and docstatus < 2""",
-# 		(doc.name),
-# 	)
-# 	if linked_ss:
-# 		for ss in linked_ss:
-# 			ss_doc = frappe.get_doc("Salary Slip", ss)
-# 			frappe.db.set_value("Salary Slip", ss_doc.name, "journal_entry", "")
+def unlink_ref_doc_from_salary_slip(doc, method=None):
+	"""Unlinks accrual Journal Entry from Salary Slips on cancellation"""
+	linked_ss = frappe.db.sql_list(
+		"""select name from `tabSalary Slip`
+	where journal_entry=%s and docstatus < 2""",
+		(doc.name),
+	)
+	if linked_ss:
+		for ss in linked_ss:
+			ss_doc = frappe.get_doc("Salary Slip", ss)
+			frappe.db.set_value("Salary Slip", ss_doc.name, "journal_entry", "")
 
 
 # def generate_password_for_pdf(policy_template, employee):
