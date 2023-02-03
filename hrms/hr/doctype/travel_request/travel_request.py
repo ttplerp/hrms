@@ -90,6 +90,7 @@ class TravelRequest(AccountsController):
 		for item in self.get("itinerary"):
 			total = flt(total)+flt(item.total_claim)
 			base_total = flt(base_total)+(flt(item.actual_amount) if item.actual_amount else item.amount)
+			base_total = flt(base_total)+(flt(item.mileage_amount) if item.mileage_amount else 0)
 		self.total_travel_amount = total
 		self.base_total_travel_amount = base_total
 		self.balance_amount = flt(self.total_travel_amount) - flt(self.advance_amount)
