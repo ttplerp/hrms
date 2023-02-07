@@ -84,6 +84,8 @@ class OvertimeApplication(Document):
 	##
 	def validate_dates(self):				
 		for a in self.items:
+			if a.ot_rate <= 0:
+				frappe.throw(_("Row#{} : OT Rate cannot be 0").format(a.idx), title="0 OT Rate")
 			if not a.from_date or not a.to_date:
 				frappe.throw(_("Row#{} : Date cannot be blank").format(a.idx), title="Invalid Date")
 			elif getdate(a.to_date) > getdate(today()) or getdate(a.to_date) > getdate(today()):
