@@ -131,6 +131,11 @@ class ExpenseClaim(AccountsController):
 				frappe.db.sql("""
 					update `tabLeave Encashment` set expense_claim = NULL where name = '{}'
 				""".format(a.reference))
+		if frappe.db.exists("Journal Entry Account",{"reference_type":"Expense Claim","reference_name":self.name}):
+			ref_je = frappe.db.get_value("Journal Entry Account",{"reference_type":"Expense Claim","reference_name":self.name},"parent")
+			doc = frappe.get_doc("Journal Entry",ref_je)
+			if doc.docstatus != 2:
+				frappe.throw("{} Exists against this document".format(frappe.get_desk_link("Journal Entry",ref_je)))
 
 	def on_cancel(self):
 		self.update_task_and_project()
