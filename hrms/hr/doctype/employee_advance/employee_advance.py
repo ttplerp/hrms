@@ -94,7 +94,7 @@ class EmployeeAdvance(Document):
 		#and salary_component ='Salary Advance Deductions'
 	@frappe.whitelist()
 	def validate_advance_amount(self):
-		self.recovery_start_date = get_first_day(today())
+		#self.recovery_start_date = get_first_day(today())
 		self.recovery_end_date = get_year_ending(today())
 		year_start_date = get_year_start(today())
 		ssl = frappe.db.sql("""select name,docstatus,str_to_date(concat(yearmonth,"01"),"%Y%m%d") as salary_month
@@ -136,7 +136,7 @@ class EmployeeAdvance(Document):
 
 	@frappe.whitelist()
 	def validate_deduction_month(self):
-		self.recovery_start_date = get_first_day(today())
+		#self.recovery_start_date = get_first_day(today())
 		self.recovery_end_date = get_year_ending(today())
 		ssl = frappe.db.sql("""select name,docstatus,str_to_date(concat(yearmonth,"01"),"%Y%m%d") as salary_month
 					from `tabSalary Slip`
