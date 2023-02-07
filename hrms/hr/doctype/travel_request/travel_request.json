@@ -39,6 +39,10 @@
   "estimated_amount",
   "advance_amount",
   "advance_amount_nu",
+  "miscellaneous_amount_details_section",
+  "miscellaneous_amount",
+  "column_break_36",
+  "remarks_for_miscellaneous_amount_claim",
   "costing_details",
   "total_travel_amount",
   "base_total_travel_amount",
@@ -539,11 +543,31 @@
    "label": "Balance Amount(Company Currency)",
    "options": "Company:company:default_currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "miscellaneous_amount_details_section",
+   "fieldtype": "Section Break",
+   "label": "Miscellaneous Amount Details"
+  },
+  {
+   "fieldname": "miscellaneous_amount",
+   "fieldtype": "Currency",
+   "label": "Miscellaneous Amount"
+  },
+  {
+   "fieldname": "column_break_36",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks_for_miscellaneous_amount_claim",
+   "fieldtype": "Small Text",
+   "label": "Remarks For Miscellaneous Amount Claim",
+   "mandatory_depends_on": "eval:doc.miscellaneous_amount > 0"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-22 12:50:00.183290",
+ "modified": "2023-02-07 13:34:53.203882",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",

@@ -58,7 +58,7 @@ frappe.ui.form.on("Travel Itinerary", {
 	form_render: function(frm, cdt, cdn){
 		var item = locals[cdt][cdn];
 		if(item.dsa <= 0){
-			console.log("its here")		
+			// console.log("its here")		
 			var dsa_per_day = frm.doc.dsa_per_day;
 			frappe.model.set_value(cdt, cdn, "dsa", dsa_per_day);
 		}
