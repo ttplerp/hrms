@@ -47,7 +47,7 @@ def validate_leave_allocation_against_leave_application(ledger):
 
 def create_leave_ledger_entry(ref_doc, args, submit=True):
 	ledger = frappe._dict(
-		doctype="Leave Ledger Entry",
+		doctype='Leave Ledger Entry',
 		employee=ref_doc.employee,
 		employee_name=ref_doc.employee_name,
 		leave_type=ref_doc.leave_type,
@@ -56,13 +56,13 @@ def create_leave_ledger_entry(ref_doc, args, submit=True):
 		is_carry_forward=0,
 		is_expired=0,
 		is_lwp=0,
+		is_adjusted_leave=0,
+		leave_adjustment_id=None
 	)
 	ledger.update(args)
 
 	if submit:
-		doc = frappe.get_doc(ledger)
-		doc.flags.ignore_permissions = 1
-		doc.submit()
+		frappe.get_doc(ledger).submit()
 	else:
 		delete_ledger_entry(ledger)
 
