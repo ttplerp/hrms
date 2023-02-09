@@ -17,7 +17,8 @@ class AssignBranch(Document):
 			frappe.throw("User Id is Mandatory")	
 
 	def on_update(self):
-		self.assign_branch()
+		pass
+		# self.assign_branch()
 	
 	def assign_name(self):
 		if self.employee:
