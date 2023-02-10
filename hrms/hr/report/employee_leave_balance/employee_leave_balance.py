@@ -125,18 +125,18 @@ def get_data(filters: Filters) -> List:
 					get_leaves_for_period(employee.name, leave_type, filters.from_date, filters.to_date) * -1
 				)
 
-				new_allocation, expired_leaves, carry_forwarded_leaves = get_allocated_and_expired_leaves(
-					filters.from_date, filters.to_date, employee.name, leave_type
+				new_allocation, expired_leaves, carry_forwarded_leaves, adjusted_leaves = get_allocated_and_expired_leaves(
+					filters, filters.from_date, filters.to_date, employee.name, leave_type
 				)
 				opening = get_opening_balance(employee.name, leave_type, filters, carry_forwarded_leaves)
 
-				row.leaves_allocated = new_allocation
+				row.leaves_allocated = new_allocation + adjusted_leaves
 				row.leaves_expired = expired_leaves
 				row.opening_balance = opening
 				row.leaves_taken = leaves_taken
 
 				# not be shown on the basis of days left it create in user mind for carry_forward leave
-				row.closing_balance = new_allocation + opening - (row.leaves_expired + leaves_taken)
+				row.closing_balance = new_allocation + opening - (row.leaves_expired + leaves_taken) + adjusted_leaves
 				row.indent = 1
 				data.append(row)
 
@@ -209,34 +209,35 @@ def get_department_leave_approver_map(department: Optional[str] = None):
 	return approvers
 
 
-def get_allocated_and_expired_leaves(
+def get_allocated_and_expired_leaves(filters, 
 	from_date: str, to_date: str, employee: str, leave_type: str
 ) -> Tuple[float, float, float]:
 	new_allocation = 0
 	expired_leaves = 0
 	carry_forwarded_leaves = 0
+	adjusted_leaves = 0
 
 	records = get_leave_ledger_entries(from_date, to_date, employee, leave_type)
-
+	adjusted_entries = get_adjusted_leave_ledger_entries(filters.from_date, filters.to_date, employee, leave_type)
 	for record in records:
 		# new allocation records with `is_expired=1` are created when leave expires
 		# these new records should not be considered, else it leads to negative leave balance
 		if record.is_expired:
 			continue
-
-		if record.to_date < getdate(to_date):
+		if record.to_date < getdate(to_date) and record.leaves > 0:
 			# leave allocations ending before to_date, reduce leaves taken within that period
 			# since they are already used, they won't expire
 			expired_leaves += record.leaves
-			expired_leaves += get_leaves_for_period(employee, leave_type, record.from_date, record.to_date)
-
+			# expired_leaves += get_leaves_for_period(employee, leave_type, record.from_date, record.to_date)
 		if record.from_date >= getdate(from_date):
 			if record.is_carry_forward:
 				carry_forwarded_leaves += record.leaves
 			else:
 				new_allocation += record.leaves
-
-	return new_allocation, expired_leaves, carry_forwarded_leaves
+	for entry in adjusted_entries:
+		if entry.from_date >= getdate(from_date):
+			adjusted_leaves += entry.leaves
+	return new_allocation, expired_leaves, carry_forwarded_leaves, adjusted_leaves
 
 
 def get_leave_ledger_entries(
@@ -261,6 +262,7 @@ def get_leave_ledger_entries(
 			& (ledger.transaction_type == "Leave Allocation")
 			& (ledger.employee == employee)
 			& (ledger.leave_type == leave_type)
+			& (ledger.is_adjusted_leave == 0)
 			& (
 				(ledger.from_date[from_date:to_date])
 				| (ledger.to_date[from_date:to_date])
@@ -271,6 +273,26 @@ def get_leave_ledger_entries(
 
 	return records
 
+def get_adjusted_leave_ledger_entries(from_date, to_date, employee, leave_type):
+	records= frappe.db.sql("""
+		SELECT
+			employee, leave_type, from_date, to_date, leaves, transaction_name, transaction_type,
+			is_carry_forward, is_expired
+		FROM `tabLeave Ledger Entry`
+		WHERE employee=%(employee)s AND leave_type=%(leave_type)s
+			AND docstatus=1
+			AND (from_date between %(from_date)s AND %(to_date)s
+				OR to_date between %(from_date)s AND %(to_date)s
+				OR (from_date < %(from_date)s AND to_date > %(to_date)s))
+		AND is_adjusted_leave = 1
+	""", {
+		"from_date": from_date,
+		"to_date": to_date,
+		"employee": employee,
+		"leave_type": leave_type
+	}, as_dict=1)
+	# frappe.msgprint(str(records))
+	return records
 
 def get_chart_data(data: List) -> Dict:
 	labels = []

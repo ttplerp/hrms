@@ -176,7 +176,8 @@ class LeaveAdjustment(Document):
 			AND (from_date between %(from_date)s AND %(to_date)s
 				OR to_date between %(from_date)s AND %(to_date)s
 				OR (from_date < %(from_date)s AND to_date > %(to_date)s))
-		and is_adjusted_leave = 0
+		AND is_adjusted_leave = 0
+		AND transaction_type = 'Leave Allocation'
 		""", {
 			"from_date": from_date,
 			"to_date": to_date,
@@ -203,7 +204,6 @@ def get_adjusted_leave_ledger_entries(from_date, to_date, employee, leave_type):
 		"employee": employee,
 		"leave_type": leave_type
 	}, as_dict=1)
-	# frappe.msgprint(str(records))
 	return records
 
 def get_leaves_adjusted(records, from_date, to_date):
