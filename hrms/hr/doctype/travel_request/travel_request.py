@@ -321,3 +321,22 @@ def get_exchange_rate(from_currency, to_currency, posting_date):
 		return ex_rate[0][0]
 
 
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+
+	if user == "Administrator":
+		return
+	if "HR User" in user_roles or "HR Manager" in user_roles:
+		return
+
+	return """(
+		`tabTravel Request`.owner = '{user}'
+		or
+		exists(select 1
+				from `tabEmployee`
+				where `tabEmployee`.name = `tabTravel Request`.employee
+				and `tabEmployee`.user_id = '{user}')
+		or
+		(`tabTravel Request`.supervisor = '{user}' and `tabTravel Request`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
+	)""".format(user=user)
