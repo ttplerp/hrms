@@ -571,7 +571,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 					tax_amt = 0
 					if not tax_included:
 						if frappe.db.get_value("Employee Group",frappe.db.get_value("Employee", source.employee, 		"employee_group"), "calc_sal_tax") != 1:
-							tax_amt = get_salary_tax(math.floor(flt(gross_amt)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
+							tax_amt = get_salary_tax(math.floor(flt(gross_amt)-flt(pf_amt)-flt(gis_amt)-(comm_amt*0.5)))
 							# calc_amt = roundoff(calc_amt)
 					else:
 						#Edited by Kinley on 16/12/2022 for Non National Temporary Employees(3% tax on basic)
