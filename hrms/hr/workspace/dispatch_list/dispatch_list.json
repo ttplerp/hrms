@@ -57,7 +57,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-01-14 14:02:20.434391",
+ "modified": "2023-02-12 23:14:17.594015",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dispatch List",
@@ -66,7 +66,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 4.0,
+ "sequence_id": 5.0,
  "shortcuts": [],
  "title": "Dispatch List"
 }
