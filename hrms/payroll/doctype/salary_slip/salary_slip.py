@@ -140,6 +140,7 @@ class SalarySlip(TransactionBase):
 
 	def pull_emp_details(self):
 		emp = frappe.get_doc("Employee",self.employee)
+		self.company            = emp.company
 		self.branch             = emp.branch
 		self.department         = emp.department
 		self.division           = emp.division
