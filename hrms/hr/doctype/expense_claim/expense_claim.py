@@ -153,21 +153,6 @@ class ExpenseClaim(AccountsController):
 		for d in self.expenses:
 			ref = d.expense_type
 		self.ref_doc = ref
-		# reference = frappe.db.sql("""
-		# 						select expense_type 
-		# 						from 
-		# 							`tabExpense Claim Detail` 
-		# 						where 
-		# 							parent = "{0}"
-		# # 						""".format(self.name),as_dict=True)
-		# frappe.throw(str(ref))
-		# frappe.db.sql("""
-		# 			update 
-		# 				`tabExpense Claim`
-		# 			set ref_doc ="{0}"
-		# 			where name ="{1}"
-		# 		""".format(reference,self.name))
-
 	# Following method added by SHIV on 2020/10/02
 	def post_accounts_entry(self):
 		if not self.cost_center:
@@ -238,7 +223,8 @@ class ExpenseClaim(AccountsController):
 					"business_activity": "Common",
 					"party_type": "Employee",
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
-					"party": self.employee
+					"party": self.employee,
+					"party_name":self.employee_name
 				})
 				if self.total_advance_amount > 0 and flt(self.total_advance_amount) != self.total_claimed_amount:
 					jeb.append("accounts", {
@@ -251,11 +237,12 @@ class ExpenseClaim(AccountsController):
 						"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
 						"business_activity": "Common",
 						"party_type": "Employee",
-						"party": self.employee
+						"party": self.employee,
+						"party_name":self.employee_name
 					})
 			else:
 				jeb.append("accounts", {
-					"account": employee_payable_account,
+					"account": self.payable_account,
 					"reference_type": "Expense Claim",
 					"reference_name": self.name,
 					"cost_center": self.cost_center,
@@ -264,13 +251,17 @@ class ExpenseClaim(AccountsController):
 					"business_activity": "Common",
 					"party_type": "Employee",
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
-					"party": self.employee
+					"party": self.employee,
+					"party_name":self.employee_name
 				})
 				jeb.append("accounts", {
-					"account": expense_bank_account,
+					"account": employee_payable_account,
 					"cost_center": self.cost_center,
 					"reference_type": "Expense Claim",
 					"reference_name": self.name,
+					"party_type": "Employee",
+					"party": self.employee,
+					"party_name":self.employee_name,
 					"credit_in_account_currency": self.grand_total,
 					"credit": self.grand_total,
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
