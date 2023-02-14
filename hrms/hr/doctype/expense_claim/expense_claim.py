@@ -190,7 +190,7 @@ class ExpenseClaim(AccountsController):
 			jeb = frappe.new_doc("Journal Entry")
 			jeb.flags.ignore_permissions = 1
 			jeb.title = "Expense Claim Payment(" + self.employee_name + "  " + self.name + ")"
-			jeb.voucher_type = "Bank Entry"
+			jeb.voucher_type = "Journal Entry"
 			jeb.naming_series = "ACC-JV-.YYYY.-"
 			expense_claim_type = ""
 			for b in self.expenses:
