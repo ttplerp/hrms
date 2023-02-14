@@ -592,6 +592,8 @@ def make_bank_entry(dt, dn):
 
 	je = frappe.new_doc("Journal Entry")
 	je.voucher_type = "Bank Entry"
+	je.branch = expense_claim.branch
+	je.branch = expense_claim.cost_center
 	je.company = expense_claim.company
 	je.remark = "Payment against Expense Claim: " + dn
 
@@ -759,7 +761,7 @@ def get_permission_query_conditions(user):
 
 	if user == "Administrator":
 		return
-	if "HR User" in user_roles or "HR Manager" in user_roles:
+	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles:
 		return
 
 	return """(
