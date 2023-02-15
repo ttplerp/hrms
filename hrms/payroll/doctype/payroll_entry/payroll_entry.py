@@ -631,7 +631,7 @@ class PayrollEntry(Document):
 			tot_payable_amt += (-1*flt(rec.amount) if rec.component_type == 'Deduction' else flt(rec.amount))
 			posting.setdefault("to_payables",[]).append({
 				"account"        : rec.gl_head,
-				"credit_in_account_currency" if rec.component_type == 'Deduction' else "debit_in_account_currency": flt(rec.amount),
+				"credit_in_account_currency" if rec.component_type == 'Deduction' else "debit_in_account_currency": flt(rec.amount,2),
 				"against_account": default_payable_account,
 				"cost_center"    : rec.cost_center,
 				"business_activity" : rec.business_activity,
@@ -650,12 +650,12 @@ class PayrollEntry(Document):
 				remit_gl_list   = [rec.gl_head,default_gpf_account] if rec.salary_component == salary_component_pf else [rec.gl_head]
 
 				for r in remit_gl_list:
-					remit_amount += flt(rec.amount)
+					remit_amount += flt(rec.amount,2)
 					if r == default_gpf_account:
 						for i in self.get_cc_wise_entries(salary_component_pf):
 							  posting.setdefault(rec.salary_component,[]).append({
 								"account"       : r,
-								"debit_in_account_currency" : flt(i.amount),
+								"debit_in_account_currency" : flt(i.amount,2),
 								"cost_center"   : i.cost_center,
 								"business_activity" : i.business_activity,
 								"party_check"   : 0,
@@ -669,7 +669,7 @@ class PayrollEntry(Document):
 					else:
 						posting.setdefault(rec.salary_component,[]).append({
 							"account"       : r,
-							"debit_in_account_currency" : flt(rec.amount),
+							"debit_in_account_currency" : flt(rec.amount,2),
 							"cost_center"   : rec.cost_center,
 							"business_activity" : rec.business_activity,
 							"party_check"   : 0,
@@ -683,7 +683,7 @@ class PayrollEntry(Document):
 					
 				posting.setdefault(rec.salary_component,[]).append({
 					"account"       : default_bank_account,
-					"credit_in_account_currency" : flt(remit_amount),
+					"credit_in_account_currency" : flt(remit_amount,2),
 					"cost_center"   : rec.cost_center,
 					"business_activity" : rec.business_activity,
 					"party_check"   : 0,
@@ -696,7 +696,7 @@ class PayrollEntry(Document):
 		if posting.get("to_payables") and len(posting.get("to_payables")):
 			posting.setdefault("to_bank",[]).append({
 				"account"       : default_payable_account,
-				"debit_in_account_currency": flt(tot_payable_amt),
+				"debit_in_account_currency": flt(tot_payable_amt,2),
 				"cost_center"   : company_cc,
 				"business_activity": default_business_activity,
 				"party_check"   : 0,
@@ -706,7 +706,7 @@ class PayrollEntry(Document):
 			})
 			posting.setdefault("to_bank",[]).append({
 				"account"       : default_bank_account,
-				"credit_in_account_currency": flt(tot_payable_amt),
+				"credit_in_account_currency": flt(tot_payable_amt,2),
 				"cost_center"   : company_cc,
 				"business_activity": default_business_activity,
 				"party_check"   : 0,
@@ -716,7 +716,7 @@ class PayrollEntry(Document):
 			})
 			posting.setdefault("to_payables",[]).append({
 				"account"       : default_payable_account,
-				"credit_in_account_currency" : flt(tot_payable_amt),
+				"credit_in_account_currency" : flt(tot_payable_amt,2),
 				"cost_center"   : company_cc,
 				"business_activity": default_business_activity,
 				"party_check"   : 0,
