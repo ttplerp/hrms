@@ -194,7 +194,10 @@ class TravelRequest(AccountsController):
 	
 	def update_amount(self):
 		for item in self.get("itinerary"):
-			item.no_days_actual = date_diff(item.to_date, item.from_date)+1
+			if not item.to_date:
+				item.no_days_actual = date_diff(item.from_date, item.from_date)+1
+			else:
+				item.no_days_actual = date_diff(item.to_date, item.from_date)+1
 			item.amount = flt(item.no_days_actual) * (flt(item.dsa) * (flt(item.dsa_percent)/100))
 			item.mileage_amount = flt(item.mileage_rate) * flt(item.distance)
 			item.mileage_amount = flt(item.mileage_amount) if self.travel_type == 'Domestic' else 0
