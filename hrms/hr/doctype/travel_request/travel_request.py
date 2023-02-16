@@ -225,7 +225,7 @@ class TravelRequest(AccountsController):
 		return doc
 	def post_expense_claim(self):
 		default_payable_account = frappe.get_cached_value(
-					"Company", self.company, "employee_payable_account")
+					"Company", self.company, "default_expense_claim_payable_account")
 		default_cost_center = frappe.get_cached_value("Company", self.company, "cost_center")
 
 		expense_claim 					= frappe.new_doc("Expense Claim")

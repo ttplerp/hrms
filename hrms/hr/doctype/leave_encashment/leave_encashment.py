@@ -76,7 +76,7 @@ class LeaveEncashment(Document):
 		cost_center = frappe.get_value("Employee", self.employee, "cost_center")
 		branch = frappe.get_value("Employee", self.employee, "branch")
 		company =frappe.get_value("Employee", self.employee, "company")
-		default_payable_account = frappe.get_cached_value("Company", company, "employee_payable_account")
+		default_payable_account = frappe.get_cached_value("Company", company, "default_expense_claim_payable_account")
 		taxt_account_head = frappe.get_cached_value("Company", company, "salary_tax_account")
 
 		expense_claim 					= frappe.new_doc("Expense Claim")
