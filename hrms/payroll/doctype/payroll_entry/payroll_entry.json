@@ -18,9 +18,12 @@
   "section_break_8",
   "branch",
   "department",
+  "division",
+  "section",
   "column_break_10",
   "designation",
   "employee",
+  "unit",
   "sb_process_stats",
   "number_of_employees",
   "salary_slips_created",
@@ -351,12 +354,30 @@
    "label": "JV Entry Type",
    "options": "\nBank Entry\nCash Entry",
    "reqd": 1
+  },
+  {
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "options": "Department"
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department"
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Link",
+   "label": "Unit",
+   "options": "Department"
   }
  ],
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-31 17:30:44.324400",
+ "modified": "2023-02-14 17:25:58.418041",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",
