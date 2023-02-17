@@ -21,7 +21,7 @@ def get_data( filters=None):
 	(select b.amount from `tabSalary Detail` b where salary_component = 'Basic Pay' and b.parent = a.name) as basic_pay,
 	(select b.amount from `tabSalary Detail` b where salary_component = 'Salary Tax' and b.parent = a.name) as tds ,
 	(select b.amount from `tabSalary Detail` b where salary_component = 'PF' and b.parent = a.name) as nppf ,
-	ifnull((select b.amount from `tabSalary Detail` b where salary_component = 'Group Insurance Scheme' and b.parent = a.name),0) as gis ,
+	ifnull((select b.amount from `tabSalary Detail` b where salary_component = 'GIS' and b.parent = a.name),0) as gis ,
 	(select b.amount from `tabSalary Detail` b where salary_component = 'Communication Allowance' and b.parent = a.name) as comm_all ,
 	(select b.amount from `tabSalary Detail` b where salary_component = 'Health Contribution' and b.parent = a.name) as health,
 	r.receipt_number, DATE_FORMAT(r.receipt_date, '%d-%m-%Y') AS receipt_date
