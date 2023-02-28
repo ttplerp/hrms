@@ -232,6 +232,7 @@ class TravelRequest(AccountsController):
 		default_cost_center = frappe.get_cached_value("Company", self.company, "cost_center")
 
 		expense_claim 					= frappe.new_doc("Expense Claim")
+		expense_claim.ignore_man
 		expense_claim.company 			= self.company
 		expense_claim.employee 			= self.employee
 		expense_claim.payable_account 	= default_payable_account
@@ -279,7 +280,7 @@ class TravelRequest(AccountsController):
 					"allocated_amount": flt(advance.paid_amount) - flt(advance.claimed_amount),
 					"advance_account" :advance.advance_account
 				})
-		expense_claim.save(ignore_permissions=True)
+		expense_claim.save(ignore_permissions=True,ignore_mandatory=True)
 		expense_claim.submit()
 		frappe.msgprint(
 			_("Expense Claim record {0} created")

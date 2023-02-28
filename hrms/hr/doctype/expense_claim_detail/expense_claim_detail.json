@@ -13,7 +13,6 @@
   "amount",
   "column_break_8",
   "sanctioned_amount",
-  "attach_report",
   "accounting_dimensions_section",
   "cost_center",
   "dimension_col_break",
@@ -131,18 +130,12 @@
    "label": "Reference",
    "options": "reference_type",
    "read_only": 1
-  },
-  {
-   "fieldname": "attach_report",
-   "fieldtype": "Attach",
-   "label": "Attach Report",
-   "mandatory_depends_on": "eval:doc.expense_type == \"Imprest\""
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-27 19:17:54.440746",
+ "modified": "2023-02-28 15:25:12.289319",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Detail",
