@@ -20,7 +20,9 @@ def get_columns(data):
 	columns = [
 		_("Employee ID") + ":Link/Overtime Application:150",
 		_("Employee Name") + "::150",
-		_("Branch") + "::150",
+		_("Branch") + ":Link/Branch:150",
+		_("Designation") + ":Link/Designation:120",
+		_("Grade") + ":Link/Employee Grade:120",
 		_("From Date/Time") + "::150",
 		_("To Date/Time") + "::150",
 		_("Number of Hours") + "::100",
@@ -32,7 +34,7 @@ def get_data(filters):
 	conditions, filters = get_conditions(filters)
 	data = frappe.db.sql("""
 		SELECT 
-			oa.employee, oa.employee_name, oa.branch,
+			oa.employee, oa.employee_name, oa.branch, oa.designation, oa.grade, 
 			oai.from_date, oai.to_date, oai.number_of_hours, oa.total_amount
 		FROM `tabOvertime Application` oa, `tabOvertime Application Item` oai
 		WHERE oa.name = oai.parent

@@ -35,30 +35,6 @@ class LeaveEncashment(Document):
 		self.post_expense_claim()
 		self.create_leave_ledger_entry()
 		notify_workflow_states(self)
-		# if not self.leave_allocation:
-		# 	self.leave_allocation = self.get_leave_allocation().get("name")
-		# additional_salary = frappe.new_doc("Additional Salary")
-		# additional_salary.company = frappe.get_value("Employee", self.employee, "company")
-		# additional_salary.employee = self.employee
-		# additional_salary.currency = self.currency
-		# earning_component = frappe.get_value("Leave Type", self.leave_type, "earning_component")
-		# if not earning_component:
-		# 	frappe.throw(_("Please set Earning Component for Leave type: {0}.").format(self.leave_type))
-		# additional_salary.salary_component = earning_component
-		# additional_salary.payroll_date = self.encashment_date
-		# additional_salary.amount = self.encashment_amount
-		# additional_salary.ref_doctype = self.doctype
-		# additional_salary.ref_docname = self.name
-		# additional_salary.submit()
-
-		# # Set encashed leaves in Allocation
-		# frappe.db.set_value(
-		# 	"Leave Allocation",
-		# 	self.leave_allocation,
-		# 	"total_leaves_encashed",
-		# 	frappe.db.get_value("Leave Allocation", self.leave_allocation, "total_leaves_encashed")
-		# 	+ self.encashable_days,
-		# )
 
 		# self.create_leave_ledger_entry()
 	def on_cancel(self):
@@ -106,7 +82,7 @@ class LeaveEncashment(Document):
 		})
 		expense_claim.docstatus = 0
 
-		expense_claim.save(ignore_permissions=True)
+		expense_claim.save(ignore_permissions=True,ignore_mandatory=True)
 		expense_claim.submit()
 		self.db_set("expense_claim", expense_claim.name)
 		frappe.db.commit()
@@ -135,13 +111,14 @@ class LeaveEncashment(Document):
 			)
 			create_leave_ledger_entry(self, args, submit)
 	def check_duplicate_entry(self):
-		# for rec in frappe.db.get_all("Leave Encashment", {"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, \
-		# 	"name": ("!=", self.name), "docstatus": 0, "workflow_state": ("!=","Rejected")}, ["name", "workflow_state"]):
-		# 	frappe.throw(_("There is already another request via {} in status {}").format(frappe.get_desk_link(self.doctype, rec.name), frappe.bold(rec.workflow_state)), title="Not Permitted")
-		for rec in frappe.db.get_all("Leave Encashment", {"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, \
-			"name": ("!=", self.name), "docstatus": 0}, "name"):
-			frappe.throw("You had already Encash  on'{}' this year".format(self.encashment_date))
-	
+		count = frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) \
+					if frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) else 0
+		employee_grp = frappe.db.get_value("Employee",self.employee,"employee_group")
+		frequency = frappe.db.get_value("Employee Group",employee_grp,"encashment_frequency")
+		
+		if flt(count) >= flt(frequency):
+			frappe.throw("You had already Encash {} time for leave period {}".format(frappe.bold(count), frappe.bold(self.leave_period)))
+
 	@frappe.whitelist()
 	def get_leave_details_for_encashment(self):
 		salary_structure =  frappe.db.sql("""select name 
