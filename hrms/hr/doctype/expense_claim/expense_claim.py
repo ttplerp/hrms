@@ -335,7 +335,6 @@ class ExpenseClaim(AccountsController):
 					item=self,
 				)
 			)
-		# frappe.throw(str(gl_entry))
 		# expense entries
 		for data in self.expenses:
 			gl_entry.append(
@@ -404,21 +403,6 @@ class ExpenseClaim(AccountsController):
 	def add_tax_gl_entries(self, gl_entries):
 		# tax table gl entries
 		for tax in self.get("taxes"):
-			# commented coz we need to credit the tax amount
-			# gl_entries.append(
-			# 	self.get_gl_dict(
-			# 		{
-			# 			"account": tax.account_head,
-			# 			"debit": tax.tax_amount,
-			# 			"debit_in_account_currency": tax.tax_amount,
-			# 			"against": self.employee,
-			# 			"cost_center": self.cost_center,
-			# 			"against_voucher_type": self.doctype,
-			# 			"against_voucher": self.name,
-			# 		},
-			# 		item=tax,
-			# 	)
-			# )
 			gl_entries.append(
 				self.get_gl_dict(
 					{
