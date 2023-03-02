@@ -56,6 +56,7 @@ class LeaveEncashment(Document):
 		taxt_account_head = frappe.get_cached_value("Company", company, "salary_tax_account")
 
 		expense_claim 					= frappe.new_doc("Expense Claim")
+		expense_claim.flags.ignore_mandatory = True
 		expense_claim.company 			= company
 		expense_claim.employee 			= self.employee
 		expense_claim.payable_account 	= default_payable_account
@@ -82,7 +83,7 @@ class LeaveEncashment(Document):
 		})
 		expense_claim.docstatus = 0
 
-		expense_claim.save(ignore_permissions=True,ignore_mandatory=True)
+		expense_claim.save(ignore_permissions=True)
 		expense_claim.submit()
 		self.db_set("expense_claim", expense_claim.name)
 		frappe.db.commit()
