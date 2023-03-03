@@ -11,6 +11,7 @@
   "standard_working_hours",
   "column_break_9",
   "retirement_age",
+  "include_holidays_in_total_working_days",
   "reminders_section",
   "send_birthday_reminders",
   "enable_bulk_overtime_payment",
@@ -491,13 +492,19 @@
    "fieldtype": "Data",
    "label": "Notesheet Approver Name",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "include_holidays_in_total_working_days",
+   "fieldtype": "Check",
+   "label": "Include Holidays In Total Working Days"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-13 10:59:58.998226",
+ "modified": "2023-03-03 14:48:51.173975",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
