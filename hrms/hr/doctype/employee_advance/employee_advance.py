@@ -25,7 +25,6 @@ class EmployeeAdvance(Document):
 			"Accounts Settings", "make_payment_via_journal_entry"
 		)
 	def validate(self):
-		# frappe.throw(str(self.doctype))
 		validate_workflow_states(self)
 		validate_active_employee(self.employee)
 		self.validate_employment_status()

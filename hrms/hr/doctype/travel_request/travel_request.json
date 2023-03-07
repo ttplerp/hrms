@@ -25,6 +25,7 @@
   "mode_of_travel",
   "column_break_17",
   "purpose_of_travel",
+  "attach_report",
   "date_of_birth",
   "section_break_4",
   "description",
@@ -144,6 +145,7 @@
    "fieldname": "employee",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Employee",
    "options": "Employee",
    "reqd": 1
@@ -477,6 +479,7 @@
    "fetch_from": "employee.branch",
    "fieldname": "branch",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Branch",
    "options": "Branch",
    "read_only": 1
@@ -563,11 +566,17 @@
    "fieldtype": "Small Text",
    "label": "Remarks For Miscellaneous Amount Claim",
    "mandatory_depends_on": "eval:doc.miscellaneous_amount > 0"
+  },
+  {
+   "fieldname": "attach_report",
+   "fieldtype": "Attach",
+   "ignore_user_permissions": 1,
+   "label": "Attach Report"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-07 13:34:53.203882",
+ "modified": "2023-03-07 20:40:06.057869",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",

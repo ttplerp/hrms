@@ -74,17 +74,16 @@ class TravelRequest(AccountsController):
 		for t in las:
 			frappe.throw("The dates in your current travel request have been used in leave application {}".format(frappe.get_desk_link("Leave Application", t.name)))
 
-	def check_advance(self):
+	def check_advance_and_report(self):
 		if self.need_advance == 1:
-			
 			if (self.employee_advance_reference and not frappe.db.exists("Employee Advance", self.employee_advance_reference)) or not self.employee_advance_reference:
 				self.db_set("employee_advance_reference",None)
 				frappe.db.commit()
-				# frappe.throw("Cannot Apply whithout claiming travel advance")
 			else:
 				if frappe.db.get_value("Employee Advance",self.employee_advance_reference,"status") != "Paid":
 					frappe.throw("Cannot Apply whithout claiming travel advance")
-
+		if not self.attach_report:
+			frappe.throw("Tour Report is mandatory")
 	def update_total_amount(self):
 		total = base_total = 0
 		for item in self.get("itinerary"):
