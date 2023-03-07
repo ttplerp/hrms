@@ -12,6 +12,31 @@ frappe.ui.form.on('Payroll Entry', {
 			return {
 				"filters": {
 					"company": frm.doc.company,
+					"is_department": "1",
+				}
+			};
+		});
+
+		frm.set_query("unit", function() {
+			return {
+				"filters": {
+					"is_unit": '1',
+				}
+			};
+		});
+
+		frm.set_query("division", function() {
+			return {
+				"filters": {
+					"is_division": '1',
+				}
+			};
+		});
+
+		frm.set_query("section", function() {
+			return {
+				"filters": {
+					"is_section": '1',
 				}
 			};
 		});

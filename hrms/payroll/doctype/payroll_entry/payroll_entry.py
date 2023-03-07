@@ -67,10 +67,18 @@ class PayrollEntry(Document):
 	# following method copied from NRDCL by SHIV on 2020/10/20
 	def get_emp_list(self, process_type=None):
 		self.set_month_dates()
-
 		cond = self.get_filter_condition()
 		cond += self.get_joining_relieving_condition()
-   
+
+		if self.department:
+			cond += "and department = '{}'".format(self.department)
+		if self.division:
+			cond += "and division = '{}'".format(self.division)
+		if self.section:
+			cond += "and section = '{}'".format(self.section)
+		if self.unit:
+			cond += "and unit = '{}'".format(self.unit)
+
 		emp_list = frappe.db.sql("""
 			select t1.name as employee, t1.employee_name, t1.department, t1.designation
 			from `tabEmployee` t1
