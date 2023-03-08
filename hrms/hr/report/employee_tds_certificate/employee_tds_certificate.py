@@ -11,7 +11,6 @@ def execute(filters=None):
 	validate_filters(filters)
 	columns = get_columns()
 	data = get_data(filters)
-	# frappe.throw('cols: {} \n data:{}'.format(columns,data))
 	return columns, data, filters
 
 def get_data( filters=None):
@@ -26,16 +25,15 @@ def get_data( filters=None):
 	(select b.amount from `tabSalary Detail` b where salary_component = 'Health Contribution' and b.parent = a.name) as health,
 	r.receipt_number, DATE_FORMAT(r.receipt_date, '%d-%m-%Y') AS receipt_date
 	 from `tabSalary Slip` a, `tabTDS Receipt Entry` r
-	 where a.fiscal_year = r.fiscal_year and a.month = r.month and a.docstatus = 1 and r.purpose = 'Employee Salary' and a.fiscal_year = """ + str(filters.fiscal_year)
+	 where a.fiscal_year = r.fiscal_year and a.month = r.month and a.docstatus = 1 
+	 and r.purpose = 'Employee Salary' and a.fiscal_year = """ + str(filters.fiscal_year)
 
 	if filters.employee:
 		salary = salary + " AND a.employee = \'" + str(filters.employee) + "\'"
 
 	salary+=" order by r.receipt_date asc;"
-
 	datas = frappe.db.sql(salary, as_dict=True)
 	for d in datas:
-		#frappe.msgprint(str(d.nppf))
 		row = [get_month(d.month)+"-"+d.fyear, 
 			  "Salary", 
 			  d.basic_pay, 
@@ -62,11 +60,10 @@ def get_data( filters=None):
 						a.encashment_amount, a.encashment_tax, 
 						r.receipt_number, 
 						DATE_FORMAT(r.receipt_date, '%d-%m-%Y') AS receipt_date
-					from `tabLeave Encashment` a LEFT JOIN `tabTDS Receipt Entry` r
-						ON a.name = r.invoice_no
+					from `tabLeave Encashment` a, `tabTDS Receipt Entry` r
 					WHERE a.employee = """+filters.employee+""" and a.docstatus = 1 
+						and a.name = r.invoice_no
 						and a.encashment_date between '"""+ filters.fiscal_year + """-01-01' and '""" + filters.fiscal_year + """-12-31'""", as_dict=True) 
-		# frappe.msgprint(str(encash_data))
 		if encash_data:
 			for a in encash_data:
 				row = [
