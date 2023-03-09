@@ -636,7 +636,7 @@ class PayrollEntry(Document):
 		tot_payable_amt= 0
 		for rec in cc:
 			# To Payables
-			tot_payable_amt += (-1*flt(rec.amount) if rec.component_type == 'Deduction' else flt(rec.amount))
+			tot_payable_amt += (-1*flt(rec.amount,2) if rec.component_type == 'Deduction' else flt(rec.amount,2))
 			posting.setdefault("to_payables",[]).append({
 				"account"        : rec.gl_head,
 				"credit_in_account_currency" if rec.component_type == 'Deduction' else "debit_in_account_currency": flt(rec.amount,2),
