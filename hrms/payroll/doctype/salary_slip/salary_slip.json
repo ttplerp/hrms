@@ -335,11 +335,10 @@
   },
   {
    "fieldname": "bank_name",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Bank Name",
    "oldfieldname": "bank_name",
    "oldfieldtype": "Data",
-   "options": "Bank",
    "read_only": 1
   },
   {
@@ -570,7 +569,7 @@
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-09 19:34:08.120941",
+ "modified": "2023-03-09 16:12:13.280727",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
