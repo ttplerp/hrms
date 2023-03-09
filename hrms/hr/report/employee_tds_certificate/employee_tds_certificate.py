@@ -25,7 +25,7 @@ def get_data( filters=None):
 	(select b.amount from `tabSalary Detail` b where salary_component = 'Health Contribution' and b.parent = a.name) as health,
 	r.receipt_number, r.receipt_date, r.posting_date
 	from `tabSalary Slip` a, `tabTDS Receipt Entry` r
-	where a.fiscal_year = r.fiscal_year and a.docstatus = 1 
+	where a.fiscal_year = r.fiscal_year and a.docstatus = 1 and a.month = r.month
 	and r.purpose = 'Employee Salary' and a.fiscal_year = """ + str(filters.fiscal_year)
 
 	if filters.employee:
