@@ -577,7 +577,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 							#Edited by Kinley on 16/12/2022 for Non National Temporary Employees(3% tax on basic)
 							sal_tax_per = frappe.db.get_value("Employee Group",frappe.db.get_value("Employee", source.employee, "employee_group"), "tax_percent")
 							calc_amt = flt(gross_amt)*(flt(flt(sal_tax_per,2)/100,2))
-							d['amount'] = flt(tax_amt)
+							d['amount'] = flt(calc_amt,2)
 							tax_included = 1
 
 		# Appending calculated components to salary slip
