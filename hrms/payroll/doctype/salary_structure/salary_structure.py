@@ -332,10 +332,8 @@ class SalaryStructure(Document):
 
 			# Calculating Salary Tax
 			if ed == 'deductions':
-				frappe.throw("hehe")
 				if frappe.db.get_value("Employee Group",frappe.db.get_value("Employee", self.employee, "employee_group"), "calc_sal_tax") != 1:
 					calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
-					frappe.throw("calc_tax:" +str(calc_amt))
 					# calc_amt = roundoff(calc_amt)
 				else:
 					#Edited by Kinley on 16/12/2022 for Non National Temporary Employees(3% tax on basic)
