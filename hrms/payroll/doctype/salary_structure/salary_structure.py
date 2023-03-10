@@ -332,8 +332,10 @@ class SalaryStructure(Document):
 
 			# Calculating Salary Tax
 			if ed == 'deductions':
+				frappe.throw("hehe")
 				if frappe.db.get_value("Employee Group",frappe.db.get_value("Employee", self.employee, "employee_group"), "calc_sal_tax") != 1:
 					calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
+					frappe.throw("calc_tax:" +str(calc_amt))
 					# calc_amt = roundoff(calc_amt)
 				else:
 					#Edited by Kinley on 16/12/2022 for Non National Temporary Employees(3% tax on basic)
@@ -453,6 +455,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 						deducted_amt = flt(flt(d.total_deducted_amount) + flt(amount),2)
 						outstanding_amt = flt(flt(d.total_outstanding_amount) - flt(amount),2)
 
+
 				# Leave without pay
 				calc_amount = flt(amount,2)
 				if key == "earnings" and frappe.db.get_value("Salary Component", d.salary_component, "disable_attendance_check") == 0:
@@ -464,7 +467,6 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				# following condition added by SHIV on 2021/05/28
 				if not flt(calc_amount):
 					continue
-				
 				calc_map.setdefault(key, []).append({
 					'salary_component': d.salary_component,
 					'depends_on_lwp': d.depends_on_lwp,
@@ -516,7 +518,6 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				'payment_days': flt(payment_days)
 				})
 		#ends ot logic
-
 		for e in calc_map['earnings']:
 			if e['salary_component'] == 'Basic Pay':
 				basic_amt = (flt(e['amount']))
@@ -569,16 +570,17 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 			else:
 				if d['salary_component'] == 'Salary Tax':
 					tax_amt = 0
-					if not tax_included:
-						if frappe.db.get_value("Employee Group",frappe.db.get_value("Employee", source.employee, 		"employee_group"), "calc_sal_tax") != 1:
+					if tax_included == 0:
+						if frappe.db.get_value("Employee Group",frappe.db.get_value("Employee", source.employee, "employee_group"), "calc_sal_tax") != 1:
 							tax_amt = get_salary_tax(math.floor(flt(gross_amt)-flt(pf_amt)-flt(gis_amt)-(comm_amt*0.5)))
+							d['amount'] = flt(tax_amt)
 							# calc_amt = roundoff(calc_amt)
-					else:
-						#Edited by Kinley on 16/12/2022 for Non National Temporary Employees(3% tax on basic)
-						sal_tax_per = frappe.db.get_value("Employee Group",frappe.db.get_value("Employee", source.employee, "employee_group"), "tax_percent")
-						calc_amt = flt(gross_amt)*(flt(flt(sal_tax_per,2)/100,2))
-						d['amount'] = flt(tax_amt)
-						tax_included = 1
+						else:
+							#Edited by Kinley on 16/12/2022 for Non National Temporary Employees(3% tax on basic)
+							sal_tax_per = frappe.db.get_value("Employee Group",frappe.db.get_value("Employee", source.employee, "employee_group"), "tax_percent")
+							calc_amt = flt(gross_amt)*(flt(flt(sal_tax_per,2)/100,2))
+							d['amount'] = flt(tax_amt)
+							tax_included = 1
 
 		# Appending calculated components to salary slip
 		[target.append('earnings', m) for m in calc_map['earnings']]
