@@ -72,16 +72,36 @@ def get_columns(filters: Filters) -> List[Dict]:
 	columns = []
 
 	if filters.group_by:
-		columns.append(
-			{
-				"label": _(filters.group_by),
-				"fieldname": frappe.scrub(filters.group_by),
-				"fieldtype": "Link",
-				"options": "Branch",
-				"width": 120,
-			}
-		)
-
+		if filters.group_by in ("Department", "Unit"):
+			columns.append(
+				{
+					"label": _(filters.group_by),
+					"fieldname": frappe.scrub(filters.group_by),
+					"fieldtype": "Link",
+					"options": "Department",
+					"width": 120,
+				}
+			)
+		elif filters.group_by == "Grade":
+			columns.append(
+				{
+					"label": _(filters.group_by),
+					"fieldname": frappe.scrub(filters.group_by),
+					"fieldtype": "Link",
+					"options": "Employee Grade",
+					"width": 120,
+				}
+			)
+		else:
+			columns.append(
+				{
+					"label": _(filters.group_by),
+					"fieldname": frappe.scrub(filters.group_by),
+					"fieldtype": "Link",
+					"options": filters.group_by,
+					"width": 120,
+				}
+			)
 	columns.extend(
 		[
 			{
