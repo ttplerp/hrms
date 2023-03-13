@@ -526,7 +526,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				comm_amt = (flt(e['amount']))
 			gross_amt += flt(e['amount'])
 
-		gross_amt += (flt(target.arrear_amount) + flt(total_overtime_amount) + flt(target.leave_encashment_amount))
+		gross_amt += (flt(target.arrear_amount) + flt(target.leave_encashment_amount))
 
 		# Calculating PF, Group Insurance Scheme, Health Contribution
 		sws_amt = pf_amt = gis_amt = health_cont_amt = 0.00
