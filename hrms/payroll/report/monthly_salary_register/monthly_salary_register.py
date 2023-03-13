@@ -37,7 +37,7 @@ def execute(filters=None):
 		row = [ss.employee, ss.employee_name, ss.employment_type, cid, joining_date,
 			ss.bank_name, ss.bank_account_no, 
 			ss.cost_center, ss.branch, ss.department,
-						 ss.division, ss.employee_grade, ss.designation, 
+						 ss.division, ss.unit, ss.employee_grade, ss.designation, 
 			 ss.fiscal_year, ss.month, ss.leave_withut_pay, ss.payment_days,
 						 status]
 			
@@ -67,7 +67,8 @@ def get_columns(salary_slips):
 		_("Cost Center") + ":Link/Cost Center:120",
 		_("Branch") + ":Link/Branch:120", 
 		_("Department") + ":Link/Department:120", 
-		_("Division") + ":Link/Division:120",
+		_("Division") + ":Link/Department:120",
+		_("Unit") + ":Link/Unit:120",
 		_("Grade") + ":Link/Employee Grade:120", 
 		_("Designation") + ":Link/Designation:120",
 		_("Year") + "::80", _("Month") + "::80", 
@@ -104,8 +105,8 @@ def get_columns(salary_slips):
 def get_salary_slips(filters):
 	conditions, filters = get_conditions(filters)
 	salary_slips = frappe.db.sql("""
-								select * from `tabSalary Slip` where 1 = 1 %s
-								order by employee, month
+								select ss.*, e.unit from `tabSalary Slip` ss, `tabEmployee` e where ss.employee = e.name %s
+								order by ss.employee, ss.month
 							""" % conditions, filters, as_dict=1)
 	'''
 	if not salary_slips:
@@ -121,24 +122,24 @@ def get_conditions(filters):
 		month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", 
 			"Dec"].index(filters["month"]) + 1
 		filters["month"] = month
-		conditions += " and month = %(month)s"
+		conditions += " and ss.month = %(month)s"
 	
-	if filters.get("fiscal_year"): conditions += " and fiscal_year = %(fiscal_year)s"
-	if filters.get("company"): conditions += " and company = %(company)s"
-	if filters.get("employee"): conditions += " and employee = %(employee)s"
+	if filters.get("fiscal_year"): conditions += " and ss.fiscal_year = %(fiscal_year)s"
+	if filters.get("company"): conditions += " and ss.company = %(company)s"
+	if filters.get("employee"): conditions += " and ss.employee = %(employee)s"
 	# if filters.get("division"): conditions += " and division = %(division)s"
 	# if filters.get("cost_center"):
 	# 	all_ccs = get_child_cost_centers(filters.cost_center)
 	# 	conditions += " and cost_center in {0} ".format(tuple(all_ccs))
 		
 	if filters.get("process_status") == "All":
-			conditions += " and docstatus = docstatus"
+			conditions += " and ss.docstatus = ss.docstatus"
 	elif filters.get("process_status") == "Submitted":
-			conditions += " and docstatus = 1"
+			conditions += " and ss.docstatus = 1"
 	elif filters.get("process_status") == "Un-Submitted":
-			conditions += " and docstatus = 0"
+			conditions += " and ss.docstatus = 0"
 	elif filters.get("process_status") == "Cancelled":
-			conditions += " and docstatus = 2"
+			conditions += " and ss.docstatus = 2"
 
 	
 	return conditions, filters
