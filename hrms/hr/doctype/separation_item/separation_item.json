@@ -1,137 +1,100 @@
 {
- "actions": [],
- "autoname": "autoincrement",
- "creation": "2022-10-17 11:39:13.020540",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "benefit_type",
-  "gl_account",
-  "column_break_2",
-  "amount",
-  "tax_amount",
-  "net_amount",
-  "sb_el_balance",
-  "actual_earned_leave_balance",
-  "earned_leave_balance",
-  "column_break_6",
-  "actual_amount",
-  "apply_tax",
-  "sb_remarks",
-  "remarks"
- ],
- "fields": [
-  {
-   "columns": 4,
-   "fieldname": "benefit_type",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Benefit Type",
-   "options": "Employee Benefit Type",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_2",
-   "fieldtype": "Column Break"
-  },
-  {
-   "columns": 2,
-   "fieldname": "amount",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Amount",
-   "precision": "2",
-   "reqd": 1
-  },
-  {
-   "fetch_from": "benefit_type.gl_account",
-   "fieldname": "gl_account",
-   "fieldtype": "Link",
-   "label": "GL Account",
-   "options": "Account",
-   "read_only": 1
-  },
-  {
-   "columns": 2,
-   "default": "0",
-   "fieldname": "net_amount",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Net Amount",
-   "precision": "2",
-   "read_only": 1
-  },
-  {
-   "fieldname": "earned_leave_balance",
-   "fieldtype": "Float",
-   "label": "Earned Leave Balance (Reimbursed)",
-   "precision": "2"
-  },
-  {
-   "columns": 2,
-   "default": "0",
-   "fieldname": "tax_amount",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Tax Amount",
-   "precision": "2",
-   "read_only": 1
-  },
-  {
-   "fieldname": "remarks",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "actual_earned_leave_balance",
-   "fieldtype": "Float",
-   "label": "Earned Leave Balance (Actual)",
-   "precision": "2",
-   "read_only": 1
-  },
-  {
-   "depends_on": "eval:doc.benefit_type == 'Balance EL reimbursement'",
-   "fieldname": "sb_el_balance",
-   "fieldtype": "Section Break",
-   "label": "EARNED LEAVE BALANCE"
-  },
-  {
-   "fieldname": "column_break_6",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "actual_amount",
-   "fieldtype": "Currency",
-   "label": "Actual Amount",
-   "precision": "2",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fetch_from": "benefit_type.tax_applicable",
-   "fieldname": "apply_tax",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Apply Tax",
-   "read_only": 1
-  }
- ],
- "index_web_pages_for_search": 1,
- "istable": 1,
- "links": [],
- "modified": "2022-11-28 21:55:31.106286",
- "modified_by": "Administrator",
- "module": "HR",
- "name": "Separation Item",
- "naming_rule": "Autoincrement",
- "owner": "Administrator",
- "permissions": [],
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": []
-}
+    "creation": "2018-01-03 17:20:39.142207",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+     "benefit_type",
+     "distance",
+     "terrain_rate",
+     "load_capacity",
+     "earned_leave_balance",
+     "column_break_2",
+     "gl_account",
+     "amount",
+     "tax_amount",
+     "payable_amount"
+    ],
+    "fields": [
+     {
+      "columns": 4,
+      "fieldname": "benefit_type",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Benefit Type",
+      "options": "Employee Benefit Type",
+      "reqd": 1
+     },
+     {
+      "fieldname": "column_break_2",
+      "fieldtype": "Column Break"
+     },
+     {
+      "columns": 2,
+      "fieldname": "amount",
+      "fieldtype": "Currency",
+      "in_list_view": 1,
+      "label": "Amount",
+      "reqd": 1
+     },
+     {
+      "allow_in_quick_entry": 1,
+      "columns": 4,
+      "fetch_from": "benefit_type.gl_account",
+      "fieldname": "gl_account",
+      "fieldtype": "Read Only",
+      "in_list_view": 1,
+      "label": "GL Account"
+     },
+     {
+      "depends_on": "eval:doc.benefit_type == 'Leave Encashment';",
+      "fieldname": "earned_leave_balance",
+      "fieldtype": "Float",
+      "label": "Earned Leave Balance",
+      "read_only": 1
+     },
+     {
+      "default": "0",
+      "fieldname": "tax_amount",
+      "fieldtype": "Currency",
+      "label": "Tax Amount",
+      "read_only": 1
+     },
+     {
+      "fieldname": "payable_amount",
+      "fieldtype": "Currency",
+      "label": "Payable Amount",
+      "read_only": 1
+     },
+     {
+      "depends_on": "eval:doc.benefit_type == \"Carriage Charges\";",
+      "fieldname": "terrain_rate",
+      "fieldtype": "Select",
+      "label": "Terrain Rate",
+      "options": "\n5.18\n7.84"
+     },
+     {
+      "depends_on": "eval:doc.benefit_type == \"Carriage Charges\";",
+      "fieldname": "load_capacity",
+      "fieldtype": "Select",
+      "label": "Load Capacity",
+      "options": "\n8\n16"
+     },
+     {
+      "depends_on": "eval:doc.benefit_type == \"Carriage Charges\"",
+      "fieldname": "distance",
+      "fieldtype": "Float",
+      "label": "Distance"
+     }
+    ],
+    "istable": 1,
+    "modified": "2023-01-09 19:31:36.778347",
+    "modified_by": "Administrator",
+    "module": "HR",
+    "name": "Separation Item",
+    "owner": "Administrator",
+    "permissions": [],
+    "quick_entry": 1,
+    "sort_field": "modified",
+    "sort_order": "DESC"
+   }

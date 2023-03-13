@@ -1,0 +1,410 @@
+{
+ "actions": [],
+ "autoname": "EB.YY.MM.###",
+ "creation": "2018-01-03 17:29:59.716723",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "workflow_state",
+  "branch",
+  "column_break_2",
+  "posting_date",
+  "purpose",
+  "section_break_4",
+  "employee",
+  "department",
+  "division",
+  "column_break_4",
+  "employee_name",
+  "designation",
+  "grade",
+  "section_break_8",
+  "separation_date",
+  "reason_for_resignation",
+  "column_break_10",
+  "description",
+  "section_break_12",
+  "items",
+  "deduction_details_section",
+  "deduction_details",
+  "section_break_14",
+  "journal",
+  "column_break_23",
+  "total_amount",
+  "total_deducted_amount",
+  "net_amount",
+  "section_break_24",
+  "carraige_charges_doc",
+  "column_break_26",
+  "transfer_tada",
+  "section_break_29",
+  "benefit_approver",
+  "column_break_30",
+  "benefit_approver_name",
+  "column_break_37",
+  "benefit_approver_designation",
+  "sb_reference",
+  "employee_separation_id",
+  "employee_transfer_id",
+  "column_break_32",
+  "company",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "allow_on_submit": 1,
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Processing Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break",
+   "label": "Employee Details"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Read Only",
+   "label": "Department"
+  },
+  {
+   "fetch_from": "employee.division",
+   "fieldname": "division",
+   "fieldtype": "Read Only",
+   "label": "Division"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Read Only",
+   "label": "Employee Name",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Read Only",
+   "label": "Designation"
+  },
+  {
+   "fetch_from": "employee.grade",
+   "fieldname": "grade",
+   "fieldtype": "Read Only",
+   "label": "Grade"
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Purpose",
+   "options": "\nTransfer\nSeparation\nOthers",
+   "reqd": 1
+  },
+  {
+   "fieldname": "separation_date",
+   "fieldtype": "Date",
+   "label": "Separation/Transfer Date",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.purpose == \"Separation\"",
+   "fieldname": "reason_for_resignation",
+   "fieldtype": "Select",
+   "label": "Reason for Seperation",
+   "options": "\nVoluntary Resignation\nSuperannuation Age\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDeath\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "section_break_12",
+   "fieldtype": "Section Break",
+   "label": "Benefit Details"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Separation Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "journal",
+   "fieldtype": "Read Only",
+   "label": "Journal Entry"
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Benefits",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_24",
+   "fieldtype": "Section Break",
+   "label": "SUPPORTING DOCUMENTS"
+  },
+  {
+   "fieldname": "carraige_charges_doc",
+   "fieldtype": "Attach",
+   "label": "Carriage Charges Documents"
+  },
+  {
+   "fieldname": "column_break_26",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "transfer_tada",
+   "fieldtype": "Attach",
+   "label": "Transfer TADA"
+  },
+  {
+   "fieldname": "section_break_29",
+   "fieldtype": "Section Break",
+   "label": "APPROVER DETAILS"
+  },
+  {
+   "fieldname": "benefit_approver",
+   "fieldtype": "Link",
+   "label": "Approver",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_30",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "benefit_approver_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_reference",
+   "fieldtype": "Section Break",
+   "label": "Reference"
+  },
+  {
+   "fieldname": "employee_separation_id",
+   "fieldtype": "Link",
+   "label": "Employee Separation ID",
+   "options": "Employee Separation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_transfer_id",
+   "fieldtype": "Link",
+   "label": "Employee Transfer ID",
+   "options": "Employee Transfer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "benefit_approver_designation",
+   "fieldtype": "Data",
+   "label": "Approver Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_amount",
+   "fieldtype": "Currency",
+   "label": "Net Amount",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "deduction_details_section",
+   "fieldtype": "Section Break",
+   "label": "Deduction Details"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "deduction_details",
+   "fieldtype": "Table",
+   "options": "Deduction Details"
+  },
+  {
+   "fieldname": "total_deducted_amount",
+   "fieldtype": "Currency",
+   "label": "Total Deducted Amount",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_32",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_37",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-03-02 15:49:06.553785",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Benefits",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "ADM User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Regional Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Approver",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "employee_name"
+}
