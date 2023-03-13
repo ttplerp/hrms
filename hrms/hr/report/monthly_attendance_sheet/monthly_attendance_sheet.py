@@ -257,6 +257,7 @@ def get_employee_related_details(group_by: str, company: str) -> Tuple[Dict, Lis
 			Employee.designation,
 			Employee.grade,
 			Employee.department,
+			Employee.unit,
 			Employee.branch,
 			Employee.company,
 			Employee.holiday_list,
