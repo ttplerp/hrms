@@ -57,7 +57,7 @@ frappe.query_reports["Monthly Attendance Sheet"] = {
 			"fieldname":"group_by",
 			"label": __("Group By"),
 			"fieldtype": "Select",
-			"options": ["","Branch","Grade","Department","Designation"]
+			"options": ["","Branch","Grade","Department","Unit","Designation"]
 		},
 		{
 			"fieldname":"summarized_view",
