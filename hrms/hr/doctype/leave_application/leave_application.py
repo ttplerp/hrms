@@ -754,8 +754,16 @@ def get_number_of_leave_days(
 		number_of_days = flt(number_of_days) - flt(
 			get_holidays(employee, from_date, to_date, holiday_list=holiday_list)
 		)
-	return number_of_days
+		
+	d = from_date
+	half = frappe.db.get_value("Holiday List", get_holiday_list_for_employee(employee), "saturday_half")
+	while(getdate(d) <= getdate(to_date)):
+		#For Saturday half day work time
+		if getdate(d).weekday() == 5 and flt(get_holidays(employee, d, d)) == 0 and cint(half) == 1:
+			number_of_days-=0.5
+		d = frappe.utils.data.add_days(d, 1)
 
+	return number_of_days
 
 @frappe.whitelist()
 def get_leave_details(employee, date):
