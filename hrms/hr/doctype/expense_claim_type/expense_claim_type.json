@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
+ "allow_rename": 1,
  "autoname": "field:expense_type",
  "creation": "2012-03-27 14:35:55",
  "doctype": "DocType",
@@ -47,7 +48,7 @@
  "icon": "fa fa-flag",
  "idx": 1,
  "links": [],
- "modified": "2023-03-06 17:27:42.929713",
+ "modified": "2023-03-15 11:28:36.677022",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Type",

@@ -32,6 +32,9 @@ from hrms.hr.utils import (
 	validate_active_employee,
 )
 from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
+from datetime import datetime, timedelta
+import calendar
+import pandas as pd
 
 class LeaveDayBlockedError(frappe.ValidationError):
 	pass
@@ -58,7 +61,6 @@ class LeaveAcrossAllocationsError(frappe.ValidationError):
 
 
 from frappe.model.document import Document
-
 
 class LeaveApplication(Document):
 	def get_feed(self):
@@ -751,17 +753,50 @@ def get_number_of_leave_days(
 		number_of_days = date_diff(to_date, from_date) + 1
 
 	if not frappe.db.get_value("Leave Type", leave_type, "include_holiday"):
+		holiday_list = get_holiday_list_for_employee(employee)
 		number_of_days = flt(number_of_days) - flt(
 			get_holidays(employee, from_date, to_date, holiday_list=holiday_list)
 		)
-		
-	d = from_date
-	half = frappe.db.get_value("Holiday List", get_holiday_list_for_employee(employee), "saturday_half")
-	while(getdate(d) <= getdate(to_date)):
-		#For Saturday half day work time
-		if getdate(d).weekday() == 5 and flt(get_holidays(employee, d, d)) == 0 and cint(half) == 1:
-			number_of_days-=0.5
-		d = frappe.utils.data.add_days(d, 1)
+		frappe.msgprint("ini: "+str(number_of_days))
+		days = pd.date_range(datetime.strptime(str(from_date).split(" ")[0],"%Y-%m-%d"),datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d")-timedelta(days=0),freq='d')
+
+		if len(days) > 0:
+			c = 1
+			for d in days:
+				day = calendar.day_name[datetime.strptime(str(d).split(" ")[0],"%Y-%m-%d").weekday()]
+				half_working_day = frappe.db.sql("""select day from `tabHoliday List Days` where parent = '{}'""".format(holiday_list))
+				count = 0
+				for hwd in half_working_day:
+					if day in hwd and count == 0:
+						frappe.msgprint("here")
+						if not frappe.db.exists("Holiday",{"parent":holiday_list,"holiday_date":datetime.strptime(str(d).split(" ")[0],"%Y-%m-%d")}):
+							frappe.msgprint("ghjkl")
+							number_of_days -= 0.5
+							frappe.msgprint(str(number_of_days))
+					
+					count +=1
+
+				c += 1
+			frappe.msgprint("count 122: "+ str(count))
+			frappe.msgprint("count: "+ str(c))
+
+			# day = calendar.day_name[datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d").weekday()]
+			# half_working_day = frappe.db.sql("""select day from `tabHoliday List Days` where parent = '{}' """.format(holiday_list))
+			# for hwd in half_working_day:
+			# 	frappe.msgprint('henjnkjnkree')
+			# 	if day in hwd:
+			# 		if not frappe.db.exists("Holiday",{"parent":holiday_list,"holiday_date":datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d")}):
+			# 			number_of_days -= 0.5
+		else:
+			day = calendar.day_name[datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d").weekday()]
+			half_working_day = frappe.db.sql("""select day from `tabHoliday List Days` where parent = '{}'""".format(holiday_list))
+			frappe.msgprint(str(day)+" "+str(half_working_day))
+			for hwd in half_working_day:
+				if day in hwd:
+					if not frappe.db.exists("Holiday",{"parent":holiday_list,"holiday_date":datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d")}):
+						number_of_days -= 0.5
+		# 
+		frappe.msgprint("final: "+ str(number_of_days))
 
 	return number_of_days
 

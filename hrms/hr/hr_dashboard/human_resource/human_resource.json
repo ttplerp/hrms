@@ -48,6 +48,18 @@
   {
    "chart": "Department Wise Employee Count",
    "width": "Half"
+  },
+  {
+   "chart": "Attendance Count",
+   "width": "Half"
+  },
+  {
+   "chart": "Employee Leave Balance",
+   "width": "Half"
+  },
+  {
+   "chart": "Employee Leave Balance",
+   "width": "Half"
   }
  ],
  "creation": "2022-08-24 17:57:50.156258",
@@ -57,8 +69,8 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2022-12-15 17:08:00.996926",
- "modified_by": "Administrator",
+ "modified": "2023-03-15 13:17:22.875769",
+ "modified_by": "sonam.zangmo@thimphutechpark.bt",
  "module": "HR",
  "name": "Human Resource",
  "owner": "birendra.bhuejel@thimphutechpark.bt"
