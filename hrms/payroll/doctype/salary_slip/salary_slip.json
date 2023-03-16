@@ -343,7 +343,7 @@
    "label": "Bank Name",
    "oldfieldname": "bank_name",
    "oldfieldtype": "Data",
-   "options": "Bank",
+   "options": "Financial Institution",
    "read_only": 1
   },
   {
@@ -522,14 +522,16 @@
   },
   {
    "fieldname": "bank_branch",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Bank Branch",
+   "options": "Financial Institution Branch",
    "read_only": 1
   },
   {
    "fieldname": "bank_account_type",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Bank Account Type",
+   "options": "Bank Account Type",
    "read_only": 1
   },
   {
@@ -575,7 +577,7 @@
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-26 17:26:13.635975",
+ "modified": "2023-03-16 13:35:30.153816",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",

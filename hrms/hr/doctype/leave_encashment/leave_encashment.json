@@ -50,7 +50,8 @@
   "business_activity",
   "column_break_12",
   "branch",
-  "cost_center"
+  "cost_center",
+  "workflow_state"
  ],
  "fields": [
   {
@@ -351,11 +352,17 @@
    "fieldtype": "Data",
    "label": "Expense Claim",
    "read_only": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "label": "Workflow_state",
+   "options": "Leave Encashment"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-24 22:40:14.759638",
+ "modified": "2023-03-15 17:22:34.694391",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",

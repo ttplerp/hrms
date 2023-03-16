@@ -48,7 +48,8 @@
   "column_break_20",
   "payment_jv",
   "salary_slip",
-  "business_activity"
+  "business_activity",
+  "workflow_state"
  ],
  "fields": [
   {
@@ -325,12 +326,18 @@
    "label": "Designation",
    "options": "Designation",
    "read_only": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "label": "workflow_state",
+   "options": "Overtime Application"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-01 12:17:39.036911",
+ "modified": "2023-03-15 17:25:49.978828",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",

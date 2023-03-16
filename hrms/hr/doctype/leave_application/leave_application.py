@@ -757,28 +757,18 @@ def get_number_of_leave_days(
 		number_of_days = flt(number_of_days) - flt(
 			get_holidays(employee, from_date, to_date, holiday_list=holiday_list)
 		)
-		frappe.msgprint("ini: "+str(number_of_days))
 		days = pd.date_range(datetime.strptime(str(from_date).split(" ")[0],"%Y-%m-%d"),datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d")-timedelta(days=0),freq='d')
 
 		if len(days) > 0:
-			c = 1
 			for d in days:
 				day = calendar.day_name[datetime.strptime(str(d).split(" ")[0],"%Y-%m-%d").weekday()]
 				half_working_day = frappe.db.sql("""select day from `tabHoliday List Days` where parent = '{}'""".format(holiday_list))
 				count = 0
 				for hwd in half_working_day:
 					if day in hwd and count == 0:
-						frappe.msgprint("here")
 						if not frappe.db.exists("Holiday",{"parent":holiday_list,"holiday_date":datetime.strptime(str(d).split(" ")[0],"%Y-%m-%d")}):
-							frappe.msgprint("ghjkl")
 							number_of_days -= 0.5
-							frappe.msgprint(str(number_of_days))
-					
 					count +=1
-
-				c += 1
-			frappe.msgprint("count 122: "+ str(count))
-			frappe.msgprint("count: "+ str(c))
 
 			# day = calendar.day_name[datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d").weekday()]
 			# half_working_day = frappe.db.sql("""select day from `tabHoliday List Days` where parent = '{}' """.format(holiday_list))
@@ -790,13 +780,10 @@ def get_number_of_leave_days(
 		else:
 			day = calendar.day_name[datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d").weekday()]
 			half_working_day = frappe.db.sql("""select day from `tabHoliday List Days` where parent = '{}'""".format(holiday_list))
-			frappe.msgprint(str(day)+" "+str(half_working_day))
 			for hwd in half_working_day:
 				if day in hwd:
 					if not frappe.db.exists("Holiday",{"parent":holiday_list,"holiday_date":datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d")}):
 						number_of_days -= 0.5
-		# 
-		frappe.msgprint("final: "+ str(number_of_days))
 
 	return number_of_days
 
