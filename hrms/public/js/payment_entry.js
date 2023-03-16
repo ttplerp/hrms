@@ -23,7 +23,7 @@ frappe.ui.form.on("Payment Entry", {
 
 		frm.set_query("reference_name", "references", function(doc, cdt, cdn) {
 			const child = locals[cdt][cdn];
-			const filters = {"docstatus": 1, "company": doc.company};
+			const filters = {"docstatus": 1, "company": doc.company, "cost_center": doc.cost_center};
 			const party_type_doctypes = ["Sales Invoice", "Sales Order", "Purchase Invoice",
 				"Purchase Order", "Expense Claim", "Dunning"];
 
