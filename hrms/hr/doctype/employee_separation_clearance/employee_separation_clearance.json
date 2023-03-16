@@ -1,0 +1,330 @@
+{
+ "actions": [],
+ "autoname": "ESC.YY.MM.####",
+ "beta": 1,
+ "creation": "2023-02-15 17:05:56.743940",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "posting_date",
+  "document_no",
+  "sb_emp_details",
+  "employee",
+  "grade",
+  "cid",
+  "phone_number",
+  "fixed_line_number",
+  "cb_01",
+  "employee_name",
+  "designation",
+  "division",
+  "region",
+  "sb_official",
+  "reason_for_resignation",
+  "sb_remarks",
+  "director",
+  "director_clearance",
+  "director_remarks",
+  "gmod",
+  "gmod_clearance",
+  "gmod_remarks",
+  "column_break_29",
+  "hrad",
+  "hrad_clearance",
+  "hrad_remarks",
+  "gmpd",
+  "gmpd_clearance",
+  "gmpd_remarks",
+  "workflow_state",
+  "sb_reference",
+  "mail_sent",
+  "approvers_set",
+  "employee_separation_id",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "sb_emp_details",
+   "fieldtype": "Section Break",
+   "label": "Employee Details"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee ID",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fetch_from": "employee.division",
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department"
+  },
+  {
+   "fieldname": "cb_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name"
+  },
+  {
+   "fieldname": "employee_separation_id",
+   "fieldtype": "Data",
+   "label": "Employee Separation ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Workflow State",
+   "options": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.grade",
+   "fieldname": "grade",
+   "fieldtype": "Link",
+   "label": "Grade",
+   "options": "Employee Grade"
+  },
+  {
+   "fieldname": "reason_for_resignation",
+   "fieldtype": "Select",
+   "label": "Separation Type",
+   "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_official",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "region",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Region",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_remarks",
+   "fieldtype": "Section Break",
+   "label": "Clearance Section"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Separation Clearance",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_reference",
+   "fieldtype": "Section Break",
+   "label": "Reference"
+  },
+  {
+   "default": "0",
+   "fieldname": "mail_sent",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Mail Sent",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "approvers_set",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Approvers Set",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.passport_number",
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "label": "CID",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.cell_number",
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number",
+   "reqd": 1
+  },
+  {
+   "fetch_if_empty": 1,
+   "fieldname": "fixed_line_number",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Fixed Line Number"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "document_no",
+   "fieldtype": "Data",
+   "label": "Document No.",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_29",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "director",
+   "fieldtype": "Link",
+   "label": "Director, SLD",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "director_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired (Director, SLD)"
+  },
+  {
+   "fieldname": "director_remarks",
+   "fieldtype": "Small Text",
+   "label": "Director's Remarks"
+  },
+  {
+   "fieldname": "gmod",
+   "fieldtype": "Link",
+   "label": "GM, Operation Division",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "gmod_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired (GM, Operation Division)"
+  },
+  {
+   "fieldname": "gmod_remarks",
+   "fieldtype": "Small Text",
+   "label": "GM, Operation Division"
+  },
+  {
+   "fieldname": "hrad",
+   "fieldtype": "Link",
+   "label": "GM, HRAD",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "hrad_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired (GM, HRAD)"
+  },
+  {
+   "fieldname": "hrad_remarks",
+   "fieldtype": "Small Text",
+   "label": "GM, HRAD Remarks"
+  },
+  {
+   "fieldname": "gmpd",
+   "fieldtype": "Link",
+   "label": "GM, Project Division",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "gmpd_remarks",
+   "fieldtype": "Small Text",
+   "label": "GM, Project Division Remarks"
+  },
+  {
+   "default": "0",
+   "fieldname": "gmpd_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired (GM, Project Division)"
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-03-01 17:24:10.300751",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Separation Clearance",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
