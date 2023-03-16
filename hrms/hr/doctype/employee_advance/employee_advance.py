@@ -46,6 +46,7 @@ class EmployeeAdvance(Document):
 		self.update_travel_request()
 		self.update_reference(cancel = 1)
 		self.update_salary_structure(True)
+
 	def on_submit(self):
 		if self.advance_type =="Travel Advance":
 			self.update_travel_request()
@@ -349,6 +350,12 @@ class EmployeeAdvance(Document):
 		self.db_set("return_amount", return_amount)
 		self.set_status(update=True)
 
+		#to update advance amount in Travel Request if the amount changed in Employee Advance
+		if self.reference and self.advance_type == "Travel Advance":
+			tr_doc = frappe.get_doc("Travel Request", self.reference)
+			tr_doc.advance_amount = flt(paid_amount)
+			tr_doc.save(ignore_permissions=True)
+		
 	def update_claimed_amount(self, cancel=0):
 		claimed_amount = (
 			frappe.db.sql(

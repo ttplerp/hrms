@@ -164,7 +164,7 @@ class LeaveEncashment(Document):
 		
 		self.encashable_days = encashable_days if encashable_days > 0 else 0
 		self.encashment_days = encashable_days
-		per_day_encashment = frappe.db.get_value("Salary Structure", salary_structure, "leave_encashment_amount_per_day")
+		# per_day_encashment = frappe.db.get_value("Salary Structure", salary_structure, "leave_encashment_amount_per_day")
 		
 		# getting encashment amount from salary structure
 		pay = get_basic_and_gross_pay(employee=self.employee, effective_date=today())

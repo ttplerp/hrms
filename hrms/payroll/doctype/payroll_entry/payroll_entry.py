@@ -148,7 +148,6 @@ class PayrollEntry(Document):
 
 	@frappe.whitelist()
 	def create_salary_slips(self):
-		frappe.msgprint('HERE 1')
 		"""
 			Creates salary slip for selected employees if already not created
 		"""
@@ -157,7 +156,6 @@ class PayrollEntry(Document):
 		emp_list = [d.employee for d in self.get_emp_list()]
 
 		if emp_list:
-			frappe.msgprint('HERE 1')
 			args = frappe._dict({
 				"salary_slip_based_on_timesheet": self.salary_slip_based_on_timesheet,
 				"payroll_frequency": self.payroll_frequency,

@@ -56,6 +56,7 @@
   "advance_approver_name",
   "column_break_42",
   "advance_approver",
+  "column_break_50",
   "advance_approver_designation",
   "section_break_26",
   "je_reference",
@@ -376,7 +377,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.advance_type != \"Travel Advance\"",
    "fieldname": "approver_details_section",
    "fieldtype": "Section Break",
    "label": "APPROVER DETAILS"
@@ -464,11 +464,15 @@
    "fieldtype": "Check",
    "label": "Expenses Claimed",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_50",
+   "fieldtype": "Column Break"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-16 14:23:03.312625",
+ "modified": "2023-03-16 16:42:35.666504",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

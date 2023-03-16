@@ -49,6 +49,7 @@ class TravelRequest(AccountsController):
 			frappe.msgprint("Advance amount cannot be greater than 90% of the <b>Total Travel Amount</b>",title="Excess Advance Amount",indicator="red",raise_exception=True)
 		elif flt(self.advance_amount) <= 0 and self.need_advance == 1:
 			frappe.throw("Advance amount cannot be: {}".format(self.advance_amount))
+
 	def set_dsa_percent(self):
 		for item in self.get("itinerary"):
 			if len(self.itinerary) == 1 or item.idx == len(self.itinerary) or cint(item.return_same_day) == 1:
@@ -84,6 +85,7 @@ class TravelRequest(AccountsController):
 					frappe.throw("Cannot Apply whithout claiming travel advance")
 		if not self.attach_report:
 			frappe.throw("Tour Report is mandatory")
+
 	def update_total_amount(self):
 		total = base_total = 0
 		for item in self.get("itinerary"):
