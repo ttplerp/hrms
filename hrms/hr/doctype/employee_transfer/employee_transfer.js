@@ -35,6 +35,18 @@ frappe.ui.form.on('Employee Transfer', {
 				}
 			};
 		});
+		frm.set_query("new_unit", function() {
+			return {
+				"filters": {
+					"company": frm.doc.company,
+					"parent_department":frm.doc.new_section,
+					"disabled":0,
+					"is_division":0,
+					"is_section":0,
+					"is_unit":1
+				}
+			};
+		});
 	},
 	// refresh: function(frm) {
 	// 	enable_disable(frm);
