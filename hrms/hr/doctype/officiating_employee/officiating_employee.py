@@ -11,23 +11,11 @@ class OfficiatingEmployee(Document):
 	def validate(self):
 		if self.employee == self.officiate:
 			frappe.throw("Both Employee and Officiating Employee can not be same person")
-		#em_list = frappe.db.sql("select employee, employee_name from tabEmployee where status = 'Active' and reports_to = \'" + str(self.employee) + "\'", as_dict=True)
-		#self.set('items', [])
-
-		#for d in em_list:
-		#	row = self.append('items', {})
-		#	row.update(d)
 
 	def on_submit(self):
-		#if self.items:
-		#	for a in self.items:	
-		#		emp = frappe.get_doc("Employee", a.employee)
-		#		emp.db_set("reports_to", self.officiate)
-
 		user = frappe.get_doc("User", frappe.db.get_value("Employee", self.officiate, "user_id"))
 		user.flags.ignore_permissions = True
 
-		#if "Approver" not in user.get("user_roles"):
 		roles = [i.role for i in user.roles]
 		if "Leave Approver" not in roles:
 			user.add_roles("Leave Approver")
@@ -40,9 +28,6 @@ class OfficiatingEmployee(Document):
 				if str(a.role) not in roles:
 					user.add_roles(str(a.role))
 
-		#emp = frappe.get_doc("Employee", self.officiate)
-		#emp.db_set("reports_to", frappe.db.get_value("Employee", self.employee, "reports_to"))
-		#emp.db_set("approver_name", frappe.db.get_value("Employee", self.employee, "approver_name"))
 	@frappe.whitelist()
 	def get_roles(self):
 		if self.employee and not frappe.db.get_value("Employee",self.employee,"user_id"):
@@ -58,14 +43,9 @@ class OfficiatingEmployee(Document):
 					row = self.append("roles",{})
 					a = {'role':a}
 					row.update(a)
-
-
-
+	
+	@frappe.whitelist()
 	def revoke_perm(self):
-		#for a in self.items:	
-		#	emp = frappe.get_doc("Employee", a.employee)
-		#	emp.db_set("reports_to", self.employee)
-		#frappe.throw(str(getdate(nowdate())))
 		if self.revoked:
 			frappe.throw("Already Revoked")
 		if getdate(self.to_date) > getdate(nowdate()):
@@ -76,11 +56,7 @@ class OfficiatingEmployee(Document):
 			user = frappe.get_doc("User", frappe.db.get_value("Employee", self.officiate, "user_id"))
 			user.flags.ignore_permissions = True
 			for a in self.roles:
-				user.remove_roles(str(a.role))
-
-		#emp = frappe.get_doc("Employee", self.officiate)
-		#emp.db_set("reports_to", self.employee)			
-		#emp.db_set("approver_name", self.employee_name)			
+				user.remove_roles(str(a.role))			
 
 		frappe.msgprint("Permissions Revoked")
 

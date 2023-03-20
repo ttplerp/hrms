@@ -33,9 +33,10 @@
   "section_break_13",
   "items",
   "section_break_11",
-  "approver_name",
+  "approve_name",
   "column_break_11",
   "approver",
+  "column_break_30",
   "approver_designation",
   "sb_remarks",
   "remarks",
@@ -134,18 +135,14 @@
   },
   {
    "fieldname": "approver",
-   "fieldtype": "Read Only",
-   "label": "Approver Email ID"
+   "fieldtype": "Link",
+   "label": "Approver Email ID",
+   "options": "User",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_11",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "approver_name",
-   "fieldtype": "Read Only",
-   "hidden": 1,
-   "label": "Approver"
   },
   {
    "fieldname": "section_break_7",
@@ -211,7 +208,6 @@
   {
    "fieldname": "approver_designation",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Approver Designation",
    "read_only": 1
   },
@@ -331,13 +327,24 @@
    "fieldname": "workflow_state",
    "fieldtype": "Link",
    "label": "workflow_state",
-   "options": "Overtime Application"
+   "options": "Workflow State"
+  },
+  {
+   "fetch_from": "approver.full_name",
+   "fieldname": "approve_name",
+   "fieldtype": "Data",
+   "label": "Approver",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_30",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-15 17:25:49.978828",
+ "modified": "2023-03-17 15:04:57.000008",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",

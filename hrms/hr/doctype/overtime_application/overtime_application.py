@@ -12,41 +12,33 @@ class OvertimeApplication(Document):
 		validate_workflow_states(self)
 		self.validate_dates()
 		self.calculate_totals()
-		self.validate_eligible_creteria()
+		self.validate_eligible_criteria()
 		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
 		self.processed = 0
 
-	def validate_eligible_creteria(self):
+	def validate_eligible_criteria(self):
 		if "Employee" not in frappe.get_roles(frappe.session.user):
 			frappe.msgprint(_("Only employee of {} can apply for Overtime").format(frappe.bold(self.company)), title="Not Allowed", indicator="red", raise_exception=1)
 
 		if cint(frappe.db.get_value('Employee Grade',self.grade,'eligible_for_overtime')) == 0:
 			frappe.msgprint(_("You are not eligible for overtime"), title="Not Eligible", indicator="red", raise_exception=1)
+
 	def calculate_totals(self):			
 		settings = frappe.get_single("HR Settings")
 		overtime_limit_type, overtime_limit = settings.overtime_limit_type, flt(settings.overtime_limit)
 		total_amount = 0
 		total_hours = 0
+		hourly_rate = 0
 		for i in self.get("items"):
 			total_hours += flt(i.number_of_hours)
-			# if flt(i.number_of_hours) > flt(overtime_limit):
-			# 	frappe.throw(_("Row#{}: Number of Hours cannot be more than {} hours").format(i.idx, overtime_limit))
-
-			# if overtime_limit_type == "Per Day":
-			# 	month_start_date = add_to_date(i.to_date, days=-1)
-			# elif overtime_limit_type == "Per Month":
-			# 	month_start_date = add_to_date(i.to_date, months=-1)
-			# elif overtime_limit_type == "Per Year":
-			# 	month_start_date = add_to_date(i.to_date, years=-1)
 			i.amount = flt(i.rate) * flt(i.number_of_hours)
 			total_amount += i.amount
+			hourly_rate = i.rate
+
+
 		self.actual_hours = flt(total_hours)
-		# if flt(total_hours) > flt(overtime_limit):
-		# 	frappe.throw(_("Only {} hours accepted for payment").format(overtime_limit))
-		# 	self.total_hours = flt(overtime_limit)
-		# 	self.total_hours_lapsed = flt(total_hours) - flt(overtime_limit)
-		# else:
+		self.rate = flt(hourly_rate)
 		self.total_hours = flt(self.actual_hours)
 		self.total_amount = round(total_amount,0)
 
@@ -55,6 +47,7 @@ class OvertimeApplication(Document):
 
 	def on_submit(self):
 		notify_workflow_states(self)
+		
 	# Dont allow duplicate dates
 	##
 	def validate_dates(self):				

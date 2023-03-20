@@ -99,8 +99,8 @@
    "type": "Link"
   }
  ],
- "modified": "2022-12-20 15:39:10.727612",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2023-03-17 13:35:11.466019",
+ "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Tax & Benefits",
  "owner": "Administrator",
@@ -108,7 +108,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 19.0,
+ "sequence_id": 9.0,
  "shortcuts": [
   {
    "color": "Red",

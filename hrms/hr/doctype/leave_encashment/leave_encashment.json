@@ -356,13 +356,13 @@
   {
    "fieldname": "workflow_state",
    "fieldtype": "Link",
-   "label": "Workflow_state",
-   "options": "Leave Encashment"
+   "label": "Workflow State",
+   "options": "Workflow State"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-15 17:22:34.694391",
+ "modified": "2023-03-17 16:04:42.933537",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",

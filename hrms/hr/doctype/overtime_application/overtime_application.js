@@ -9,21 +9,22 @@ frappe.ui.form.on('Overtime Application', {
 	},
 	refresh: function(frm){
 		//enable_disable(frm);
-		frm.set_query("approver", function() {
-                        return {
-                                query: "erpnext.custom_workflow.approver_list",
-                                filters: {
-                                        employee: frm.doc.employee
-                                }
-                        };
-                });	
+		// frm.set_query("approver", function() {
+        //                 return {
+        //                         query: "erpnext.custom_workflow.approver_list",
+        //                         filters: {
+        //                                 employee: frm.doc.employee
+        //                         }
+        //                 };
+        //         });	
 		//set_approver(frm);
 	},
-	approver: function(frm) {
-		if(frm.doc.approver){
-			frm.set_value("approver_name", frappe.user.full_name(frm.doc.approver));
-		}
-	},
+	
+	// approver: function(frm) {
+	// 	if(frm.doc.approver){
+	// 		frm.set_value("approver_name", frappe.user.full_name(frm.doc.approver));
+	// 	}
+	// },
 	
 	rate: function(frm) {
 		frm.set_value("total_amount", flt(frm.doc.rate) * flt(frm.doc.total_hours))
@@ -46,6 +47,7 @@ frappe.ui.form.on('Overtime Application', {
 		})
 	}
 });
+
 frappe.ui.form.on("Overtime Application Item", {
 	"number_of_hours": function(frm, cdt, cdn) {
 		calculate_amount(frm, cdt, cdn)
@@ -141,23 +143,23 @@ function enable_disable(frm){
 	}
 	else {
 		// Request Creator
-		if(in_list(user_roles, "Employee") && (frm.doc.workflow_state.indexOf("Draft") >= 0 || frm.doc.workflow_state.indexOf("Rejected") >= 0)){
-			if(frappe.session.user === frm.doc.owner){
-				toggle_form_fields(frm, toggle_fields, 0);
-			}
-		}
+		// if(in_list(user_roles, "Employee") && (frm.doc.workflow_state.indexOf("Draft") >= 0 || frm.doc.workflow_state.indexOf("Rejected") >= 0)){
+		// 	if(frappe.session.user === frm.doc.owner){
+		// 		toggle_form_fields(frm, toggle_fields, 0);
+		// 	}
+		// }
 		
-		// OT Supervisor
-		if(in_list(user_roles, "OT Supervisor") && frm.doc.workflow_state.indexOf("Waiting Approval") >= 0){
-			if(frappe.session.user != frm.doc.owner){
-				toggle_form_fields(frm, toggle_fields, 0);
-			}
-		}
+		// // OT Supervisor
+		// if(in_list(user_roles, "OT Supervisor") && frm.doc.workflow_state.indexOf("Waiting Approval") >= 0){
+		// 	if(frappe.session.user != frm.doc.owner){
+		// 		toggle_form_fields(frm, toggle_fields, 0);
+		// 	}
+		// }
 		
-		// OT Approver
-		if(in_list(user_roles, "OT Approver") && frm.doc.workflow_state.indexOf("Verified by Supervisor") >= 0){
-			toggle_form_fields(frm, toggle_fields, 0);
-		}
+		// // OT Approver
+		// if(in_list(user_roles, "OT Approver") && frm.doc.workflow_state.indexOf("Verified by Supervisor") >= 0){
+		// 	toggle_form_fields(frm, toggle_fields, 0);
+		// }
 	}
 }
 
