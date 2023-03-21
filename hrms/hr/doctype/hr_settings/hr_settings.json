@@ -56,6 +56,16 @@
   "cb_01",
   "hrgm_name",
   "hr_approver_name",
+  "separation_clearance_approvers_section",
+  "fsa",
+  "itsa",
+  "iaa",
+  "hsa",
+  "column_break_56",
+  "finance_approver_name",
+  "it_approver_name",
+  "internal_audit_approver_name",
+  "home_store_approver_name",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -67,8 +77,10 @@
   "material_request_status_notification_template",
   "sb_employee_separation",
   "employee_separation_approval_notification_template",
+  "employee_separation_clearance_approval_notification_template",
   "column_break_62",
   "employee_separation_status_notification_template",
+  "employee_separation_clearance_status_notification_template",
   "sb_overtime",
   "overtime_approval_notification_template",
   "cb_ns_01",
@@ -101,14 +113,6 @@
   "vehicle_request_approval_notification_template",
   "column_break_94",
   "vehicle_request_status_notification_template",
-  "eme_invoice_settings_section",
-  "eme_invoice_approval_notification_template",
-  "column_break_98",
-  "eme_invoice_status_notification_template",
-  "coal_raising_payment_settings_section",
-  "coal_raising_payment_approval_notification_template",
-  "column_break_102",
-  "coal_raising_payment_status_notification_template",
   "leave_application_settings_section",
   "leave_application_approval_notification_template",
   "column_break_106",
@@ -656,48 +660,6 @@
    "options": "Email Template"
   },
   {
-   "fieldname": "eme_invoice_settings_section",
-   "fieldtype": "Section Break",
-   "label": "EME Invoice Settings"
-  },
-  {
-   "fieldname": "eme_invoice_approval_notification_template",
-   "fieldtype": "Link",
-   "label": "EME Invoice Approval Notification Template",
-   "options": "Email Template"
-  },
-  {
-   "fieldname": "column_break_98",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "eme_invoice_status_notification_template",
-   "fieldtype": "Link",
-   "label": "EME Invoice Status Notification Template",
-   "options": "Email Template"
-  },
-  {
-   "fieldname": "coal_raising_payment_settings_section",
-   "fieldtype": "Section Break",
-   "label": "Coal Raising Payment Settings"
-  },
-  {
-   "fieldname": "coal_raising_payment_approval_notification_template",
-   "fieldtype": "Link",
-   "label": "Coal Raising Payment Approval Notification Template",
-   "options": "Email Template"
-  },
-  {
-   "fieldname": "column_break_102",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "coal_raising_payment_status_notification_template",
-   "fieldtype": "Link",
-   "label": "Coal Raising Payment Status Notification Template",
-   "options": "Email Template"
-  },
-  {
    "fieldname": "leave_application_settings_section",
    "fieldtype": "Section Break",
    "label": "Leave Application Settings"
@@ -780,13 +742,86 @@
    "fieldtype": "Link",
    "label": "Bank Payment Status Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "separation_clearance_approvers_section",
+   "fieldtype": "Section Break",
+   "label": "Separation Clearance Approvers"
+  },
+  {
+   "fieldname": "fsa",
+   "fieldtype": "Link",
+   "label": "Finance Section Approver",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "itsa",
+   "fieldtype": "Link",
+   "label": "IT Section Approver",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "iaa",
+   "fieldtype": "Link",
+   "label": "Internal Audit Approver",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "hsa",
+   "fieldtype": "Link",
+   "label": "Home Store Approver",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "column_break_56",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "fsa.employee_name",
+   "fieldname": "finance_approver_name",
+   "fieldtype": "Data",
+   "label": "Finance Approver Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "itsa.employee_name",
+   "fieldname": "it_approver_name",
+   "fieldtype": "Data",
+   "label": "IT Approver Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "iaa.employee_name",
+   "fieldname": "internal_audit_approver_name",
+   "fieldtype": "Data",
+   "label": "Internal Audit Approver Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "hsa.employee_name",
+   "fieldname": "home_store_approver_name",
+   "fieldtype": "Data",
+   "label": "Home Store Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_separation_clearance_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Separation Clearance Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "employee_separation_clearance_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Separation Clearance Status Notification Template",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-06 15:12:52.936620",
+ "modified": "2023-03-21 11:53:28.564103",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

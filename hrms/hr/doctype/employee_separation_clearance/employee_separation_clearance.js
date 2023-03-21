@@ -45,15 +45,15 @@ frappe.ui.form.on('Employee Separation Clearance', {
 	},
 });
 
-var toggle_remarks_display = function(frm, director, hrad, gmpd, gmod){
-	frm.set_df_property("director_remarks","read_only",director);
-	frm.set_df_property("director_clearance","read_only",director);
-	frm.set_df_property("hrad_remarks","read_only",hrad);
-	frm.set_df_property("hrad_clearance","read_only",hrad);
-	frm.set_df_property("gmod_remarks","read_only",gmod);
-	frm.set_df_property("gmod_clearance","read_only",gmod);
-	frm.set_df_property("gmpd_remarks","read_only",gmpd);
-	frm.set_df_property("gmpd_clearance","read_only",gmpd);
+var toggle_remarks_display = function(frm, fa, ita, iaa, hsa){
+	frm.set_df_property("fa_remarks","read_only",fa);
+	frm.set_df_property("fa_clearance","read_only",fa);
+	frm.set_df_property("ita_remarks","read_only",ita);
+	frm.set_df_property("ita_clearance","read_only",ita);
+	frm.set_df_property("iaa_remarks","read_only",iaa);
+	frm.set_df_property("iaa_clearance","read_only",iaa);
+	frm.set_df_property("hsa_remarks","read_only",hsa);
+	frm.set_df_property("hsa_clearance","read_only",hsa);
 
 	frm.set_df_property("document_no","read_only",frappe.user.has_role(["HR User"]) != true);
 }

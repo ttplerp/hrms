@@ -44,7 +44,6 @@
   "processed",
   "sb_additional_info",
   "company",
-  "payment_made",
   "salary_component",
   "column_break_20",
   "payment_jv",
@@ -280,14 +279,6 @@
    "read_only": 1
   },
   {
-   "default": "Unpaid",
-   "fieldname": "payment_made",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Payment Status",
-   "read_only": 1
-  },
-  {
    "fieldname": "salary_slip",
    "fieldtype": "Data",
    "label": "Salary Slip",
@@ -344,7 +335,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-17 15:04:57.000008",
+ "modified": "2023-03-20 12:38:19.152341",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",

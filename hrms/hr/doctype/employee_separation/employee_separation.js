@@ -9,24 +9,22 @@ frappe.ui.form.on('Employee Separation', {
 		frm.add_fetch("employee_separation_template", "employee_grade", "employee_grade");
 	},
 
+	onload_post_render: function(frm){
+
+	},
 	refresh: function(frm) {
-		if (frm.doc.employee) {
-			frm.add_custom_button(__('Employee'), function() {
-				frappe.set_route("Form", "Employee", frm.doc.employee);
-			},__("View"));
-		}
-		if (frm.doc.project) {
-			frm.add_custom_button(__('Project'), function() {
-				frappe.set_route("Form", "Project", frm.doc.project);
-			},__("View"));
-			frm.add_custom_button(__('Task'), function() {
-				frappe.set_route('List', 'Task', {project: frm.doc.project});
-			},__("View"));
-		}
-		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefit_claim_status == "Not Claimed"){
+		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed" && cur_frm.doc.clearance_acquired == 1){
 			frm.add_custom_button("Create Employee Benefit", function(){
 				frappe.model.open_mapped_doc({
 					method: "hrms.hr.doctype.employee_separation.employee_separation.make_employee_benefit",
+					frm: me.frm
+				})
+			});
+		}
+		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed" && cur_frm.doc.clearance_acquired == 0){
+			frm.add_custom_button("Create Employee Clearance", function(){
+				frappe.model.open_mapped_doc({
+					method: "hrms.hr.doctype.employee_separation.employee_separation.make_separation_clearance",
 					frm: me.frm
 				})
 			});
@@ -53,5 +51,10 @@ frappe.ui.form.on('Employee Separation', {
 				}
 			});
 		}
+	},
+
+	reason_for_resignation: function(frm){
+		var fields = ["Superannuation", "Demise"];
+		frm.toggle_reqd("q24", !fields.includes(frm.doc.reason_for_resignation));
 	}
 });

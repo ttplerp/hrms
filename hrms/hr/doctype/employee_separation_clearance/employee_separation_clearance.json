@@ -23,19 +23,19 @@
   "sb_official",
   "reason_for_resignation",
   "sb_remarks",
-  "director",
-  "director_clearance",
-  "director_remarks",
-  "gmod",
-  "gmod_clearance",
-  "gmod_remarks",
+  "fa",
+  "fa_clearance",
+  "fa_remarks",
+  "ita",
+  "ita_clearance",
+  "ita_remarks",
   "column_break_29",
-  "hrad",
-  "hrad_clearance",
-  "hrad_remarks",
-  "gmpd",
-  "gmpd_clearance",
-  "gmpd_remarks",
+  "iaa",
+  "iaa_clearance",
+  "iaa_remarks",
+  "hsa",
+  "hsa_clearance",
+  "hsa_remarks",
   "workflow_state",
   "sb_reference",
   "mail_sent",
@@ -194,81 +194,81 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "director",
+   "fieldname": "fa",
    "fieldtype": "Link",
-   "label": "Director, SLD",
+   "label": "Approver, Finance Section",
    "options": "User",
    "read_only": 1
   },
   {
    "default": "0",
-   "fieldname": "director_clearance",
+   "fieldname": "fa_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (Director, SLD)"
+   "label": "Clearance Acquired (Approver, Finance Section)"
   },
   {
-   "fieldname": "director_remarks",
+   "fieldname": "fa_remarks",
    "fieldtype": "Small Text",
-   "label": "Director's Remarks"
+   "label": "Finance Approver's Remarks"
   },
   {
-   "fieldname": "gmod",
+   "fieldname": "ita",
    "fieldtype": "Link",
-   "label": "GM, Operation Division",
+   "label": "Approver, IT Section",
    "options": "User",
    "read_only": 1
   },
   {
    "default": "0",
-   "fieldname": "gmod_clearance",
+   "fieldname": "ita_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (GM, Operation Division)"
+   "label": "Clearance Acquired (Approver, IT Section)"
   },
   {
-   "fieldname": "gmod_remarks",
+   "fieldname": "ita_remarks",
    "fieldtype": "Small Text",
-   "label": "GM, Operation Division"
+   "label": "IT Approver's Remarks"
   },
   {
-   "fieldname": "hrad",
+   "fieldname": "iaa",
    "fieldtype": "Link",
-   "label": "GM, HRAD",
+   "label": "Approver, Internal Audit",
    "options": "User",
    "read_only": 1
   },
   {
    "default": "0",
-   "fieldname": "hrad_clearance",
+   "fieldname": "iaa_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (GM, HRAD)"
+   "label": "Clearance Acquired (Approver, Internal Audit)"
   },
   {
-   "fieldname": "hrad_remarks",
+   "fieldname": "iaa_remarks",
    "fieldtype": "Small Text",
-   "label": "GM, HRAD Remarks"
+   "label": "Internal Audit Approver's Remarks"
   },
   {
-   "fieldname": "gmpd",
+   "fieldname": "hsa",
    "fieldtype": "Link",
-   "label": "GM, Project Division",
+   "label": "Approver, Home Store",
    "options": "User",
    "read_only": 1
   },
   {
-   "fieldname": "gmpd_remarks",
-   "fieldtype": "Small Text",
-   "label": "GM, Project Division Remarks"
+   "default": "0",
+   "fieldname": "hsa_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired (Approver, Home Store)"
   },
   {
-   "default": "0",
-   "fieldname": "gmpd_clearance",
-   "fieldtype": "Check",
-   "label": "Clearance Acquired (GM, Project Division)"
+   "fieldname": "hsa_remarks",
+   "fieldtype": "Small Text",
+   "label": "Home Store Approver's Remarks"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-01 17:24:10.300751",
+ "modified": "2023-03-21 11:17:44.056675",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",
