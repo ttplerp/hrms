@@ -39,11 +39,26 @@ def get_conditions(filters):
 	}
 	if filters.get("employee_status"):
 		conditions.update({"status": filters.get("employee_status")})
+
 	if filters.get("department"):
 		conditions.update({"department": filters.get("department")})
+		
 	if filters.get("employee"):
 		conditions.update({"employee": filters.get("employee")})
 
+	if filters.get("employee_status"):
+		conditions["status"] = filters.get("employee_status")
+	
+	if filters.get("division"):
+		conditions["division"] = filters.get("division")
+
+	
+	if filters.get("section"):
+		conditions["section"] = filters.get("section")
+	
+	
+	if filters.get("branch"):
+		conditions["branch"] = filters.get("branch")
 	return conditions
 
 

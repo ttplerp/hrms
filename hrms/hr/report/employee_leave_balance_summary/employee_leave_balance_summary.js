@@ -12,24 +12,63 @@ frappe.query_reports['Employee Leave Balance Summary'] = {
 			default: frappe.datetime.now_date()
 		},
 		{
-			fieldname:'company',
-			label: __('Company'),
-			fieldtype: 'Link',
-			options: 'Company',
-			reqd: 1,
-			default: frappe.defaults.get_user_default('Company')
-		},
-		{
 			fieldname:'employee',
 			label: __('Employee'),
 			fieldtype: 'Link',
 			options: 'Employee',
 		},
 		{
-			fieldname:'department',
-			label: __('Department'),
+			"fieldname": "department",
+			"label": __("Department"),
+			"fieldtype": "Link",
+			"options": "Department",
+			"get_query": function () {
+				return {
+					filters: {
+						"is_department": 1
+					}
+				};
+			},
+		},
+		{
+			"fieldname": "division",
+			"label": __("Division"),
+			"fieldtype": "Link",
+			"options": "Department",
+			"get_query": function () {
+				return {
+					filters: {
+						"is_division": 1
+					}
+				};
+			},
+		},
+		{
+			"fieldname": "section",
+			"label": __("Section"),
+			"fieldtype": "Link",
+			"options": "Department",
+			"get_query": function () {
+				return {
+					filters: {
+						"is_section": 1
+					}
+				};
+			},
+		},
+		{
+			"fieldname": "branch",
+			"label": __("Branch"),
+			"fieldtype": "Link",
+			"options": "Branch",
+		},
+		{
+			fieldname:'company',
+			label: __('Company'),
 			fieldtype: 'Link',
-			options: 'Department',
+			options: 'Company',
+			reqd: 1,
+			default: frappe.defaults.get_user_default('Company')
 		},
 		{
 			fieldname: "employee_status",

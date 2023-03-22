@@ -181,6 +181,19 @@ def get_conditions(filters: Filters) -> Dict:
 
 	if filters.get("employee_status"):
 		conditions["status"] = filters.get("employee_status")
+	
+	if filters.get("division"):
+		conditions["division"] = filters.get("division")
+
+	
+	if filters.get("section"):
+		conditions["section"] = filters.get("section")
+	
+	
+	if filters.get("branch"):
+		conditions["branch"] = filters.get("branch")
+
+
 
 	return conditions
 
