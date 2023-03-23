@@ -268,7 +268,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-21 11:17:44.056675",
+ "modified": "2023-03-21 14:14:23.529976",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",
@@ -308,6 +308,7 @@
    "report": 1,
    "role": "HR User",
    "share": 1,
+   "submit": 1,
    "write": 1
   },
   {
@@ -320,6 +321,7 @@
    "report": 1,
    "role": "HR Manager",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],
