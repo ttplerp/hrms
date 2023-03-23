@@ -21,6 +21,10 @@
   "currency",
   "exchange_rate",
   "repay_unclaimed_amount_from_salary",
+  "recovery_details_section",
+  "recovery_start_date",
+  "column_break_30",
+  "recovery_end_date",
   "section_break_8",
   "basic_pay",
   "net_pay",
@@ -37,10 +41,6 @@
   "paid_amount",
   "claimed_amount",
   "return_amount",
-  "recovery_details_section",
-  "recovery_start_date",
-  "column_break_30",
-  "recovery_end_date",
   "document",
   "section_break_7",
   "status",
@@ -342,13 +342,15 @@
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fieldname": "recovery_start_date",
    "fieldtype": "Date",
-   "label": "Recovery Start Date"
+   "label": "Recovery Start Date",
+   "reqd": 1
   },
   {
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fieldname": "recovery_end_date",
-   "fieldtype": "Data",
-   "label": "Recovery End Date"
+   "fieldtype": "Date",
+   "label": "Recovery End Date",
+   "reqd": 1
   },
   {
    "fieldname": "monthly_deduction",
@@ -447,7 +449,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-02 14:27:14.447917",
+ "modified": "2023-03-23 13:47:57.556683",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

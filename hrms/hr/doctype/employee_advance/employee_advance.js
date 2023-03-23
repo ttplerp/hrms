@@ -167,6 +167,15 @@ frappe.ui.form.on('Employee Advance', {
 			]);
 		}
 	},
+	//added by cety on  23/03/2023 to remove the limit advance amount
+	recovery_end_date: function(frm, cdt, cdn) {
+		if (frm.doc.employee) {
+			frappe.run_serially([
+				() => frm.trigger('set_pay_details')
+			]);
+		}
+	},
+	//end
 	advance_type: function(frm, cdt, cdn) {
 		if (frm.doc.employee) {
 			frappe.run_serially([
@@ -292,8 +301,4 @@ frappe.ui.form.on('Employee Advance', {
 			}
 		});
 	},
-
-	// to_the_travel_advance: function(frm){
-	// 	frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
-	// }
 });
