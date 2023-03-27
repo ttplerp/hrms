@@ -24,13 +24,13 @@ def execute(filters=None):
 	for ss in salary_slips:
 		status = ""
 		if ss.docstatus == 1:
-				status = "Submitted"
+			status = "Submitted"
 		elif ss.docstatus == 0:
-				status = "Un-Submitted"
+			status = "Draft"
 		elif ss.docstatus == 2:
-				status = "Cancelled"
+			status = "Cancelled"
 		else:
-				status = str(ss.docstatus)
+			status = str(ss.docstatus)
 		
 		cid, joining_date = frappe.db.get_value("Employee", ss.employee, ["passport_number","date_of_joining"])
 						
@@ -132,13 +132,13 @@ def get_conditions(filters):
 	# 	conditions += " and cost_center in {0} ".format(tuple(all_ccs))
 		
 	if filters.get("process_status") == "All":
-			conditions += " and docstatus = docstatus"
+		conditions += " and docstatus = docstatus"
 	elif filters.get("process_status") == "Submitted":
-			conditions += " and docstatus = 1"
-	elif filters.get("process_status") == "Un-Submitted":
-			conditions += " and docstatus = 0"
+		conditions += " and docstatus = 1"
+	elif filters.get("process_status") == "Draft":
+		conditions += " and docstatus = 0"
 	elif filters.get("process_status") == "Cancelled":
-			conditions += " and docstatus = 2"
+		conditions += " and docstatus = 2"
 
 	
 	return conditions, filters
