@@ -13,9 +13,9 @@ def get_data(filters):
 	if filters.uinput == "LTC":
 		query =  """
 			select t2.employee, t2.employee_name, (select tpn_number from tabEmployee e where e.name = t2.employee) as tpn, 
-            t2.branch, t2.bank_name, t2.bank_ac_no, t2.amount, 0, t2.amount
-            from `tabLeave Travel Concession` t1, `tabLTC Details` t2
-            where t2.parent = t1.name and t1.docstatus = 1"""
+			t2.branch, t2.bank_name, t2.bank_ac_no, t2.amount, 0, t2.amount
+			from `tabLeave Travel Concession` t1, `tabLTC Details` t2
+			where t2.parent = t1.name and t1.docstatus = 1"""
 
 	if filters.uinput == "PBVA":
 		query = """
@@ -32,7 +32,7 @@ def get_data(filters):
 			where t2.parent = t1.name and t1.docstatus = 1"""
 										
 	if filters.get("fy"):
-        query += " and t1.fiscal_year = \'"+ str(filters.fy) + "\'"
+		query += " and t1.fiscal_year = \'"+ str(filters.fy) + "\'"
 	return frappe.db.sql(query)
 
 def get_columns():
@@ -46,6 +46,6 @@ def get_columns():
 		("Actual Amount") + ":Currency:130",
 		("TDS Amount") + ":Currency:130",
 		("Balance Amount") + ":Currency:130"
-    ]
+	]
 
 
