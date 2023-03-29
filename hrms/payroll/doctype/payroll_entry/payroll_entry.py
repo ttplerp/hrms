@@ -559,7 +559,7 @@ class PayrollEntry(Document):
 		# default_bank_account = get_bank_account(self.processing_branch)
 		default_payable_account = company.get("salary_payable_account")
 		# company_cc              = company.get("company_cost_center")
-		company_cc              = frappe.db.get_value("Branch", self.branch, "cost_center")
+		company_cc              = frappe.db.get_value("Branch", self.processing_branch, "cost_center")
 		default_gpf_account     = company.get("employer_contribution_to_pf")
 		default_business_activity = get_default_ba()
 		salary_component_pf     = "PF"
