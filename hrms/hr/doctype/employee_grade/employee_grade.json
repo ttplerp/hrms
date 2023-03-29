@@ -92,7 +92,6 @@
   {
    "fieldname": "sws_contribution",
    "fieldtype": "Currency",
-   "hidden": 1,
    "label": "SWS Contribution"
   },
   {
@@ -162,7 +161,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-01-12 14:12:02.944872",
+ "modified": "2023-03-29 15:53:22.231239",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Grade",
