@@ -10,8 +10,8 @@ from hrms.hr.hr_custom_functions import get_salary_tax
 
 class Bonus(Document):
 	def validate(self):
-		self.validate_duplicate()
 		self.validate_bonus_amount()
+		self.validate_duplicate()
 		self.calculate_values()
 
 	def on_submit(self):
