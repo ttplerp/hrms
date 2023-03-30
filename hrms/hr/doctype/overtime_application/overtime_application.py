@@ -18,7 +18,7 @@ class OvertimeApplication(Document):
 		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
 		self.processed = 0
-		self.check_user_creation()
+		#self.check_user_creation()
 
 	def check_user_creation(self):
 		user_id = frappe.db.get_value("Employee", self.employee, "user_id")
