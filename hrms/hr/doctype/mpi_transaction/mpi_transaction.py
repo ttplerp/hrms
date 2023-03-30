@@ -12,7 +12,7 @@ class MPITransaction(Document):
 
 	def assign_account(self):
 		self.mpi_expense_account = frappe.db.get_value("Salary Component",{"name":"MPI","enabled":1},"gl_head")
-		self.payable_account = frappe.db.get_value("Company",self.company,"employee_payable_account")
+		self.payable_account =  frappe.db.get_value("Company", self.company,"employee_payable_account")
 		self.health_contribution_account = frappe.db.get_value("Salary Component",{"name":"Health Contribution","enabled":1},"gl_head")
 
 	def on_submit(self):
@@ -30,19 +30,9 @@ class MPITransaction(Document):
 	def be_for_employee(self,bank_account):
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions=1
-
-		je.update({
-			"doctype": "Journal Entry",
-			"voucher_type": "Journal Entry",
-			"title": "MPI Payment to Employee",
-			"user_remark": "Note: MPI Payment to Employee",
-			"posting_date": self.posting_date,
-			"company": self.company,
-			"total_amount_in_words": money_in_words(self.net_amount),
-			"branch": self.branch
-		})
+		accounts = []
 		for d in self.items:
-			je.append("accounts",{
+			accounts.append({
 				"account": self.payable_account,
 				"debit_in_account_currency": flt(d.net_mpi_amount,2),
 				"cost_center": d.cost_center if d.cost_center else self.cost_center,
@@ -53,41 +43,51 @@ class MPITransaction(Document):
 				"reference_type": self.doctype,
 				"reference_name": self.name
 			})
-		je.append("accounts",{
+		accounts.append({
 			"account": bank_account,
 			"credit_in_account_currency": flt(self.net_amount,2),
 			"cost_center": self.cost_center
 		})
-
+		je.update({
+			"doctype": "Journal Entry",
+			"voucher_type": "Journal Entry",
+			"title": "MPI Payment to Employee",
+			"user_remark": "Note: MPI Payment to Employee",
+			"posting_date": self.posting_date,
+			"company": self.company,
+			"total_amount_in_words": money_in_words(self.net_amount),
+			"branch": self.branch,
+			"accounts":accounts
+		})
 		je.insert()
 		return je.name
-
-	def be_health_contribution(self,bank_account):
+	def be_health_contribution(doc, bank_account):
 		je = frappe.new_doc("Journal Entry")
-		je.flags.ignore_permissions=1
-
+		je.flags.ignore_permissions = 1
+		accounts = [{
+						"account": doc.health_contribution_account,
+						"debit_in_account_currency": doc.total_deduction,
+						"credit_in_account_currency": 0,            
+						"cost_center": doc.cost_center,            
+						"reference_type": doc.doctype,            
+						"reference_name": doc.name        
+					},        
+					{            
+						"account": bank_account,            
+						"credit_in_account_currency": doc.total_deduction,            
+						"debit_in_account_currency": 0,            
+						"cost_center": doc.cost_center       
+					}]
 		je.update({
 			"doctype": "Journal Entry",
 			"voucher_type": "Bank Entry",
 			"title": "MPI Payment to Employee",
 			"user_remark": "Note: MPI Payment to Employee",
-			"posting_date": self.posting_date,
-			"company": self.company,
-			"total_amount_in_words": money_in_words(self.total_deduction),
-			"branch": self.branch
-		})
-		je.append("accounts",{
-				"account": self.health_contribution_account,
-				"debit_in_account_currency": flt(self.total_deduction,2),
-				"cost_center": self.cost_center,
-				"reference_type": self.doctype,
-				"reference_name": self.name
-			})
-
-		je.append("accounts",{
-			"account": bank_account,
-			"credit_in_account_currency": flt(self.total_deduction,2),
-			"cost_center": self.cost_center
+			"posting_date": doc.posting_date,
+			"company": doc.company,
+			"total_amount_in_words": money_in_words(doc.total_deduction),
+			"branch": doc.branch,
+			"accounts":accounts
 		})
 
 		je.insert()
@@ -95,7 +95,41 @@ class MPITransaction(Document):
 
 	def create_payable_entry(self):
 		je = frappe.new_doc("Journal Entry")
-		je.flags.ignore_permissions=1
+		je.flags.ignore_permissions = 1
+
+		accounts = []
+		mpi_expense_account = self.mpi_expense_account
+		cost_center = self.cost_center
+		payable_account = self.payable_account
+		health_contribution_account = self.health_contribution_account
+		for d in self.items:
+			accounts.append({
+				"account": payable_account,
+				"credit_in_account_currency": d.net_mpi_amount,
+				"cost_center": d.cost_center or cost_center,
+				"party_check": 1,
+				"party_type": "Employee",
+				"party": d.employee,
+				"party_name": d.employee_name,
+				"reference_type": self.doctype,
+				"reference_name": self.name
+			})
+
+		accounts.append({
+			"account": health_contribution_account,
+			"credit_in_account_currency": self.total_deduction,
+			"cost_center": cost_center,
+			"reference_type": self.doctype,
+			"reference_name": self.name
+		})
+
+		accounts.append({
+			"account": mpi_expense_account,
+			"debit_in_account_currency": self.total_mpi_amount,
+			"cost_center": cost_center
+		})
+
+		total_amount_in_words = money_in_words(self.total_mpi_amount)
 
 		je.update({
 			"doctype": "Journal Entry",
@@ -104,33 +138,9 @@ class MPITransaction(Document):
 			"user_remark": "Note: MPI Payment to Employee",
 			"posting_date": self.posting_date,
 			"company": self.company,
-			"total_amount_in_words": money_in_words(self.total_mpi_amount),
-			"branch": self.branch
-		})
-		for d in self.items:
-			je.append("accounts",{
-				"account": self.payable_account,
-				"credit_in_account_currency": flt(d.net_mpi_amount,2),
-				"cost_center": d.cost_center if d.cost_center else self.cost_center,
-				"party_check": 1,
-				"party_type": "Employee",
-				"party": d.employee,
-				"party_name": d.employee_name,
-				"reference_type": self.doctype,
-				"reference_name": self.name
-			})
-		je.append("accounts",{
-				"account": self.health_contribution_account,
-				"credit_in_account_currency": flt(self.total_deduction,2),
-				"cost_center": self.cost_center,
-				"reference_type": self.doctype,
-				"reference_name": self.name
-			})
-
-		je.append("accounts",{
-			"account": self.mpi_expense_account,
-			"debit_in_account_currency": flt(self.total_mpi_amount,2),
-			"cost_center": self.cost_center 
+			"total_amount_in_words": total_amount_in_words,
+			"branch": self.branch,
+			"accounts": accounts
 		})
 
 		je.insert()
@@ -151,64 +161,57 @@ class MPITransaction(Document):
 		self.total_mpi_amount 	= flt(total_mpi_amount,2)
 		self.total_deduction 	= flt(total_deduction,0)
 		self.net_amount 		= flt(net_amount,2)
-
 	@frappe.whitelist()
 	def get_mpi_details(self):
 		if not self.fiscal_year:
-			frappe.throw("Fiscal Year is Mandatory")
-		if flt(self.mpi_percent) <= 0 :
+			frappe.throw("Fiscal Year is mandatory")
+		if flt(self.mpi_percent) <= 0:
 			frappe.throw("MPI percent cannot be 0 or less than 0")
-		self.set("items",[])
-		total_amount = total_mpi_amount = total_deduction = net_amount = 0
-		for d in frappe.db.sql('''
-				SELECT e.name as employee, e.employee_name,
-						e.branch, e.cost_center, e.designation,
-						e.date_of_joining, 
-						(CASE WHEN e.employment_type = 'Contract' 
-							THEN e.contract_end_date ELSE e.date_of_retirement END) as relieving_date,
-						ss.name as salary_structure
-				FROM `tabEmployee` e, `tabSalary Structure` ss 
-				WHERE ss.eligible_for_mpi = 1 AND ss.employee = e.name and ss.docstatus = 0
-				''',as_dict=True):
-			basic_pay = frappe.db.sql('''
-				SELECT sd.amount, SUM(sd.amount)
-				FROM `tabSalary Slip` ss, `tabSalary Detail` sd 
-				WHERE sd.parent = ss.name
-				AND sd.salary_component = 'Basic Pay' AND ss.fiscal_year = '{fiscal_year}'
-				AND ss.salary_structure = '{salary_structure}' 
-				AND ss.employee = '{employee}' AND ss.docstatus = 1
-			'''.format(fiscal_year = self.fiscal_year, salary_structure = d.salary_structure, employee = d.employee))
-			working_days =  frappe.db.sql('''
-				SELECT SUM(ssi.working_days)
-				FROM `tabSalary Slip` ss, `tabSalary Slip Item` ssi
-				WHERE ssi.parent = ss.name 	
-				AND ss.fiscal_year = '{fiscal_year}' AND ss.salary_structure = '{salary_structure}'
-				AND ss.employee = '{employee}' AND ss.docstatus = 1
-			'''.format(fiscal_year = self.fiscal_year, salary_structure = d.salary_structure, employee = d.employee))
-			if basic_pay[0][0] and basic_pay[0][1] and working_days[0][0]:
-				d.update({
-					"basic_pay":basic_pay[0][0],
-					"gross_basic_pay":basic_pay[0][1],
-					"total_days_worked":working_days[0][0]
-				})
-				mpi_amount = flt(flt(d.gross_basic_pay) * flt(self.mpi_percent) / 100,2)
-				deduction_amount = flt(flt(mpi_amount) * flt(self.deduction_percent)/ 100,0)
-				net_mpi_amount = flt(flt(mpi_amount) - flt(deduction_amount),2)
-				d.update({
-					"mpi_amount":flt(mpi_amount,2),
-					"deduction_amount":flt(deduction_amount,0),
-					"net_mpi_amount":flt(net_mpi_amount,2)
-				})
-				total_mpi_amount 	+= flt(mpi_amount,2)
-				total_deduction 	+= flt(deduction_amount,0)
-				total_amount       	+= flt(d.gross_basic_pay,2)
-				net_amount 			+= flt(d.net_mpi_amount,2)
 
-			self.append("items",d)
-		self.total_amount 		= flt(total_amount,2)
-		self.total_mpi_amount 	= flt(total_mpi_amount,2)
-		self.total_deduction 	= flt(total_deduction,2)
-		self.net_amount 		= flt(net_amount, 2)
+		# fetch basic pay and total days worked for all eligible employees
+		sql_query = '''
+			SELECT e.name as employee, e.employee_name,
+				e.branch, e.cost_center, e.designation,
+				e.date_of_joining, 
+				(CASE WHEN e.employment_type = 'Contract' 
+					THEN e.contract_end_date ELSE e.date_of_retirement END) as relieving_date,
+				ss.name as salary_structure,
+				sd.amount as basic_pay,
+				sd.amount * ssi.working_days as gross_basic_pay,
+				ssi.working_days as total_days_worked
+			FROM `tabEmployee` e
+			INNER JOIN `tabSalary Structure` ss ON ss.eligible_for_mpi = 1 AND ss.employee = e.name AND ss.docstatus = 0
+			INNER JOIN `tabSalary Slip` sl ON sl.employee = e.name AND sl.salary_structure = ss.name AND sl.docstatus = 0
+			INNER JOIN `tabSalary Detail` sd ON sd.parent = sl.name AND sd.salary_component = 'Basic Pay'
+			INNER JOIN `tabSalary Slip Item` ssi ON ssi.parent = sl.name
+			WHERE sl.fiscal_year = %(fiscal_year)s
+		'''
+		params = {'fiscal_year': self.fiscal_year}
+		results = frappe.db.sql(sql_query, params, as_dict=True)
+
+		self.set("items", [])
+		total_amount = total_mpi_amount = total_deduction = net_amount = 0
+		for d in results:
+			mpi_amount = flt(flt(d.gross_basic_pay) * flt(self.mpi_percent) / 100, 2)
+			deduction_amount = flt(flt(mpi_amount) * flt(self.deduction_percent) / 100, 0)
+			net_mpi_amount = flt(flt(mpi_amount) - flt(deduction_amount), 2)
+			d.update({
+				"mpi_amount": flt(mpi_amount, 2),
+				"deduction_amount": flt(deduction_amount, 0),
+				"net_mpi_amount": flt(net_mpi_amount, 2)
+			})
+			total_mpi_amount += flt(mpi_amount, 2)
+			total_deduction += flt(deduction_amount, 0)
+			total_amount += flt(d.gross_basic_pay, 2)
+			net_amount += flt(d.net_mpi_amount, 2)
+
+			self.append("items", d)
+
+		self.total_amount = flt(total_amount, 2)
+		self.total_mpi_amount = flt(total_mpi_amount, 2)
+		self.total_deduction = flt(total_deduction, 2)
+		self.net_amount = flt(net_amount, 2)
+
 
 			
 

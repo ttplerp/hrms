@@ -42,22 +42,21 @@ class Bonus(Document):
 				if not a.amount or a.amount == 0:
 					frappe.throw("Bonus amount for Employee {} ({}) at row {} cannot be 0".format(a.employee, a.employee_name, count))
 				count += 1
-
 	def calculate_values(self):
 		if self.items:
-			tot = tax = net = 0
+			amounts = {"total": 0, "tax": 0, "net": 0}
 			for a in self.items:
-				total_bonus_amount = cint(a.basic_pay) * cint(self.bonus_slab)
-				bonus_per_day = total_bonus_amount/365
-				a.amount = bonus_per_day*a.days_worked
+				total_bonus_amount = a.basic_pay * self.bonus_slab
+				bonus_per_day = total_bonus_amount / 365
+				a.amount = bonus_per_day * a.days_worked
 				a.tax_amount = get_salary_tax(a.amount)
-				a.balance_amount = flt(a.amount) - flt(a.tax_amount)
-				tot += flt(a.amount)
-				tax += flt(a.tax_amount)
-				net += a.balance_amount
-			self.total_amount = tot
-			self.tax_amount = tax
-			self.net_amount = net
+				a.balance_amount = a.amount - a.tax_amount
+				amounts["total"] += a.amount
+				amounts["tax"] += a.tax_amount
+				amounts["net"] += a.balance_amount
+			self.total_amount = amounts["total"]
+			self.tax_amount = amounts["tax"]
+			self.net_amount = amounts["net"]
 		else:
 			frappe.throw("Cannot save without employee details")
 

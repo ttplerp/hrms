@@ -34,7 +34,7 @@
  ],
  "fields": [
   {
-   "fetch_from": "process_branch.cost_center",
+   "fetch_from": "branch.cost_center",
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
@@ -188,7 +188,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-27 14:45:14.779282",
+ "modified": "2023-03-30 12:19:57.309148",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MPI Transaction",
