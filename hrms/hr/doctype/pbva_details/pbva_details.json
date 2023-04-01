@@ -16,11 +16,12 @@
   "total_basic_pay",
   "date_of_joining",
   "relieving_date",
-  "days_worked",
+  "cost_center",
   "data_12",
   "amount",
   "tax_amount",
   "balance_amount",
+  "days_worked",
   "column_break_16",
   "salary_mode",
   "bank_name",
@@ -35,13 +36,14 @@
    "reqd": 1
   },
   {
+   "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Employee Name",
-   "reqd": 1
+   "label": "Employee Name"
   },
   {
+   "fetch_from": "employee.employment_type",
    "fieldname": "employment_type",
    "fieldtype": "Data",
    "label": "Employment Type"
@@ -52,6 +54,7 @@
    "label": "Leaving Type"
   },
   {
+   "fetch_from": "employee.branch",
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
@@ -132,12 +135,20 @@
    "fieldname": "bank_ac_no",
    "fieldtype": "Data",
    "label": "Bank A/C No."
+  },
+  {
+   "fetch_from": "employee.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-10-03 15:12:21.631328",
+ "modified": "2023-04-01 13:50:43.801783",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PBVA Details",

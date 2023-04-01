@@ -5,6 +5,8 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import getdate ,cint, flt
 from hrms.hr.hr_custom_functions import get_salary_tax
+from frappe.utils import flt, cint, getdate, money_in_words
+from collections import defaultdict
 
 class PBVA(Document):
 	def validate(self):
@@ -12,36 +14,23 @@ class PBVA(Document):
 		self.remove_zero_rows()
 
 	def on_submit(self):
-		cc_amount = {}
-		for a in self.items:
-			tax = get_salary_tax(a.amount)
-			cost_center, ba = frappe.db.get_value("Employee", a.employee, ["cost_center", "business_activity"])
-			cc = str(str(cost_center) + ":" + str(ba))
-			if cc in cc_amount:
-				cc_amount[cc]['amount'] = cc_amount[cc]['amount'] + a.amount
-				cc_amount[cc]['tax'] = cc_amount[cc]['tax'] + a.tax_amount
-				cc_amount[cc]['balance_amount'] = cc_amount[cc]['balance_amount'] + a.balance_amount
-			else:
-				row = {"amount": a.amount, "tax": a.tax_amount, "balance_amount":a.balance_amount}
-				cc_amount[cc] = row
-		self.post_journal_entry(cc_amount)
-
-	def on_cancel(self):
-		jv = frappe.db.get_value("Journal Entry", self.journal_entry, "docstatus")
-		if jv != 2:
-			frappe.throw("Can not cancel PBVA without canceling the corresponding journal entry " + str(self.journal_entry))
-		else:
-			self.db_set("journal_entry", "")
+		self.post_journal_entry()
+	def before_cancel(self):
+		je = frappe.db.sql("Select parent from `tabJournal Entry Account` where reference_type = 'PBVA' and reference_name = '{}' limit 1".format(self.name))
+		if je:
+			doc = frappe.get_doc("Journal Entry",je[0][0])
+			if doc.docstatus != 2:
+				frappe.throw("Cannot cancel this document as there exists journal entry against this document")
 
 	def calculate_values(self):
 		if self.items:
 			tot = tax = net = 0
 			for a in self.items:
-				a.tax_amount = get_salary_tax(a.amount)
-				a.balance_amount = flt(a.amount) - flt(a.tax_amount)
-				tot += flt(a.amount)
-				tax += flt(a.tax_amount)
-				net += flt(a.balance_amount)
+				a.tax_amount = flt(get_salary_tax(a.amount),2)
+				a.balance_amount = flt(flt(a.amount,2) - flt(a.tax_amount,2),2)
+				tot += flt(a.amount,2)
+				tax += flt(a.tax_amount,2)
+				net += flt(a.balance_amount,2)
 
 			self.total_amount = tot
 			self.tax_amount   = tax
@@ -57,82 +46,156 @@ class PBVA(Document):
 					to_remove.append(d)
 			[self.remove(d) for d in to_remove]
 	
-	def post_journal_entry(self, cc_amount):
-		je = frappe.new_doc("Journal Entry")
-		je.flags.ignore_permissions = 1 
-		je.title = "PBVA for " + self.branch + "(" + self.name + ")"
-		je.voucher_type = 'Bank Entry'
-		je.naming_series = 'Bank Payment Voucher'
-		je.remark = 'PBVA payment against : ' + self.name
-		je.posting_date = self.posting_date
-		je.branch = self.branch
-		Company = "State Mining Corporation Ltd"
-		pbva_account_name = frappe.db.get_value("Company",Company,"pbva_account")
-		tax_account = frappe.db.get_value("Company",Company,"Salary_tax_account")
-		expense_bank_account = frappe.db.get_value("Branch", self.branch, "expense_bank_account")
+	def post_journal_entry(self):
+		if not self.net_amount:
+			frappe.throw(_("Payable Amount should be greater than zero"))
+		sort_cc_wise = defaultdict(list)
+		cc_amount = defaultdict(lambda: {"tax_amount":0,"net_amount":0, "balance_amount":0})
 
-		if not pbva_account_name:
-			frappe.throw("Setup PBVA Account in HR Accounts Settings")
-		if not tax_account:
-			frappe.throw("Setup Salary Tax Account in HR Accounts Settings")
-		if not expense_bank_account:
-			frappe.throw("Setup Expense Bank Account for your branch")
-		# frappe.throw(str(cc_amount))
-		for key in cc_amount.keys():
-			values = key.split(":")
-			if flt(cc_amount[key]['tax']) <= 0:
-				je.append("accounts", {
-					"account": pbva_account_name,
-					"reference_type": self.doctype,
-					"reference_name": self.name,
-					"cost_center": values[0],
-					"business_activity": values[1],
-					"debit_in_account_currency": flt(cc_amount[key]['amount']),
-					"debit": flt(cc_amount[key]['amount']),
-				})
+		for a in self.items:
+			sort_cc_wise[a.cost_center].append(a)
 		
-				je.append("accounts", {
-					"account": expense_bank_account,
-					"cost_center": values[0],
-					"credit_in_account_currency": flt(cc_amount[key]['balance_amount']),
-					"credit": flt(cc_amount[key]['balance_amount']),
-					"reference_type": self.doctype,
-					"business_activity": values[1],
-					"reference_name": self.name,
-				})
-			else:
-				je.append("accounts", {
-						"account": pbva_account_name,
-						"reference_type": self.doctype,
-						"reference_name": self.name,
-						"cost_center": values[0],
-						"business_activity": values[1],
-						"debit_in_account_currency": flt(cc_amount[key]['amount']),
-						"debit": flt(cc_amount[key]['amount']),
-					})
-			
-				je.append("accounts", {
-						"account": expense_bank_account,
-						"cost_center": values[0],
-						"credit_in_account_currency": flt(cc_amount[key]['balance_amount']),
-						"credit": flt(cc_amount[key]['balance_amount']),
-						"reference_type": self.doctype,
-						"business_activity": values[1],
-						"reference_name": self.name,
-					})
-				
-				je.append("accounts", {
-						"account": tax_account,
-						"cost_center": values[0],
-						"business_activity": values[1],
-						"credit_in_account_currency": flt(cc_amount[key]['tax']),
-						"credit": flt(cc_amount[key]['tax']),
-						"reference_type": self.doctype,
-						"reference_name": self.name,
-					})
-		je.insert()
+		for cc, items in sort_cc_wise.items():
+			for item in items:
+				cc_amount[cc]["tax_amount"] += flt(item.tax_amount,2)
+				cc_amount[cc]["net_amount"] += flt(item.amount,2)
+				cc_amount[cc]["balance_amount"] += flt(item.balance_amount,2)
+		je = []
+		je.append(self.create_payable_entry(cc_amount))
+		je.append(self.bank_entry_for_employee(cc_amount))
+		je.append(self.tax_entry(cc_amount))
+		frappe.msgprint("Following Journal Entry {} Posted against this document".format(frappe.bold(tuple(je))))
 
-		self.db_set("journal_entry", je.name)
+	def create_payable_entry(self, cc_amount):
+		je = frappe.new_doc("Journal Entry")
+		je.flags.ignore_permissions = 1
+
+		accounts = []
+		cost_center = self.cost_center
+		company_doc = frappe.get_doc("Company", self.company)
+		for d in self.items:
+			accounts.append({
+				"account": company_doc.employee_payable_account,
+				"credit_in_account_currency": d.balance_amount,
+				"cost_center": d.cost_center or cost_center,
+				"party_check": 1,
+				"party_type": "Employee",
+				"party": d.employee,
+				"party_name": d.employee_name,
+				"reference_type": self.doctype,
+				"reference_name": self.name
+			})
+		for key, item in cc_amount.items():
+			if item.get('tax_amount') > 0:
+				accounts.append({
+					"account": company_doc.salary_tax_account,
+					"credit_in_account_currency": item.get('tax_amount'),
+					"cost_center": key,
+					"reference_type": self.doctype,
+					"reference_name": self.name
+				})
+
+			accounts.append({
+				"account": company_doc.pbva_account,
+				"debit_in_account_currency": item.get('net_amount'),
+				"cost_center": key,
+				"reference_type": self.doctype,
+				"reference_name": self.name
+			})
+
+		total_amount_in_words = money_in_words(self.net_amount)
+
+		je.update({
+			"doctype": "Journal Entry",
+			"voucher_type": "Journal Entry",
+			"title": "{}% Pbva to Employee".format(self.pbva_percent),
+			"user_remark": "Note: {}% Pbva Payment to Employee".format(self.pbva_percent),
+			"posting_date": self.posting_date,
+			"company": self.company,
+			"total_amount_in_words": total_amount_in_words,
+			"branch": self.branch,
+			"accounts": accounts
+		})
+
+		je.insert()
+		return je.name
+
+	def bank_entry_for_employee(self,cc_amount):
+		je = frappe.new_doc("Journal Entry")
+		je.flags.ignore_permissions=1
+		accounts = []
+		company_doc = frappe.get_doc("Company", self.company)
+		club_cc_wise = {}
+		for d in self.items:
+			accounts.append({
+				"account": company_doc.employee_payable_account,
+				"debit_in_account_currency": flt(d.balance_amount,2),
+				"cost_center": d.cost_center or self.cost_center,
+				"party_check": 1,
+				"party_type": "Employee",
+				"party": d.employee,
+				"party_name": d.employee_name,
+				"reference_type": self.doctype,
+				"reference_name": self.name
+			})
+		for key, item in cc_amount.items():
+			accounts.append({
+				"account": company_doc.default_bank_account,
+				"credit_in_account_currency": flt(item.get('balance_amount'),2),
+				"cost_center": key,
+				"reference_type": self.doctype,
+				"reference_name": self.name
+			})
+		je.update({
+			"doctype": "Journal Entry",
+			"voucher_type": "Bank Entry",
+			"title": "{}% PBVA Payment to Employee".format(self.pbva_percent),
+			"user_remark": "Note: {}% PBVA Payment to Employee".format(self.pbva_percent),
+			"posting_date": self.posting_date,
+			"company": self.company,
+			"total_amount_in_words": money_in_words(self.net_amount),
+			"branch": self.branch,
+			"accounts":accounts
+		})
+		je.insert()
+		return je.name
+
+	def tax_entry(self,cc_amount):
+		je = frappe.new_doc("Journal Entry")
+		je.flags.ignore_permissions=1
+		accounts = []
+		company_doc = frappe.get_doc("Company", self.company)
+		club_cc_wise = {}
+		for key, item in cc_amount.items():
+			if flt(item.get('tax_amount'),2) > 0:
+				accounts.append({
+					"account": company_doc.default_bank_account,
+					"credit_in_account_currency": flt(item.get('tax_amount'),2),
+					"cost_center": key,
+					"reference_type": self.doctype,
+					"reference_name": self.name
+				})
+				if item.get('tax_amount') > 0:
+					accounts.append({
+						"account": company_doc.salary_tax_account,
+						"debit_in_account_currency": item.get('tax_amount'),
+						"cost_center": key,
+						"reference_type": self.doctype,
+						"reference_name": self.name
+					})
+		je.update({
+			"doctype": "Journal Entry",
+			"voucher_type": "Journal Entry",
+			"title": "{}% PBVA Payment to Employee tax entry".format(self.pbva_percent),
+			"user_remark": "Note: {}% PBVA Payment to Employee tax entry".format(self.pbva_percent),
+			"posting_date": self.posting_date,
+			"company": self.company,
+			"total_amount_in_words": money_in_words(self.net_amount),
+			"branch": self.branch,
+			"accounts":accounts
+		})
+		je.insert()
+		return je.name
 
 	@frappe.whitelist()
 	def get_pbva_details(self):
@@ -144,109 +207,159 @@ class PBVA(Document):
 			frappe.throw("PBVA percent cannot be 0 or less than 0")
 		start = str(self.fiscal_year)+'-01-01'
 		end   = str(self.fiscal_year)+'-12-31'
-		query = """select
-				e.name as employee,
-				e.employee_name,
-				e.employment_type,
-				e.branch,
-				e.date_of_joining,
-				e.relieving_date,
-				# e.reason_for_resignation as leaving_type,
-				e.salary_mode,
-				e.bank_name,
-				e.bank_ac_no,
-				datediff(least(ifnull(e.relieving_date,'9999-12-31'),'{2}'),
-				greatest(e.date_of_joining,'{1}'))+1 days_worked,
-				(select
-					sd.amount
-					from
-						`tabSalary Detail` sd,
-						`tabSalary Slip` sl
-					where sd.parent = sl.name
-					and sl.employee = e.name
-					and sd.salary_component = 'Basic Pay'
-					and sl.docstatus = 1
-					and sl.fiscal_year = {0}
-					and (sd.salary_component = 'Basic Pay'
-					or exists(select 1 from `tabSalary Component` sc
-						where sc.name = sd.salary_component
-						and sc.is_pf_deductible = 1
-						and sc.type = 'Earning')
+		# query = """select
+		# 		e.name as employee,
+		# 		e.employee_name,
+		# 		e.employment_type,
+		# 		e.branch,
+		# 		e.date_of_joining,
+		# 		e.relieving_date,
+		# 		# e.reason_for_resignation as leaving_type,
+		# 		e.salary_mode,
+		# 		e.bank_name,
+		# 		e.bank_ac_no,
+		# 		e.cost_center,
+		# 		datediff(least(ifnull(e.relieving_date,'9999-12-31'),'{2}'),
+		# 		greatest(e.date_of_joining,'{1}'))+1 days_worked,
+		# 		(select
+		# 			sd.amount
+		# 			from
+		# 				`tabSalary Detail` sd,
+		# 				`tabSalary Slip` sl
+		# 			where sd.parent = sl.name
+		# 			and sl.employee = e.name
+		# 			and sd.salary_component = 'Basic Pay'
+		# 			and sl.docstatus = 1
+		# 			and sl.fiscal_year = {0}
+		# 			and (sd.salary_component = 'Basic Pay'
+		# 			or exists(select 1 from `tabSalary Component` sc
+		# 				where sc.name = sd.salary_component
+		# 				and sc.is_pf_deductible = 1
+		# 				and sc.type = 'Earning')
+		# 				)
+		# 				and exists(select 1
+		# 					from `tabSalary Slip Item` ssi, `tabSalary Structure` ss
+		# 					where ssi.parent = sl.name
+		# 					and ss.name = ssi.salary_structure
+		# 					and ss.eligible_for_pbva = 1)
+		# 				order by sl.month desc limit 1
+		# 		) as basic_pay,
+		# 		(select
+		# 			sum(sd.amount)
+		# 			from
+		# 				`tabSalary Detail` sd,
+		# 				`tabSalary Slip` sl
+		# 			where sd.parent = sl.name
+		# 			and sl.employee = e.name
+		# 			and sd.salary_component = 'Basic Pay'
+		# 			and sl.docstatus = 1
+		# 			and sl.fiscal_year = {0}
+		# 			and (sd.salary_component = 'Basic Pay'
+		# 			or exists(select 1 from `tabSalary Component` sc
+		# 				where sc.name = sd.salary_component
+		# 				and sc.is_pf_deductible = 1
+		# 				and sc.type = 'Earning')
+		# 		)
+		# 		and exists(select 1
+		# 			from 
+		# 				`tabSalary Slip Item` ssi,
+		# 				 `tabSalary Structure` ss
+		# 			where ssi.parent = sl.name
+		# 			and ss.name = ssi.salary_structure
+		# 			and ss.eligible_for_pbva = 1)
+		# 		) as total_basic_pay,
+		# 		((select
+		# 			sum(sd.amount)
+		# 			from
+		# 				`tabSalary Detail` sd,
+		# 				`tabSalary Slip` sl
+		# 			where sd.parent = sl.name
+		# 			and sl.employee = e.name
+		# 			and sd.salary_component = 'Basic Pay'
+		# 			and sl.docstatus = 1
+		# 			and sl.fiscal_year = {0}
+		# 			and (sd.salary_component = 'Basic Pay'
+		# 		or exists(select 1 from `tabSalary Component` sc
+		# 			where sc.name = sd.salary_component
+		# 			and sc.is_pf_deductible = 1
+		# 			and sc.type = 'Earning')
+		# 		)
+		# 		and exists(select 1
+		# 			from 
+		# 				`tabSalary Slip Item` ssi, 
+		# 				`tabSalary Structure` ss
+		# 			where ssi.parent = sl.name
+		# 			and ss.name = ssi.salary_structure
+		# 			and ss.eligible_for_pbva = 1)
+		# 		)/100*{5}) as amount
+		# 		from tabEmployee e
+		# 		where (
+		# 				('{3}' = 'Active' and e.date_of_joining <= '{2}' and ifnull(e.relieving_date,'9999-12-31') > '{2}')
+		# 				or
+		# 				('{3}' = 'Left' and ifnull(e.relieving_date,'9999-12-31') between '{1}' and '{2}')
+		# 				or
+		# 				('{3}' = 'All' and e.date_of_joining <= '{2}' and ifnull(e.relieving_date,'9999-12-31') >= '{1}')
+		# 			)
+		# 		and not exists(select 1
+		# 			from 
+		# 				`tabPBVA Details` bd,
+		# 				 `tabPBVA` b
+		# 			where b.fiscal_year = '{0}'
+		# 			and b.name <> '{4}'
+		# 			and bd.parent = b.name
+		# 			and bd.employee = e.employee
+		# 			and b.docstatus in (0,1))
+		# 		order by e.branch
+		# 				""".format(self.fiscal_year, start, end, self.employee_status, self.name, self.pbva_percent)
+		query = """SELECT
+						e.name as employee,
+						e.employee_name,
+						e.employment_type,
+						e.branch,
+						e.date_of_joining,
+						e.relieving_date,
+						e.salary_mode,
+						e.bank_name,
+						e.bank_ac_no,
+						e.cost_center,
+						datediff(least(ifnull(e.relieving_date, '9999-12-31'), '{2}'), greatest(e.date_of_joining, '{1}')) + 1 AS days_worked,
+						sd.amount AS basic_pay,
+						SUM(sd.amount) AS total_basic_pay,
+						(SUM(sd.amount)/100*{5}) AS amount
+					FROM
+						tabEmployee e
+						LEFT JOIN `tabSalary Slip` sl ON sl.employee = e.name AND sl.docstatus = 1 AND sl.fiscal_year = {0}
+						LEFT JOIN `tabSalary Detail` sd ON sd.parent = sl.name AND sd.salary_component = 'Basic Pay'
+					WHERE
+						(
+							('{3}' = 'Active' AND e.date_of_joining <= '{2}' AND IFNULL(e.relieving_date, '9999-12-31') > '{2}')
+							OR
+							('{3}' = 'Left' AND IFNULL(e.relieving_date, '9999-12-31') BETWEEN '{1}' AND '{2}')
+							OR
+							('{3}' = 'All' AND e.date_of_joining <= '{2}' AND IFNULL(e.relieving_date, '9999-12-31') >= '{1}')
 						)
-						and exists(select 1
-							from `tabSalary Slip Item` ssi, `tabSalary Structure` ss
-							where ssi.parent = sl.name
-							and ss.name = ssi.salary_structure
-							and ss.eligible_for_pbva = 1)
-						order by sl.month desc limit 1
-				) as basic_pay,
-				(select
-					sum(sd.amount)
-					from
-						`tabSalary Detail` sd,
-						`tabSalary Slip` sl
-					where sd.parent = sl.name
-					and sl.employee = e.name
-					and sd.salary_component = 'Basic Pay'
-					and sl.docstatus = 1
-					and sl.fiscal_year = {0}
-					and (sd.salary_component = 'Basic Pay'
-					or exists(select 1 from `tabSalary Component` sc
-						where sc.name = sd.salary_component
-						and sc.is_pf_deductible = 1
-						and sc.type = 'Earning')
-				)
-				and exists(select 1
-					from 
-						`tabSalary Slip Item` ssi,
-						 `tabSalary Structure` ss
-					where ssi.parent = sl.name
-					and ss.name = ssi.salary_structure
-					and ss.eligible_for_pbva = 1)
-				) as total_basic_pay,
-				((select
-					sum(sd.amount)
-					from
-						`tabSalary Detail` sd,
-						`tabSalary Slip` sl
-					where sd.parent = sl.name
-					and sl.employee = e.name
-					and sd.salary_component = 'Basic Pay'
-					and sl.docstatus = 1
-					and sl.fiscal_year = {0}
-					and (sd.salary_component = 'Basic Pay'
-				or exists(select 1 from `tabSalary Component` sc
-					where sc.name = sd.salary_component
-					and sc.is_pf_deductible = 1
-					and sc.type = 'Earning')
-				)
-				and exists(select 1
-					from 
-						`tabSalary Slip Item` ssi, 
-						`tabSalary Structure` ss
-					where ssi.parent = sl.name
-					and ss.name = ssi.salary_structure
-					and ss.eligible_for_pbva = 1)
-				)/100*{5}) as amount
-				from tabEmployee e
-				where (
-						('{3}' = 'Active' and e.date_of_joining <= '{2}' and ifnull(e.relieving_date,'9999-12-31') > '{2}')
-						or
-						('{3}' = 'Left' and ifnull(e.relieving_date,'9999-12-31') between '{1}' and '{2}')
-						or
-						('{3}' = 'All' and e.date_of_joining <= '{2}' and ifnull(e.relieving_date,'9999-12-31') >= '{1}')
-					)
-				and not exists(select 1
-					from 
-						`tabPBVA Details` bd,
-						 `tabPBVA` b
-					where b.fiscal_year = '{0}'
-					and b.name <> '{4}'
-					and bd.parent = b.name
-					and bd.employee = e.employee
-					and b.docstatus in (0,1))
-				order by e.branch
-						""".format(self.fiscal_year, start, end, self.employee_status, self.name, self.pbva_percent)
+						AND NOT EXISTS (
+							SELECT 1
+							FROM `tabPBVA Details` bd
+							INNER JOIN `tabPBVA` b ON b.name <> '{4}' AND bd.parent = b.name AND bd.employee = e.employee AND b.docstatus IN (0,1)
+							WHERE b.fiscal_year = '{0}'
+						)
+					GROUP BY
+						e.name,
+						e.employee_name,
+						e.employment_type,
+						e.branch,
+						e.date_of_joining,
+						e.relieving_date,
+						e.salary_mode,
+						e.bank_name,
+						e.bank_ac_no,
+						e.cost_center,
+						days_worked,
+						basic_pay
+					ORDER BY
+						e.branch;
+		""".format(self.fiscal_year, start, end, self.employee_status, self.name, self.pbva_percent)
 		
 		entries = frappe.db.sql(query, as_dict=True)
 		self.set('items', [])
@@ -257,33 +370,4 @@ class PBVA(Document):
 			# d.amount = 0
 			row = self.append('items', {})
 			row.update(d)
-			'''
-			joining = getdate(d.date_of_joining)
-			relieving = getdate(d.relieving_date)
-
-			if not (joining >= start and joining <= end): 
-				d.date_of_joining = None
-			if not (relieving >= start and relieving <= end): 
-				d.relieving_date = None
-
-			d.days_worked = date_diff(getdate(self.fiscal_year + '-12-31'), getdate(self.fiscal_year + '-01-01'))
-			if d.date_of_joining: 
-				d.days_worked = date_diff(getdate(self.fiscal_year + '-12-31'), d.date_of_joining)
-
-			if d.relieving_date:
-				d.days_worked = date_diff(d.relieving_date, getdate(self.fiscal_year + '-01-01'))
-	
-			if d.relieving_date and d.date_of_joining:
-								d.days_worked = date_diff(d.relieving_date, d.date_of_joining)
-
-			d.days_worked = cint(d.days_worked) + 1
-			'''
 			
-# @frappe.whitelist()
-# def get_pbva_percent(employee):
-# 	group = frappe.db.get_value("Employee", employee, "employee_group")
-# 	if group in ("Chief Executive Officer", "Executive"):
-# 		return "above"
-# 	else:
-# 		return "below"
-

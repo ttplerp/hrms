@@ -9,6 +9,7 @@
  "field_order": [
   "posting_date",
   "branch",
+  "cost_center",
   "column_break_3",
   "fiscal_year",
   "employee_status",
@@ -28,7 +29,7 @@
   "pbva_details_section",
   "items",
   "section_break_21",
-  "journal_entry",
+  "company",
   "column_break_23",
   "amended_from"
  ],
@@ -160,19 +161,29 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "journal_entry",
-   "fieldtype": "Data",
-   "label": "Journal Entry"
-  },
-  {
    "fieldname": "column_break_23",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "branch.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-28 12:22:34.537371",
+ "modified": "2023-04-01 14:30:51.259218",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PBVA",

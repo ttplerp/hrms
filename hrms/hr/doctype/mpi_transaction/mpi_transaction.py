@@ -4,6 +4,7 @@
 import frappe
 from frappe.model.document import Document
 from frappe.utils import flt, cint, getdate, money_in_words
+from collections import defaultdict
 
 class MPITransaction(Document):
 	def validate(self):
@@ -17,17 +18,36 @@ class MPITransaction(Document):
 
 	def on_submit(self):
 		self.post_journal_entry()
+	
+	def before_cancel(self):
+		je = frappe.db.sql("Select parent from `tabJournal Entry Account` where reference_type = 'MPI Transaction' and reference_name = '{}' limit 1".format(self.name))
+		if je:
+			doc = frappe.get_doc("Journal Entry",je[0][0])
+			if doc.docstatus != 2:
+				frappe.throw("Cannot cancel this document as there exists journal entry against this document")
 
 	def post_journal_entry(self):
 		bank_account = frappe.db.get_value("Company",self.company,"default_bank_account")
 		if not self.net_amount:
 			frappe.throw(_("Payable Amount should be greater than zero"))
-		je = []
-		je.append(self.create_payable_entry())
-		je.append(self.be_health_contribution(bank_account))
-		je.append(self.be_for_employee(bank_account))
+		sort_cc_wise = defaultdict(list)
+		cc_amount = defaultdict(lambda: {'deduction_amount': 0, 'mpi_amount': 0, 'net_mpi_amount':0})
 
-	def be_for_employee(self,bank_account):
+		for a in self.items:
+			sort_cc_wise[a.cost_center].append(a)
+
+		for cc, items in sort_cc_wise.items():
+			for item in items:
+				cc_amount[cc]['deduction_amount'] += flt(item.deduction_amount,2)
+				cc_amount[cc]['mpi_amount'] += flt(item.mpi_amount,2)
+				cc_amount[cc]['net_mpi_amount'] += flt(item.net_mpi_amount,2)
+		je = []
+		je.append(self.create_payable_entry(cc_amount))
+		je.append(self.be_health_contribution(bank_account,cc_amount))
+		je.append(self.be_for_employee(bank_account,cc_amount))
+		frappe.msgprint("Following Journal Entry {} Posted against this document".format(frappe.bold(tuple(je))))
+
+	def be_for_employee(self,bank_account,cc_amount):
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions=1
 		accounts = []
@@ -43,14 +63,15 @@ class MPITransaction(Document):
 				"reference_type": self.doctype,
 				"reference_name": self.name
 			})
-		accounts.append({
-			"account": bank_account,
-			"credit_in_account_currency": flt(self.net_amount,2),
-			"cost_center": self.cost_center
-		})
+		for key, item in cc_amount.items():
+			accounts.append({
+				"account": bank_account,
+				"credit_in_account_currency": flt(item.get('net_mpi_amount'),2),
+				"cost_center": key
+			})
 		je.update({
 			"doctype": "Journal Entry",
-			"voucher_type": "Journal Entry",
+			"voucher_type": "Bank Entry",
 			"title": "MPI Payment to Employee",
 			"user_remark": "Note: MPI Payment to Employee",
 			"posting_date": self.posting_date,
@@ -61,23 +82,25 @@ class MPITransaction(Document):
 		})
 		je.insert()
 		return je.name
-	def be_health_contribution(doc, bank_account):
+	def be_health_contribution(doc, bank_account,cc_amount):
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions = 1
-		accounts = [{
-						"account": doc.health_contribution_account,
-						"debit_in_account_currency": doc.total_deduction,
-						"credit_in_account_currency": 0,            
-						"cost_center": doc.cost_center,            
-						"reference_type": doc.doctype,            
-						"reference_name": doc.name        
-					},        
-					{            
-						"account": bank_account,            
-						"credit_in_account_currency": doc.total_deduction,            
-						"debit_in_account_currency": 0,            
-						"cost_center": doc.cost_center       
-					}]
+		accounts = []
+		for key, item in cc_amount.items():
+			accounts.append({
+							"account": doc.health_contribution_account,
+							"debit_in_account_currency": item.get('deduction_amount'),
+							"credit_in_account_currency": 0,            
+							"cost_center": key,            
+							"reference_type": doc.doctype,            
+							"reference_name": doc.name        
+						})
+			accounts.append({            
+							"account": bank_account,            
+							"credit_in_account_currency": item.get('deduction_amount'),            
+							"debit_in_account_currency": 0,            
+							"cost_center": key       
+						})
 		je.update({
 			"doctype": "Journal Entry",
 			"voucher_type": "Bank Entry",
@@ -93,7 +116,7 @@ class MPITransaction(Document):
 		je.insert()
 		return je.name
 
-	def create_payable_entry(self):
+	def create_payable_entry(self,cc_amount):
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions = 1
 
@@ -114,20 +137,20 @@ class MPITransaction(Document):
 				"reference_type": self.doctype,
 				"reference_name": self.name
 			})
+		for key, item in cc_amount.items():
+			accounts.append({
+				"account": health_contribution_account,
+				"credit_in_account_currency": item.get('deduction_amount'),
+				"cost_center": key,
+				"reference_type": self.doctype,
+				"reference_name": self.name
+			})
 
-		accounts.append({
-			"account": health_contribution_account,
-			"credit_in_account_currency": self.total_deduction,
-			"cost_center": cost_center,
-			"reference_type": self.doctype,
-			"reference_name": self.name
-		})
-
-		accounts.append({
-			"account": mpi_expense_account,
-			"debit_in_account_currency": self.total_mpi_amount,
-			"cost_center": cost_center
-		})
+			accounts.append({
+				"account": mpi_expense_account,
+				"debit_in_account_currency": item.get('mpi_amount'),
+				"cost_center": cost_center
+			})
 
 		total_amount_in_words = money_in_words(self.total_mpi_amount)
 
