@@ -15,10 +15,10 @@ class PBVA(Document):
 
 	def on_submit(self):
 		self.post_journal_entry()
-		
+
 	def on_cancel(self):
 		self.ignore_linked_doctypes = ("GL Entry", "Stock Ledger Entry", "Payment Ledger Entry")
-		
+
 	def before_cancel(self):
 		je = frappe.db.sql("Select parent from `tabJournal Entry Account` where reference_type = 'PBVA' and reference_name = '{}' limit 1".format(self.name))
 		if je:
@@ -67,7 +67,7 @@ class PBVA(Document):
 		je = []
 		je.append(self.create_payable_entry(cc_amount))
 		je.append(self.bank_entry_for_employee(cc_amount))
-		je.append(self.tax_entry(cc_amount))
+		je.append(self.tax_entry())
 		frappe.msgprint("Following Journal Entry {} Posted against this document".format(frappe.bold(tuple(je))))
 
 	def create_payable_entry(self, cc_amount):
@@ -90,15 +90,6 @@ class PBVA(Document):
 				"reference_name": self.name
 			})
 		for key, item in cc_amount.items():
-			if item.get('tax_amount') > 0:
-				accounts.append({
-					"account": company_doc.salary_tax_account,
-					"credit_in_account_currency": item.get('tax_amount'),
-					"cost_center": key,
-					"reference_type": self.doctype,
-					"reference_name": self.name
-				})
-
 			accounts.append({
 				"account": company_doc.pbva_account,
 				"debit_in_account_currency": item.get('net_amount'),
@@ -106,14 +97,21 @@ class PBVA(Document):
 				"reference_type": self.doctype,
 				"reference_name": self.name
 			})
-
+		if flt(self.tax_amount) > 0:
+				accounts.append({
+					"account": company_doc.salary_tax_account,
+					"credit_in_account_currency": flt(self.tax_amount),
+					"cost_center": self.cost_center,
+					"reference_type": self.doctype,
+					"reference_name": self.name
+				})
 		total_amount_in_words = money_in_words(self.net_amount)
 
 		je.update({
 			"doctype": "Journal Entry",
 			"voucher_type": "Journal Entry",
-			"title": "{}% Pbva to Employee".format(self.pbva_percent),
-			"user_remark": "Note: {}% Pbva Payment to Employee".format(self.pbva_percent),
+			"title": "{}% PBVA to Employee".format(self.pbva_percent),
+			"user_remark": "Note: {}% PBVA Payment to Employee".format(self.pbva_percent),
 			"posting_date": self.posting_date,
 			"company": self.company,
 			"total_amount_in_words": total_amount_in_words,
@@ -129,7 +127,6 @@ class PBVA(Document):
 		je.flags.ignore_permissions=1
 		accounts = []
 		company_doc = frappe.get_doc("Company", self.company)
-		club_cc_wise = {}
 		for d in self.items:
 			accounts.append({
 				"account": company_doc.employee_payable_account,
@@ -142,14 +139,13 @@ class PBVA(Document):
 				"reference_type": self.doctype,
 				"reference_name": self.name
 			})
-		for key, item in cc_amount.items():
-			accounts.append({
-				"account": company_doc.default_bank_account,
-				"credit_in_account_currency": flt(item.get('balance_amount'),2),
-				"cost_center": key,
-				"reference_type": self.doctype,
-				"reference_name": self.name
-			})
+		accounts.append({
+			"account": company_doc.default_bank_account,
+			"credit_in_account_currency": flt(self.net_amount,2),
+			"cost_center": self.cost_center,
+			"reference_type": self.doctype,
+			"reference_name": self.name
+		})
 		je.update({
 			"doctype": "Journal Entry",
 			"voucher_type": "Bank Entry",
@@ -164,34 +160,31 @@ class PBVA(Document):
 		je.insert()
 		return je.name
 
-	def tax_entry(self,cc_amount):
+	def tax_entry(self):
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions=1
 		accounts = []
 		company_doc = frappe.get_doc("Company", self.company)
-		club_cc_wise = {}
-		for key, item in cc_amount.items():
-			if flt(item.get('tax_amount'),2) > 0:
-				accounts.append({
-					"account": company_doc.default_bank_account,
-					"credit_in_account_currency": flt(item.get('tax_amount'),2),
-					"cost_center": key,
-					"reference_type": self.doctype,
-					"reference_name": self.name
-				})
-				if item.get('tax_amount') > 0:
-					accounts.append({
-						"account": company_doc.salary_tax_account,
-						"debit_in_account_currency": item.get('tax_amount'),
-						"cost_center": key,
-						"reference_type": self.doctype,
-						"reference_name": self.name
-					})
+		accounts.append({
+			"account": company_doc.default_bank_account,
+			"credit_in_account_currency": flt(self.tax_amount,2),
+			"cost_center": self.cost_center,
+			"reference_type": self.doctype,
+			"reference_name": self.name
+		})
+		if flt(self.tax_amount) > 0:
+			accounts.append({
+				"account": company_doc.salary_tax_account,
+				"debit_in_account_currency": flt(self.tax_amount,2),
+				"cost_center": self.cost_center,
+				"reference_type": self.doctype,
+				"reference_name": self.name
+			})
 		je.update({
 			"doctype": "Journal Entry",
 			"voucher_type": "Journal Entry",
-			"title": "{}% PBVA Payment to Employee tax entry".format(self.pbva_percent),
-			"user_remark": "Note: {}% PBVA Payment to Employee tax entry".format(self.pbva_percent),
+			"title": "Tax Entry for {}% PBVA".format(self.pbva_percent),
+			"user_remark": "Note: Tax Entry for {}% PBVA Payment to Employee tax entry".format(self.pbva_percent),
 			"posting_date": self.posting_date,
 			"company": self.company,
 			"total_amount_in_words": money_in_words(self.net_amount),

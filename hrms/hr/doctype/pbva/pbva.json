@@ -117,6 +117,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "default": "0",
    "fieldname": "total_amount",
    "fieldtype": "Currency",
    "label": "Total Gross Amount",
@@ -128,6 +129,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "default": "0",
    "fieldname": "tax_amount",
    "fieldtype": "Currency",
    "label": "Total Tax Amount",
@@ -184,7 +186,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-03 09:43:09.228718",
+ "modified": "2023-04-03 11:11:23.585000",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PBVA",
