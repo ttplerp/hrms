@@ -50,7 +50,7 @@ class MPITransaction(Document):
 				cc_amount[cc]['net_mpi_amount'] += flt(item.net_mpi_amount,2)
 		je = []
 		je.append(self.create_payable_entry(cc_amount))
-		je.append(self.be_health_contribution(bank_account,cc_amount))
+		je.append(self.be_health_contribution(bank_account))
 		je.append(self.be_for_employee(bank_account,cc_amount))
 		frappe.msgprint("Following Journal Entry {} Posted against this document".format(frappe.bold(tuple(je))))
 
@@ -88,30 +88,29 @@ class MPITransaction(Document):
 		})
 		je.insert()
 		return je.name
-	def be_health_contribution(self, bank_account,cc_amount):
+	def be_health_contribution(self, bank_account):
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions = 1
 		accounts = []
-		for key, item in cc_amount.items():
-			accounts.append({
-							"account": self.health_contribution_account,
-							"debit_in_account_currency": item.get('deduction_amount'),
-							"credit_in_account_currency": 0,            
-							"cost_center": key,            
-							"reference_type": self.doctype,            
-							"reference_name": self.name        
-						})
+		accounts.append({
+						"account": self.health_contribution_account,
+						"debit_in_account_currency": flt(self.total_deduction,2),
+						"credit_in_account_currency": 0,            
+						"cost_center": self.cost_center,            
+						"reference_type": self.doctype,            
+						"reference_name": self.name        
+					})
 		accounts.append({            
 						"account": bank_account,            
 						"credit_in_account_currency": flt(self.total_deduction,2),            
 						"debit_in_account_currency": 0,            
-						"cost_center": key       
+						"cost_center": self.cost_center     
 					})
 		je.update({
 			"doctype": "Journal Entry",
 			"voucher_type": "Bank Entry",
-			"title": "MPI Payment to Employee",
-			"user_remark": "Note: MPI Payment to Employee",
+			"title": "Health Contribution from Employee MPI",
+			"user_remark": "Note: health contribution from employee mpi",
 			"posting_date": self.posting_date,
 			"company": self.company,
 			"total_amount_in_words": money_in_words(self.total_deduction),
@@ -145,19 +144,18 @@ class MPITransaction(Document):
 			})
 		for key, item in cc_amount.items():
 			accounts.append({
-				"account": health_contribution_account,
-				"credit_in_account_currency": item.get('deduction_amount'),
-				"cost_center": key,
-				"reference_type": self.doctype,
-				"reference_name": self.name
-			})
-
-			accounts.append({
 				"account": mpi_expense_account,
 				"debit_in_account_currency": item.get('mpi_amount'),
 				"cost_center": key
 			})
-
+		
+		accounts.append({
+				"account": health_contribution_account,
+				"credit_in_account_currency": flt(self.total_deduction),
+				"cost_center": self.cost_center,
+				"reference_type": self.doctype,
+				"reference_name": self.name
+			})
 		total_amount_in_words = money_in_words(self.total_mpi_amount)
 
 		je.update({
