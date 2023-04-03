@@ -5,7 +5,11 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import flt, cint, getdate, money_in_words
 from collections import defaultdict
-
+from erpnext.controllers.accounts_controller import (
+	AccountsController,
+	get_supplier_block_status,
+	validate_taxes_and_charges,
+)
 class MPITransaction(Document):
 	def validate(self):
 		self.assign_account()
@@ -25,6 +29,9 @@ class MPITransaction(Document):
 			doc = frappe.get_doc("Journal Entry",je[0][0])
 			if doc.docstatus != 2:
 				frappe.throw("Cannot cancel this document as there exists journal entry against this document")
+
+	def on_cancel(self):
+		self.ignore_linked_doctypes = ("GL Entry", "Stock Ledger Entry", "Payment Ledger Entry")
 
 	def post_journal_entry(self):
 		bank_account = frappe.db.get_value("Company",self.company,"default_bank_account")

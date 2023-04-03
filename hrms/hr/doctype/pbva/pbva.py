@@ -15,6 +15,10 @@ class PBVA(Document):
 
 	def on_submit(self):
 		self.post_journal_entry()
+		
+	def on_cancel(self):
+		self.ignore_linked_doctypes = ("GL Entry", "Stock Ledger Entry", "Payment Ledger Entry")
+		
 	def before_cancel(self):
 		je = frappe.db.sql("Select parent from `tabJournal Entry Account` where reference_type = 'PBVA' and reference_name = '{}' limit 1".format(self.name))
 		if je:
