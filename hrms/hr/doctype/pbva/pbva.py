@@ -30,6 +30,7 @@ class PBVA(Document):
 		if self.items:
 			tot = tax = net = 0
 			for a in self.items:
+				a.amount	= flt(a.total_basic_pay)*flt(self.pbva_percent)/100
 				a.tax_amount = flt(get_salary_tax(a.amount),2)
 				a.balance_amount = flt(flt(a.amount,2) - flt(a.tax_amount,2),2)
 				tot += flt(a.amount,2)
