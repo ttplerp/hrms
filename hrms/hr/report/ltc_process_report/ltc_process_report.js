@@ -17,7 +17,8 @@ frappe.query_reports["LTC Process Report"] = {
 			"fieldtype": "Select",
 			"width": "80",
 			"options": ["LTC", "PBVA", "Bonus"],
-			"reqd": 1
+			"reqd": 1,
+			"default":"LTC"
 		}
 	]
 };
