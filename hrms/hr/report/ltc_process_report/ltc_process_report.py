@@ -60,7 +60,7 @@ def get_columns():
 		("A/C No")+ ":Data:110",
 		("Actual Amount") + ":Currency:130",
 		("TDS Amount") + ":Currency:130",
-		("Balance Amount") + ":Currency:130"
+		("Payable Amount") + ":Currency:130"
 	]
 
 
