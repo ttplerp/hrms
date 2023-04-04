@@ -30,7 +30,14 @@ def get_data(filters):
 			t2.branch, t2.bank_name, t2.bank_ac_no,  t2.amount, t2.tax_amount, t2.balance_amount 
 			from `tabBonus` t1, `tabBonus Details` t2 
 			where t2.parent = t1.name and t1.docstatus = 1"""
-										
+
+	if filters.uinput == "MPI":
+		query = """
+			select t2.employee, t2.employee_name, (select tpn_number from tabEmployee e where e.name = t2.employee) as tpn,
+			t2.branch,(select bank_name from tabEmployee e where e.name = t2.employee) as bank_name,(select bank_ac_no from tabEmployee e where e.name = t2.employee) as bank_ac_no,  t2.mpi_amount, t2.deduction_amount, t2.net_mpi_amount 
+			from `tabMPI Transaction` t1, `tabMPI Item` t2 
+			where t2.parent = t1.name and t1.docstatus = 1"""
+
 	if filters.get("fy"):
 		query += " and t1.fiscal_year = \'"+ str(filters.fy) + "\'"
 	return frappe.db.sql(query)
