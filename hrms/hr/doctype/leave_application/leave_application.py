@@ -93,10 +93,10 @@ class LeaveApplication(Document):
 		share_doc_with_approver(self, self.leave_approver)
 
 	def on_submit(self):
-		if self.status in ["Open", "Cancelled"]:
-			frappe.throw(
-				_("Only Leave Applications with status 'Approved' and 'Rejected' can be submitted")
-			)
+		# if self.status in ["Open", "Cancelled"]:
+		# 	frappe.throw(
+		# 		_("Only Leave Applications with status 'Approved' and 'Rejected' can be submitted")
+		# 	)
 
 		self.validate_back_dated_application()
 		self.update_attendance()
@@ -234,9 +234,9 @@ class LeaveApplication(Document):
 			)
 
 	def update_attendance(self):
-		if self.status != "Approved":
-			return
-
+		# if self.status != "Approved":
+		# 	frappe.throw("llll")
+		# 	return
 		holiday_dates = []
 		if not frappe.db.get_value("Leave Type", self.leave_type, "include_holiday"):
 			holiday_dates = get_holiday_dates_for_employee(self.employee, self.from_date, self.to_date)
@@ -262,12 +262,17 @@ class LeaveApplication(Document):
 			self.create_or_update_attendance(attendance_name, date)
 
 	def create_or_update_attendance(self, attendance_name, date):
-		status = (
-			"Half Day"
-			if self.half_day_date and getdate(date) == getdate(self.half_day_date)
-			else "On Leave"
-		)
-
+		# status = (
+		# 	"Half Day" if self.half_day_date and getdate(date) == getdate(self.half_day_date) else "On Leave"
+		# )
+		status = ""
+		if self.half_day_date and getdate(date) == getdate(self.half_day_date):
+			status += "Half Day"
+		elif self.leave_type == 'Leave Without Pay':
+			status += "Absent"
+		else:
+			status += "On Leave"
+	
 		if attendance_name:
 			# update existing attendance, change absent to on leave
 			doc = frappe.get_doc("Attendance", attendance_name)
