@@ -55,6 +55,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_food: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_ita_allowance: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_difficulty: function(frm){
 		calculate_others(frm);
 	},

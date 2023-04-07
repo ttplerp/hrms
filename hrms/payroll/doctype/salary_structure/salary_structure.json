@@ -50,6 +50,9 @@
   "eligible_for_shift",
   "shift_method",
   "shift",
+  "eligible_for_ita_allowance",
+  "ita_allowance_payment_method",
+  "ita",
   "eligible_for_food",
   "food_method",
   "food",
@@ -964,12 +967,33 @@
    "fieldtype": "Int",
    "label": "Value(Site)",
    "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_ita_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for ITA Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_ita_allowance==1;",
+   "fieldname": "ita",
+   "fieldtype": "Int",
+   "label": "Value(ITA)"
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_ita_allowance == 1;",
+   "fieldname": "ita_allowance_payment_method",
+   "fieldtype": "Select",
+   "label": "Eligible for ITA Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2022-12-14 12:45:03.460919",
+ "modified": "2023-04-07 13:11:34.011972",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
