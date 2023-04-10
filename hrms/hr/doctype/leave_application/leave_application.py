@@ -81,18 +81,20 @@ class LeaveApplication(Document):
 		if frappe.db.get_value("Leave Type", self.leave_type, "is_optional_leave"):
 			self.validate_optional_leave()
 		self.validate_applicable_after()
-		#notify_workflow_states(self)
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
 
 	def on_update(self):
 		if self.status == "Open" and self.docstatus < 1:
 			# notify leave approver about creation
 			if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
-				# self.notify_leave_approver()
-				notify_workflow_states(self)
+				self.notify_leave_approver
+				#notify_workflow_states(self)
 
 		share_doc_with_approver(self, self.leave_approver)
 
 	def on_submit(self):
+		notify_workflow_states(self)
 		# if self.status in ["Open", "Cancelled"]:
 		# 	frappe.throw(
 		# 		_("Only Leave Applications with status 'Approved' and 'Rejected' can be submitted")
@@ -112,6 +114,7 @@ class LeaveApplication(Document):
 		self.status = "Cancelled"
 
 	def on_cancel(self):
+		notify_workflow_states(self)
 		self.create_leave_ledger_entry(submit=False)
 		# notify leave applier about cancellation
 		if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
