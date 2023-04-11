@@ -177,7 +177,6 @@ class EmployeeAdvance(Document):
 					and ea.advance_type = 'Salary Advance'
 					and ea.salary_component ='Salary Advance Deductions'
 					and ea.salary_component = sd.salary_component
-					and ea.advance_settled = 0
 					and sd.total_outstanding_amount > 0 
 					and ea.posting_date between'{2}' and '{3}' """.format(self.employee, self.name, year_start_date,self.recovery_end_date))[0][0]
 	
