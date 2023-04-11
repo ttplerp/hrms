@@ -46,6 +46,7 @@ class EmployeeAdvance(Document):
 		self.update_travel_request()
 		self.update_reference(cancel = 1)
 		self.update_salary_structure(True)
+		
 	def on_submit(self):
 		if self.advance_type =="Travel Advance":
 			self.update_travel_request()
@@ -148,6 +149,7 @@ class EmployeeAdvance(Document):
 					and advance_type = '{4}'""".format(self.employee,self.name, year_start_date,self.recovery_end_date, self.advance_type))[0][0]
 		self.total_advance = flt(acc)
 		#and salary_component ='Salary Advance Deductions'
+
 	@frappe.whitelist()
 	def validate_advance_amount(self):
 		self.recovery_start_date = get_first_day(today())
@@ -166,16 +168,20 @@ class EmployeeAdvance(Document):
 
 		max_month_allow_from_employee_group = frappe.db.sql("""select salary_advance_max_months from `tabEmployee Group` where name = '{}'""".format(self.employee_group))[0][0]
 
-		pervious_advance = frappe.db.sql("""select sum(advance_amount)
-					from `tabEmployee Advance` 
-					where employee = '{0}'
-					and docstatus !=2
-					and name !='{1}'
-					and advance_type = 'Salary Advance'
-					and salary_component ='Salary Advance Deductions'
-					and posting_date between'{2}' and '{3}' """.format(self.employee,self.name, year_start_date,self.recovery_end_date))[0][0]
+		pervious_advance = frappe.db.sql("""select sum(sd.total_outstanding_amount)
+					from `tabEmployee Advance` ea inner join `tabSalary Detail` sd
+					on ea.salary_structure = sd.parent
+					where ea.employee = '{0}'
+					and ea.docstatus !=2
+					and ea.name !='{1}'
+					and ea.advance_type = 'Salary Advance'
+					and ea.salary_component ='Salary Advance Deductions'
+					and ea.salary_component = sd.salary_component
+					and ea.advance_settled = 0
+					and sd.total_outstanding_amount > 0 
+					and ea.posting_date between'{2}' and '{3}' """.format(self.employee, self.name, year_start_date,self.recovery_end_date))[0][0]
 	
-		remaining_pay = (flt(self.basic_pay) * flt(max_month_allow_from_employee_group))- flt(pervious_advance) 
+		remaining_pay = (flt(self.basic_pay) * flt(max_month_allow_from_employee_group)) - flt(pervious_advance) 
 		if flt(self.advance_amount) <= 0:
 			frappe.throw("Enter valid <b>Advance Amount</b>")
 		elif flt(self.advance_amount) >= (flt(remaining_pay)+1):
@@ -439,6 +445,23 @@ class EmployeeAdvance(Document):
 		je.flags.ignore_permissions=1
 		je.insert()
 		frappe.db.set_value(self.doctype, self.name, "je_reference", je.name)
+	
+	@frappe.whitelist()
+	def create_advance_settlement(self):
+		eas = frappe.new_doc("Employee Advance Settlement")
+		eas.posting_date = nowdate()
+		eas.advance_type = self.advance_type
+		eas.employee_advance_id = self.name
+		eas.employee = self.employee
+		eas.advance_account = self.advance_account
+		eas.cost_center = self.cost_center
+		eas.advance_amount = self.advance_amount
+		eas.business_activity = "Common"
+		eas.salary_component = self.salary_component
+		eas.salary_structure = self.salary_structure
+
+		return eas.as_dict()
+
 		
 @frappe.whitelist()
 def get_pending_amount(employee, posting_date):
