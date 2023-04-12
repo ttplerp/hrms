@@ -453,6 +453,13 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 						deducted_amt = flt(flt(d.total_deducted_amount) + flt(amount),2)
 						outstanding_amt = flt(flt(d.total_outstanding_amount) - flt(amount),2)
 
+				#added by cety to calculate salary tax even if the salary tax is 0 in salary structure
+				if key == 'deductions':
+					if frappe.db.get_value("Salary Component", d.salary_component, "name") == "Salary Tax":
+						if (d.amount or d.default_amount) == 0:
+							calc_map.setdefault(key, []).append({
+								'salary_component': d.salary_component
+							})
 
 				# Leave without pay
 				calc_amount = flt(amount,2)
@@ -579,7 +586,6 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 							calc_amt = flt(gross_amt)*(flt(flt(sal_tax_per,2)/100,2))
 							d['amount'] = flt(calc_amt,2)
 							tax_included = 1
-
 		# Appending calculated components to salary slip
 		[target.append('earnings', m) for m in calc_map['earnings']]
 		[target.append('deductions', m) for m in calc_map['deductions']]
@@ -598,7 +604,6 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 	}, target_doc, postprocess, ignore_child_tables=True)
 
 	return doc
-
 # Ver 2.0, Following method added by SHIV on 2018/02/27
 
 
