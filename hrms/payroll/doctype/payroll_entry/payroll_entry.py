@@ -607,6 +607,7 @@ class PayrollEntry(Document):
 			  and c.name         = t1.company
 			  and sca.company	 = t1.company
 			  and t1.payroll_entry = '{2}'
+			  and sd.amount > 0
 			  and exists(select 1
 						from `tabPayroll Employee Detail` ped
 						where ped.parent = t1.payroll_entry
@@ -630,7 +631,7 @@ class PayrollEntry(Document):
 				(case when ifnull(sc.make_party_entry,0) = 1 then t1.employee else 'Other' end)
 			order by t1.cost_center, t1.business_activity, sc.type, sc.name
 		""".format(self.fiscal_year, self.month, self.name, default_business_activity),as_dict=1)
-
+		#and sd.amount > 0 added at line 610 to avoid creating JE for 0 salary tax
 		posting        = frappe._dict()
 		cc_wise_totals = frappe._dict()
 		tot_payable_amt= 0
