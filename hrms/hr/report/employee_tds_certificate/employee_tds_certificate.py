@@ -23,7 +23,7 @@ def get_data( filters=None):
 	data += get_bonus(filters)
 	#PVBA
 	data += get_pbva(filters)
-	
+
 	return data
 def get_salary_data(filters):
 	data = []
@@ -42,9 +42,10 @@ def get_salary_data(filters):
 							FROM `tabSalary Slip` a
 							JOIN `tabTDS Receipt Entry` r ON a.fiscal_year = r.fiscal_year AND a.month = r.month
 							WHERE a.docstatus = 1 AND r.purpose = 'Employee Salary'
-							AND a.employee = '{employee}'
+							AND a.employee = '{employee}' 
+							AND a.fiscal_year = '{fiscal_year}'
 							ORDER BY r.receipt_date ASC
-							'''.format(employee=filters.employee),as_dict=1):
+							'''.format(employee=filters.employee, fiscal_year = filters.fiscal_year),as_dict=1):
 		data.append({
 			"month_year":d.month_year, 
 			"type":"Salary", 
@@ -92,7 +93,6 @@ def get_bonus(filters):
 					SELECT CONCAT(MONTH(b.posting_date), '-', b.fiscal_year) AS month_year,
 						r.receipt_number,
 						b.posting_date,
-						r.receipt_number,
 						r.receipt_date,
 						'Bonus' AS type,
 						0 AS basic,
@@ -104,23 +104,22 @@ def get_bonus(filters):
 						ROUND(bd.amount,2) AS taxable,
 						ROUND(ifnull(bd.tax_amount,0),2) as tds,
 						0 AS health
-					FROM tabBonus b
+					FROM `tabBonus` b
 					JOIN `tabTDS Receipt Entry` r ON b.fiscal_year = r.fiscal_year
 					JOIN `tabBonus Details` bd ON b.name = bd.parent
 					WHERE b.docstatus = 1
-					AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
 					AND r.purpose = 'Bonus'
+					AND b.fiscal_year = '{fiscal_year}'
 					AND bd.employee = '{employee}'
-				""".format(from_date = getdate(str(filters.fiscal_year) + "-01-01"),
-					  to_date = getdate(str(filters.fiscal_year) + "-12-31"), employee= filters.employee), as_dict=1)
+					AND bd.amount > 0
+				""".format( fiscal_year = filters.fiscal_year, employee= filters.employee), as_dict=1)
 def get_pbva(filters):
 	return frappe.db.sql("""SELECT 
-									ROUND(bd.amount,2) AS total, 
-									ROUND(bd.amount,2) AS taxable, 
-									ROUND(ifnull(bd.tax_amount,0),2) as tds,
+									ROUND(IFNULL(bd.amount,0),2) AS total, 
+									ROUND(IFNULL(bd.amount,0),2) AS taxable, 
+									ROUND(IFNULL(bd.tax_amount,0),2) as tds,
 									CONCAT(MONTH(b.posting_date),'-',
 									b.fiscal_year) AS month_year,
-									r.receipt_number,
 									'PBVA' AS type, 
 									0 as basic, 
 									0 as others, 
@@ -129,12 +128,13 @@ def get_pbva(filters):
 									0 AS totalPfGis, 
 									0 AS health,
 									r.receipt_date,	
+									r.receipt_number,
 									b.posting_date
 								FROM tabPBVA b
 								INNER JOIN `tabTDS Receipt Entry` r ON b.fiscal_year = r.fiscal_year AND r.purpose = 'PBVA'
 								LEFT JOIN `tabPBVA Details` bd ON b.name = bd.parent AND bd.employee = '{employee}'
-								WHERE b.docstatus = 1 AND b.posting_date BETWEEN "{fdate}" AND "{tdate}"
-				      """.format(fdate= getdate(str(filters.fiscal_year) + "-01-01"), tdate = getdate(str(filters.fiscal_year) + "-12-31"), employee = filters.employee), as_dict=1)
+								WHERE b.docstatus = 1 AND bd.amount > 0 AND b.fiscal_year = '{fiscal_year}'
+				      """.format( employee = filters.employee, fiscal_year=filters.fiscal_year), as_dict=1)
 	
 def validate_filters(filters):
 	if not filters.fiscal_year:
@@ -230,31 +230,3 @@ def get_columns():
 		  "width": 130
 		},
 	]
-
-def get_month(month):
-	if month == 1:
-		return "Jan"
-	elif month == 2:
-		return "Feb"
-	elif month == 3:
-		return "Mar"
-	elif month == 4:
-		return "Apr"
-	elif month == 5:
-		return "May"
-	elif month == 6:
-		return "Jun"
-	elif month == 7:
-		return "Jul"
-	elif month == 8:
-		return "Aug"
-	elif month == 9:
-		return "Sep"
-	elif month == 10:
-		return "Oct"
-	elif month == 11:
-		return "Nov"
-	elif month == 12:
-		return "Dec"
-	else:
-		return "None"
