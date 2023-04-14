@@ -133,8 +133,10 @@ def get_pbva(filters):
 								FROM tabPBVA b
 								INNER JOIN `tabTDS Receipt Entry` r ON b.fiscal_year = r.fiscal_year AND r.purpose = 'PBVA'
 								LEFT JOIN `tabPBVA Details` bd ON b.name = bd.parent AND bd.employee = '{employee}'
-								WHERE b.docstatus = 1 AND bd.amount > 0 AND b.fiscal_year = '{fiscal_year}'
-				      """.format( employee = filters.employee, fiscal_year=filters.fiscal_year), as_dict=1)
+								WHERE b.docstatus = 1 AND bd.amount > 0 
+								AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
+				      """.format( employee = filters.employee, fiscal_year=filters.fiscal_year, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
+					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=1)
 	
 def validate_filters(filters):
 	if not filters.fiscal_year:
