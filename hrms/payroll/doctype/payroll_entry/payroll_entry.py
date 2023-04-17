@@ -111,10 +111,7 @@ class PayrollEntry(Document):
 		self.check_mandatory()
 
 		cond = ''
-		
-		# Following line is replaced by subsequent by SHIV on 2020/10/20, employee filter added
-		#for f in ['company', 'branch', 'department', 'designation']:
-		for f in ['company', 'branch', 'department', 'designation', 'employee']:
+		for f in ['company', 'branch', 'department', 'designation', 'employee', 'status']:
 			if self.get(f):
 				cond += " and t1." + f + " = '" + self.get(f).replace("'", "\'") + "'"
 

@@ -13,6 +13,7 @@
   "month",
   "column_break_40",
   "processing_branch",
+  "status",
   "section_break_8",
   "branch",
   "department",
@@ -352,12 +353,20 @@
    "fieldtype": "Table",
    "options": "Payroll Employee Failed",
    "read_only": 1
+  },
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Employee Status",
+   "options": "Active\nInactive\nSuspended\nLeft",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-27 10:06:06.186919",
+ "modified": "2023-04-17 13:14:18.262627",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",
