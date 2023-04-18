@@ -30,7 +30,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-25 21:49:07.990939",
+ "modified": "2023-04-17 12:13:19.223571",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Relationship",
@@ -65,5 +65,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

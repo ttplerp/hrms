@@ -32,7 +32,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-09-26 12:10:32.847152",
+ "modified": "2023-04-17 12:13:18.184784",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Advance Reference",
@@ -41,5 +41,6 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

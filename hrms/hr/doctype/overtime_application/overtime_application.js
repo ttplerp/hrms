@@ -29,23 +29,16 @@ frappe.ui.form.on('Overtime Application', {
 	rate: function(frm) {
 		frm.set_value("total_amount", flt(frm.doc.rate) * flt(frm.doc.total_hours))
 	},
-	grade:function(frm){
+	
+	employee: function(frm){
 		frappe.call({
-			method:'frappe.client.get_value',
-			args:{
-				doctype:'Employee Grade',
-				filters:{
-					'name':frm.doc.grade
-				},
-				fieldname:'eligible_for_overtime',
-			},
+			method:'check_for_overtime_eligibility',
+			doc: frm.doc,
 			callback:function(r){
-				if (cint(r.message.eligible_for_overtime) == 0 ){
-					frappe.msgprint(_("You are not eligible for overtime"), title="Error", indicator="red", raise_exception=1)
-				}
 			}
 		})
-	}
+	},
+
 });
 
 frappe.ui.form.on("Overtime Application Item", {

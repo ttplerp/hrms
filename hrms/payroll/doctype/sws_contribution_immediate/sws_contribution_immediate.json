@@ -20,7 +20,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-09-25 21:50:14.991969",
+ "modified": "2023-04-17 12:13:19.041270",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "SWS Contribution Immediate",
@@ -29,5 +29,6 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

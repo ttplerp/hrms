@@ -122,7 +122,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-24 00:02:41.244260",
+ "modified": "2023-04-17 12:13:21.649155",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Income Tax Slab",
@@ -178,5 +178,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

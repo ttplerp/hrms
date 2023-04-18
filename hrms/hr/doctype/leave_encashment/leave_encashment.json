@@ -362,7 +362,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-17 16:04:42.933537",
+ "modified": "2023-04-17 12:12:22.056093",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",
@@ -432,5 +432,6 @@
  "sort_order": "DESC",
  "states": [],
  "title_field": "employee_name",
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

@@ -841,7 +841,7 @@
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-03-20 10:40:01.272122",
+ "modified": "2023-04-17 12:12:21.587857",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
@@ -885,5 +885,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

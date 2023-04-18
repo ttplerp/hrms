@@ -135,7 +135,7 @@
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-28 15:25:12.289319",
+ "modified": "2023-04-17 12:12:35.059863",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Detail",
@@ -143,5 +143,6 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

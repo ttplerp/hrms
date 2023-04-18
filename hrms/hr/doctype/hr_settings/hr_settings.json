@@ -821,7 +821,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-03-23 15:19:46.771032",
+ "modified": "2023-04-17 12:12:19.113024",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
@@ -849,5 +849,6 @@
  "sort_field": "modified",
  "sort_order": "ASC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

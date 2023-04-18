@@ -136,7 +136,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-28 12:20:34.494615",
+ "modified": "2023-04-17 12:13:00.951876",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Travel Concession",
@@ -171,5 +171,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

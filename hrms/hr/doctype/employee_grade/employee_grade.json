@@ -161,7 +161,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-14 09:46:17.223593",
+ "modified": "2023-04-17 12:13:26.157822",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Grade",
@@ -208,5 +208,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

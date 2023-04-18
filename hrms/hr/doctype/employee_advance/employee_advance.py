@@ -25,6 +25,9 @@ class EmployeeAdvance(Document):
 			"Accounts Settings", "make_payment_via_journal_entry"
 		)
 	def validate(self):
+		if self.advance_type == "Travel Advance" and not self.reference:
+			frappe.msgprint(_("Travel Advance should route through Travel Request"), title="Travel Reference Missing", indicator="red", raise_exception=1)
+
 		validate_workflow_states(self)
 		validate_active_employee(self.employee)
 		self.validate_employment_status()

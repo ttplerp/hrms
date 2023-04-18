@@ -226,7 +226,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-27 14:06:39.484342",
+ "modified": "2023-04-17 12:12:14.733068",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Promotion",
@@ -290,5 +290,6 @@
  "sort_order": "DESC",
  "states": [],
  "title_field": "employee_name",
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

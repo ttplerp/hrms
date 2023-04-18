@@ -27,12 +27,14 @@
  ],
  "istable": 1,
  "links": [],
- "modified": "2022-07-13 13:00:00.110257",
+ "modified": "2023-04-17 12:13:39.243534",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component Account",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",
- "sort_order": "DESC"
+ "sort_order": "DESC",
+ "states": [],
+ "track_views": 1
 }

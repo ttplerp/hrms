@@ -197,7 +197,7 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Unpaid Expense Claim",
    "link_count": 0,
    "link_to": "Unpaid Expense Claim",
@@ -246,8 +246,8 @@
    "type": "Link"
   }
  ],
- "modified": "2023-03-17 13:35:11.253932",
- "modified_by": "Administrator",
+ "modified": "2023-04-14 16:59:04.643716",
+ "modified_by": "pema.dhendup@thimphutechpark.bt",
  "module": "HR",
  "name": "Travel and Expense Claims",
  "owner": "Administrator",

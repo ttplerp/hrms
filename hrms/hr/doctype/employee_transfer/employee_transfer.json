@@ -408,7 +408,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-30 17:42:45.227579",
+ "modified": "2023-04-17 12:12:16.682701",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer",
@@ -429,6 +429,7 @@
    "write": 1
   },
   {
+   "cancel": 1,
    "create": 1,
    "email": 1,
    "export": 1,
@@ -441,8 +442,8 @@
    "write": 1
   },
   {
+   "cancel": 1,
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -457,5 +458,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

@@ -1,357 +1,358 @@
 {
-    "actions": [],
-    "autoname": "HR-EMP-SEP-.YYYY.-.#####",
-    "creation": "2018-05-10 02:29:16.740490",
-    "doctype": "DocType",
-    "editable_grid": 1,
-    "engine": "InnoDB",
-    "field_order": [
-     "employee",
-     "employee_name",
-     "department",
-     "designation",
-     "employee_grade",
-     "project",
-     "boarding_status",
-     "notify_users_by_email",
-     "column_break_7",
-     "resignation_letter_date",
-     "reason_for_resignation",
-     "serve_notice_period",
-     "reason",
-     "employee_separation_template",
-     "table_for_activity",
-     "activities",
-     "sb_benefits",
-     "employee_benefits_status",
-     "section_break_19",
-     "clearance_acquired",
-     "sb_approver_details",
-     "approver",
-     "cb_approver_01",
-     "approver_name",
-     "sb_approver_02",
-     "approver_designation",
-     "section_break_14",
-     "resignation",
-     "superannuation",
-     "workflow_state",
-     "sb_additional_info",
-     "company",
-     "amended_from"
-    ],
-    "fields": [
-     {
-      "fieldname": "employee",
-      "fieldtype": "Link",
-      "label": "Employee",
-      "options": "Employee",
-      "reqd": 1
-     },
-     {
-      "fetch_from": "employee.employee_name",
-      "fieldname": "employee_name",
-      "fieldtype": "Data",
-      "in_list_view": 1,
-      "label": "Employee Name",
-      "read_only": 1
-     },
-     {
-      "fieldname": "resignation_letter_date",
-      "fieldtype": "Date",
-      "in_list_view": 1,
-      "label": "Resignation Letter Date",
-      "reqd": 1
-     },
-     {
-      "allow_on_submit": 1,
-      "fieldname": "boarding_status",
-      "fieldtype": "Select",
-      "hidden": 1,
-      "label": "Status",
-      "options": "\nPending\nIn Process\nCompleted"
-     },
-     {
-      "allow_on_submit": 1,
-      "default": "0",
-      "fieldname": "notify_users_by_email",
-      "fieldtype": "Check",
-      "label": "Notify users by email"
-     },
-     {
-      "fieldname": "column_break_7",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "employee_separation_template",
-      "fieldtype": "Link",
-      "hidden": 1,
-      "label": "Employee Separation Template",
-      "options": "Employee Separation Template"
-     },
-     {
-      "fetch_from": "employee.company",
-      "fieldname": "company",
-      "fieldtype": "Link",
-      "label": "Company",
-      "options": "Company",
-      "read_only": 1
-     },
-     {
-      "fieldname": "project",
-      "fieldtype": "Link",
-      "label": "Project",
-      "options": "Project",
-      "read_only": 1
-     },
-     {
-      "fetch_from": "employee.department",
-      "fieldname": "department",
-      "fieldtype": "Link",
-      "in_list_view": 1,
-      "label": "Department",
-      "options": "Department",
-      "read_only": 1
-     },
-     {
-      "fetch_from": "employee.designation",
-      "fieldname": "designation",
-      "fieldtype": "Link",
-      "in_list_view": 1,
-      "label": "Designation",
-      "options": "Designation",
-      "read_only": 1
-     },
-     {
-      "fetch_from": "employee.grade",
-      "fieldname": "employee_grade",
-      "fieldtype": "Link",
-      "label": "Employee Grade",
-      "options": "Employee Grade",
-      "read_only": 1
-     },
-     {
-      "fieldname": "table_for_activity",
-      "fieldtype": "Section Break"
-     },
-     {
-      "allow_on_submit": 1,
-      "fieldname": "activities",
-      "fieldtype": "Table",
-      "hidden": 1,
-      "label": "Activities",
-      "options": "Employee Boarding Activity"
-     },
-     {
-      "fieldname": "section_break_14",
-      "fieldtype": "Section Break"
-     },
-     {
-      "fieldname": "amended_from",
-      "fieldtype": "Link",
-      "label": "Amended From",
-      "no_copy": 1,
-      "options": "Employee Separation",
-      "print_hide": 1,
-      "read_only": 1
-     },
-     {
-      "fieldname": "workflow_state",
-      "fieldtype": "Link",
-      "hidden": 1,
-      "label": "Workflow State",
-      "options": "Workflow State",
-      "read_only": 1
-     },
-     {
-      "fieldname": "sb_benefits",
-      "fieldtype": "Section Break",
-      "hidden": 1,
-      "label": "Employee Benefits"
-     },
-     {
-      "allow_on_submit": 1,
-      "default": "Not Claimed",
-      "fieldname": "employee_benefits_status",
-      "fieldtype": "Select",
-      "label": "Employee Benefits Status",
-      "options": "Not Claimed\nClaimed",
-      "read_only": 1
-     },
-     {
-      "fieldname": "reason_for_resignation",
-      "fieldtype": "Select",
-      "label": "Type Of Separation",
-      "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract",
-      "reqd": 1
-     },
-     {
-      "fieldname": "reason",
-      "fieldtype": "Small Text",
-      "label": "Reason For Separation",
-      "reqd": 1
-     },
-     {
-      "default": "0",
-      "fieldname": "resignation",
-      "fieldtype": "Check",
-      "hidden": 1,
-      "label": "Resignation"
-     },
-     {
-      "default": "0",
-      "fieldname": "superannuation",
-      "fieldtype": "Check",
-      "hidden": 1,
-      "label": "Superannuation"
-     },
-     {
-      "allow_on_submit": 1,
-      "default": "0",
-      "fieldname": "clearance_acquired",
-      "fieldtype": "Check",
-      "hidden": 1,
-      "label": "Clearance Aquired",
-      "read_only": 1
-     },
-     {
-      "fieldname": "section_break_19",
-      "fieldtype": "Section Break"
-     },
-     {
-      "fieldname": "sb_approver_details",
-      "fieldtype": "Section Break",
-      "label": "Approver Details"
-     },
-     {
-      "fieldname": "approver",
-      "fieldtype": "Link",
-      "label": "Approver",
-      "options": "User",
-      "read_only": 1
-     },
-     {
-      "fieldname": "cb_approver_01",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "approver_name",
-      "fieldtype": "Data",
-      "label": "Approver Name",
-      "read_only": 1
-     },
-     {
-      "fieldname": "sb_approver_02",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "approver_designation",
-      "fieldtype": "Link",
-      "label": "Approver Designation",
-      "options": "Designation",
-      "read_only": 1
-     },
-     {
-      "collapsible": 1,
-      "fieldname": "sb_additional_info",
-      "fieldtype": "Section Break",
-      "hidden": 1,
-      "label": "ADDITIONAL INFORMATION"
-     },
-     {
-      "fieldname": "serve_notice_period",
-      "fieldtype": "Select",
-      "label": "Serve Notice Period",
-      "options": "\nYes\nNo",
-      "reqd": 1
-     }
-    ],
-    "is_submittable": 1,
-    "links": [],
-    "modified": "2023-02-15 16:56:58.654772",
-    "modified_by": "Administrator",
-    "module": "HR",
-    "name": "Employee Separation",
-    "naming_rule": "Expression (old style)",
-    "owner": "Administrator",
-    "permissions": [
-     {
-      "amend": 1,
-      "cancel": 1,
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "System Manager",
-      "share": 1,
-      "submit": 1,
-      "write": 1
-     },
-     {
-      "cancel": 1,
-      "create": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "HR User",
-      "share": 1,
-      "submit": 1,
-      "write": 1
-     },
-     {
-      "cancel": 1,
-      "create": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "HR Manager",
-      "share": 1,
-      "submit": 1,
-      "write": 1
-     },
-     {
-      "create": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "Employee",
-      "share": 1,
-      "write": 1
-     },
-     {
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "GM CSD",
-      "share": 1,
-      "submit": 1,
-      "write": 1
-     },
-     {
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "CEO",
-      "share": 1,
-      "write": 1
-     }
-    ],
-    "sort_field": "modified",
-    "sort_order": "DESC",
-    "states": [],
-    "title_field": "employee_name",
-    "track_changes": 1
-   }
+ "actions": [],
+ "autoname": "HR-EMP-SEP-.YYYY.-.#####",
+ "creation": "2018-05-10 02:29:16.740490",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "department",
+  "designation",
+  "employee_grade",
+  "project",
+  "boarding_status",
+  "notify_users_by_email",
+  "column_break_7",
+  "resignation_letter_date",
+  "reason_for_resignation",
+  "serve_notice_period",
+  "reason",
+  "employee_separation_template",
+  "table_for_activity",
+  "activities",
+  "sb_benefits",
+  "employee_benefits_status",
+  "section_break_19",
+  "clearance_acquired",
+  "sb_approver_details",
+  "approver",
+  "cb_approver_01",
+  "approver_name",
+  "sb_approver_02",
+  "approver_designation",
+  "section_break_14",
+  "resignation",
+  "superannuation",
+  "workflow_state",
+  "sb_additional_info",
+  "company",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "resignation_letter_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Resignation Letter Date",
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "boarding_status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Status",
+   "options": "\nPending\nIn Process\nCompleted"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "notify_users_by_email",
+   "fieldtype": "Check",
+   "label": "Notify users by email"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee_separation_template",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Employee Separation Template",
+   "options": "Employee Separation Template"
+  },
+  {
+   "fetch_from": "employee.company",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Department",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.grade",
+   "fieldname": "employee_grade",
+   "fieldtype": "Link",
+   "label": "Employee Grade",
+   "options": "Employee Grade",
+   "read_only": 1
+  },
+  {
+   "fieldname": "table_for_activity",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "activities",
+   "fieldtype": "Table",
+   "hidden": 1,
+   "label": "Activities",
+   "options": "Employee Boarding Activity"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Separation",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Workflow State",
+   "options": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_benefits",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Employee Benefits"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Not Claimed",
+   "fieldname": "employee_benefits_status",
+   "fieldtype": "Select",
+   "label": "Employee Benefits Status",
+   "options": "Not Claimed\nClaimed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reason_for_resignation",
+   "fieldtype": "Select",
+   "label": "Type Of Separation",
+   "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Small Text",
+   "label": "Reason For Separation",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "resignation",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Resignation"
+  },
+  {
+   "default": "0",
+   "fieldname": "superannuation",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Superannuation"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "clearance_acquired",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Clearance Aquired",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_19",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sb_approver_details",
+   "fieldtype": "Section Break",
+   "label": "Approver Details"
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "label": "Approver",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_approver_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approver_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_approver_02",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approver_designation",
+   "fieldtype": "Link",
+   "label": "Approver Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "sb_additional_info",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "ADDITIONAL INFORMATION"
+  },
+  {
+   "fieldname": "serve_notice_period",
+   "fieldtype": "Select",
+   "label": "Serve Notice Period",
+   "options": "\nYes\nNo",
+   "reqd": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-04-17 12:12:35.293517",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Separation",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "GM CSD",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "CEO",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "employee_name",
+ "track_changes": 1,
+ "track_views": 1
+}

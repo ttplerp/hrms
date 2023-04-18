@@ -194,7 +194,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-07-20 11:35:36.553045",
+ "modified": "2023-04-17 12:13:38.640882",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Gratuity",
@@ -230,5 +230,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "employee_name"
+ "title_field": "employee_name",
+ "track_views": 1
 }

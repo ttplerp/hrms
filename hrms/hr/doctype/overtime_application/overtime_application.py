@@ -47,7 +47,12 @@ class OvertimeApplication(Document):
 
 	def on_submit(self):
 		notify_workflow_states(self)
-		
+	
+	@frappe.whitelist()
+	def check_for_overtime_eligibility(self):
+		if not frappe.db.get_value("Employee Grade", frappe.db.get_value("Employee", self.employee, "grade"), "eligible_for_overtime"):
+			frappe.throw(_("Employee is not eligible for Overtime"))
+
 	# Dont allow duplicate dates
 	##
 	def validate_dates(self):				

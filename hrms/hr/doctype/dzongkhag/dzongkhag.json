@@ -110,7 +110,7 @@
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-03-23 15:59:50.753696",
+ "modified": "2023-04-17 12:12:19.598863",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dzongkhag",
@@ -153,5 +153,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

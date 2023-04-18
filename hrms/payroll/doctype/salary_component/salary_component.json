@@ -203,7 +203,7 @@
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-24 18:34:45.287141",
+ "modified": "2023-04-17 12:13:20.311647",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",
@@ -241,5 +241,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

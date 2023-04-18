@@ -19,7 +19,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-15 10:14:09.893380",
+ "modified": "2023-04-17 12:12:29.414871",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Days",
@@ -53,5 +53,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

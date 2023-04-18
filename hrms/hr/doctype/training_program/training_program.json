@@ -102,7 +102,7 @@
   }
  ],
  "links": [],
- "modified": "2023-03-22 11:13:49.029963",
+ "modified": "2023-04-17 12:12:17.687595",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Program",
@@ -136,5 +136,6 @@
  "sort_order": "DESC",
  "states": [],
  "title_field": "training_program",
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

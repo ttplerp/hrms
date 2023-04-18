@@ -81,7 +81,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-08 17:26:16.389812",
+ "modified": "2023-04-17 12:12:36.577306",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Adjustment",
@@ -119,5 +119,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

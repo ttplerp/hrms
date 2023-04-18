@@ -268,7 +268,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-21 14:14:23.529976",
+ "modified": "2023-04-17 12:12:17.358873",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",
@@ -328,5 +328,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

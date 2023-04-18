@@ -96,18 +96,19 @@ after_migrate = ["hrms.setup.update_select_perm_after_install"]
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	# "Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# 	"Employee Advance":"hrms.hr.doctype.employee_advance.employee_advance.get_permission_query_conditions",
-# 	"Employee Separation":"hrms.hr.doctype.employee_separation.employee_separation.get_permission_query_conditions",
-# 	"Employee Separation Clearance":"hrms.hr.doctype.employee_separation_clearance.employee_separation_clearance.get_permission_query_conditions",
-# 	"Employee Benefits":"hrms.hr.doctype.employee_benefits.employee_benefits.get_permission_query_conditions",
-# 	"Employee Promotion": "hrms.hr.doctype.employee_promotion.employee_promotion.get_permission_query_conditions",
-# 	"Leave Application": "hrms.hr.doctype.leave_application.leave_application.get_permission_query_conditions",
-# 	"Leave Encashment": "hrms.hr.doctype.leave_encashment.leave_encashment.get_permission_query_conditions",
-# 	"Travel Request": "hrms.hr.doctype.travel_request.travel_request.get_permission_query_conditions",
-# 	"Expense Claim": "hrms.hr.doctype.expense_claim.expense_claim.get_permission_query_conditions",
-# }
+permission_query_conditions = {
+	# "Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
+	"Employee Advance":"hrms.hr.doctype.employee_advance.employee_advance.get_permission_query_conditions",
+	"Employee Separation":"hrms.hr.doctype.employee_separation.employee_separation.get_permission_query_conditions",
+	"Employee Separation Clearance":"hrms.hr.doctype.employee_separation_clearance.employee_separation_clearance.get_permission_query_conditions",
+	"Employee Benefits":"hrms.hr.doctype.employee_benefits.employee_benefits.get_permission_query_conditions",
+	"Employee Promotion": "hrms.hr.doctype.employee_promotion.employee_promotion.get_permission_query_conditions",
+	"Leave Application": "hrms.hr.doctype.leave_application.leave_application.get_permission_query_conditions",
+	"Leave Encashment": "hrms.hr.doctype.leave_encashment.leave_encashment.get_permission_query_conditions",
+	"Travel Request": "hrms.hr.doctype.travel_request.travel_request.get_permission_query_conditions",
+	"Expense Claim": "hrms.hr.doctype.expense_claim.expense_claim.get_permission_query_conditions",
+	"Employee Transfer": "hrms.hr.doctype.employee_transfer.employee_transfer.get_permission_query_conditions",
+}
 #
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",

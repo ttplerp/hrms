@@ -48,7 +48,7 @@
  "icon": "fa fa-flag",
  "idx": 1,
  "links": [],
- "modified": "2022-09-26 12:25:22.492741",
+ "modified": "2023-04-17 12:13:17.937263",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employment Type",
@@ -93,5 +93,6 @@
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

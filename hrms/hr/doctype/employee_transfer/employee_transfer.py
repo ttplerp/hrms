@@ -13,8 +13,7 @@ from erpnext.custom_workflow import validate_workflow_states, notify_workflow_st
 
 class EmployeeTransfer(Document):
 	def validate(self):
-		if self.transfer_type == "Personal Request":
-			validate_workflow_states(self)
+		validate_workflow_states(self)
 		self.check_duplicate()
 		self.validate_transfer_date()
 
@@ -34,10 +33,15 @@ class EmployeeTransfer(Document):
 		if self.transfer_type == "Personal Request":
 			validate_workflow_states(self)
 
-		
 	def on_cancel(self):
 		self.update_employee_master(cancel=True)
-  
+	
+	def validate_transfer_type(self):
+		# if not user: user = frappe.session.user
+		user_roles = frappe.get_roles(frappe.session.user)
+		frappe.msgprint(str(user_roles))
+		# pass
+
 	def validate_transfer_date(self):
 		for t in frappe.db.get_all("Employee Transfer", {"employee": self.employee, "name": ("!=", self.name),
 			"transfer_date": (">", self.transfer_date), "docstatus": ("!=", 2)}):
@@ -123,47 +127,28 @@ class EmployeeTransfer(Document):
 	# 			return True
 	# 	return False
 
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
 
-# Following code added by SHIV on 2021/05/14
-# def get_permission_query_conditions(user):
-# 	if not user: user = frappe.session.user
-# 	user_roles = frappe.get_roles(user)
+	if "HR User" in user_roles or "HR Manager" in user_roles:
+		return
+	elif "Approver" in user_roles:
+		approver_id = frappe.db.get_value("Employee", {"user_id":user},"name")
+		return """(
+			exists(select 1
+				from `tabEmployee` as e
+				where e.name = `tabEmployee Transfer`.employee
+				and e.reports_to = '{approver_id}')
+		)""".format(approver_id=approver_id) 
+	else:
+		return """(
+			exists(select 1
+				from `tabEmployee` as e
+				where e.name = `tabEmployee Transfer`.employee
+				and e.user_id = '{user}')
+		)""".format(user=user)
 
-# 	if "HR User" in user_roles or "HR Manager" in user_roles:
-# 		return
-# 	elif "Approver" in user_roles:
-# 		approver_id = frappe.db.get_value("Employee", {"user_id":user},"name")
-# 		return """(
-# 			exists(select 1
-# 				from `tabEmployee` as e
-# 				where e.name = `tabEmployee Transfer`.employee
-# 				and e.reports_to = '{approver_id}')
-# 		)""".format(approver_id=approver_id) 
-# 	else:
-# 		return """(
-# 			exists(select 1
-# 				from `tabEmployee` as e
-# 				where e.name = `tabEmployee Transfer`.employee
-# 				and e.user_id = '{user}')
-# 		)""".format(user=user)
-
-# Following code added by SHIV on 2020/09/21
-# def has_record_permission(doc, user):
-# 	if not user: user = frappe.session.user
-# 	user_roles = frappe.get_roles(user)
-	
-# 	if "HR User" in user_roles or "HR Manager" in user_roles:
-# 		return True
-# 	elif "Approver" in user_roles:
-# 		if frappe.db.get_value("Employee", {"name":doc.employee},"reports_to") == frappe.db.get_value("Employee",{"user_id":user},"name"):
-# 			return True 
-# 	else:
-# 		if frappe.db.exists("Employee", {"name":doc.employee, "user_id": user}):
-# 			return True
-# 		else:
-# 			return False 
-
-# 	return True
 
 @frappe.whitelist()
 def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False):

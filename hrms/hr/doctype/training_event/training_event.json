@@ -198,7 +198,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-22 11:04:22.126653",
+ "modified": "2023-04-17 12:12:18.365999",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Event",
@@ -236,5 +236,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "event_name"
+ "title_field": "event_name",
+ "track_views": 1
 }

@@ -59,7 +59,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-13 12:42:49.569261",
+ "modified": "2023-04-17 12:13:15.874977",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Section",
@@ -82,5 +82,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

@@ -186,6 +186,7 @@
    "label": "Overtime Details"
   },
   {
+   "allow_bulk_edit": 1,
    "fieldname": "items",
    "fieldtype": "Table",
    "options": "Overtime Application Item",
@@ -335,7 +336,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-20 12:38:19.152341",
+ "modified": "2023-04-17 12:11:55.426896",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",
@@ -394,5 +395,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

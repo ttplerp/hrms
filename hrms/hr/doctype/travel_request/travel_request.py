@@ -109,6 +109,7 @@ class TravelRequest(AccountsController):
 				posting_date = item.from_date
 				exchnage_rate = get_exchange_rate(from_currency, to_currency, posting_date)
 				item.actual_amount = flt(item.total_claim) * flt(exchnage_rate)
+				
 	def check_date(self):
 		for item in self.get("itinerary"):
 			las_date = item.from_date
@@ -227,6 +228,7 @@ class TravelRequest(AccountsController):
 		doc.exchange_rate 	= 1
 		doc.advance_account = default_employee_advance_account
 		return doc
+	
 	def post_expense_claim(self):
 		default_payable_account = frappe.get_cached_value(
 					"Company", self.company, "default_expense_claim_payable_account")
@@ -279,7 +281,7 @@ class TravelRequest(AccountsController):
 					"advance_paid": 	flt(advance.paid_amount),
 					"unclaimed_amount": flt(advance.paid_amount) - flt(advance.claimed_amount),
 					"allocated_amount": flt(advance.paid_amount) - flt(advance.claimed_amount),
-					"advance_account" :advance.advance_account
+					"advance_account" : advance.advance_account
 				})
 		expense_claim.save(ignore_permissions=True)
 		expense_claim.submit()

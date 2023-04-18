@@ -367,7 +367,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-03-17 13:35:11.410531",
+ "modified": "2023-04-05 10:11:05.259897",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Payout",
@@ -392,7 +392,7 @@
    "format": "{} Draft",
    "label": "Salary Slip",
    "link_to": "Salary Slip",
-   "stats_filter": "{\"status\":[\"=\",\"Draft\"]}",
+   "stats_filter": "",
    "type": "DocType"
   },
   {

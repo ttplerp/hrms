@@ -443,5 +443,25 @@ def update_suspension_record():
 		emp.increment_and_promotion_cycle = d.increment_month
 		emp.promotion_cycle = d.promotion_month
 		emp.save()
+
+def update_login_details():
+    li = frappe.db.sql("""select u.name user, u.mobile_no, 
+                       substr(e.name,4) emp_id, e.cell_number, year(e.date_of_joining) year_of_joining
+                from `tabUser` u, `tabEmployee` e
+                where e.user_id = u.name""", as_dict=True)
+    
+    counter = 0
+    for row in li:
+        counter += 1
+        print(counter, row.user, row.mobile_no, row.emp_id, row.cell_number, row.year_of_joining)
+        
+        user = frappe.get_doc("User", row.user)
+        user.username = row.emp_id
+        # user.new_password = "erp@bobl"+str(row.year_of_joining)
+        user.new_password = "bobl@2021"
+        if not row.mobile_no and row.cell_number:
+            user.mobile_no = row.cell_number
+        user.save()
+    frappe.db.commit()
 		
 	

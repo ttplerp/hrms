@@ -23,7 +23,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-21 13:05:39.326191",
+ "modified": "2023-04-17 12:13:31.602626",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Grievance Type",
@@ -70,5 +70,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_views": 1
 }

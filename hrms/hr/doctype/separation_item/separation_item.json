@@ -1,100 +1,104 @@
 {
-    "creation": "2018-01-03 17:20:39.142207",
-    "doctype": "DocType",
-    "editable_grid": 1,
-    "engine": "InnoDB",
-    "field_order": [
-     "benefit_type",
-     "distance",
-     "terrain_rate",
-     "load_capacity",
-     "earned_leave_balance",
-     "column_break_2",
-     "gl_account",
-     "amount",
-     "tax_amount",
-     "payable_amount"
-    ],
-    "fields": [
-     {
-      "columns": 4,
-      "fieldname": "benefit_type",
-      "fieldtype": "Link",
-      "in_list_view": 1,
-      "label": "Benefit Type",
-      "options": "Employee Benefit Type",
-      "reqd": 1
-     },
-     {
-      "fieldname": "column_break_2",
-      "fieldtype": "Column Break"
-     },
-     {
-      "columns": 2,
-      "fieldname": "amount",
-      "fieldtype": "Currency",
-      "in_list_view": 1,
-      "label": "Amount",
-      "reqd": 1
-     },
-     {
-      "allow_in_quick_entry": 1,
-      "columns": 4,
-      "fetch_from": "benefit_type.gl_account",
-      "fieldname": "gl_account",
-      "fieldtype": "Read Only",
-      "in_list_view": 1,
-      "label": "GL Account"
-     },
-     {
-      "depends_on": "eval:doc.benefit_type == 'Leave Encashment';",
-      "fieldname": "earned_leave_balance",
-      "fieldtype": "Float",
-      "label": "Earned Leave Balance",
-      "read_only": 1
-     },
-     {
-      "default": "0",
-      "fieldname": "tax_amount",
-      "fieldtype": "Currency",
-      "label": "Tax Amount",
-      "read_only": 1
-     },
-     {
-      "fieldname": "payable_amount",
-      "fieldtype": "Currency",
-      "label": "Payable Amount",
-      "read_only": 1
-     },
-     {
-      "depends_on": "eval:doc.benefit_type == \"Carriage Charges\";",
-      "fieldname": "terrain_rate",
-      "fieldtype": "Select",
-      "label": "Terrain Rate",
-      "options": "\n5.18\n7.84"
-     },
-     {
-      "depends_on": "eval:doc.benefit_type == \"Carriage Charges\";",
-      "fieldname": "load_capacity",
-      "fieldtype": "Select",
-      "label": "Load Capacity",
-      "options": "\n8\n16"
-     },
-     {
-      "depends_on": "eval:doc.benefit_type == \"Carriage Charges\"",
-      "fieldname": "distance",
-      "fieldtype": "Float",
-      "label": "Distance"
-     }
-    ],
-    "istable": 1,
-    "modified": "2023-01-09 19:31:36.778347",
-    "modified_by": "Administrator",
-    "module": "HR",
-    "name": "Separation Item",
-    "owner": "Administrator",
-    "permissions": [],
-    "quick_entry": 1,
-    "sort_field": "modified",
-    "sort_order": "DESC"
-   }
+ "actions": [],
+ "creation": "2018-01-03 17:20:39.142207",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "benefit_type",
+  "distance",
+  "terrain_rate",
+  "load_capacity",
+  "earned_leave_balance",
+  "column_break_2",
+  "gl_account",
+  "amount",
+  "tax_amount",
+  "payable_amount"
+ ],
+ "fields": [
+  {
+   "columns": 4,
+   "fieldname": "benefit_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Benefit Type",
+   "options": "Employee Benefit Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 2,
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "reqd": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "columns": 4,
+   "fetch_from": "benefit_type.gl_account",
+   "fieldname": "gl_account",
+   "fieldtype": "Read Only",
+   "in_list_view": 1,
+   "label": "GL Account"
+  },
+  {
+   "depends_on": "eval:doc.benefit_type == 'Leave Encashment';",
+   "fieldname": "earned_leave_balance",
+   "fieldtype": "Float",
+   "label": "Earned Leave Balance",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "tax_amount",
+   "fieldtype": "Currency",
+   "label": "Tax Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payable_amount",
+   "fieldtype": "Currency",
+   "label": "Payable Amount",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.benefit_type == \"Carriage Charges\";",
+   "fieldname": "terrain_rate",
+   "fieldtype": "Select",
+   "label": "Terrain Rate",
+   "options": "\n5.18\n7.84"
+  },
+  {
+   "depends_on": "eval:doc.benefit_type == \"Carriage Charges\";",
+   "fieldname": "load_capacity",
+   "fieldtype": "Select",
+   "label": "Load Capacity",
+   "options": "\n8\n16"
+  },
+  {
+   "depends_on": "eval:doc.benefit_type == \"Carriage Charges\"",
+   "fieldname": "distance",
+   "fieldtype": "Float",
+   "label": "Distance"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2023-04-17 12:12:42.187068",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Separation Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_views": 1
+}
