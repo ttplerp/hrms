@@ -91,6 +91,8 @@
   {
    "fieldname": "employee",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Employee",
    "options": "Employee",
    "reqd": 1
@@ -113,6 +115,7 @@
    "fieldname": "branch",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Branch",
    "options": "Branch",
    "read_only": 1
@@ -154,6 +157,7 @@
   {
    "fieldname": "rate",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Hourly Rate",
    "precision": "2",
    "read_only": 1
@@ -330,7 +334,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-01 12:17:39.036911",
+ "modified": "2023-04-24 09:50:03.575730",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",
