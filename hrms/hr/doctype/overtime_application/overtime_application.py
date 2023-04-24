@@ -16,6 +16,11 @@ class OvertimeApplication(Document):
 		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
 		self.processed = 0
+		self.validate_total_claim_amount()
+	
+	def validate_total_claim_amount(self):
+		if self.total_amount and flt(self.total_amount) <= 0:
+			frappe.throw("Total Claim Amount cannot be 0, please process again")
 
 	def validate_eligible_creteria(self):
 		if "Employee" not in frappe.get_roles(frappe.session.user):
