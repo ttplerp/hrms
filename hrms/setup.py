@@ -24,16 +24,16 @@ def get_custom_fields():
 	"""HR specific custom fields that need to be added to the masters in ERPNext"""
 	return {
 		"Employee": [
-			{
-				"fieldname": "employment_type",
-				"fieldtype": "Link",
-				"ignore_user_permissions": 1,
-				"label": "Employment Type",
-				"oldfieldname": "employment_type",
-				"oldfieldtype": "Link",
-				"options": "Employment Type",
-				"insert_after": "department",
-			},
+			# {
+			# 	"fieldname": "employment_type",
+			# 	"fieldtype": "Link",
+			# 	"ignore_user_permissions": 1,
+			# 	"label": "Employment Type",
+			# 	"oldfieldname": "employment_type",
+			# 	"oldfieldtype": "Link",
+			# 	"options": "Employment Type",
+			# 	"insert_after": "department",
+			# },
 			{
 				"fieldname": "job_applicant",
 				"fieldtype": "Link",
@@ -41,13 +41,13 @@ def get_custom_fields():
 				"options": "Job Applicant",
 				"insert_after": "employment_details",
 			},
-			{
-				"fieldname": "grade",
-				"fieldtype": "Link",
-				"label": "Grade",
-				"options": "Employee Grade",
-				"insert_after": "branch",
-			},
+			# {
+			# 	"fieldname": "grade",
+			# 	"fieldtype": "Link",
+			# 	"label": "Grade",
+			# 	"options": "Employee Grade",
+			# 	"insert_after": "branch",
+			# },
 			{
 				"fieldname": "default_shift",
 				"fieldtype": "Link",
@@ -220,21 +220,21 @@ def get_custom_fields():
 				"insert_after": "leave_approvers",
 			},
 		],
-		"Designation": [
-			{
-				"fieldname": "required_skills_section",
-				"fieldtype": "Section Break",
-				"label": "Required Skills",
-				"insert_after": "description",
-			},
-			{
-				"fieldname": "skills",
-				"fieldtype": "Table",
-				"label": "Skills",
-				"options": "Designation Skill",
-				"insert_after": "required_skills_section",
-			},
-		],
+		# "Designation": [
+		# 	{
+		# 		"fieldname": "required_skills_section",
+		# 		"fieldtype": "Section Break",
+		# 		"label": "Required Skills",
+		# 		"insert_after": "description",
+		# 	},
+		# 	{
+		# 		"fieldname": "skills",
+		# 		"fieldtype": "Table",
+		# 		"label": "Skills",
+		# 		"options": "Designation Skill",
+		# 		"insert_after": "required_skills_section",
+		# 	},
+		# ],
 		"Project": [
 			{
 				"fieldname": "total_expense_claim",
@@ -634,7 +634,7 @@ def get_post_install_patches():
 		"erpnext.patches.v13_0.update_employee_advance_status",
 		"erpnext.patches.v13_0.update_expense_claim_status_for_paid_advances",
 		"erpnext.patches.v14_0.delete_employee_transfer_property_doctype",
-		"erpnext.patches.v13_0.set_payroll_entry_status",
+		# "erpnext.patches.v13_0.set_payroll_entry_status",
 		# HRMS
 		"create_country_fixtures",
 	)

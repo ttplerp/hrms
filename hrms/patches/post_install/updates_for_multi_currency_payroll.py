@@ -75,7 +75,7 @@ def execute():
 		# update currency in following doctypes based on company currency
 		doctypes_for_currency = [
 			"Employee Advance",
-			"Leave Encashment",
+			# "Leave Encashment",
 			"Employee Benefit Application",
 			"Employee Benefit Claim",
 			"Employee Incentive",
@@ -84,7 +84,7 @@ def execute():
 			"Employee Tax Exemption Proof Submission",
 			"Income Tax Slab",
 			"Retention Bonus",
-			"Salary Structure",
+			# "Salary Structure",
 		]
 
 		for dt in doctypes_for_currency:
@@ -96,17 +96,17 @@ def execute():
 			)
 
 		# update fields in payroll entry
-		frappe.db.sql(
-			"""
-			update `tabPayroll Entry`
-			set currency = %s,
-				exchange_rate = 1,
-				payroll_payable_account=%s
-			where company=%s
-			and currency IS NULL
-		""",
-			(company_currency, default_payroll_payable_account, company),
-		)
+		# frappe.db.sql(
+		# 	"""
+		# 	update `tabPayroll Entry`
+		# 	set currency = %s,
+		# 		exchange_rate = 1,
+		# 		payroll_payable_account=%s
+		# 	where company=%s
+		# 	and currency IS NULL
+		# """,
+		# 	(company_currency, default_payroll_payable_account, company),
+		# )
 
 		# update fields in Salary Structure Assignment
 		frappe.db.sql(
@@ -121,19 +121,19 @@ def execute():
 		)
 
 		# update fields in Salary Slip
-		frappe.db.sql(
-			"""
-			update `tabSalary Slip`
-			set currency = %s,
-				exchange_rate = 1,
-				base_hour_rate = hour_rate,
-				base_gross_pay = gross_pay,
-				base_total_deduction = total_deduction,
-				base_net_pay = net_pay,
-				base_rounded_total = rounded_total,
-				base_total_in_words = total_in_words
-			where company=%s
-			and currency IS NULL
-		""",
-			(company_currency, company),
-		)
+		# frappe.db.sql(
+		# 	"""
+		# 	update `tabSalary Slip`
+		# 	set currency = %s,
+		# 		exchange_rate = 1,
+		# 		base_hour_rate = hour_rate,
+		# 		base_gross_pay = gross_pay,
+		# 		base_total_deduction = total_deduction,
+		# 		base_net_pay = net_pay,
+		# 		base_rounded_total = rounded_total,
+		# 		base_total_in_words = total_in_words
+		# 	where company=%s
+		# 	and currency IS NULL
+		# """,
+		# 	(company_currency, company),
+		# )
