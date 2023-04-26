@@ -333,7 +333,7 @@ class SalaryStructure(Document):
 
 			# Calculating Salary Tax
 			if ed == 'deductions':
-				calc_amt = get_salary_tax(roundoff(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
+				calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
 				calc_amt = roundoff(calc_amt)
 				total_deduction += calc_amt
 				calc_map.append({'salary_component': 'Salary Tax', 'amount': flt(calc_amt)})
@@ -439,6 +439,14 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 						deductible_amt = flt(d.total_deductible_amount)
 						deducted_amt = flt(d.total_deducted_amount) + flt(amount)
 						outstanding_amt = flt(d.total_outstanding_amount) - flt(amount)
+				
+				# for 0 salary tax
+				if key == 'deductions':
+					if frappe.db.get_value("Salary Component", d.salary_component, "name") == "Salary Tax":
+						if (d.amount or d.default_amount) == 0:
+							calc_map.setdefault(key, []).append({
+								'salary_component': d.salary_component
+							})
 
 				# Leave without pay
 				calc_amount = flt(amount)
@@ -557,11 +565,11 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 			else:
 				if d['salary_component'] == 'Salary Tax':
 					if not tax_included:
-						tax_amt = get_salary_tax(roundoff(flt(gross_amt) - flt(gis_amt) - flt(pf_amt) - (flt(comm_amt) * 0.5)))
+						tax_amt = get_salary_tax(math.floor(flt(gross_amt) - flt(gis_amt) - flt(pf_amt) - (flt(comm_amt) * 0.5)))
 						tax_amt = roundoff(tax_amt)
 						d['amount'] = flt(tax_amt)
 						tax_included = 1
-
+		
 		# Appending calculated components to salary slip
 		[target.append('earnings', m) for m in calc_map['earnings']]
 		[target.append('deductions', m) for m in calc_map['deductions']]

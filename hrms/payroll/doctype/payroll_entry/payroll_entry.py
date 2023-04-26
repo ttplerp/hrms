@@ -618,6 +618,7 @@ class PayrollEntry(Document):
 			  and sc.name        = sd.salary_component
 			  and c.name         = t1.company
 			  and t1.payroll_entry = '{2}'
+			  and sd.amount > 0
 			  and exists(select 1
 						from `tabPayroll Employee Detail` ped
 						where ped.parent = t1.payroll_entry
