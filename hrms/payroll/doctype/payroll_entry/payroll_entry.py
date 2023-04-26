@@ -80,8 +80,9 @@ class PayrollEntry(Document):
 					and t3.fiscal_year = '{}'
 					and t3.month = '{}')
 			{}
+			and t1.status = '{}'
 			order by t1.branch, t1.name
-		""".format(self.fiscal_year, self.month, cond), as_dict=True)
+		""".format(self.fiscal_year, self.month, cond, self.status), as_dict=True)
 
 		if not emp_list:
 			frappe.msgprint(_("No employees found for processing or Salary Slips already created"))
@@ -110,7 +111,7 @@ class PayrollEntry(Document):
 		self.check_mandatory()
 
 		cond = ''
-		for f in ['company', 'branch', 'department', 'designation', 'employee', 'status']:
+		for f in ['company', 'branch', 'department', 'designation', 'employee']:
 			if self.get(f):
 				cond += " and t1." + f + " = '" + self.get(f).replace("'", "\'") + "'"
 
