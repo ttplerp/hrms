@@ -70,7 +70,6 @@ class PayrollEntry(Document):
 
 		cond = self.get_filter_condition()
 		cond += self.get_joining_relieving_condition()
-   
 		emp_list = frappe.db.sql("""
 			select t1.name as employee, t1.employee_name, t1.department, t1.designation
 			from `tabEmployee` t1
@@ -111,7 +110,7 @@ class PayrollEntry(Document):
 		self.check_mandatory()
 
 		cond = ''
-		for f in ['company', 'branch', 'department', 'designation', 'employee']:
+		for f in ['company', 'branch', 'department', 'designation', 'employee', 'status']:
 			if self.get(f):
 				cond += " and t1." + f + " = '" + self.get(f).replace("'", "\'") + "'"
 
