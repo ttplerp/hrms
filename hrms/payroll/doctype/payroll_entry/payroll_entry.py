@@ -111,7 +111,7 @@ class PayrollEntry(Document):
 		self.check_mandatory()
 
 		cond = ''
-		for f in ['company', 'branch', 'department', 'designation', 'employee', 'status']:
+		for f in ['company', 'branch', 'department', 'designation', 'employee']:
 			if self.get(f):
 				cond += " and t1." + f + " = '" + self.get(f).replace("'", "\'") + "'"
 
