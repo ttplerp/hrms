@@ -47,10 +47,10 @@ class SalaryStructure(Document):
 			parenttype = 'Earning' if parentfield == 'earnings' else 'Deduction'
 			for i in self.get(parentfield):
 				# Restricting users from entering earning component under deductions table and vice versa.
-				component_type, is_loan_component = frappe.db.get_value("Salary Component", i.salary_component, ["type", "is_loan_component"])
-				if parenttype != component_type:
-					frappe.throw(_('Salary Component <b>`{1}`</b> of type <b>`{2}`</b> cannot be added under <b>`{3}`</b> table. <br/> <b><u>Reference# : </u></b> <a href="#Form/Salary Structure/{0}">{0}</a>').format(
-						self.name, i.salary_component, component_type, parentfield.title()), title="Invalid Salary Component")
+				# component_type, is_loan_component = frappe.db.get_value("Salary Component", i.salary_component, ["type", "is_loan_component"])
+				# if parenttype != component_type:
+				# 	frappe.throw(_('Salary Component <b>`{1}`</b> of type <b>`{2}`</b> cannot be added under <b>`{3}`</b> table. <br/> <b><u>Reference# : </u></b> <a href="#Form/Salary Structure/{0}">{0}</a>').format(
+				# 		self.name, i.salary_component, component_type, parentfield.title()), title="Invalid Salary Component")
 				# Checking duplicate entries
 				if i.salary_component in ('Basic Pay') and i.salary_component in dup:
 					frappe.throw(_("Row#{0} : Duplicate entries not allowed for component <b>{1}</b>.")
@@ -58,11 +58,11 @@ class SalaryStructure(Document):
 				else:
 					dup.update({i.salary_component: 1})
 				# Validate Loan details
-				if parenttype == 'Deduction' and cint(is_loan_component):
-					if not i.institution_name:
-						frappe.throw(_("Row#{}: <b>Institution Name</b> is mandatory for <b>{}</b>").format(i.idx, i.salary_component))
-					elif not i.reference_number:
-						frappe.throw(_("Row#{}: <b>Loan Account No.(Reference Number)</b> is mandatory for <b>{}</b>").format(i.idx, i.salary_component))
+				# if parenttype == 'Deduction' and cint(is_loan_component):
+				# 	if not i.institution_name:
+				# 		frappe.throw(_("Row#{}: <b>Institution Name</b> is mandatory for <b>{}</b>").format(i.idx, i.salary_component))
+				# 	elif not i.reference_number:
+				# 		frappe.throw(_("Row#{}: <b>Loan Account No.(Reference Number)</b> is mandatory for <b>{}</b>").format(i.idx, i.salary_component))
 
 	@frappe.whitelist()
 	def get_employee_details(self):
@@ -333,7 +333,7 @@ class SalaryStructure(Document):
 
 			# Calculating Salary Tax
 			if ed == 'deductions':
-				calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
+				calc_amt = get_salary_tax(roundoff(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
 				calc_amt = roundoff(calc_amt)
 				total_deduction += calc_amt
 				calc_map.append({'salary_component': 'Salary Tax', 'amount': flt(calc_amt)})
@@ -557,7 +557,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 			else:
 				if d['salary_component'] == 'Salary Tax':
 					if not tax_included:
-						tax_amt = get_salary_tax(math.floor(flt(gross_amt) - flt(gis_amt) - flt(pf_amt) - (flt(comm_amt) * 0.5)))
+						tax_amt = get_salary_tax(roundoff(flt(gross_amt) - flt(gis_amt) - flt(pf_amt) - (flt(comm_amt) * 0.5)))
 						tax_amt = roundoff(tax_amt)
 						d['amount'] = flt(tax_amt)
 						tax_included = 1
