@@ -92,7 +92,7 @@ function calculate_total(frm, cdt, cdn) {
 function calculate_tax(gross_amt) {
 	var tds_amount = 0;
 	cur_frm.call({
-		method: "erpnext.hr.doctype.salary_structure.salary_structure.get_salary_tax",
+		method: "hrms.hr.hr_custom_functions.get_salary_tax",
 		args: { "gross_amt": gross_amt, },
 		async: false,
 		callback: function(r) {

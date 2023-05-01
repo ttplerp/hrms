@@ -10,6 +10,7 @@
   "posting_date",
   "amended_from",
   "branch",
+  "cost_center",
   "column_break_1",
   "fiscal_year",
   "bonus_slab",
@@ -25,8 +26,7 @@
   "pbva_details_section",
   "items",
   "section_break_12",
-  "journal_entry",
-  "column_break_13"
+  "company"
  ],
  "fields": [
   {
@@ -34,7 +34,6 @@
    "fieldname": "posting_date",
    "fieldtype": "Date",
    "label": "Posting Date",
-   "read_only": 1,
    "reqd": 1
   },
   {
@@ -125,16 +124,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "journal_entry",
-   "fieldtype": "Data",
-   "label": "Journal Entry",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_13",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -145,15 +134,30 @@
   },
   {
    "fieldname": "bonus_slab",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "label": "Bonus Slab",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "branch.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
    "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-28 12:21:16.578970",
+ "modified": "2023-04-03 12:56:21.051633",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Bonus",
