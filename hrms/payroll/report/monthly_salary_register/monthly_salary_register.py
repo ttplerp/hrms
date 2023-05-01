@@ -32,9 +32,9 @@ def execute(filters=None):
 		else:
 				status = str(ss.docstatus)
 		
-		cid, joining_date = frappe.db.get_value("Employee", ss.employee, ["passport_number","date_of_joining"])
+		cid, joining_date, tpn_number, nationality = frappe.db.get_value("Employee", ss.employee, ["passport_number","date_of_joining", "tpn_number", "nationality"])
 						
-		row = [ss.employee, ss.employee_name, ss.employment_type, cid, joining_date,
+		row = [ss.employee, ss.employee_name, ss.employment_type, cid, joining_date, tpn_number, nationality,
 			ss.bank_name, ss.bank_account_no, 
 			ss.cost_center, ss.branch, ss.department,
 						 ss.division, ss.unit, ss.employee_grade, ss.designation, 
@@ -62,6 +62,8 @@ def get_columns(salary_slips):
 		_("Employment Type") + ":Link/Employment Type:120",
 		_("CID No") + "::120", 
 		_("Joining Date") + ":Date:100", 
+		_("TPN Number") + "::100",
+		_("Nationality") + "::100",
 		_("Bank Name")+ "::80", 
 		_("Bank A/C#")+"::100", 
 		_("Cost Center") + ":Link/Cost Center:120",
