@@ -56,6 +56,16 @@
   "cb_01",
   "hrgm_name",
   "hr_approver_name",
+  "separation_clearance_approver_section",
+  "dsld",
+  "gm_operation_division",
+  "gm_hrad",
+  "gm_project_division",
+  "column_break_53",
+  "approver_name_director_sld",
+  "approver_name_gm_operation_division",
+  "approver_name_gm_hrad",
+  "approver_name_gm_project_division",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -67,8 +77,10 @@
   "material_request_status_notification_template",
   "sb_employee_separation",
   "employee_separation_approval_notification_template",
+  "employee_separation_clearance_approval_notification_template",
   "column_break_62",
   "employee_separation_status_notification_template",
+  "employee_separation_clearance_status_notification_template",
   "sb_overtime",
   "overtime_approval_notification_template",
   "cb_ns_01",
@@ -780,13 +792,91 @@
    "fieldtype": "Link",
    "label": "Bank Payment Status Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "separation_clearance_approver_section",
+   "fieldtype": "Section Break",
+   "label": "Separation Clearance Approver"
+  },
+  {
+   "fieldname": "dsld",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Director, SLD",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_53",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gm_operation_division",
+   "fieldtype": "Link",
+   "label": "GM, Operation Division",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gm_hrad",
+   "fieldtype": "Link",
+   "label": "GM, HRAD",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gm_project_division",
+   "fieldtype": "Link",
+   "label": "GM, Project Division",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "dsld.employee_name",
+   "fieldname": "approver_name_director_sld",
+   "fieldtype": "Data",
+   "label": "Approver Name (Director, SLD)",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "gm_operation_division.employee_name",
+   "fieldname": "approver_name_gm_operation_division",
+   "fieldtype": "Data",
+   "label": "Approver Name (GM, Operation Division)",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "gm_hrad.employee_name",
+   "fieldname": "approver_name_gm_hrad",
+   "fieldtype": "Data",
+   "label": "Approver Name (GM, HRAD)",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "gm_project_division.employee_name",
+   "fieldname": "approver_name_gm_project_division",
+   "fieldtype": "Data",
+   "label": "Approver Name (GM, Project Division)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_separation_clearance_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Separation Clearance Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "employee_separation_clearance_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Separation Clearance Status Notification Template",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-06 15:12:52.936620",
+ "modified": "2023-03-01 17:32:54.444840",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
