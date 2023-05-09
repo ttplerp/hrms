@@ -50,6 +50,7 @@
   "eligible_for_shift",
   "shift_method",
   "shift",
+  "eligible_for_hra",
   "cb_10",
   "eligible_for_difficulty",
   "difficulty_method",
@@ -66,6 +67,9 @@
   "eligible_for_deputation",
   "deputation_method",
   "deputation",
+  "eligible_for_factory_allowance",
+  "fa_method",
+  "factory_allowance",
   "cb_12",
   "eligible_for_officiating_allowance",
   "officiating_allowance_method",
@@ -303,7 +307,7 @@
    "depends_on": "eval:doc.eligible_for_contract_allowance==1",
    "fieldname": "contract_allowance",
    "fieldtype": "Int",
-   "label": "Value(Contranct)",
+   "label": "Value(Contract)",
    "print_hide": 1
   },
   {
@@ -836,12 +840,42 @@
    "label": "Cost Center",
    "options": "Cost Center",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "description": "<i>HRA percent is defined in the HR Settings. If HRA amount is less than or equal to 3500, HRA amount is set to BTN 3500.</i>",
+   "fieldname": "eligible_for_hra",
+   "fieldtype": "Check",
+   "label": "Eligible for HRA",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_factory_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Factory Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_factory_allowance",
+   "fieldname": "fa_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Factory FA Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_factory_allowance",
+   "fieldname": "factory_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Factory Allowance)",
+   "print_hide": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2022-12-29 20:28:53.611249",
+ "modified": "2023-05-08 11:39:05.056341",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

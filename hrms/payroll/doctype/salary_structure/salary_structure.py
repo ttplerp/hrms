@@ -20,7 +20,6 @@ from frappe.desk.reportview import get_match_cond
 import operator
 import math
 
-
 class SalaryStructure(Document):
 	def autoname(self):
 		self.name = make_autoname(self.employee + '/.SST' + '/.#####')
@@ -296,7 +295,21 @@ class SalaryStructure(Document):
 						_("Percentage cannot exceed 200 for component <b>{0}</b>").format(m['name']), title="Invalid Data")
 
 				if ed == 'earnings':
-					if self.get(m['field_name']):
+					if self.get(m['field_name']) and m['name'] == 'HRA':
+						hra_allowance = frappe.db.get_single_value("HR Settings", "hra")
+						hra_lumpsum = frappe.db.get_single_value("HR Settings", "lumpsum_amt")
+						if not flt(hra_allowance):
+							frappe.throw("Setup HRA Percent in HR Settings")
+						elif not flt(hra_lumpsum):
+							frappe.throw("Setup HRA Lumpsum in HR Settings")
+
+						calc_amt = round(flt(basic_pay)*flt(hra_allowance)*0.01)
+						if flt(calc_amt) <= flt(hra_lumpsum):
+							calc_amt  = flt(hra_lumpsum)
+						total_earning += calc_amt
+						calc_map.append({'salary_component': m['name'], 'amount': calc_amt})
+
+					elif self.get(m['field_name']):
 						if self.get(m["field_method"]) == 'Percent':
 							if m['based_on'] == 'Pay Scale Lower Limit':
 								calc_amt = flt(payscale_lower_limit)*flt(self.get(m['field_value']))*0.01

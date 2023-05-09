@@ -14,6 +14,9 @@
   },
   {
    "card": "Employees Relieving (Next Quarter)"
+  },
+  {
+   "card": "Employee Exits (This Year)"
   }
  ],
  "charts": [
@@ -46,11 +49,15 @@
    "width": "Half"
   },
   {
-   "chart": "Department Wise Employee Count",
+   "chart": "Section Wise Employee Count",
    "width": "Half"
   },
   {
-   "chart": "Employee Leave Balance",
+   "chart": "Employee Leave Taken Report",
+   "width": "Half"
+  },
+  {
+   "chart": "Employee Separation Chart",
    "width": "Half"
   }
  ],
@@ -61,8 +68,8 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2023-01-17 17:55:32.389900",
- "modified_by": "Administrator",
+ "modified": "2023-05-03 15:37:29.007492",
+ "modified_by": "sonam.zangmo@thimphutechpark.bt",
  "module": "HR",
  "name": "Human Resource",
  "owner": "birendra.bhuejel@thimphutechpark.bt"

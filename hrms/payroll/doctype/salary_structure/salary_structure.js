@@ -68,6 +68,12 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_contract_allowance: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_hra: function(frm){
+		calculate_others(frm);
+	},
+	eligible_for_factory_allowance: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_communication_allowance: function(frm){
 		calculate_others(frm);
 	},
@@ -167,6 +173,12 @@ frappe.ui.form.on('Salary Structure', {
 	contract_allowance: function(frm){
 		calculate_others(frm);
 	},
+	hra: function(frm){
+		calculate_others(frm);
+	},
+	factory_allowance: function(frm){
+		calculate_others(frm);
+	},
 	communication_allowance: function(frm){
 		calculate_others(frm);
 	},
@@ -250,6 +262,12 @@ frappe.ui.form.on('Salary Structure', {
 	},
 	// Payment Methods
 	ca_method: function(frm){
+		calculate_others(frm);
+	},
+	hra_method: function(frm){
+		calculate_others(frm);
+	},
+	fa_method: function(frm){
 		calculate_others(frm);
 	},
 	contract_allowance_method: function(frm){

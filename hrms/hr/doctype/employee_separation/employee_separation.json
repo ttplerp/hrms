@@ -16,7 +16,6 @@
   "types_of_separation",
   "serve_notice_period",
   "employee_separation_template",
-  "company",
   "project",
   "department",
   "designation",
@@ -29,11 +28,18 @@
   "benefit_claim_reference",
   "section_break_14",
   "exit_interview",
+  "section_break_23",
+  "clearance_acquired",
   "sb_approver",
   "approver",
   "approver_name",
   "approver_designation",
+  "section_break_28",
+  "resignation",
+  "superannuation",
   "workflow_state",
+  "additional_information_section",
+  "company",
   "amended_from"
  ],
  "fields": [
@@ -222,11 +228,47 @@
    "fieldtype": "Data",
    "label": "Employee Benefit Claim ID",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_28",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "resignation",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Resignation"
+  },
+  {
+   "default": "0",
+   "fieldname": "superannuation",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Superannuation"
+  },
+  {
+   "fieldname": "additional_information_section",
+   "fieldtype": "Section Break",
+   "label": "ADDITIONAL INFORMATION"
+  },
+  {
+   "fieldname": "section_break_23",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "clearance_acquired",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Clearance Aquired",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-28 11:59:08.502937",
+ "modified": "2023-05-08 16:32:30.489816",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",

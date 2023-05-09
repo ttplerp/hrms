@@ -1,0 +1,38 @@
+{
+ "based_on": "creation",
+ "chart_name": "Employee Separation Chart",
+ "chart_type": "Count",
+ "color": "#d66b2d",
+ "creation": "2023-05-03 15:35:52.530567",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "Employee Separation",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[]",
+ "from_date": "2023-01-01",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2023-05-03 15:41:08.871288",
+ "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "module": "HR",
+ "name": "Employee Separation Chart",
+ "number_of_groups": 0,
+ "owner": "sonam.zangmo@thimphutechpark.bt",
+ "parent_document_type": "",
+ "roles": [
+  {
+   "role": "HR Manager"
+  }
+ ],
+ "source": "",
+ "time_interval": "Quarterly",
+ "timeseries": 1,
+ "timespan": "Select Date Range",
+ "to_date": "2023-12-31",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "y_axis": []
+}

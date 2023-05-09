@@ -29,7 +29,7 @@ def get_data(
 	cond = ''
 	if employee:
 		cond += ' and employee = {} '.format(employee)
-	leave_balace = frappe.db.sql('''select sum(leaves) as leave_count, leave_type from `tabLeave Ledger Entry` where docstatus = 1 {} group by leave_type'''.format(cond), as_dict=True)
+	leave_balace = frappe.db.sql('''select sum(leaves) as leave_count, leave_type from `tabLeave Ledger Entry` where docstatus = 1 group by leave_type'''.format(cond), as_dict=True)
 	labels , values = [], []
 	for l in leave_balace:
 		labels.append(f'{l.leave_type}')

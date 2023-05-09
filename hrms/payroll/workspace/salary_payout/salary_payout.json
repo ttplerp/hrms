@@ -367,8 +367,8 @@
    "type": "Link"
   }
  ],
- "modified": "2022-12-20 15:39:10.866125",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2023-05-03 11:03:32.074983",
+ "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Payout",
  "owner": "Administrator",
@@ -392,7 +392,7 @@
    "format": "{} Draft",
    "label": "Salary Slip",
    "link_to": "Salary Slip",
-   "stats_filter": "{\"status\":[\"=\",\"Draft\"]}",
+   "stats_filter": "",
    "type": "DocType"
   },
   {

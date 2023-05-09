@@ -19,6 +19,10 @@
   "column_break_18",
   "send_holiday_reminders",
   "frequency",
+  "hra_settings_section",
+  "hra",
+  "column_break_16",
+  "lumpsum_amt",
   "leave_and_expense_claim_settings",
   "send_leave_notification",
   "leave_approval_notification_template",
@@ -56,6 +60,16 @@
   "cb_01",
   "hrgm_name",
   "hr_approver_name",
+  "separation_clearance_approver_section",
+  "dsld",
+  "gm_operation_division",
+  "gm_hrad",
+  "gm_project_division",
+  "column_break_60",
+  "approver_name_director_sld",
+  "approver_name_gm_operation_division",
+  "approver_name_gm_hrad",
+  "approver_name_gm_project_division",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -780,13 +794,100 @@
    "fieldtype": "Link",
    "label": "Bank Payment Status Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "hra_settings_section",
+   "fieldtype": "Section Break",
+   "label": "HRA Settings"
+  },
+  {
+   "description": "<i>HRA percent is defined in the HR Settings. If HRA amount is less than or equal to 3500, HRA amount is set to BTN 3500.</i>",
+   "fieldname": "hra",
+   "fieldtype": "Float",
+   "label": "House Rent Allowance(%)"
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lumpsum_amt",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "HRA Lumpsum Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "separation_clearance_approver_section",
+   "fieldtype": "Section Break",
+   "label": "Separation Clearance Approver"
+  },
+  {
+   "fieldname": "dsld",
+   "fieldtype": "Link",
+   "label": "Director, SLD",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gm_operation_division",
+   "fieldtype": "Link",
+   "label": "GM, Operation Division",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gm_hrad",
+   "fieldtype": "Link",
+   "label": "GM, HRAD",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gm_project_division",
+   "fieldtype": "Link",
+   "label": "GM, Project Division",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_60",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "dsld.employee_name",
+   "fieldname": "approver_name_director_sld",
+   "fieldtype": "Data",
+   "label": "Approver Name (Director, SLD)",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "gm_operation_division.employee_name",
+   "fieldname": "approver_name_gm_operation_division",
+   "fieldtype": "Data",
+   "label": "Approver Name (GM, Operation Division)",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "gm_hrad.employee_name",
+   "fieldname": "approver_name_gm_hrad",
+   "fieldtype": "Data",
+   "label": "Approver Name (GM, HRAD)",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "gm_project_division.employee_name",
+   "fieldname": "approver_name_gm_project_division",
+   "fieldtype": "Data",
+   "label": "Approver Name (GM, Project Division)",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-06 15:12:52.936620",
+ "modified": "2023-05-08 17:00:04.461271",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

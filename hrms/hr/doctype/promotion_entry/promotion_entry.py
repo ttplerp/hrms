@@ -83,7 +83,7 @@ class PromotionEntry(Document):
 		# 	{}
 		# 	order by t1.branch, t1.name
 		# """.format(pe_date, self.month_name, cond)
-		query = """select t1.name as employee, t1.employee_name, t1.department, t1.designation, t1.grade as employee_grade 
+		query = """select t1.name as employee, t1.employee_name, t1.department, t1.designation, t1.employee_grade as employee_grade 
 					from `tabEmployee` t1 
 					where t1.status = 'Active' 
 					and t1.employment_type not in ('Contract','Probation') 
