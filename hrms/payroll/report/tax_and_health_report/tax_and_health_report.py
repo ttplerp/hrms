@@ -100,4 +100,13 @@ def get_conditions(filters):
 	if filters.get("company"): conditions += " and t1.company = %(company)s"
 	if filters.get("employee"): conditions += " and t1.employee = %(employee)s"
 	if filters.get("cost_center"): conditions += " and exists(select 1 from `tabCost Center` cc where t1.cost_center = cc.name and (cc.parent_cost_center = '{0}' or cc.name = '{0}'))".format(filters.cost_center)
+	""" Below add_conditions added by Shiv sir. on 24 Jan, 2023 """
+	if 'System Manager' not in frappe.get_roles(frappe.session.user):
+		conditions += """ and exists(select 1
+			from `tabAssign Branch` ab, `tabBranch Item` bi
+			where ab.user = "{}"
+			and bi.parent = ab.name
+			and t1.branch = bi.branch)
+		""".format(frappe.session.user)
+	# frappe.throw(str(conditions))
 	return conditions, filters
