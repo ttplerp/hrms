@@ -46,9 +46,11 @@ class EmployeeAdvance(Document):
 
 	#added by cety to avoid cancelling advance if there are submitted payroll entry.
 	def check_payroll_entry(self):
-		entry = frappe.db.sql("select 1 from `tabSalary Detail` sd, `tabSalary Slip` sl where sl.name=sd.parent and sl.employee='{}' and sd.reference_number='{}' and sl.docstatus=1".format(self.employee, self.name))[0][0]
-		if entry==1:
+		entry = frappe.db.sql("select sd.reference_number from `tabSalary Detail` sd, `tabSalary Slip` sl where sl.name=sd.parent and sl.employee='{}' and sd.reference_number='{}' and sl.docstatus=1".format(self.employee, self.name))
+		if entry:
 			frappe.throw("You cannot cancel this employee advance since you have already submitted payroll entry")
+		else:
+			pass
 
 	def update_salary_structure(self, cancel=False):
 		if cancel:
