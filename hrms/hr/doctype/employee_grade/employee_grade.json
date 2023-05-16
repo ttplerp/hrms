@@ -81,6 +81,7 @@
   {
    "fieldname": "gis",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "GIS"
   },
   {
@@ -161,7 +162,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-03-29 15:53:22.231239",
+ "modified": "2023-05-16 12:04:49.753943",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Grade",

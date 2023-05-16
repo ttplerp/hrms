@@ -379,7 +379,7 @@ def get_payroll_settings(employee=None):
 								e.grade,
 								d.security_deposit,
 								d.sws_contribution,
-								d.gis,
+								e.gis,
 								g.health_contribution,
 								g.employee_pf,
 								g.employer_pf
