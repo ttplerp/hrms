@@ -23,19 +23,22 @@
   "sb_official",
   "reason_for_resignation",
   "sb_remarks",
-  "director",
-  "director_clearance",
-  "director_remarks",
-  "gmod",
-  "gmod_clearance",
-  "gmod_remarks",
+  "supervisor",
+  "supervisor_clearance",
+  "supervisor_remarks",
+  "afd",
+  "afd_clearance",
+  "afd_remarks",
   "column_break_29",
-  "hrad",
-  "hrad_clearance",
-  "hrad_remarks",
-  "gmpd",
-  "gmpd_clearance",
-  "gmpd_remarks",
+  "spd",
+  "spd_clearance",
+  "spd_remarks",
+  "icthr",
+  "icthr_clearance",
+  "icthr_remarks",
+  "iad",
+  "iad_clearance",
+  "iad_remarks",
   "workflow_state",
   "sb_reference",
   "mail_sent",
@@ -194,81 +197,99 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "director",
+   "fieldname": "supervisor",
    "fieldtype": "Link",
-   "label": "Director, SLD",
+   "label": "Supervisor",
    "options": "User",
    "read_only": 1
   },
   {
    "default": "0",
-   "fieldname": "director_clearance",
+   "fieldname": "supervisor_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (Director, SLD)"
+   "label": "Clearance Acquired (Supervisor)"
   },
   {
-   "fieldname": "director_remarks",
+   "fieldname": "supervisor_remarks",
    "fieldtype": "Small Text",
-   "label": "Director's Remarks"
+   "label": "Supervisor's Remarks"
   },
   {
-   "fieldname": "gmod",
+   "fieldname": "afd",
    "fieldtype": "Link",
-   "label": "GM, Operation Division",
+   "label": "Accounts & Finance Division",
    "options": "User",
    "read_only": 1
   },
   {
    "default": "0",
-   "fieldname": "gmod_clearance",
+   "fieldname": "afd_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (GM, Operation Division)"
+   "label": "Clearance Acquired (Accounts & Finance Division)"
   },
   {
-   "fieldname": "gmod_remarks",
+   "fieldname": "afd_remarks",
    "fieldtype": "Small Text",
-   "label": "GM, Operation Division"
+   "label": "Accounts & Finance Division Remarks"
   },
   {
-   "fieldname": "hrad",
+   "fieldname": "spd",
    "fieldtype": "Link",
-   "label": "GM, HRAD",
+   "label": "Store & Procurement Division",
    "options": "User",
    "read_only": 1
   },
   {
    "default": "0",
-   "fieldname": "hrad_clearance",
+   "fieldname": "spd_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (GM, HRAD)"
+   "label": "Clearance Acquired (Store & Procurement Division)"
   },
   {
-   "fieldname": "hrad_remarks",
+   "fieldname": "spd_remarks",
    "fieldtype": "Small Text",
-   "label": "GM, HRAD Remarks"
+   "label": "Store & Procurement Division Remarks"
   },
   {
-   "fieldname": "gmpd",
+   "fieldname": "icthr",
    "fieldtype": "Link",
-   "label": "GM, Project Division",
+   "label": "ICT & HR Division",
    "options": "User",
    "read_only": 1
   },
   {
-   "fieldname": "gmpd_remarks",
+   "default": "0",
+   "fieldname": "icthr_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired (ICT & HR Division)"
+  },
+  {
+   "fieldname": "icthr_remarks",
    "fieldtype": "Small Text",
-   "label": "GM, Project Division Remarks"
+   "label": "ICT & HR Division Remarks"
+  },
+  {
+   "fieldname": "iad",
+   "fieldtype": "Link",
+   "label": "Internal Audit Division",
+   "options": "User",
+   "read_only": 1
   },
   {
    "default": "0",
-   "fieldname": "gmpd_clearance",
+   "fieldname": "iad_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (GM, Project Division)"
+   "label": "Clearance Acquired(Internal Audit Division)"
+  },
+  {
+   "fieldname": "iad_remarks",
+   "fieldtype": "Small Text",
+   "label": "Internal Audit Division Remarks"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-01 17:24:10.300751",
+ "modified": "2023-05-17 15:17:12.006386",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",

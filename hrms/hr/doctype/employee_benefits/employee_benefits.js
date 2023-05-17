@@ -89,7 +89,7 @@ frappe.ui.form.on("Separation Item", {
 			frappe.model.set_value(cdt, cdn, "earned_leave_balance", null);
 		}
     	var item = locals[cdt][cdn]
-		if(item.benefit_type == "Transfer Grant" || item.benefit_type == "Travelling Allowance"){
+		if(item.benefit_type == "Transfer Grant" || item.benefit_type == "Travel Allowance"){
 			return frappe.call({
 				method: "hrms.hr.doctype.employee_benefits.employee_benefits.get_basic_salary",
 				args: {"employee": frm.doc.employee},

@@ -58,9 +58,11 @@
   "cost_center",
   "travel_authorization_details",
   "posting_date",
-  "end_date_auth",
   "dimension_col_break",
+  "end_date_auth",
+  "approver_details_section",
   "supervisor_name",
+  "column_break_57",
   "supervisor",
   "supervisor_designation",
   "travel_claim_details_section",
@@ -572,11 +574,20 @@
    "fieldtype": "Attach",
    "ignore_user_permissions": 1,
    "label": "Attach Report"
+  },
+  {
+   "fieldname": "approver_details_section",
+   "fieldtype": "Section Break",
+   "label": "Approver Details"
+  },
+  {
+   "fieldname": "column_break_57",
+   "fieldtype": "Column Break"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-07 20:40:06.057869",
+ "modified": "2023-05-16 15:13:23.046369",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",

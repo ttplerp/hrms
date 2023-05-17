@@ -11,10 +11,15 @@
   "naming_series",
   "employee",
   "employee_name",
+  "designation",
+  "division",
+  "section",
   "column_break_4",
+  "posting_date",
+  "branch",
   "leave_type",
-  "department",
   "leave_balance",
+  "department",
   "section_break_5",
   "from_date",
   "to_date",
@@ -26,15 +31,15 @@
   "section_break_7",
   "leave_approver",
   "leave_approver_name",
+  "column_break_22",
+  "leave_approver_designation",
   "column_break_18",
   "status",
   "salary_slip",
   "sb10",
-  "posting_date",
   "follow_via_email",
   "color",
   "column_break_17",
-  "branch",
   "company",
   "letter_head",
   "amended_from"
@@ -149,13 +154,15 @@
   },
   {
    "fieldname": "section_break_7",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Approver Details"
   },
   {
    "fieldname": "leave_approver",
    "fieldtype": "Link",
    "label": "Leave Approver",
-   "options": "User"
+   "options": "User",
+   "read_only": 1
   },
   {
    "fieldname": "leave_approver_name",
@@ -171,12 +178,12 @@
    "default": "Open",
    "fieldname": "status",
    "fieldtype": "Select",
+   "hidden": 1,
    "in_standard_filter": 1,
    "label": "Status",
    "no_copy": 1,
    "options": "Open\nApproved\nRejected\nCancelled",
-   "permlevel": 1,
-   "reqd": 1
+   "permlevel": 1
   },
   {
    "fieldname": "sb10",
@@ -215,6 +222,7 @@
   {
    "fieldname": "salary_slip",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Salary Slip",
    "options": "Salary Slip",
    "print_hide": 1
@@ -232,6 +240,7 @@
    "allow_on_submit": 1,
    "fieldname": "color",
    "fieldtype": "Color",
+   "hidden": 1,
    "label": "Color",
    "print_hide": 1
   },
@@ -252,6 +261,37 @@
    "label": "Branch",
    "options": "Branch",
    "reqd": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fieldname": "leave_approver_designation",
+   "fieldtype": "Data",
+   "label": "Leave Approver Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_22",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.division",
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department"
+  },
+  {
+   "fetch_from": "employee.section",
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "options": "Department"
   }
  ],
  "icon": "fa fa-calendar",
@@ -259,7 +299,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2022-11-24 09:13:23.095357",
+ "modified": "2023-05-11 16:11:11.411121",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",

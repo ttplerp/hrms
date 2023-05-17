@@ -107,6 +107,7 @@ class TravelRequest(AccountsController):
 				posting_date = item.from_date
 				exchnage_rate = get_exchange_rate(from_currency, to_currency, posting_date)
 				item.actual_amount = flt(item.total_claim) * flt(exchnage_rate)
+				
 	def check_date(self):
 		for item in self.get("itinerary"):
 			las_date = item.from_date
@@ -122,6 +123,7 @@ class TravelRequest(AccountsController):
 					`tabTravel Itinerary` t3
 				where t1.employee = "{employee}"
 				and t1.docstatus != 2
+				and t1.workflow_state != "Rejected"
 				and t1.name != "{name}"
 				and t2.parent = t1.name
 				and t3.parent = "{name}"
@@ -177,6 +179,7 @@ class TravelRequest(AccountsController):
 						`tabTravel Itinerary` t3
 					where t1.employee = "{employee}"
 					and t1.docstatus != 2
+					and t1.workflow_state != "Rejected"
 					and t1.name != "{travel_authorization}"
 					and t2.parent = t1.name
 					and t3.parent = "{travel_authorization}"
@@ -187,8 +190,9 @@ class TravelRequest(AccountsController):
 					)
 			""".format(travel_authorization = self.name, employee = self.employee), as_dict=True)
 			for t in tas:
+				# frappe.throw(str(tas))
 				frappe.throw("Row#{}: The dates in your current Travel Request have already been claimed in {} between {} and {}"\
-					.format(t.idx, frappe.get_desk_link("Travel Request", t.name), t.date, t.till_date))
+					.format(t.idx, frappe.get_desk_link("Travel Request", t.name), t.from_date, t.to_date))
 	
 	
 	def update_amount(self):

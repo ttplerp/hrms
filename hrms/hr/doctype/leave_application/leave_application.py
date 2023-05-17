@@ -94,11 +94,6 @@ class LeaveApplication(Document):
 	def on_submit(self):
 		#Added by Kinley 2022/11/16
 		notify_workflow_states(self)
-		if self.status in ["Open", "Cancelled"]:
-			frappe.throw(
-				_("Only Leave Applications with status 'Approved' and 'Rejected' can be submitted")
-			)
-
 		self.validate_back_dated_application()
 		self.update_attendance()
 		# notify leave applier about approval
@@ -406,6 +401,7 @@ class LeaveApplication(Document):
 				name, leave_type, posting_date, from_date, to_date, total_leave_days, half_day_date
 			from `tabLeave Application`
 			where employee = %(employee)s and docstatus < 2 and status in ('Open', 'Approved')
+			and workflow_state != "Rejected"
 			and to_date >= %(from_date)s and from_date <= %(to_date)s
 			and name != %(name)s""",
 			{

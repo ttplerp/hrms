@@ -61,15 +61,15 @@
   "hrgm_name",
   "hr_approver_name",
   "separation_clearance_approver_section",
-  "dsld",
-  "gm_operation_division",
-  "gm_hrad",
-  "gm_project_division",
+  "afd",
+  "spd",
+  "icthr",
+  "iad",
   "column_break_60",
-  "approver_name_director_sld",
-  "approver_name_gm_operation_division",
-  "approver_name_gm_hrad",
-  "approver_name_gm_project_division",
+  "approver_name_afd",
+  "approver_name_spd",
+  "approver_name_icthr",
+  "approver_name_iad",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -823,63 +823,63 @@
    "label": "Separation Clearance Approver"
   },
   {
-   "fieldname": "dsld",
-   "fieldtype": "Link",
-   "label": "Director, SLD",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fieldname": "gm_operation_division",
-   "fieldtype": "Link",
-   "label": "GM, Operation Division",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fieldname": "gm_hrad",
-   "fieldtype": "Link",
-   "label": "GM, HRAD",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fieldname": "gm_project_division",
-   "fieldtype": "Link",
-   "label": "GM, Project Division",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
    "fieldname": "column_break_60",
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "dsld.employee_name",
-   "fieldname": "approver_name_director_sld",
+   "fieldname": "spd",
+   "fieldtype": "Link",
+   "label": "Store & Procurement Division",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "icthr",
+   "fieldtype": "Link",
+   "label": "ICT & HR Division",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "iad",
+   "fieldtype": "Link",
+   "label": "Internal Audit Division",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "spd.employee_name",
+   "fieldname": "approver_name_spd",
    "fieldtype": "Data",
-   "label": "Approver Name (Director, SLD)",
+   "label": "Approver Name (Store & Procurement Division)",
    "read_only": 1
   },
   {
-   "fetch_from": "gm_operation_division.employee_name",
-   "fieldname": "approver_name_gm_operation_division",
+   "fetch_from": "icthr.employee_name",
+   "fieldname": "approver_name_icthr",
    "fieldtype": "Data",
-   "label": "Approver Name (GM, Operation Division)",
+   "label": "Approver Name (ICT & HR Division)",
    "read_only": 1
   },
   {
-   "fetch_from": "gm_hrad.employee_name",
-   "fieldname": "approver_name_gm_hrad",
+   "fetch_from": "iad.employee_name",
+   "fieldname": "approver_name_iad",
    "fieldtype": "Data",
-   "label": "Approver Name (GM, HRAD)",
+   "label": "Approver Name (Internal Audit Division)",
    "read_only": 1
   },
   {
-   "fetch_from": "gm_project_division.employee_name",
-   "fieldname": "approver_name_gm_project_division",
+   "fieldname": "afd",
+   "fieldtype": "Link",
+   "label": "Accounts & Finance Division",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "afd.employee_name",
+   "fieldname": "approver_name_afd",
    "fieldtype": "Data",
-   "label": "Approver Name (GM, Project Division)",
+   "label": "Approver Name (Accounts & Finance Division)",
    "read_only": 1
   }
  ],
@@ -887,7 +887,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-05-08 17:00:04.461271",
+ "modified": "2023-05-17 15:59:37.397481",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

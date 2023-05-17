@@ -52,6 +52,11 @@ def get_approvers(doctype, txt, searchfield, start, page_len, filters):
 		approvers.append(
 			frappe.db.get_value("User", employee.expense_approver, ["name", "first_name", "last_name"])
 		)
+	
+	# if filters.get("doctype") == "Muster Roll Application" and employee.approver:
+	# 	approvers.append(
+	# 		frappe.db.get_value("User", employee.leave_approver, ["name", "first_name", "last_name"])
+	# 	)
 
 	if filters.get("doctype") == "Shift Request" and employee.shift_request_approver:
 		approvers.append(
@@ -63,6 +68,9 @@ def get_approvers(doctype, txt, searchfield, start, page_len, filters):
 	if filters.get("doctype") == "Leave Application":
 		parentfield = "leave_approvers"
 		field_name = "Leave Approver"
+	# elif filters.get("doctype") == "Muster Roll Application":
+	# 	parentfield = "leave_approvers"
+	# 	field_name = "Leave Approver"
 	elif filters.get("doctype") == "Expense Claim":
 		parentfield = "expense_approvers"
 		field_name = "Expense Approver"
