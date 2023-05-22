@@ -16,7 +16,6 @@ frappe.ui.form.on('Travel Request', {
 					}
 				});
 			});
-			// cur_frm.page.set_inner_btn_group_as_primary(__('Create'));
 		}
 	},
 	onload: function(frm) {
@@ -58,7 +57,6 @@ frappe.ui.form.on("Travel Itinerary", {
 	form_render: function(frm, cdt, cdn){
 		var item = locals[cdt][cdn];
 		if(item.dsa <= 0){
-			// console.log("its here")		
 			var dsa_per_day = frm.doc.dsa_per_day;
 			frappe.model.set_value(cdt, cdn, "dsa", dsa_per_day);
 		}
@@ -78,19 +76,33 @@ frappe.ui.form.on("Travel Itinerary", {
 	"distance": function(frm, cdt, cdn){
 		update_amount(frm, cdt, cdn);
 	},
+	"mileage_rate": function(frm, cdt, cdn){
+		update_amount(frm, cdt, cdn);
+	},
 	"amount": function(frm, cdt,cdn){
 		update_total(frm,cdt, cdn);
 	},
 	"mileage_amount": function(frm, cdt,cdn){
 		update_total(frm,cdt, cdn);
 	},
+	"fare_amount": function(frm, cdt,cdn){
+		update_total(frm,cdt, cdn);
+	},
+	"entertainment_amount": function(frm, cdt,cdn){
+		update_total(frm,cdt, cdn);
+	},
+	"hotel_charges_amount": function(frm, cdt,cdn){
+		update_total(frm,cdt, cdn);
+	},
 	"dsa": function(frm, cdt, cdn){
-		if(frm.doc.currency != "BTN") {
+        let row = locals[cdt][cdn]
+		if(row.currency != "BTN") {
 			update_total_claim(cdt, cdn)
 		}
 	},
 	"dsa_percent": function(frm, cdt, cdn){
-		if(frm.doc.currency != "BTN") {
+        let row = locals[cdt][cdn]
+		if(row.currency != "BTN") {
 			update_total_claim(cdt, cdn)
 		}
 	},
@@ -109,10 +121,9 @@ frappe.ui.form.on("Travel Itinerary", {
 var update_total = function(frm,cdt, cdn){
 	var item = locals[cdt][cdn];
 	var total=0;
-	if(item.amount!=0 || item.mileage_amount!=0){
-		total = flt(item.amount)+flt(item.mileage_amount);
+	if(item.amount!=0 || item.mileage_amount!=0 || item.fare_amount !=0 || item.ea_applicable==1 || item.hc_applicable==1){
+		total = flt(item.amount)+flt(item.mileage_amount)+flt(item.fare_amount)+flt(item.entertainment_amount)+flt(item.hotel_charges_amount);
 		frappe.model.set_value(cdt, cdn, "total_claim", flt(total));
-		console.log("this is total")
 	}else{
 		total=0;
 	}
@@ -158,6 +169,7 @@ var set_noof_days = function(frm, cdt, cdn){
 
 	frappe.model.set_value(cdt, cdn, "no_days_actual", noof_days);
 }
+
 function update_total_claim(cdt, cdn){
 	var item = locals[cdt][cdn];
 	frappe.call({
@@ -171,7 +183,7 @@ function update_total_claim(cdt, cdn){
 		callback: function(r) {
 			if(r.message) {
 				frappe.model.set_value(cdt, cdn, "exchange_rate", flt(r.message))
-				frappe.model.set_value(cdt, cdn, "actual_amount", flt(r.message) * ((flt(item.dsa_percent)/100) * flt(item.no_days_actual) * flt(item.dsa)))
+				frappe.model.set_value(cdt, cdn, "actual_amount", flt(r.message) * ((flt(item.total_claim))))
 				frappe.model.set_value(cdt, cdn, "amount", flt(item.dsa) * (flt(item.dsa_percent)/100) * flt(item.no_days_actual))
                 frm.refresh_field("itinerary")
 			}
@@ -195,3 +207,5 @@ function update_advance_amount(frm) {
 		}
 	})
 }
+
+

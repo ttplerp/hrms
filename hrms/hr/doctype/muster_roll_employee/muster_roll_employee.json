@@ -346,7 +346,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-15 17:04:47.951765",
+ "modified": "2023-05-22 16:11:03.997481",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
@@ -393,5 +393,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "id_card",
  "track_changes": 1
 }

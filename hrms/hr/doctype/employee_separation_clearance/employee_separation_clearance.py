@@ -66,59 +66,18 @@ class EmployeeSeparationClearance(Document):
 		if duplicates:
 			frappe.throw("There is already a pending Separation Clearance created for the Employee Separation '{}'".format(self.employee_separation_id))
 	
-	@frappe.whitelist()
-	def check_logged_in_user_role(self):
-		#return values initialization-----------------
-		display = 1
-		supervisor = 1
-		afd = 1
-		spd = 1
-		icthr = 1
-		iad = 1
-		#----------------------------Supervisor ------------------------------------------------------------------------------------------------------------------------------------------------------------|
-		supervisor_officiate = get_officiating_employee(frappe.db.get_value("Employee",self.employee,"reports_to"))
-		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_value("Employee",self.employee,"reports_to"),"user_id"):
-			supervisor = 0
-		if supervisor_officiate and frappe.session.user == frappe.db.get_value("Employee",director_officiate[0].officiate,"user_id"):
-			supervisor = 0
-		#---------------------------- Accounts & Finance Division -----------------------------------------------------------------------------------------------------------------------------------------------------|
-		afd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "afd"))
-		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "afd"),"user_id"):
-			afd = 0
-		if afd_officiate and frappe.session.user == frappe.db.get_value("Employee",afd_officiate[0].officiate,"user_id"):
-			afd = 0
-		#----------------------------Store & Procurement Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		spd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "spd"))
-		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "spd"),"user_id"):
-			spd = 0
-		if spd_officiate and frappe.session.user == frappe.db.get_value("Employee",spd_officiate[0].officiate,"user_id"):
-			spd = 0
-		#----------------------------ICT & HR Division -----------------------------------------------------------------------------------------------------------------------------------------------------|
-		icthr_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "icthr"))
-		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "icthr"),"user_id"):
-			icthr = 0
-		if icthr_officiate and frappe.session.user == frappe.db.get_value("Employee",icthr_officiate[0].officiate,"user_id"):
-			icthr = 0
-		#----------------------------Internal Audit Division -----------------------------------------------------------------------------------------------------------------------------------------------------|
-		iad_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "iad"))
-		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "iad"),"user_id"):
-			iad = 0
-		if iad_officiate and frappe.session.user == frappe.db.get_value("Employee",iad_officiate[0].officiate,"user_id"):
-			iad = 0
-		return supervisor, afd, spd, icthr, iad
-
 	def get_receipients(self):
 		receipients = []
-		if self.director:
-			receipients.append(self.director)
-		if self.hrad:
-			receipients.append(self.hrad)
-		if self.gmod:
-			receipients.append(self.gmod)
-		if self.gmpd:
-			receipients.append(self.gmpd)
-		# if self.hr:
-		# 	receipients.append(self.hr)
+		if self.supervisor:
+			receipients.append(self.supervisor)
+		if self.afd:
+			receipients.append(self.afd)
+		if self.spd:
+			receipients.append(self.spd)
+		if self.icthr:
+			receipients.append(self.icthr)
+		if self.iad:
+			receipients.append(self.iad)
 
 		return receipients
 
@@ -247,12 +206,14 @@ def get_permission_query_conditions(user):
 				where `tabEmployee`.name = `tabEmployee Separation Clearance`.employee
 				and `tabEmployee`.user_id = '{user}')
 		or
-		(`tabEmployee Separation Clearance`.director = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		(`tabEmployee Separation Clearance`.supervisor = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
-		(`tabEmployee Separation Clearance`.hrad = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		(`tabEmployee Separation Clearance`.afd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
-		(`tabEmployee Separation Clearance`.gmpd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		(`tabEmployee Separation Clearance`.spd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
-		(`tabEmployee Separation Clearance`.gmod = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		(`tabEmployee Separation Clearance`.icthr = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		or
+		(`tabEmployee Separation Clearance`.iad = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 
 	)""".format(user=user)
