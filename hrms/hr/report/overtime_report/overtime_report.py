@@ -26,6 +26,7 @@ def get_columns(data):
 		_("From Date/Time") + "::150",
 		_("To Date/Time") + "::150",
 		_("No. of Hours") + "::130",
+		_("Hourly Rate") + "::130",
 		_("Amount") + ":Currency:120",
 	]
 	return columns
@@ -35,7 +36,7 @@ def get_data(filters):
 	data = frappe.db.sql("""
 		SELECT 
 			oa.employee, oa.employee_name, oa.branch, oa.designation, oa.grade, 
-			oai.from_date, oai.to_date, ROUND(oai.number_of_hours,2), ROUND(oai.amount,2)
+			oai.from_date, oai.to_date, ROUND(oai.number_of_hours,2), ROUND(oai.rate,2), ROUND(oai.amount,2)
 		FROM `tabOvertime Application` oa, `tabOvertime Application Item` oai
 		WHERE oa.name = oai.parent
 		AND oai.to_date >= '{from_date}'
