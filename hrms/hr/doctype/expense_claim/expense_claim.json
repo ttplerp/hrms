@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
- "autoname": "format:EXP-{YY}-{MM}-{DD}-{####}",
+ "autoname": "EXP.-.YY.-.MM.-.DD.-.####",
  "creation": "2013-01-10 16:34:14",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -409,12 +409,12 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-04 12:40:26.734859",
+ "modified": "2023-05-22 16:56:19.902047",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",
  "name_case": "Title Case",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:OT-{YY}-{MM}-{DD}-{###}",
+ "autoname": "OT.-.YY.-.MM.-.DD.-.###",
  "creation": "2022-09-23 23:32:28.639859",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -290,6 +290,7 @@
    "default": "Unpaid",
    "fieldname": "payment_made",
    "fieldtype": "Data",
+   "hidden": 1,
    "in_list_view": 1,
    "label": "Payment Status",
    "read_only": 1
@@ -334,11 +335,11 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-24 09:50:03.575730",
+ "modified": "2023-05-22 16:55:25.188089",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",
- "naming_rule": "Expression",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -393,5 +394,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "employee_name"
 }
