@@ -53,6 +53,10 @@ def get_data( filters=None):
 		data.append(row)
 	#Leave Encashment 
 	if filters.employee:
+		fiscal_year = frappe.db.sql("select name, year_start_date, year_end_date from `tabFiscal Year` where name='{}' and disabled = 0".format(filters.fiscal_year), as_dict=True)
+		if not fiscal_year:
+			frappe.throw(_("missing value for <b>Fiscal Year</b> {} OR it is disabled").format(filters.fiscal_year), title="Fiscal Year missing")
+
 		# encash_data = frappe.db.sql("select a.encashment_date AS date, a.encashment_amount, a.encashment_tax, r.receipt_number, r.receipt_date from `tabLeave Encashment` a, `tabRRCO Receipt Entries` r where a.name = r.purchase_invoice and a.employee = %s and a.docstatus = 1 and a.encashment_date between \'" + filters.fiscal_year + "-01-01\' and \'" + filters.fiscal_year + "-12-31\'", filters.employee, as_dict=True) 
 		# encash_data = frappe.db.sql("select a.encashment_date, MONTH(a.encashment_date) AS month, YEAR(a.encashment_date) AS year, a.encashment_amount, a.encashment_tax, r.receipt_number, r.receipt_date from `tabLeave Encashment` a, `tabRRCO Receipt Entries` r where a.name = r.purchase_invoice and a.employee = %s and a.docstatus = 1 and a.encashment_date between \'" + filters.fiscal_year + "-01-01\' and \'" + filters.fiscal_year + "-12-31\'", filters.employee, as_dict=True) 
 		encash_data = frappe.db.sql("""SELECT 
@@ -64,8 +68,8 @@ def get_data( filters=None):
 						DATE_FORMAT(r.receipt_date, '%d-%m-%Y') AS receipt_date
 					from `tabLeave Encashment` a LEFT JOIN `tabTDS Receipt Entry` r
 						ON a.name = r.invoice_no
-					WHERE a.employee = """+filters.employee+""" and a.docstatus = 1 
-						and a.encashment_date between '"""+ filters.fiscal_year + """-01-01' and '""" + filters.fiscal_year + """-12-31'""", as_dict=True) 
+					WHERE a.employee = '"""+filters.employee+"""' and a.docstatus = 1 
+						and a.encashment_date between '"""+ str(fiscal_year[0]["year_start_date"]) + """' and '""" + str(fiscal_year[0]["year_end_date"]) + """ ' """, as_dict=True) 
 		# frappe.msgprint(str(encash_data))
 		if encash_data:
 			for a in encash_data:
