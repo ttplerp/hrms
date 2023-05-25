@@ -432,6 +432,8 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 
 							else:
 								amount = 0
+						else:
+							amount = 0
 
 				if flt(d.total_deductible_amount) > 0:
 					if flt(d.total_outstanding_amount) > 0:
