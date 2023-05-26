@@ -435,14 +435,6 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 						else:
 							amount = 0
 				
-				#added by cety to calculate salary tax even if the salary tax is 0 in salary structure
-				if key == 'deductions':
-					if frappe.db.get_value("Salary Component", d.salary_component, "name") == "Salary Tax":
-						if (d.amount or d.default_amount) == 0:
-							calc_map.setdefault(key, []).append({
-								'salary_component': d.salary_component
-							})
-				
 				if flt(d.total_deductible_amount) > 0:
 					if flt(d.total_outstanding_amount) > 0:
 						deductible_amt = flt(d.total_deductible_amount)
