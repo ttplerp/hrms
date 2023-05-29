@@ -652,6 +652,10 @@ class PayrollEntry(Document):
 		tot_payable_amt= 0
 		for rec in cc:
 			# To Payables
+			# below added by Jai
+			if not rec.gl_head:
+				frappe.throw("missing gl head for: {}".format(rec.salary_component))
+
 			tot_payable_amt += (-1*flt(rec.amount) if rec.component_type == 'Deduction' else flt(rec.amount))
 			posting.setdefault("to_payables",[]).append({
 				"account"        : rec.gl_head,
