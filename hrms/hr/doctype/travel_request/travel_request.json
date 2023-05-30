@@ -1,641 +1,643 @@
 {
-    "actions": [],
-    "autoname": "format:TRQ-{YY}-{MM}-{DD}-{###}",
-    "creation": "2018-05-15 06:32:33.950356",
-    "doctype": "DocType",
-    "editable_grid": 1,
-    "engine": "InnoDB",
-    "field_order": [
-     "workflow_state",
-     "document_status",
-     "column_break_3",
-     "reason",
-     "employee_details",
-     "employee",
-     "employee_name",
-     "cell_number",
-     "business_activity",
-     "column_break_8",
-     "designation",
-     "grade",
-     "prefered_email",
-     "dsa_per_day",
-     "travel_purpose_information",
-     "travel_type",
-     "mode_of_travel",
-     "column_break_17",
-     "purpose_of_travel",
-     "attach_report",
-     "date_of_birth",
-     "section_break_4",
-     "description",
-     "travel_itinerary",
-     "itinerary",
-     "travel_advance_details_section",
-     "currency",
-     "exchange_rate",
-     "need_advance",
-     "advance_reference",
-     "column_break_35",
-     "estimated_amount",
-     "advance_amount",
-     "advance_amount_nu",
-     "miscellaneous_amount_details_section",
-     "miscellaneous_amount",
-     "column_break_36",
-     "remarks_for_miscellaneous_amount_claim",
-     "costing_details",
-     "total_travel_amount",
-     "base_total_travel_amount",
-     "column_break_33",
-     "balance_amount",
-     "base_balance_amount",
-     "costings",
-     "accounting_dimensions_section",
-     "company",
-     "column_break_38",
-     "branch",
-     "cost_center",
-     "travel_authorization_details",
-     "posting_date",
-     "end_date_auth",
-     "dimension_col_break",
-     "supervisor_name",
-     "supervisor",
-     "supervisor_designation",
-     "travel_claim_details_section",
-     "supervisor_name_details",
-     "supervisor_email",
-     "column_break_7",
-     "travel_claim_date",
-     "total_claim_amount",
-     "column_break_2",
-     "ex_reference",
-     "additional_information_section",
-     "other_details",
-     "employee_advance_reference",
-     "event_details",
-     "address_of_organizer",
-     "name_of_organizer",
-     "details_of_sponsor",
-     "amended_from",
-     "travel_proof",
-     "personal_id_number",
-     "travel_funding",
-     "personal_id_type",
-     "passport_number"
-    ],
-    "fields": [
-     {
-      "fieldname": "travel_type",
-      "fieldtype": "Select",
-      "in_list_view": 1,
-      "label": "Travel Type",
-      "options": "\nDomestic\nInternational",
-      "reqd": 1
-     },
-     {
-      "fieldname": "travel_funding",
-      "fieldtype": "Select",
-      "hidden": 1,
-      "label": "Travel Funding",
-      "options": "\nRequire Full Funding\nFully Sponsored\nPartially Sponsored, Require Partial Funding"
-     },
-     {
-      "fieldname": "travel_proof",
-      "fieldtype": "Attach",
-      "hidden": 1,
-      "label": "Copy of Invitation/Announcement"
-     },
-     {
-      "fieldname": "column_break_2",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "purpose_of_travel",
-      "fieldtype": "Link",
-      "in_list_view": 1,
-      "label": "Purpose of Travel",
-      "options": "Purpose of Travel",
-      "reqd": 1
-     },
-     {
-      "fieldname": "details_of_sponsor",
-      "fieldtype": "Data",
-      "hidden": 1,
-      "label": "Details of Sponsor (Name, Location)"
-     },
-     {
-      "collapsible": 1,
-      "fieldname": "section_break_4",
-      "fieldtype": "Section Break",
-      "label": "Description"
-     },
-     {
-      "fieldname": "description",
-      "fieldtype": "Small Text",
-      "label": "Any Other Details"
-     },
-     {
-      "fieldname": "employee_details",
-      "fieldtype": "Section Break",
-      "label": "Employee Details"
-     },
-     {
-      "fieldname": "employee",
-      "fieldtype": "Link",
-      "in_list_view": 1,
-      "in_standard_filter": 1,
-      "label": "Employee",
-      "options": "Employee",
-      "reqd": 1
-     },
-     {
-      "fetch_from": "employee.employee_name",
-      "fieldname": "employee_name",
-      "fieldtype": "Data",
-      "label": "Employee Name",
-      "read_only": 1
-     },
-     {
-      "fetch_from": "employee.cell_number",
-      "fieldname": "cell_number",
-      "fieldtype": "Data",
-      "label": "Contact Number",
-      "read_only": 1
-     },
-     {
-      "fetch_from": "employee.prefered_email",
-      "fieldname": "prefered_email",
-      "fieldtype": "Data",
-      "label": "Contact Email",
-      "read_only": 1
-     },
-     {
-      "fieldname": "column_break_7",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fetch_from": "employee.date_of_birth",
-      "fieldname": "date_of_birth",
-      "fieldtype": "Date",
-      "hidden": 1,
-      "label": "Date of Birth",
-      "read_only": 1
-     },
-     {
-      "fieldname": "personal_id_type",
-      "fieldtype": "Link",
-      "label": "Identification Document Type",
-      "options": "Identification Document Type"
-     },
-     {
-      "fieldname": "personal_id_number",
-      "fieldtype": "Data",
-      "label": "Identification Document Number"
-     },
-     {
-      "fetch_from": "employee.passport_number",
-      "fieldname": "passport_number",
-      "fieldtype": "Data",
-      "label": "Passport Number"
-     },
-     {
-      "fieldname": "travel_itinerary",
-      "fieldtype": "Section Break",
-      "label": "Travel Itinerary"
-     },
-     {
-      "fieldname": "itinerary",
-      "fieldtype": "Table",
-      "options": "Travel Itinerary",
-      "read_only_depends_on": "workflow_state == \"Approved\""
-     },
-     {
-      "fieldname": "costing_details",
-      "fieldtype": "Section Break",
-      "label": "Costing Details"
-     },
-     {
-      "fetch_from": "branch.cost_center",
-      "fieldname": "cost_center",
-      "fieldtype": "Link",
-      "label": "Cost Center",
-      "options": "Cost Center",
-      "read_only": 1
-     },
-     {
-      "fieldname": "costings",
-      "fieldtype": "Table",
-      "hidden": 1,
-      "label": "Costing",
-      "options": "Travel Request Costing"
-     },
-     {
-      "collapsible": 1,
-      "fieldname": "event_details",
-      "fieldtype": "Section Break",
-      "hidden": 1,
-      "label": "Event Details"
-     },
-     {
-      "fieldname": "name_of_organizer",
-      "fieldtype": "Data",
-      "label": "Name of Organizer"
-     },
-     {
-      "fieldname": "address_of_organizer",
-      "fieldtype": "Data",
-      "label": "Address of Organizer"
-     },
-     {
-      "fieldname": "other_details",
-      "fieldtype": "Text",
-      "label": "Purpose"
-     },
-     {
-      "fieldname": "amended_from",
-      "fieldtype": "Link",
-      "label": "Amended From",
-      "no_copy": 1,
-      "options": "Travel Request",
-      "print_hide": 1,
-      "read_only": 1
-     },
-     {
-      "collapsible": 1,
-      "fieldname": "accounting_dimensions_section",
-      "fieldtype": "Section Break",
-      "label": "Accounting Dimensions"
-     },
-     {
-      "fieldname": "dimension_col_break",
-      "fieldtype": "Column Break"
-     },
-     {
-      "allow_on_submit": 1,
-      "fieldname": "workflow_state",
-      "fieldtype": "Link",
-      "hidden": 1,
-      "label": "Workflow State",
-      "options": "Workflow State"
-     },
-     {
-      "fieldname": "document_status",
-      "fieldtype": "Select",
-      "hidden": 1,
-      "label": "Authorization Status",
-      "options": "\nDraft\nApproved\nRejected\nCancelled"
-     },
-     {
-      "fieldname": "column_break_3",
-      "fieldtype": "Column Break"
-     },
-     {
-      "depends_on": "eval:doc.document_status=='Rejected'",
-      "fieldname": "reason",
-      "fieldtype": "Long Text",
-      "label": "Reason"
-     },
-     {
-      "fieldname": "column_break_8",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "designation",
-      "fieldtype": "Link",
-      "label": "Designation",
-      "options": "Designation",
-      "read_only": 1
-     },
-     {
-      "fieldname": "grade",
-      "fieldtype": "Link",
-      "label": "Grade",
-      "options": "Employee Grade",
-      "read_only": 1,
-      "reqd": 1
-     },
-     {
-      "fetch_from": "grade.dsa",
-      "fieldname": "dsa_per_day",
-      "fieldtype": "Currency",
-      "label": "DSA Per Day"
-     },
-     {
-      "fieldname": "travel_purpose_information",
-      "fieldtype": "Section Break",
-      "label": "TRAVEL DETAILS"
-     },
-     {
-      "fieldname": "mode_of_travel",
-      "fieldtype": "Select",
-      "hidden": 1,
-      "label": "Mode of Travel",
-      "options": "\nFlight\nTrain\nTaxi\nOffice Car\nPersonal Car"
-     },
-     {
-      "fieldname": "travel_advance_details_section",
-      "fieldtype": "Section Break",
-      "label": "TRAVEL ADVANCE DETAILS"
-     },
-     {
-      "default": "BTN",
-      "depends_on": "eval:doc.need_advance==1 && doc.travel_type=='International'",
-      "fieldname": "currency",
-      "fieldtype": "Link",
-      "hidden": 1,
-      "label": "Currency",
-      "options": "Currency"
-     },
-     {
-      "default": "0",
-      "fieldname": "need_advance",
-      "fieldtype": "Check",
-      "label": "Need Advance?"
-     },
-     {
-      "fieldname": "column_break_35",
-      "fieldtype": "Column Break"
-     },
-     {
-      "allow_on_submit": 1,
-      "depends_on": "need_advance",
-      "fieldname": "advance_amount",
-      "fieldtype": "Currency",
-      "label": "Advance Amount",
-      "read_only_depends_on": "employee_advance_reference"
-     },
-     {
-      "allow_on_submit": 1,
-      "depends_on": "eval:doc.currency != 'BTN'",
-      "fieldname": "advance_amount_nu",
-      "fieldtype": "Currency",
-      "label": "Amount in Nu."
-     },
-     {
-      "default": "1",
-      "depends_on": "need_advance",
-      "fieldname": "estimated_amount",
-      "fieldtype": "Currency",
-      "hidden": 1,
-      "label": "Estimated Total Amount"
-     },
-     {
-      "fieldname": "column_break_17",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "travel_authorization_details",
-      "fieldtype": "Section Break",
-      "label": "Travel Authorization Details"
-     },
-     {
-      "fieldname": "supervisor_name",
-      "fieldtype": "Data",
-      "label": "Approver Name",
-      "read_only": 1
-     },
-     {
-      "fieldname": "supervisor",
-      "fieldtype": "Link",
-      "label": "Approver Email ID",
-      "options": "User",
-      "read_only": 1
-     },
-     {
-      "fieldname": "supervisor_designation",
-      "fieldtype": "Data",
-      "hidden": 1,
-      "label": "Supervisor Designation",
-      "read_only": 1
-     },
-     {
-      "default": "Today",
-      "fieldname": "posting_date",
-      "fieldtype": "Date",
-      "in_list_view": 1,
-      "label": "Travel Authorization Date",
-      "reqd": 1
-     },
-     {
-      "allow_on_submit": 1,
-      "fieldname": "end_date_auth",
-      "fieldtype": "Date",
-      "hidden": 1,
-      "label": "Authorization End Date"
-     },
-     {
-      "fieldname": "additional_information_section",
-      "fieldtype": "Section Break",
-      "label": "ADDITIONAL INFORMATION"
-     },
-     {
-      "fieldname": "travel_claim_date",
-      "fieldtype": "Date",
-      "label": "Travel Claim Date",
-      "read_only": 1
-     },
-     {
-      "fieldname": "total_claim_amount",
-      "fieldtype": "Data",
-      "label": "Total Claim Amount",
-      "read_only": 1
-     },
-     {
-      "fieldname": "travel_claim_details_section",
-      "fieldtype": "Section Break",
-      "label": "Travel Claim Details"
-     },
-     {
-      "fieldname": "supervisor_name_details",
-      "fieldtype": "Data",
-      "label": "Supervisor",
-      "read_only": 1
-     },
-     {
-      "fieldname": "supervisor_email",
-      "fieldtype": "Link",
-      "label": "Supervisor Email ID",
-      "options": "User",
-      "read_only": 1
-     },
-     {
-      "fieldname": "total_travel_amount",
-      "fieldtype": "Currency",
-      "label": "Total Travel Amount",
-      "options": "currency",
-      "read_only": 1
-     },
-     {
-      "fieldname": "column_break_33",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "balance_amount",
-      "fieldtype": "Currency",
-      "label": "Balance Amount",
-      "options": "currency",
-      "read_only": 1
-     },
-     {
-      "fetch_from": "employee.branch",
-      "fieldname": "branch",
-      "fieldtype": "Link",
-      "in_standard_filter": 1,
-      "label": "Branch",
-      "options": "Branch",
-      "read_only": 1
-     },
-     {
-      "fieldname": "column_break_38",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "company",
-      "fieldtype": "Link",
-      "label": "Company",
-      "options": "Company",
-      "reqd": 1
-     },
-     {
-      "fieldname": "business_activity",
-      "fieldtype": "Link",
-      "hidden": 1,
-      "label": "Business Activity",
-      "options": "Business Activity"
-     },
-     {
-      "fieldname": "advance_reference",
-      "fieldtype": "Link",
-      "ignore_user_permissions": 1,
-      "label": "Ref Employee Advance",
-      "options": "Advance Reference",
-      "read_only": 1
-     },
-     {
-      "depends_on": "eval:doc.need_advance == 1",
-      "fieldname": "employee_advance_reference",
-      "fieldtype": "Data",
-      "label": "Employee Advance Reference",
-      "read_only": 1
-     },
-     {
-      "fieldname": "ex_reference",
-      "fieldtype": "Data",
-      "label": "Expense Claim Reference",
-      "read_only": 1
-     },
-     {
-      "default": "1",
-      "fieldname": "exchange_rate",
-      "fieldtype": "Currency",
-      "hidden": 1,
-      "label": "Exchange Rate",
-      "read_only": 1
-     },
-     {
-      "fieldname": "base_total_travel_amount",
-      "fieldtype": "Currency",
-      "hidden": 1,
-      "label": "Total Travel Amount (Company Currency)",
-      "options": "Company:company:default_currency",
-      "read_only": 1
-     },
-     {
-      "fieldname": "base_balance_amount",
-      "fieldtype": "Currency",
-      "hidden": 1,
-      "label": "Balance Amount(Company Currency)",
-      "options": "Company:company:default_currency",
-      "read_only": 1
-     },
-     {
-      "fieldname": "miscellaneous_amount_details_section",
-      "fieldtype": "Section Break",
-      "hidden": 1,
-      "label": "Miscellaneous Amount Details"
-     },
-     {
-      "fieldname": "miscellaneous_amount",
-      "fieldtype": "Currency",
-      "hidden": 1,
-      "label": "Miscellaneous Amount"
-     },
-     {
-      "fieldname": "column_break_36",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "remarks_for_miscellaneous_amount_claim",
-      "fieldtype": "Small Text",
-      "hidden": 1,
-      "label": "Remarks For Miscellaneous Amount Claim",
-      "mandatory_depends_on": "eval:doc.miscellaneous_amount > 0"
-     },
-     {
-      "fieldname": "attach_report",
-      "fieldtype": "Attach",
-      "ignore_user_permissions": 1,
-      "label": "Attach Report"
-     }
-    ],
-    "is_submittable": 1,
-    "links": [],
-    "modified": "2023-05-18 17:46:10.389998",
-    "modified_by": "Administrator",
-    "module": "HR",
-    "name": "Travel Request",
-    "naming_rule": "Expression",
-    "owner": "Administrator",
-    "permissions": [
-     {
-      "cancel": 1,
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "System Manager",
-      "share": 1,
-      "submit": 1,
-      "write": 1
-     },
-     {
-      "cancel": 1,
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "Employee",
-      "share": 1,
-      "submit": 1,
-      "write": 1
-     },
-     {
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "Expense Approver",
-      "set_user_permissions": 1,
-      "share": 1,
-      "submit": 1,
-      "write": 1
-     }
-    ],
-    "search_fields": "employee_name, purpose_of_travel, posting_date, total_travel_amount",
-    "sort_field": "modified",
-    "sort_order": "DESC",
-    "states": [],
-    "title_field": "employee_name",
-    "track_changes": 1,
-    "track_views": 1
-   }
+ "actions": [],
+ "autoname": "format:TRQ-{YY}-{MM}-{DD}-{###}",
+ "creation": "2018-05-15 06:32:33.950356",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "workflow_state",
+  "document_status",
+  "column_break_3",
+  "reason",
+  "employee_details",
+  "employee",
+  "employee_name",
+  "cell_number",
+  "business_activity",
+  "column_break_8",
+  "designation",
+  "grade",
+  "prefered_email",
+  "dsa_per_day",
+  "travel_purpose_information",
+  "travel_type",
+  "mode_of_travel",
+  "column_break_17",
+  "purpose_of_travel",
+  "attach_report",
+  "date_of_birth",
+  "section_break_4",
+  "description",
+  "travel_itinerary",
+  "itinerary",
+  "travel_advance_details_section",
+  "currency",
+  "exchange_rate",
+  "need_advance",
+  "advance_reference",
+  "column_break_35",
+  "estimated_amount",
+  "advance_amount",
+  "advance_amount_nu",
+  "miscellaneous_amount_details_section",
+  "miscellaneous_amount",
+  "column_break_36",
+  "remarks_for_miscellaneous_amount_claim",
+  "costing_details",
+  "total_travel_amount",
+  "base_total_travel_amount",
+  "column_break_33",
+  "balance_amount",
+  "base_balance_amount",
+  "costings",
+  "accounting_dimensions_section",
+  "company",
+  "column_break_38",
+  "branch",
+  "cost_center",
+  "travel_authorization_details",
+  "posting_date",
+  "end_date_auth",
+  "dimension_col_break",
+  "supervisor_name",
+  "supervisor",
+  "supervisor_designation",
+  "travel_claim_details_section",
+  "supervisor_name_details",
+  "supervisor_email",
+  "column_break_7",
+  "travel_claim_date",
+  "total_claim_amount",
+  "column_break_2",
+  "ex_reference",
+  "additional_information_section",
+  "other_details",
+  "employee_advance_reference",
+  "event_details",
+  "address_of_organizer",
+  "name_of_organizer",
+  "details_of_sponsor",
+  "amended_from",
+  "travel_proof",
+  "personal_id_number",
+  "travel_funding",
+  "personal_id_type",
+  "passport_number"
+ ],
+ "fields": [
+  {
+   "fieldname": "travel_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Travel Type",
+   "options": "\nDomestic\nInternational",
+   "reqd": 1
+  },
+  {
+   "fieldname": "travel_funding",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Travel Funding",
+   "options": "\nRequire Full Funding\nFully Sponsored\nPartially Sponsored, Require Partial Funding"
+  },
+  {
+   "fieldname": "travel_proof",
+   "fieldtype": "Attach",
+   "hidden": 1,
+   "label": "Copy of Invitation/Announcement"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "purpose_of_travel",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Purpose of Travel",
+   "options": "Purpose of Travel",
+   "reqd": 1
+  },
+  {
+   "fieldname": "details_of_sponsor",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Details of Sponsor (Name, Location)"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Any Other Details"
+  },
+  {
+   "fieldname": "employee_details",
+   "fieldtype": "Section Break",
+   "label": "Employee Details"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.cell_number",
+   "fieldname": "cell_number",
+   "fieldtype": "Data",
+   "label": "Contact Number",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.prefered_email",
+   "fieldname": "prefered_email",
+   "fieldtype": "Data",
+   "label": "Contact Email",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.date_of_birth",
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "Date of Birth",
+   "read_only": 1
+  },
+  {
+   "fieldname": "personal_id_type",
+   "fieldtype": "Link",
+   "label": "Identification Document Type",
+   "options": "Identification Document Type"
+  },
+  {
+   "fieldname": "personal_id_number",
+   "fieldtype": "Data",
+   "label": "Identification Document Number"
+  },
+  {
+   "fetch_from": "employee.passport_number",
+   "fieldname": "passport_number",
+   "fieldtype": "Data",
+   "label": "Passport Number"
+  },
+  {
+   "fieldname": "travel_itinerary",
+   "fieldtype": "Section Break",
+   "label": "Travel Itinerary"
+  },
+  {
+   "fieldname": "itinerary",
+   "fieldtype": "Table",
+   "options": "Travel Itinerary",
+   "read_only_depends_on": "workflow_state == \"Approved\""
+  },
+  {
+   "fieldname": "costing_details",
+   "fieldtype": "Section Break",
+   "label": "Costing Details"
+  },
+  {
+   "fetch_from": "branch.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
+  },
+  {
+   "fieldname": "costings",
+   "fieldtype": "Table",
+   "hidden": 1,
+   "label": "Costing",
+   "options": "Travel Request Costing"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "event_details",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Event Details"
+  },
+  {
+   "fieldname": "name_of_organizer",
+   "fieldtype": "Data",
+   "label": "Name of Organizer"
+  },
+  {
+   "fieldname": "address_of_organizer",
+   "fieldtype": "Data",
+   "label": "Address of Organizer"
+  },
+  {
+   "fieldname": "other_details",
+   "fieldtype": "Text",
+   "label": "Purpose"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Travel Request",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "accounting_dimensions_section",
+   "fieldtype": "Section Break",
+   "label": "Accounting Dimensions"
+  },
+  {
+   "fieldname": "dimension_col_break",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Workflow State",
+   "options": "Workflow State"
+  },
+  {
+   "fieldname": "document_status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Authorization Status",
+   "options": "\nDraft\nApproved\nRejected\nCancelled"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.document_status=='Rejected'",
+   "fieldname": "reason",
+   "fieldtype": "Long Text",
+   "label": "Reason"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "grade",
+   "fieldtype": "Link",
+   "label": "Grade",
+   "options": "Employee Grade",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "grade.dsa",
+   "fieldname": "dsa_per_day",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "DSA Per Day"
+  },
+  {
+   "fieldname": "travel_purpose_information",
+   "fieldtype": "Section Break",
+   "label": "TRAVEL DETAILS"
+  },
+  {
+   "fieldname": "mode_of_travel",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Mode of Travel",
+   "options": "\nFlight\nTrain\nTaxi\nOffice Car\nPersonal Car"
+  },
+  {
+   "fieldname": "travel_advance_details_section",
+   "fieldtype": "Section Break",
+   "label": "TRAVEL ADVANCE DETAILS"
+  },
+  {
+   "default": "BTN",
+   "depends_on": "eval:doc.need_advance==1 && doc.travel_type=='International'",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "default": "0",
+   "fieldname": "need_advance",
+   "fieldtype": "Check",
+   "label": "Need Advance?"
+  },
+  {
+   "fieldname": "column_break_35",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "need_advance",
+   "fieldname": "advance_amount",
+   "fieldtype": "Currency",
+   "label": "Advance Amount",
+   "read_only_depends_on": "employee_advance_reference"
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.currency != 'BTN'",
+   "fieldname": "advance_amount_nu",
+   "fieldtype": "Currency",
+   "label": "Amount in Nu."
+  },
+  {
+   "default": "1",
+   "depends_on": "need_advance",
+   "fieldname": "estimated_amount",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Estimated Total Amount"
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "travel_authorization_details",
+   "fieldtype": "Section Break",
+   "label": "Travel Authorization Details"
+  },
+  {
+   "fieldname": "supervisor_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "supervisor",
+   "fieldtype": "Link",
+   "label": "Approver Email ID",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "supervisor_designation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Supervisor Designation",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Travel Authorization Date",
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "end_date_auth",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "Authorization End Date"
+  },
+  {
+   "fieldname": "additional_information_section",
+   "fieldtype": "Section Break",
+   "label": "ADDITIONAL INFORMATION"
+  },
+  {
+   "fieldname": "travel_claim_date",
+   "fieldtype": "Date",
+   "label": "Travel Claim Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_claim_amount",
+   "fieldtype": "Data",
+   "label": "Total Claim Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "travel_claim_details_section",
+   "fieldtype": "Section Break",
+   "label": "Travel Claim Details"
+  },
+  {
+   "fieldname": "supervisor_name_details",
+   "fieldtype": "Data",
+   "label": "Supervisor",
+   "read_only": 1
+  },
+  {
+   "fieldname": "supervisor_email",
+   "fieldtype": "Link",
+   "label": "Supervisor Email ID",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_travel_amount",
+   "fieldtype": "Currency",
+   "label": "Total Travel Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_33",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "balance_amount",
+   "fieldtype": "Currency",
+   "label": "Balance Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.branch",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Branch",
+   "options": "Branch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_38",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "business_activity",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Business Activity",
+   "options": "Business Activity"
+  },
+  {
+   "fieldname": "advance_reference",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Ref Employee Advance",
+   "options": "Advance Reference",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.need_advance == 1",
+   "fieldname": "employee_advance_reference",
+   "fieldtype": "Data",
+   "label": "Employee Advance Reference",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ex_reference",
+   "fieldtype": "Data",
+   "label": "Expense Claim Reference",
+   "read_only": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "exchange_rate",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Exchange Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "base_total_travel_amount",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Total Travel Amount (Company Currency)",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "base_balance_amount",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Balance Amount(Company Currency)",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "miscellaneous_amount_details_section",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Miscellaneous Amount Details"
+  },
+  {
+   "fieldname": "miscellaneous_amount",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Miscellaneous Amount"
+  },
+  {
+   "fieldname": "column_break_36",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks_for_miscellaneous_amount_claim",
+   "fieldtype": "Small Text",
+   "hidden": 1,
+   "label": "Remarks For Miscellaneous Amount Claim",
+   "mandatory_depends_on": "eval:doc.miscellaneous_amount > 0"
+  },
+  {
+   "fieldname": "attach_report",
+   "fieldtype": "Attach",
+   "ignore_user_permissions": 1,
+   "label": "Attach Report"
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-05-23 12:34:55.661755",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Travel Request",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Expense Approver",
+   "set_user_permissions": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "employee_name, purpose_of_travel, posting_date, total_travel_amount",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "employee_name",
+ "track_changes": 1,
+ "track_views": 1
+}

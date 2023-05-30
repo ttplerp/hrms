@@ -887,7 +887,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-05-17 15:59:37.397481",
+ "modified": "2023-05-24 14:22:54.248821",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
@@ -899,6 +899,15 @@
    "print": 1,
    "read": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR Manager",
    "share": 1,
    "write": 1
   }

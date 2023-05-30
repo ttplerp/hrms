@@ -13,15 +13,14 @@ from erpnext.custom_workflow import validate_workflow_states, notify_workflow_st
 
 class EmployeeTransfer(Document):
 	def validate(self):
-		if self.transfer_type == "Personal Request":
-			validate_workflow_states(self)
+		validate_workflow_states(self)
 		self.check_duplicate()
 		self.validate_transfer_date()
 
 		self.validate_employee_eligibility()
 		if frappe.get_value("Employee", self.employee, "status") == "Left":
 			frappe.throw(_("Cannot transfer Employee with status Left"))
-		if self.workflow_state != "Approved" and self.transfer_type == "Personal Request":
+		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
   
 	def before_submit(self):
@@ -31,8 +30,7 @@ class EmployeeTransfer(Document):
 
 	def on_submit(self):
 		self.update_employee_master()
-		if self.transfer_type == "Personal Request":
-			validate_workflow_states(self)
+		validate_workflow_states(self)
 
 		
 	def on_cancel(self):
@@ -54,6 +52,7 @@ class EmployeeTransfer(Document):
 		employee.designation= self.new_designation if not cancel else self.old_designation
 		employee.section	= self.new_section if not cancel else self.old_section
 		employee.branch		= self.new_branch if not cancel else self.old_branch
+		employee.unit 		= self.new_unit if not cancel else self.old_unit
 		employee.cost_center= self.new_cost_center if not cancel else self.old_cost_center
 		employee.reports_to = self.new_reports_to if not cancel and self.new_reports_to else self.old_reports_to
 		employee.expense_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")
@@ -81,7 +80,7 @@ class EmployeeTransfer(Document):
 			}
 			employee.append("internal_work_history", internal_work_history)
 		employee.save(ignore_permissions=True)
-  
+
 	def validate_employee_eligibility(self):
 		if self.transfer_type == "Personal Request":
 			date1 = ''
@@ -116,54 +115,6 @@ class EmployeeTransfer(Document):
 			datediff = relativedelta(d2,d1).years
 			if datediff < 4:
     				frappe.throw("You are not eligble for transfer since you have not served in your current branch for at least 4 years")
-    
-	# def validate_user_in_details(self):
-	# 	for item in self.transfer_details:
-	# 		if item.fieldname == "user_id" and item.new != item.current:
-	# 			return True
-	# 	return False
-
-
-# Following code added by SHIV on 2021/05/14
-# def get_permission_query_conditions(user):
-# 	if not user: user = frappe.session.user
-# 	user_roles = frappe.get_roles(user)
-
-# 	if "HR User" in user_roles or "HR Manager" in user_roles:
-# 		return
-# 	elif "Approver" in user_roles:
-# 		approver_id = frappe.db.get_value("Employee", {"user_id":user},"name")
-# 		return """(
-# 			exists(select 1
-# 				from `tabEmployee` as e
-# 				where e.name = `tabEmployee Transfer`.employee
-# 				and e.reports_to = '{approver_id}')
-# 		)""".format(approver_id=approver_id) 
-# 	else:
-# 		return """(
-# 			exists(select 1
-# 				from `tabEmployee` as e
-# 				where e.name = `tabEmployee Transfer`.employee
-# 				and e.user_id = '{user}')
-# 		)""".format(user=user)
-
-# Following code added by SHIV on 2020/09/21
-# def has_record_permission(doc, user):
-# 	if not user: user = frappe.session.user
-# 	user_roles = frappe.get_roles(user)
-	
-# 	if "HR User" in user_roles or "HR Manager" in user_roles:
-# 		return True
-# 	elif "Approver" in user_roles:
-# 		if frappe.db.get_value("Employee", {"name":doc.employee},"reports_to") == frappe.db.get_value("Employee",{"user_id":user},"name"):
-# 			return True 
-# 	else:
-# 		if frappe.db.exists("Employee", {"name":doc.employee, "user_id": user}):
-# 			return True
-# 		else:
-# 			return False 
-
-# 	return True
 
 @frappe.whitelist()
 def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False):

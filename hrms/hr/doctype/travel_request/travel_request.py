@@ -135,6 +135,7 @@ class TravelRequest(AccountsController):
 					`tabTravel Itinerary` t3
 				where t1.employee = "{employee}"
 				and t1.docstatus != 2
+				and t1.workflow_state !="Rejected"
 				and t1.name != "{name}"
 				and t2.parent = t1.name
 				and t3.parent = "{name}"
@@ -190,6 +191,7 @@ class TravelRequest(AccountsController):
 						`tabTravel Itinerary` t3
 					where t1.employee = "{employee}"
 					and t1.docstatus != 2
+					and t1.workflow_state !="Rejected"
 					and t1.name != "{travel_authorization}"
 					and t2.parent = t1.name
 					and t3.parent = "{travel_authorization}"
@@ -258,20 +260,11 @@ class TravelRequest(AccountsController):
 				default_account = frappe.db.get_value("Company", self.company, "meeting_and_seminars_incountry_account")
 			elif self.purpose_of_travel == "Training":
 				default_account = frappe.db.get_value("Company", self.company, "training_in_country_account")
-			# else:
-			# 	default_account = frappe.db.get_value("Company", self.company, "travel_in_country_account")
 		else:
 			if self.purpose_of_travel == "Meeting & Seminars":
 				default_account = frappe.db.get_value("Company", self.company, "meeting_and_seminars_outcountry_account")
 			elif self.purpose_of_travel == "Training":
 				default_account = frappe.db.get_value("Company", self.company, "training_out_country_account")
-			# else:
-			# 	default_account = frappe.db.get_value("Company", self.company, "travel_out_country_account")
-		
-		# if self.employee_advance_reference:
-		# 	sanctioned_amount = self.base_balance_amount
-		# else:
-		# 	sanctioned_amount = self.base_total_travel_amount
 		
 		travel_amt = mileage_amt = hotel_amt = entertainment_amt = fare_amt = 0
 		

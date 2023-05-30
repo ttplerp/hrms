@@ -83,7 +83,7 @@ class PromotionEntry(Document):
 		# 	{}
 		# 	order by t1.branch, t1.name
 		# """.format(pe_date, self.month_name, cond)
-		query = """select t1.name as employee, t1.employee_name, t1.department, t1.designation, t1.employee_grade as employee_grade 
+		query = """select t1.name as employee, t1.employee_name, t1.department, t1.designation, t1.grade as employee_grade 
 					from `tabEmployee` t1 
 					where t1.status = 'Active' 
 					and t1.employment_type not in ('Contract','Probation') 
@@ -172,33 +172,17 @@ class PromotionEntry(Document):
 		if not new_grade:
 			frappe.throw("Promote to Grade not set for Employee {}".format(employee))
 		new_lower_limit = frappe.db.get_value("Employee Grade", new_grade, "lower_limit")
-		frappe.msgprint("nll: " + str(new_lower_limit))
 		new_increment = frappe.db.get_value("Employee Grade", new_grade, "increment")
-		# frappe.msgprint("ni: " + str(new_increment))
-
 		new_upper_limit = frappe.db.get_value("Employee Grade", new_grade, "upper_limit")
-		# frappe.msgprint("bp: " + str(basic_pay))
-		if flt(basic_pay,2) > flt(new_lower_limit): 
-			bp_diff = flt(basic_pay) - flt(new_lower_limit)
-			# frappe.msgprint("bp_diff: " + str(bp_diff))
-			new_increment_div = flt(bp_diff) / flt(new_increment)
-			if new_increment_div < 0:
-				frappe.msgprint('here')
-				new_increment_div = -1 * new_increment_div
-			# frappe.msgprint("nid: " + str(new_increment_div))
-
-			new_increment_div = math.floor(new_increment_div) + 2
-			# frappe.msgprint("nid__11: " + str(new_increment_div))
-
-			new_basic_multiple = new_increment_div * new_increment
-			# frappe.msgprint("nbm1: " + str(new_basic_multiple))
-	
-			amount = new_basic_multiple + new_lower_limit
+		new_basic_increment = flt(basic_pay) + flt(new_increment)
+		if flt(new_basic_increment) > flt(new_lower_limit): 
+			while True:
+				new_lower_limit += new_increment
+				amount = new_lower_limit
+				if new_lower_limit >= new_basic_increment:
+					break
 		else:
 			amount = new_lower_limit
-		# frappe.msgprint(str(new_basic_multiple))
-		# frappe.msgprint(str(new_lower_limit))
-		# frappe.msgprint(str(amount))
 		return new_grade, amount
 
 	@frappe.whitelist()

@@ -59,8 +59,6 @@ function validate_prev_doc(frm, title){
 		args: {doctype: frm.doctype, docname: frm.docname, col_list: "cost_center,branch"},
 		callback: function(r) {
 			if(frm.doc.cost_center && (frm.doc.cost_center !== r.message.cost_center)){
-				console.log(frm);
-				console.log(r);
 				frappe.prompt({
 					fieldtype: "Date",
 					fieldname: "date_of_transfer",

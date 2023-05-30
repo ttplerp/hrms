@@ -59,7 +59,6 @@ class MusterRollEmployee(Document):
             self.append("internal_work_history",{
                 "branch": self.branch,
                 "cost_center": self.cost_center,
-                "business_activity": self.business_activity,
                 "from_date": self.joining_date,
                 "owner": frappe.session.user,
                 "creation": nowdate(),

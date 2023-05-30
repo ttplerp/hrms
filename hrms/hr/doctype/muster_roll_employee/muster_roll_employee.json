@@ -11,21 +11,18 @@
   "section_break_1",
   "person_name",
   "designation",
+  "list_in_job_card",
   "column_break_4",
   "status",
   "gender",
-  "section_break_6",
   "qualification",
-  "list_in_job_card",
   "section_break_8",
   "project",
-  "business_activity",
   "column_break_8",
   "branch",
   "cost_center",
   "sec_break_12",
   "joining_date",
-  "column_break_16",
   "separation_date",
   "column_break_18",
   "blood_group",
@@ -38,12 +35,11 @@
   "rate_per_hour",
   "sb_bank_info",
   "salary_mode",
+  "bank_branch",
   "column_break_32",
   "bank_name",
-  "bank_branch",
-  "column_break_34",
-  "bank_account_type",
   "bank_ac_no",
+  "bank_account_type",
   "section_break_16",
   "internal_work_history",
   "section_break_26",
@@ -68,14 +64,14 @@
    "fieldname": "person_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Person Name",
+   "label": "MR Employee Name",
    "reqd": 1
   },
   {
    "fieldname": "id_card",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Citizen ID Number",
+   "label": "CID/Passport/Work Permit",
    "reqd": 1,
    "unique": 1
   },
@@ -90,10 +86,6 @@
    "label": "Status",
    "options": "Active\nLeft",
    "reqd": 1
-  },
-  {
-   "fieldname": "section_break_6",
-   "fieldtype": "Column Break"
   },
   {
    "default": "0",
@@ -136,13 +128,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "business_activity",
-   "fieldtype": "Link",
-   "label": "Business Activity",
-   "options": "Business Activity",
-   "reqd": 1
-  },
-  {
    "fieldname": "sec_break_12",
    "fieldtype": "Section Break"
   },
@@ -151,10 +136,6 @@
    "fieldtype": "Date",
    "label": "Joining Date",
    "reqd": 1
-  },
-  {
-   "fieldname": "column_break_16",
-   "fieldtype": "Column Break"
   },
   {
    "depends_on": "eval:doc.status == 'Left'",
@@ -228,10 +209,6 @@
    "options": "Financial Institution Branch"
   },
   {
-   "fieldname": "column_break_34",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "bank_account_type",
    "fieldtype": "Link",
    "label": "Bank Account Type",
@@ -240,7 +217,7 @@
   {
    "fieldname": "bank_ac_no",
    "fieldtype": "Data",
-   "label": "Bank Account#"
+   "label": "Bank Account Number"
   },
   {
    "fieldname": "section_break_16",
@@ -336,7 +313,7 @@
    "fieldname": "gender",
    "fieldtype": "Select",
    "label": "Gender",
-   "options": "\nMale\nFemale"
+   "options": "\nMale\nFemale\nOther"
   },
   {
    "fieldname": "qualification",
@@ -346,7 +323,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-22 16:11:03.997481",
+ "modified": "2023-05-30 15:44:14.106985",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

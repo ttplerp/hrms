@@ -18,35 +18,9 @@ class EmployeeSeparation(EmployeeBoardingController):
 	def on_submit(self):
 		super(EmployeeSeparation, self).on_submit()
 		# notify_workflow_states(self)
-
-	# def on_update_after_submit(self):
-	# 	self.create_task_and_notify_user()
-
 	def on_cancel(self):
 		super(EmployeeSeparation, self).on_cancel()
 		notify_workflow_states(self)
-
-	# @frappe.whitelist()
-	# def get_training_obligation_list(self): 		
-
-	# 	data = frappe.db.sql("""
-	# 		SELECT course_title as training_name,obligation_type,obligation_end_date,training_type,training_category,eth.country, college_training_institute,
-	# 		start_date,end_date,duration,attachment_link,view_undertaking           
-	# 		FROM `tabEmployee` e
-	# 		INNER JOIN
-	# 			`tabEmployee Training History` eth ON e.name=eth.parent			
-	# 		WHERE 
-	# 		 e.employee='{}' 
-	# 		 and eth.status = "Active"			
-	# 		 and eth.obligation_end_date >= date_format(SYSDATE(),'%Y-%m-%d')
-			      
-	# 	""".format(self.employee), as_dict=True)
-		
-	# 	# set obligation_history 
-	# 	self.set('obligation_history', [])
-	# 	for d in data:
-	# 		row = self.append('obligation_history', {})           
-	# 		row.update(d)
   
 @frappe.whitelist()
 def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False):

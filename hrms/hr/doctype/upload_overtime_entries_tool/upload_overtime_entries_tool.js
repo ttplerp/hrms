@@ -1,43 +1,51 @@
-// Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
-// License: GNU General Public License v3. See license.txt
+// Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
+// For license information, please see license.txt
 
-
-
-frappe.provide("hrms.hr");
-
-erpnext.hr.OvertimeControlPanel = frappe.ui.form.Controller.extend({
-	onload: function() {
+frappe.ui.form.on('Upload Overtime Entries Tool', {
+    onload: function() {
 	},
 
-	refresh: function() {
-		this.frm.disable_save();
-		this.show_upload();
+	refresh: function(frm) {
+		// frm.disable_save();
+		// frm.events.show_upload();
 	},
-
-	get_template:function() {
-		if(!this.frm.doc.fiscal_year || !this.frm.doc.month || !this.frm.doc.branch) {
-			msgprint(__("Fiscal Year, Month, and branch are mandatory"));
+    upload_data:function(frm){
+        frappe.call({
+            method:"upload_data",
+            doc:frm.doc,
+            callback:function(r){
+                
+            },
+            freeze: true,
+			freeze_message: '<span style="color:white; background-color: red; padding: 10px 50px; border-radius: 5px;">Uploading Data.....</span>'
+        })
+    },
+	get_template:function(frm) {
+		if(!frm.doc.fiscal_year || !frm.doc.month || !frm.doc.branch || !frm.doc.file_type) {
+			msgprint(__("Fiscal Year, Month, Branch and File Type are mandatory"));
 			return;
 		}
-		window.location.href = repl(frappe.request.url +
-			'?cmd=%(cmd)s&fiscal_year=%(fiscal_year)s&month=%(month)s&branch=%(branch)s', {
-				cmd: "hrms.hr.doctype.upload_overtime_entries.upload_overtime_entries.get_template",
-				branch: this.frm.doc.branch,
-				fiscal_year: this.frm.doc.fiscal_year,
-				month: this.frm.doc.month,
-			});
+        open_url_post(
+            '/api/method/hrms.hr.doctype.upload_overtime_entries_tool.upload_overtime_entries_tool.download_template',
+            {
+                file_type: frm.doc.file_type,
+                branch : frm.doc.branch,
+                month: frm.doc.month,
+                fiscal_year: frm.doc.fiscal_year
+            }
+        )
 	},
 
-	show_upload: function() {
-		var me = this;
+	show_upload: function(frm) {
+		var me = frm;
 		var $wrapper = $(cur_frm.fields_dict.upload_html.wrapper).empty();
 
 		// upload
-		frappe.upload.make({
+		frappe.call({
 			parent: $wrapper,
-			args: {
-				method: 'erpnext.hr.doctype.upload_overtime_entries.upload_overtime_entries.upload'
-			},
+			// args: {
+			method: 'hrms.hr.doctype.upload_overtime_entries.upload_overtime_entries.upload',
+			// },
 			sample_url: "e.g. http://example.com/somefile.csv",
 			callback: function(attachment, r) {
 				var $log_wrapper = $(cur_frm.fields_dict.import_log.wrapper).empty();
@@ -82,6 +90,4 @@ erpnext.hr.OvertimeControlPanel = frappe.ui.form.Controller.extend({
 		$wrapper.find('form input[type="submit"]')
 			.attr('value', 'Upload and Import')
 	}
-})
-
-cur_frm.cscript = new erpnext.hr.OvertimeControlPanel({frm: cur_frm});
+});
