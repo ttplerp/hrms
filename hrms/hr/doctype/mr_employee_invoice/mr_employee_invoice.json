@@ -1,0 +1,310 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "MRINV.-.YY.-.MM.-.DD.-.###",
+ "creation": "2023-06-01 12:54:35.254107",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mr_employee",
+  "branch",
+  "posting_date",
+  "credit_account",
+  "currency",
+  "column_break_4",
+  "mr_employee_name",
+  "cost_center",
+  "unit",
+  "company",
+  "payment_status",
+  "section_break_7",
+  "fiscal_year",
+  "column_break_9",
+  "month",
+  "attendance_details_section",
+  "get_attendance",
+  "attendance",
+  "total_days_worked",
+  "ot_details_section",
+  "get_ot",
+  "ot",
+  "total_ot_hrs",
+  "deductions_details_section",
+  "deduction",
+  "amount_details_section",
+  "total_ot_amount",
+  "grand_total",
+  "outstanding_amount",
+  "column_break_10",
+  "total_daily_wage_amount",
+  "other_deduction",
+  "net_payable_amount",
+  "amended_from",
+  "section_break_34",
+  "remarks",
+  "journal_entry"
+ ],
+ "fields": [
+  {
+   "fieldname": "mr_employee",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "MR Employee",
+   "options": "Muster Roll Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "mr_employee.person_name",
+   "fieldname": "mr_employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "MR Employee Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mr_employee.branch",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "branch.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "mr_employee.unit",
+   "fieldname": "unit",
+   "fieldtype": "Link",
+   "label": "Unit",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "MR Employee Invoice",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount_details_section",
+   "fieldtype": "Section Break",
+   "label": "Amount Details"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "outstanding_amount",
+   "fieldtype": "Currency",
+   "label": "Outstanding Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "net_payable_amount",
+   "fieldtype": "Currency",
+   "label": "Net Payable Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "other_deduction",
+   "fieldtype": "Currency",
+   "label": "Other Deduction",
+   "read_only": 1
+  },
+  {
+   "fieldname": "attendance_details_section",
+   "fieldtype": "Section Break",
+   "label": "Attendance Details"
+  },
+  {
+   "fieldname": "attendance",
+   "fieldtype": "Table",
+   "label": "Attendance",
+   "options": "MR Attendance Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_days_worked",
+   "fieldtype": "Float",
+   "label": "Total Days Worked",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ot_details_section",
+   "fieldtype": "Section Break",
+   "label": "OT Details"
+  },
+  {
+   "fieldname": "ot",
+   "fieldtype": "Table",
+   "label": "OT",
+   "options": "Overtime Invoice Item",
+   "read_only": 1
+  },
+  {
+   "fieldname": "get_attendance",
+   "fieldtype": "Button",
+   "label": "Get Attendance"
+  },
+  {
+   "fieldname": "get_ot",
+   "fieldtype": "Button",
+   "label": "Get OT"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Fiscal Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "month",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Month",
+   "options": "\nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "deductions_details_section",
+   "fieldtype": "Section Break",
+   "label": "Deductions Details"
+  },
+  {
+   "fieldname": "deduction",
+   "fieldtype": "Table",
+   "label": "Deduction",
+   "options": "MR Employee Deduction"
+  },
+  {
+   "fieldname": "credit_account",
+   "fieldtype": "Link",
+   "label": "Credit Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_ot_hrs",
+   "fieldtype": "Float",
+   "label": "Total OT Hrs",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_ot_amount",
+   "fieldtype": "Currency",
+   "label": "Total OT Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_daily_wage_amount",
+   "fieldtype": "Currency",
+   "label": "Total Daily Wage Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_34",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "journal_entry",
+   "fieldtype": "Data",
+   "label": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "options": "\nPaid\nUnpaid\nSubmitted\nPartly Paid\nDraft\nCancelled",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-06-02 17:19:27.734457",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "MR Employee Invoice",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "mr_employee",
+ "track_changes": 1
+}

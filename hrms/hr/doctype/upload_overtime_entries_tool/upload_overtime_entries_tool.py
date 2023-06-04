@@ -53,7 +53,8 @@ class UploadOvertimeEntriesTool(Document):
 			try:
 				row_idx = i + 6
 				for j in range(7, len(row) + 1):
-					month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].index(row[6]) + 1
+					month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].index(row[6])
+					month = cint(month) + 1
 					month = str(month) if cint(month) > 9 else str("0" + str(month))
 					day   = cint(j)-6 if cint(j) > 9 else "0" + str(cint(j)-6)
 					old = frappe.db.get_value("Muster Roll Overtime Entry", {"number":str(row[3]).strip('\''), "date": str(row[5]) + '-' + str(month) + '-' + str(day), "docstatus": 1}, ["docstatus","name","number_of_hours"], as_dict=1)

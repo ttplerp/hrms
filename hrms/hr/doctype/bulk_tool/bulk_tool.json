@@ -25,6 +25,25 @@
  ],
  "fields": [
   {
+   "default": "CSV",
+   "fieldname": "file_type",
+   "fieldtype": "Select",
+   "label": "File Type",
+   "options": "\nCSV\nEXCEL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "upload_type",
+   "fieldtype": "Select",
+   "label": "Upload Type",
+   "options": "\nOvertime\nAttendance",
+   "reqd": 1
+  },
+  {
    "description": "Download the Template, fill appropriate data and attach the modified file.\nAll dates and employee combination in the selected period will come in the template, with existing attendance records",
    "fieldname": "download_template",
    "fieldtype": "Section Break",
@@ -100,37 +119,18 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Upload Overtime Entries Tool",
+   "options": "Bulk Tool",
    "print_hide": 1,
    "read_only": 1
-  },
-  {
-   "default": "CSV",
-   "fieldname": "file_type",
-   "fieldtype": "Select",
-   "label": "File Type",
-   "options": "\nCSV\nEXCEL",
-   "reqd": 1
-  },
-  {
-   "fieldname": "upload_type",
-   "fieldtype": "Select",
-   "label": "Upload Type",
-   "options": "\nOvertime\nAttendance",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_2",
-   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-31 15:19:30.529536",
+ "modified": "2023-05-31 15:24:18.559744",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Upload Overtime Entries Tool",
+ "name": "Bulk Tool",
  "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [

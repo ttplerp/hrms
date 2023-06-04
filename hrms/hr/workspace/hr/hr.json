@@ -1111,7 +1111,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "MR Management",
-   "link_count": 2,
+   "link_count": 5,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -1134,9 +1134,39 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Overtime Entry",
+   "link_count": 0,
+   "link_to": "Muster Roll Overtime Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bulk Upload Tool",
+   "link_count": 0,
+   "link_to": "Bulk Upload Tool",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "MR Employee Invoice",
+   "link_count": 0,
+   "link_to": "MR Employee Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2023-05-04 12:48:15.836875",
+ "modified": "2023-06-02 17:10:02.341968",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",

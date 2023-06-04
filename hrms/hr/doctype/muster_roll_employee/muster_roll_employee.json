@@ -18,6 +18,7 @@
   "qualification",
   "section_break_8",
   "project",
+  "unit",
   "column_break_8",
   "branch",
   "cost_center",
@@ -319,11 +320,17 @@
    "fieldname": "qualification",
    "fieldtype": "Data",
    "label": "Qualification"
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Link",
+   "label": "Unit",
+   "options": "Unit"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-30 15:44:14.106985",
+ "modified": "2023-06-01 16:16:24.195880",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
@@ -367,6 +374,7 @@
    "write": 1
   }
  ],
+ "search_fields": "person_name,branch",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
