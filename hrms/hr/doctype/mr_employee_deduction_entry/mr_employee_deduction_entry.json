@@ -1,0 +1,78 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2023-06-05 10:00:35.701616",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mr_employee",
+  "mr_employee_name",
+  "column_break_2",
+  "amount",
+  "account",
+  "section_break_4",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "mr_employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "MR Employee",
+   "options": "Muster Roll Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 4,
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Remarks"
+  },
+  {
+   "fetch_from": "mr_employee.person_name",
+   "fieldname": "mr_employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "MR Employee Name",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-06-06 11:17:12.014573",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "MR Employee Deduction Entry",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -43,7 +43,8 @@
   "amended_from",
   "section_break_34",
   "remarks",
-  "journal_entry"
+  "journal_entry",
+  "mr_invoice_entry"
  ],
  "fields": [
   {
@@ -277,12 +278,19 @@
    "label": "Payment Status",
    "options": "\nPaid\nUnpaid\nSubmitted\nPartly Paid\nDraft\nCancelled",
    "read_only": 1
+  },
+  {
+   "fieldname": "mr_invoice_entry",
+   "fieldtype": "Link",
+   "label": "MR Invoice Entry",
+   "options": "MR Invoice Entry",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-06-02 17:19:27.734457",
+ "modified": "2023-06-05 14:22:16.641493",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Employee Invoice",

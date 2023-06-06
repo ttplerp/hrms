@@ -154,7 +154,7 @@ class MREmployeeInvoice(AccountsController):
 	@frappe.whitelist()
 	def get_attendance(self):
 		if not self.mr_employee or not self.fiscal_year or not self.month or not self.mr_employee:
-			frappe.throw("MR Employee or Fiscal Year or Month is missing")
+			frappe.msgprint("MR Employee or Fiscal Year or Month is missing",raise_exception=True)
 		month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].index(self.month) + 1
 		month = str(month) if cint(month) > 9 else str("0" + str(month))
 		start_date = getdate(str(self.fiscal_year)+"-"+str(month)+"-01")
@@ -168,9 +168,13 @@ class MREmployeeInvoice(AccountsController):
 				`tabMuster Roll Employee` b on a.mr_employee = b.name
 				where a.date between '{}' and '{}' and a.status = 'Present' 
 				and a.docstatus = 1 and a.mr_employee = '{}'
-				'''.format(start_date, end_date, self.mr_employee), as_dict=1):
+                and not exists (select 1 from `tabMR Employee Invoice` e inner join `tabMR Attendance Item` f 
+                                    on e.name = f.parent where e.name != '{}' and f.mr_attendance = a.name and e.docstatus != 2)
+				'''.format(start_date, end_date, self.mr_employee, self.name), as_dict=1):
 			self.total_days_worked += 1
 			self.append("attendance",d)
+		if len(self.attendance) <= 0:
+			frappe.msgprint("No attendance found for year {} of month {}".format(frappe.bold(self.fiscal_year), frappe.bold(self.month)),raise_exception=True)
 	@frappe.whitelist()
 	def get_ot(self):
 		if not self.mr_employee or not self.fiscal_year or not self.month or not self.mr_employee:
@@ -188,11 +192,14 @@ class MREmployeeInvoice(AccountsController):
 				`tabMuster Roll Employee` b on a.mr_employee = b.name
 				where a.date between '{}' and '{}' 
 				and a.docstatus = 1 and a.mr_employee = '{}'
-				'''.format(start_date, end_date, self.mr_employee), as_dict=1):
+                and not exists(select 1 from `tabMR Employee Invoice` c inner join `tabOvertime Invoice Item` d
+                 on c.name = d.parent where c.docstatus != 2 and c.name != '{}' and d.overtime_entries = a.name )
+				'''.format(start_date, end_date, self.mr_employee, self.name), as_dict=1):
 			self.total_ot_hrs += flt(d.number_of_hours)
 			d.update({"amount": flt(flt(d.ot_rate) * flt(d.number_of_hours),2)})
 			self.append("ot",d)
-		
+		if len(self.ot) <= 0:
+			frappe.msgprint("No OT found for year {} of month {}".format(frappe.bold(self.fiscal_year), frappe.bold(self.month)),raise_exception=False)
 	@frappe.whitelist()
 	def post_journal_entry(self):
 		if self.journal_entry and frappe.db.exists("Journal Entry",{"name":self.journal_entry,"docstatus":("!=",2)}):

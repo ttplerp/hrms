@@ -14,9 +14,11 @@ frappe.ui.form.on('MR Employee Invoice', {
 				};
 				frappe.set_route("query-report", "General Ledger");
 			},__('View'));
-            cur_frm.add_custom_button(__('Make Journal Entry'), function(doc) {
-                frm.events.make_journal_entry(frm)
-            },__('Create'))
+            if (frm.doc.outstanding_amount>0){
+                cur_frm.add_custom_button(__('Make Journal Entry'), function(doc) {
+                    frm.events.make_journal_entry(frm)
+                },__('Create'))
+            }
         }
 	},
     onload:function(frm){
