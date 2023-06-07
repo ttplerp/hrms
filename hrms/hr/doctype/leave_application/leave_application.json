@@ -168,6 +168,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "default": "Open",
    "fieldname": "status",
    "fieldtype": "Select",
@@ -258,7 +259,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2022-09-13 16:39:09.348088",
+ "modified": "2023-06-07 17:22:30.505884",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
