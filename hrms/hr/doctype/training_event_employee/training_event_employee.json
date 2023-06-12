@@ -69,7 +69,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-07-02 17:20:27.630176",
+ "modified": "2023-04-27 17:08:47.291071",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Event Employee",
@@ -77,5 +77,7 @@
  "permissions": [],
  "quick_entry": 1,
  "sort_field": "modified",
- "sort_order": "DESC"
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
 }

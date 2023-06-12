@@ -410,7 +410,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-17 12:11:55.051530",
+ "modified": "2023-04-27 17:05:59.727340",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",
@@ -485,5 +485,6 @@
  "states": [],
  "timeline_field": "employee",
  "title_field": "title",
+ "track_changes": 1,
  "track_views": 1
 }

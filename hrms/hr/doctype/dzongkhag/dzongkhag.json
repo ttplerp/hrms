@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "creation": "2022-11-15 11:48:00.706785",
  "doctype": "DocType",
@@ -110,7 +111,7 @@
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-04-17 12:12:19.598863",
+ "modified": "2023-04-27 17:05:46.343297",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dzongkhag",
@@ -154,5 +155,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "track_changes": 1,
  "track_views": 1
 }

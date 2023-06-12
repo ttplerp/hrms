@@ -61,8 +61,7 @@ class LeaveTravelConcession(Document):
 		je.remark = 'LTC payment against : ' + self.name
 		je.posting_date = self.posting_date
 		je.branch = self.branch
-		company = "State Mining Corporation Ltd"
-		ltc_account = frappe.db.get_value("Company",company,"ltc_account")
+		ltc_account = frappe.db.get_value("Company", self.company, "ltc_account")
 		if not ltc_account:
 			frappe.throw("Setup LTC Account in HR Accounts Settings")
 		expense_bank_account = frappe.db.get_value("Branch", self.branch, "expense_bank_account")
@@ -113,7 +112,7 @@ class LeaveTravelConcession(Document):
 						e.date_of_joining, 
 						b.employee, 
 						b.employee_name, 
-						b.branch, 
+						e.branch, 
 						a.amount, 
 						e.bank_name, 
 						e.bank_ac_no  
@@ -127,9 +126,10 @@ class LeaveTravelConcession(Document):
 						and a.salary_component = 'Basic Pay' 
 						and (b.is_active = 'Yes' or e.relieving_date between \'"+str(start)+"\' and \'"+str(end)+"\') 
 						and b.eligible_for_ltc = 1 
-					order by b.branch """, as_dict=True)
+					order by e.branch """, as_dict=True)
 		self.set('items', [])
 		for d in entries:
+			frappe.msgprint(str(d.branch))
 			d.basic_pay = d.amount
 			month_start = datetime.strptime(str(d.date_of_joining).split("-")[0]+"-"+str(d.date_of_joining).split("-")[1]+"-01","%Y-%m-%d")
 			dates = calendar.monthrange(month_start.year, month_start.month)[1]

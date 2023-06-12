@@ -140,7 +140,7 @@
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-17 12:12:08.684320",
+ "modified": "2023-04-27 17:05:47.573763",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Internal Work History",
@@ -149,5 +149,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "track_changes": 1,
  "track_views": 1
 }

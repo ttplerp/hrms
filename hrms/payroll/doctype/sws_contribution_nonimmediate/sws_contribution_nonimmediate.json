@@ -19,7 +19,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-17 12:13:18.849474",
+ "modified": "2023-04-27 17:05:57.504405",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "SWS Contribution Nonimmediate",
@@ -29,5 +29,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "track_changes": 1,
  "track_views": 1
 }

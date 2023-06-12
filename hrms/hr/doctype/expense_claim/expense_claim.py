@@ -166,7 +166,9 @@ class ExpenseClaim(AccountsController):
 				frappe.throw("Setup Expense Bank Account in Branch or Default Expense Bank Account in Company Accounts Settings")
 
 		# expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
-		employee_payable_account = frappe.db.get_value("Company", self.company, "employee_payable_account")
+		# employee_payable_account = frappe.db.get_value("Company", self.company, "employee_payable_account")
+		employee_payable_account = frappe.db.get_value("Company", self.company, "default_bank_account")
+
 		
 		# accounts for imprest settlement
 		account_imprest = frappe.db.get_value("Company", self.company,"imprest_advance_account")

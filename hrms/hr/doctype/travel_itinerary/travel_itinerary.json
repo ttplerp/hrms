@@ -28,10 +28,18 @@
   "dsa",
   "amount",
   "hidden_section",
+  "mode_of_travel",
   "mileage_rate",
   "column_break_26",
   "distance",
   "mileage_amount",
+  "fare_amount",
+  "other_costing_section",
+  "ea_applicable",
+  "entertainment_amount",
+  "column_break_33",
+  "hc_applicable",
+  "hotel_charges_amount",
   "travel_costing_total_section",
   "currency",
   "exchange_rate",
@@ -42,7 +50,6 @@
   "other_details",
   "section_break_8",
   "days_allocated",
-  "mode_of_travel",
   "meal_preference",
   "travel_advance_required",
   "advance_amount",
@@ -69,12 +76,12 @@
    "label": "Travel To"
   },
   {
+   "depends_on": "eval:doc.halt==0 ",
    "fieldname": "mode_of_travel",
    "fieldtype": "Select",
-   "hidden": 1,
    "in_list_view": 1,
    "label": "Mode of Travel",
-   "options": "\nFlight\nTrain\nTaxi\nRented Car"
+   "options": "\nFlight\nTrain\nTaxi\nBus\nRented Car\nPersonal Car\nOffice Car"
   },
   {
    "fieldname": "meal_preference",
@@ -221,13 +228,13 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:parent.mode_of_travel == \"Personal Car\" && doc.halt==0 && parent.travel_type!='International';",
+   "depends_on": "eval:doc.mode_of_travel == \"Personal Car\" && doc.halt==0;",
    "fieldname": "distance",
    "fieldtype": "Data",
    "label": "Distance (in KM)"
   },
   {
-   "depends_on": "eval:parent.mode_of_travel == \"Personal Car\" && doc.halt==0 &&parent.travel_type!='International';",
+   "depends_on": "eval:doc.mode_of_travel == \"Personal Car\" && doc.halt==0;",
    "fieldname": "mileage_rate",
    "fieldtype": "Select",
    "label": "Mileage Rate",
@@ -248,7 +255,6 @@
    "reqd": 1
   },
   {
-   "depends_on": "eval:doc.currency!='BTN';",
    "fieldname": "actual_amount",
    "fieldtype": "Currency",
    "label": "Amount in Nu.",
@@ -288,7 +294,7 @@
    "hidden": 1
   },
   {
-   "depends_on": "eval:parent.mode_of_travel == \"Personal Car\" && doc.halt==0 && parent.travel_type!='International';",
+   "depends_on": "eval:doc.mode_of_travel == \"Personal Car\" && doc.halt==0;",
    "fieldname": "mileage_amount",
    "fieldtype": "Currency",
    "label": "Mileage Amount",
@@ -318,7 +324,6 @@
    "label": "To Date"
   },
   {
-   "depends_on": "mileage_amount",
    "fieldname": "total_claim",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -340,11 +345,52 @@
    "fieldtype": "Currency",
    "label": "Exchange Rate",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:(!in_list([\"\", \"Personal Car\"], doc.mode_of_travel)) && doc.halt==0;",
+   "fieldname": "fare_amount",
+   "fieldtype": "Currency",
+   "label": "Fare Amount"
+  },
+  {
+   "fieldname": "other_costing_section",
+   "fieldtype": "Section Break",
+   "label": "Other Costing"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:(in_list([\"1\",\"2\",\"3\",\"4\"], parent.grade) && doc.halt===1)",
+   "fieldname": "ea_applicable",
+   "fieldtype": "Check",
+   "label": "Entertainment Expense Applicable"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:(in_list([\"1\",\"2\",\"3\",\"4\"], parent.grade) && doc.halt===1)",
+   "fieldname": "hc_applicable",
+   "fieldtype": "Check",
+   "label": "Hotel Charges Applicable"
+  },
+  {
+   "fieldname": "column_break_33",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.ea_applicable == 1;",
+   "fieldname": "entertainment_amount",
+   "fieldtype": "Currency",
+   "label": "Entertainment Amount"
+  },
+  {
+   "depends_on": "eval:doc.hc_applicable == 1;",
+   "fieldname": "hotel_charges_amount",
+   "fieldtype": "Currency",
+   "label": "Hotel Charges Amount"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2023-04-17 12:11:57.027216",
+ "modified": "2023-05-18 20:41:14.235918",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Itinerary",

@@ -192,7 +192,7 @@
  "idx": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-01-12 16:28:53.196881",
+ "modified": "2023-04-27 17:08:41.885396",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Applicant",
@@ -217,5 +217,6 @@
  "sort_order": "ASC",
  "states": [],
  "subject_field": "notes",
- "title_field": "applicant_name"
+ "title_field": "applicant_name",
+ "track_changes": 1
 }

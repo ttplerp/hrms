@@ -160,7 +160,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-06-25 00:56:24.756395",
+ "modified": "2023-04-27 17:08:57.738370",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Offer",
@@ -186,5 +186,7 @@
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "title_field": "applicant_name"
+ "states": [],
+ "title_field": "applicant_name",
+ "track_changes": 1
 }

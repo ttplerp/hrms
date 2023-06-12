@@ -201,7 +201,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-10-03 21:48:33.297065",
+ "modified": "2023-04-27 17:08:53.090524",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Appraisal",
@@ -249,6 +249,8 @@
  "search_fields": "status, employee, employee_name",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "timeline_field": "employee",
- "title_field": "employee_name"
+ "title_field": "employee_name",
+ "track_changes": 1
 }

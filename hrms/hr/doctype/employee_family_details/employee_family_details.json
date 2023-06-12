@@ -1,0 +1,123 @@
+{
+ "actions": [],
+ "creation": "2016-05-11 15:04:18.983031",
+ "doctype": "DocType",
+ "document_type": "Setup",
+ "engine": "InnoDB",
+ "field_order": [
+  "relationship",
+  "full_name",
+  "gender",
+  "date_of_birth",
+  "c_brake",
+  "cid_no",
+  "district_name",
+  "city_name",
+  "village_name",
+  "column_break_10",
+  "f_remarks",
+  "cid_attach",
+  "sws_received",
+  "deceased"
+ ],
+ "fields": [
+  {
+   "fieldname": "relationship",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Relationship",
+   "options": "Relationship",
+   "reqd": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "c_brake",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cid_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "CID No./Passport /Work Permit"
+  },
+  {
+   "fieldname": "district_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "District/Dzongkhag",
+   "options": "Dzongkhag"
+  },
+  {
+   "fieldname": "city_name",
+   "fieldtype": "Link",
+   "label": "City/Gewog",
+   "options": "Dzongkhag"
+  },
+  {
+   "fieldname": "village_name",
+   "fieldtype": "Link",
+   "label": "Village",
+   "options": "Dzongkhag"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "f_remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "cid_attach",
+   "fieldtype": "Attach",
+   "label": "CID"
+  },
+  {
+   "default": "0",
+   "fieldname": "sws_received",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "SWS Received"
+  },
+  {
+   "default": "0",
+   "fieldname": "deceased",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Deceased",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2023-04-27 17:05:47.182779",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Family Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "search_fields": "cid_no, full_name",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

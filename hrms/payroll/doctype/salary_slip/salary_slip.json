@@ -577,7 +577,7 @@
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-17 12:12:24.740727",
+ "modified": "2023-04-27 17:05:52.758965",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
@@ -620,5 +620,6 @@
  "states": [],
  "timeline_field": "employee",
  "title_field": "employee_name",
+ "track_changes": 1,
  "track_views": 1
 }

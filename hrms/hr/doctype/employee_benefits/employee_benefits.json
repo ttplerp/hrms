@@ -309,7 +309,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-17 12:12:33.925047",
+ "modified": "2023-04-27 17:05:59.365676",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Benefits",
@@ -407,5 +407,6 @@
  "sort_order": "DESC",
  "states": [],
  "title_field": "employee_name",
+ "track_changes": 1,
  "track_views": 1
 }

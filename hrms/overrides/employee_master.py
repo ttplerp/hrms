@@ -15,9 +15,13 @@ class EmployeeMaster(Employee):
 		# if self.old_id:
 		# 	self.employee =	self.name = self.old_id
 		# 	return
-		year_month = str(self.date_of_joining)[2:4] + str(self.date_of_joining)[5:7]
-		name = make_autoname('EMP.####')[3:]
-		self.employee = self.name = year_month + name
+		latest_emp_id = frappe.db.sql("""
+			select name from `tabEmployee` order by name desc limit 1
+		""",as_dict=1)
+		new_name = int(latest_emp_id[0].name)+1
+		if len(str(new_name)) == 3:
+			new_name = "0"+ str(new_name)
+		self.employee = self.name = str(new_name)
 
 def validate_onboarding_process(doc, method=None):
 	"""Validates Employee Creation for linked Employee Onboarding"""

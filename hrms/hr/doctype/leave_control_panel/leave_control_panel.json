@@ -139,7 +139,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2019-12-12 18:51:41.573349",
+ "modified": "2023-04-27 17:08:59.880759",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Control Panel",
@@ -154,5 +154,7 @@
  ],
  "read_only": 1,
  "sort_field": "modified",
- "sort_order": "DESC"
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
 }

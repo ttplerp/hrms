@@ -161,7 +161,7 @@
  "icon": "fa fa-bookmark",
  "idx": 1,
  "links": [],
- "modified": "2020-09-18 11:23:29.488923",
+ "modified": "2023-04-27 17:08:55.769134",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Opening",
@@ -184,5 +184,7 @@
   }
  ],
  "sort_field": "modified",
- "sort_order": "ASC"
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
 }

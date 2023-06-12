@@ -17,7 +17,7 @@
   }
  ],
  "links": [],
- "modified": "2023-04-17 12:12:37.820168",
+ "modified": "2023-04-27 17:06:04.993960",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Purpose of Travel",
@@ -50,5 +50,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "track_changes": 1,
  "track_views": 1
 }

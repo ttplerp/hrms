@@ -62,7 +62,7 @@
   }
  ],
  "links": [],
- "modified": "2019-12-16 11:31:09.916893",
+ "modified": "2023-04-27 17:08:59.662401",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Skill Map",
@@ -84,5 +84,7 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "ASC",
- "title_field": "employee_name"
+ "states": [],
+ "title_field": "employee_name",
+ "track_changes": 1
 }

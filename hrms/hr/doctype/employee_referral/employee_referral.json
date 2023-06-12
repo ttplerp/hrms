@@ -205,7 +205,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-05-04 17:03:26.134560",
+ "modified": "2023-04-27 17:08:49.353108",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Referral",
@@ -301,5 +301,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "title_field": "full_name"
+ "states": [],
+ "title_field": "full_name",
+ "track_changes": 1
 }

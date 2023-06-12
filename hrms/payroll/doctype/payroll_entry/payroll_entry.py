@@ -687,7 +687,7 @@ class PayrollEntry(Document):
 								"reference_name": self.name,
 								"salary_component": rec.salary_component
 							})
-					else:
+					else :
 						posting.setdefault(rec.salary_component,[]).append({
 							"account"       : r,
 							"debit_in_account_currency" : flt(rec.amount),
