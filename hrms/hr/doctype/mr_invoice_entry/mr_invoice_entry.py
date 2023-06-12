@@ -3,6 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
+from frappe import _
 from frappe.utils import (
 	add_days,
 	add_months,

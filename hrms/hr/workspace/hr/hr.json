@@ -1111,7 +1111,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "MR Management",
-   "link_count": 6,
+   "link_count": 7,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -1174,9 +1174,19 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Attendance",
+   "link_count": 0,
+   "link_to": "Muster Roll Attendance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2023-06-06 13:58:24.777951",
+ "modified": "2023-06-07 11:26:43.580482",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
@@ -1186,7 +1196,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 3.0,
+ "sequence_id": 4.0,
  "shortcuts": [
   {
    "doc_view": "Dashboard",

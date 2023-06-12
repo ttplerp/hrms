@@ -1,5 +1,9 @@
 {
- "charts": [],
+ "charts": [
+  {
+   "chart_name": "Employee Separation"
+  }
+ ],
  "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Onboarding\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Separation\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Grievance\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Lists</b></span>\",\"col\":12}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"New Hires (This Month)\",\"col\":4}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Exits (This Month)\",\"col\":4}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Trainings (This Week)\",\"col\":4}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Masters &amp; Reports</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Onboarding\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Journey\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Grievance\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Training\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Exit\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Daily Work Summary\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2022-08-20 14:06:34.309347",
  "docstatus": 0,
@@ -287,8 +291,8 @@
    "type": "Link"
   }
  ],
- "modified": "2022-12-13 11:13:09.540767",
- "modified_by": "Administrator",
+ "modified": "2023-06-07 11:38:31.561400",
+ "modified_by": "sonam.zangmo@thimphutechpark.bt",
  "module": "HR",
  "name": "Employee Lifecycle",
  "owner": "Administrator",
@@ -312,7 +316,7 @@
   }
  ],
  "roles": [],
- "sequence_id": 4.0,
+ "sequence_id": 5.0,
  "shortcuts": [
   {
    "color": "Grey",
@@ -325,8 +329,8 @@
    "color": "Orange",
    "doc_view": "List",
    "format": "{} Pending",
-   "label": "Employee Onboarding",
-   "link_to": "Employee Onboarding",
+   "label": "Separation Benefit",
+   "link_to": "Separation Benefits",
    "stats_filter": "{\"boarding_status\":[\"=\",\"Pending\"]}",
    "type": "DocType"
   },

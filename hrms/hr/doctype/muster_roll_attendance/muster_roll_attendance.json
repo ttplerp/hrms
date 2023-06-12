@@ -29,6 +29,7 @@
    "fieldname": "mr_employee",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "MR Employee",
    "options": "Muster Roll Employee"
   },
@@ -48,6 +49,8 @@
   {
    "fieldname": "branch",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Branch",
    "options": "Branch"
   },
@@ -88,7 +91,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-31 17:35:49.243063",
+ "modified": "2023-06-07 09:57:29.879656",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Attendance",

@@ -31,8 +31,7 @@ frappe.ui.form.on('MR Invoice Entry', {
             method:"create_mr_invoice",
             doc:frm.doc,
             callback:function(r){
-                // frm.refresh_field("items")
-                // frm.dirty()
+                cur_frm.reload_doc()
             },
             freeze: true,
             freeze_message: '<span style="color:white; background-color: red; padding: 10px 50px; border-radius: 5px;">Creating MR Invoice.....</span>'
@@ -43,7 +42,7 @@ frappe.ui.form.on('MR Invoice Entry', {
             method:"post_to_account",
             doc:frm.doc,
             callback:function(r){
-                
+                cur_frm.reload_doc()
             },
             freeze: true,
             freeze_message: '<span style="color:white; background-color: red; padding: 10px 50px; border-radius: 5px;">Posting To account.....</span>'
