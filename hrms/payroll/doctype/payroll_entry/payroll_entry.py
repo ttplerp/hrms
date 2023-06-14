@@ -49,6 +49,10 @@ class PayrollEntry(Document):
 		# following code added by SHIV on 2020.10.21
 		self.remove_salary_slips()
 		# ver.2020.10.21 Ends
+		from erpnext.accounts.utils import unlink_ref_doc_from_payment_entries
+
+		unlink_ref_doc_from_payment_entries(self)
+		self.ignore_linked_doctypes = ("GL Entry", "Payment Ledger Entry")
 		pass
 
 	def on_cancel_after_draft(self):
