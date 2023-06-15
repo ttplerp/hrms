@@ -234,36 +234,6 @@ class SalarySlip(TransactionBase):
 				'leave_without_pay': lwp,
 				'payment_days': payment_days
 		}
-
-	'''
-	def get_leave_details(self, joining_date=None, relieving_date=None, lwp=None):
-		# if default fiscal year is not set, get from nowdate
-		if not self.fiscal_year:
-			self.fiscal_year = get_fiscal_year(nowdate())[0]
-
-		if not self.month:
-			self.month = "%02d" % getdate(nowdate()).month
-			self.set_month_dates()
-
-		if not joining_date:
-			joining_date, relieving_date = frappe.db.get_value("Employee", self.employee,
-				["date_of_joining", "relieving_date"])
-
-		working_days = date_diff(self.end_date, self.start_date) + 1
-		holidays = self.get_holidays_for_employee(self.start_date, self.end_date)
-				
-		if not cint(frappe.db.get_value("HR Settings", None, "include_holidays_in_total_working_days")):
-			working_days -= len(holidays)
-			if working_days < 0:
-				frappe.throw(_("There are more holidays than working days this month."))
-
-		if not lwp:
-			lwp = self.calculate_lwp(holidays, working_days)
-		self.total_days_in_month = working_days 
-		self.leave_without_pay = lwp
-		payment_days = flt(self.get_payment_days(joining_date, relieving_date)) - flt(lwp)
-		self.payment_days = payment_days > 0 and payment_days or 0
-	'''
 	
 	def get_payment_days(self, joining_date, relieving_date):
 		start_date = getdate(self.start_date)
@@ -411,26 +381,6 @@ class SalarySlip(TransactionBase):
 
 	def on_submit(self):
 		self.update_status(self.name)
-		#if(frappe.db.get_single_value("HR Settings", "email_salary_slip_to_employee")):
-		#	self.email_salary_slip()
-
-		# Ver 1.0 Begins by SSK on 25/08/2016, following block added
-
-		#sst = frappe.get_doc("Salary Structure", self.salary_structure)
-		
-		'''
-		for ssl in self.deductions:
-				if (ssl.from_date and ssl.to_date):
-						sst = frappe.get_doc("Salary Structure", self.salary_structure)
-						for sst in sst.deductions:
-								if (ssl.reference_number == sst.reference_number) and \
-									(ssl.reference_type == sst.reference_type) and \
-									(ssl.salary_component == sst.salary_component):
-										sst.total_deducted_amount += ssl.amount
-										sst.total_outstanding_amount = (sst.total_deductible_amount-sst.total_deducted_amount) if sst.total_deductible_amount else 0
-										sst.save()
-		'''
-		# Ver 1.0 Ends
 		self.update_deduction_balance()
 		self.post_sws_entry()
 		self.update_ot()
@@ -564,6 +514,7 @@ def has_record_permission(doc, user):
 @frappe.whitelist()
 def make_last_pay_certificate(source_name, target_doc=None, skip_item_mapping=False):
 	def set_missing_values(source, target):
+		# frappe.throw(str(target))
 		target.salary_slip_id = source.name
 		if len(source.earnings) > 0:
 			for a in source.earnings:
@@ -583,37 +534,13 @@ def make_last_pay_certificate(source_name, target_doc=None, skip_item_mapping=Fa
 		""".format(source.employee),as_dict=1)
 		if ltc:
 			target.ltc_paid = ltc[0].parent
-		
-
+	
+	
 	mapper = {
 		"Salary Slip": {
 			"doctype": "Last Pay Certificate",
-			# "validation": {
-			# 	"docstatus": ["=", 1]
-			# }
-		},
-		# "Sales Taxes and Charges": {
-		# 	"doctype": "Sales Taxes and Charges",
-		# 	"add_if_empty": True
-		# },
-		# "Sales Team": {
-		# 	"doctype": "Sales Team",
-		# 	"add_if_empty": True
-		# }
+		}
 	}
-
-	# if not skip_item_mapping:
-	# 	mapper["Sales Order Item"] = {
-	# 		"doctype": "Delivery Note Item",
-	# 		"field_map": {
-	# 			"rate": "rate",
-	# 			"name": "so_detail",
-	# 			"parent": "against_sales_order",
-	# 		},
-	# 		"postprocess": update_item,
-	# 		"condition": lambda doc: abs(doc.delivered_qty) < abs(doc.qty) and doc.delivered_by_supplier!=1
-	# 	}
-
 	target_doc = get_mapped_doc("Salary Slip", source_name, mapper, target_doc, set_missing_values)
 
 	return target_doc

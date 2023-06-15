@@ -6,80 +6,90 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "employee",
-  "employee_name",
-  "column_break_3",
-  "branch",
-  "basic_pay",
-  "amount",
-  "column_break_7",
-  "bank_name",
-  "bank_ac_no"
- ],
- "fields": [
-  {
-   "fieldname": "employee",
-   "fieldtype": "Link",
-   "label": "Employee",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fetch_from": "employee.employee_name",
-   "fieldname": "employee_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Employee Name",
-   "read_only": 1,
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_3",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "branch",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Branch",
-   "options": "Branch",
-   "read_only": 1,
-   "reqd": 1
-  },
-  {
-   "fieldname": "basic_pay",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Basic Pay",
-   "read_only": 1,
-   "reqd": 1
-  },
-  {
-   "fieldname": "amount",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "label": "Amount",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_7",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fetch_from": "employee.bank_name",
-   "fieldname": "bank_name",
-   "fieldtype": "Data",
-   "label": "Bank Name",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.bank_ac_no",
-   "fieldname": "bank_ac_no",
-   "fieldtype": "Data",
-   "label": "Bank Account Number",
-   "read_only": 1
-  }
- ],
+    "employee",
+    "employee_name",
+    "column_break_3",
+    "branch",
+    "date_of_joining",
+    "date_of_relieving",
+    "basic_pay",
+    "amount",
+    "column_break_10",
+    "bank_name",
+    "bank_ac_no"
+   ],
+   "fields": [
+    {
+     "fieldname": "employee",
+     "fieldtype": "Link",
+     "in_list_view": 1,
+     "label": "Employee",
+     "options": "Employee",
+     "read_only": 1
+    },
+    {
+     "fieldname": "employee_name",
+     "fieldtype": "Data",
+     "label": "Employee Name",
+     "read_only": 1
+    },
+    {
+     "fieldname": "column_break_3",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "branch",
+     "fieldtype": "Link",
+     "label": "Branch",
+     "options": "Branch",
+     "read_only": 1
+    },
+    {
+     "fieldname": "basic_pay",
+     "fieldtype": "Currency",
+     "in_list_view": 1,
+     "label": "Basic Pay",
+     "read_only": 1
+    },
+    {
+     "fieldname": "amount",
+     "fieldtype": "Currency",
+     "in_list_view": 1,
+     "label": "Amount"
+    },
+    {
+     "fieldname": "column_break_10",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "bank_name",
+     "fieldtype": "Data",
+     "label": "Bank Name",
+     "options": "employee.bank_name"
+    },
+    {
+     "fieldname": "bank_ac_no",
+     "fieldtype": "Data",
+     "label": "Bank Account Number",
+     "options": "employee.bank_ac_no"
+    },
+    {
+     "fetch_from": "employee.date_of_joining",
+     "fieldname": "date_of_joining",
+     "fieldtype": "Date",
+     "in_list_view": 1,
+     "label": "Date of Joining",
+     "read_only": 1
+    },
+    {
+     "fetch_from": "employee.relieving_date",
+     "fieldname": "date_of_relieving",
+     "fieldtype": "Data",
+     "in_list_view": 1,
+     "label": "Date of Relieving",
+     "read_only": 1
+    }
+   ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],

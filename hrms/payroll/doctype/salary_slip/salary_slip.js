@@ -51,7 +51,7 @@ frappe.ui.form.on("Salary Slip", {
 		if(frm.doc.docstatus == 1){
 			frm.add_custom_button("Create Last Pay Certificate", function(){
 				frappe.model.open_mapped_doc({
-					method: "erpnext.hr.doctype.salary_slip.salary_slip.make_last_pay_certificate",
+					method: "hrms.payroll.doctype.salary_slip.salary_slip.make_last_pay_certificate",
 					frm: me.frm
 				})
 			});
