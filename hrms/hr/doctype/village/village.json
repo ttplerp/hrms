@@ -2,23 +2,46 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:dzongkhag_name",
- "creation": "2022-11-15 11:48:00.706785",
+ "autoname": "field:village",
+ "creation": "2023-06-19 16:08:32.395592",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "dzongkhag_name",
+  "dzongkhag",
+  "geowg",
+  "village",
+  "cb_1",
   "description"
  ],
  "fields": [
   {
-   "fieldname": "dzongkhag_name",
-   "fieldtype": "Data",
+   "fieldname": "dzongkhag",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Dzongkhag",
+   "options": "Dzongkhag",
+   "reqd": 1
+  },
+  {
+   "fieldname": "geowg",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Gewog/Thromde",
+   "options": "Gewog",
+   "reqd": 1
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Village",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "description",
@@ -28,12 +51,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-06-19 16:26:49.168980",
+ "modified": "2023-06-19 16:23:04.784861",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Dzongkhag",
+ "name": "Village",
  "naming_rule": "By fieldname",
- "nsm_parent_field": "parent_dzongkhag",
  "owner": "Administrator",
  "permissions": [
   {
@@ -55,7 +77,30 @@
    "print": 1,
    "read": 1,
    "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
    "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Master",
    "share": 1,
    "write": 1
   }
