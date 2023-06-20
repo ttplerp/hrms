@@ -47,7 +47,7 @@ class EmployeeAdvance(Document):
 		if self.advance_type =="Salary Advance":
 			self.update_salary_structure()
 	def update_defaults(self):
-		self.salary_component = "Salary Advance Deductions"
+		self.salary_component = "Salary Advance Deduction"
 		
 	def update_pending_amount(self):
 		self.pending_amount = self.advance_amount
@@ -129,7 +129,7 @@ class EmployeeAdvance(Document):
 					and posting_date between'{2}' and '{3}'
 					and advance_type = '{4}'""".format(self.employee,self.name, year_start_date,self.recovery_end_date, self.advance_type))[0][0]
 		self.total_advance = flt(acc)
-		#and salary_component ='Salary Advance Deductions'
+		#and salary_component ='Salary Advance Deduction'
 	@frappe.whitelist()
 	def validate_advance_amount(self):
 		self.recovery_start_date = get_first_day(today())
@@ -153,25 +153,26 @@ class EmployeeAdvance(Document):
 					where employee = '{0}'
 					and docstatus !=2
 					and name !='{1}'
-					and salary_component ='Salary Advance Deductions'
+					and salary_component ='Salary Advance Deduction'
 					and posting_date between'{2}' and '{3}' """.format(self.employee,self.name, year_start_date,self.recovery_end_date))[0][0]
 	
 		remaining_pay = (flt(self.basic_pay) * flt(max_month_allow_from_employee_group))- flt(pervious_advance) 
 		if flt(self.advance_amount) <= 0:
 			frappe.throw("Enter valid <b>Advance Amount</b>")
-		elif flt(self.advance_amount) >= (flt(remaining_pay)+1):
-			frappe.throw("<b>Advance Amount</b> should not be more than max amount limit")
-		elif flt(pervious_advance) == (flt(self.basic_pay) * flt(max_month_allow_from_employee_group)):
-			frappe.throw("Your <b>Salary Advance</b> was alrady claimed")
+		# elif flt(self.advance_amount) >= (flt(remaining_pay)+1):
+		# 	frappe.throw("<b>Advance Amount</b> should not be more than max amount limit")
+		# elif flt(pervious_advance) == (flt(self.basic_pay) * flt(max_month_allow_from_employee_group)):
+		# 	frappe.throw("Your <b>Salary Advance</b> was alrady claimed")
 		else:
 			self.max_no_of_installment = month_diff(self.recovery_end_date,self.recovery_start_date)
 			check_advance = flt(self.advance_amount) / flt(self.deduction_month)
-			if flt(self.advance_amount) > (flt(self.basic_pay) * flt(max_month_allow_from_employee_group)):
-				frappe.throw("<b>Advance Amount</b> can not exced <b>Maximum Advance Limit</b> ")
-			elif flt(check_advance) > flt(self.net_pay):
-				frappe.throw("Your <b>Advance Amount</b> can not exced <b>Net Pay</b>")
-			else:
-				self.monthly_deduction = ceil(check_advance)
+			# if flt(self.advance_amount) > (flt(self.basic_pay) * flt(max_month_allow_from_employee_group)):
+			# 	frappe.throw("<b>Advance Amount</b> can not exced <b>Maximum Advance Limit</b> ")
+			# elif flt(check_advance) > flt(self.net_pay):
+			# 	frappe.throw("Your <b>Advance Amount</b> can not exced <b>Net Pay</b>")
+			# else:
+			# 	self.monthly_deduction = ceil(check_advance)
+			self.monthly_deduction = ceil(check_advance)
 
 	@frappe.whitelist()
 	def validate_deduction_month(self):
