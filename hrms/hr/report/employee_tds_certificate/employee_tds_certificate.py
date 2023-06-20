@@ -109,10 +109,11 @@ def get_bonus(filters):
 					JOIN `tabBonus Details` bd ON b.name = bd.parent
 					WHERE b.docstatus = 1
 					AND r.purpose = 'Bonus'
-					AND b.fiscal_year = '{fiscal_year}'
+					AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
 					AND bd.employee = '{employee}'
 					AND bd.amount > 0
-				""".format( fiscal_year = filters.fiscal_year, employee= filters.employee), as_dict=1)
+				""".format( fiscal_year = filters.fiscal_year, employee= filters.employee, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
+					to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=1)
 def get_pbva(filters):
 	return frappe.db.sql("""SELECT 
 									ROUND(IFNULL(bd.amount,0),2) AS total, 
