@@ -106,7 +106,8 @@
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
-   "options": "Branch"
+   "options": "Branch",
+   "reqd": 1
   },
   {
    "fieldname": "department",
@@ -357,7 +358,7 @@
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-27 10:06:06.186919",
+ "modified": "2023-06-22 16:01:16.997704",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",
