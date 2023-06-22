@@ -564,6 +564,11 @@ class PayrollEntry(Document):
 		default_payable_account = company.get("salary_payable_account")
 		# company_cc              = company.get("company_cost_center")
 		company_cc              = frappe.db.get_value("Branch", self.processing_branch, "cost_center")
+		cost_center_for         = frappe.db.get_value("Branch", self.processing_branch, "cost_center_for")
+		if cost_center_for == 'DSP' and not company.get("company_cost_center"):
+			frappe.throw(_("Please set <b>Default Cost Center</b> for DSP in Company"))
+		if cost_center_for == 'DHQ' and not company.get("dhq_default_cost_center"):
+			frappe.throw(_("Please set <b>DHQ Default Cost Center</b> for DHQ in Company"))
 		default_gpf_account     = company.get("employer_contribution_to_pf")
 		default_business_activity = get_default_ba()
 		salary_component_pf     = "PF"
@@ -585,7 +590,8 @@ class PayrollEntry(Document):
 		cc = frappe.db.sql("""
 			select
 				(case
-					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 then c.company_cost_center
+					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 and 'DSP' = '{dsp_or_dhq}' then c.company_cost_center
+					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 and 'DHQ' = '{dsp_or_dhq}' then c.dhq_default_cost_center
 					else t1.cost_center
 				end)                       as cost_center,
 				(case
@@ -649,7 +655,7 @@ class PayrollEntry(Document):
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Employee' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then t1.employee else 'Other' end)
 			order by t1.cost_center, t1.business_activity, sc.type, sc.name
-		""".format(self.fiscal_year, self.month, self.name, default_business_activity),as_dict=1)
+		""".format(self.fiscal_year, self.month, self.name, default_business_activity, dsp_or_dhq=cost_center_for),as_dict=1)
 
 		posting        = frappe._dict()
 		cc_wise_totals = frappe._dict()
@@ -794,7 +800,7 @@ class PayrollEntry(Document):
 				doc.insert()
 
 				if i == "to_payables":
-					doc.submit() #Added by Thukten to submit Payable from HR
+					# doc.submit() #Added by Thukten to submit Payable from HR
 					jv_name = doc.name
 
 			if jv_name:
