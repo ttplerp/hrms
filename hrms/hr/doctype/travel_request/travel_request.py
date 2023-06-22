@@ -27,6 +27,9 @@ class TravelRequest(AccountsController):
 		self.update_amount()
 		self.update_total_amount()
 		self.validate_advance_amount()
+		if self.workflow_state == "Waiting Supervisor Approval":
+			self.check_date()
+			self.check_advance_and_report()
 		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
 
