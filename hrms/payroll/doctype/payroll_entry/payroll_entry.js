@@ -337,7 +337,6 @@ const submit_salary_slip = function (frm) {
 // following code added by SHIV on 2020/10/21
 let make_accounting_entry = function (frm) {
 	var doc = frm.doc;
-
 	return frappe.call({
 		doc: cur_frm.doc,
 		method: "make_accounting_entry",

@@ -82,16 +82,9 @@ class EmployeeBenefits(Document):
 
 			if a.benefit_type != "Carriage Charges":
 				a.distance = None
-				a.terrain_rate = None
-				a.load_capacity = None
 			else:
 				if not a.distance:
-					frappe.throw(_("Row#{}: <b>Distance</b> for <b>Carriage Charges</b> cannot be 0").format(a.idx))
-				if not a.terrain_rate:
-					frappe.throw(_("Row#{}: <b>Terrain Rate</b> for <b>Carriage Charges</b> cannot be blank").format(a.idx))
-				if not a.load_capacity:
-					frappe.throw(_("Row#{}: <b>Load Capacity</b> for <b>Carriage Charges</b> cannot be blank").format(a.idx))
-
+					frappe.throw(_("#Raw:{} Distance</b> for <b>Carriage Charges</b> cannot be 0").format(a.idx))
 	def update_reference(self):
 		if self.employee_separation_id:
 			id = frappe.get_doc("Employee Separation",self.employee_separation_id)
@@ -369,7 +362,8 @@ def get_gratuity_amount(employee):
 	return amount
 
 def get_permission_query_conditions(user):
-	if not user: user = frappe.session.user
+	if not user: 
+		user = frappe.session.user
 	user_roles = frappe.get_roles(user)
 
 	if user == "Administrator":
@@ -381,7 +375,9 @@ def get_permission_query_conditions(user):
 		`tabEmployee Benefits`.owner = '{user}'
 		or
 		exists(select 1
-				from `tabEmployee`
-				where `tabEmployee`.name = `tabEmployee Benefits`.employee
-				and `tabEmployee`.user_id = '{user}')
+			from `tabEmployee`
+			where `tabEmployee`.name = `tabEmployee Benefits`.employee
+			and `tabEmployee`.user_id = '{user}')
+		or
+		(`tabEmployee Benefits`.benefit_approver = '{user}' and `tabEmployee Benefits`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
 	)""".format(user=user)

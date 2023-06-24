@@ -651,6 +651,7 @@ class PayrollEntry(Document):
 		posting        = frappe._dict()
 		cc_wise_totals = frappe._dict()
 		tot_payable_amt= 0
+		frappe.throw(str(cc))
 		for rec in cc:
 			# To Payables
 			tot_payable_amt += (-1*flt(rec.amount) if rec.component_type == 'Deduction' else flt(rec.amount))

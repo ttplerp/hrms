@@ -188,6 +188,7 @@
    "allow_on_submit": 1,
    "fieldname": "document_no",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Document No.",
    "read_only": 1
   },
@@ -308,7 +309,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-18 12:13:37.385030",
+ "modified": "2023-06-22 15:51:10.608670",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",
@@ -348,6 +349,7 @@
    "report": 1,
    "role": "HR User",
    "share": 1,
+   "submit": 1,
    "write": 1
   },
   {
@@ -360,6 +362,7 @@
    "report": 1,
    "role": "HR Manager",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

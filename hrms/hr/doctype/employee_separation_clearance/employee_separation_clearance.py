@@ -26,17 +26,12 @@ class EmployeeSeparationClearance(Document):
 
 	def on_submit(self):
 		self.check_signatures()
-		self.check_document_no()
 		self.update_reference()
 		self.notify_employee()
 
 	def on_cancel(self):
 		self.update_reference()
 		self.notifiy_employee()
-
-	def check_document_no(self):
-		if not self.document_no:
-			frappe.throw("Document No. missing. Please contact HR.")
 
 	def check_signatures(self):
 		if self.supervisor_clearance == 0:
@@ -86,7 +81,7 @@ class EmployeeSeparationClearance(Document):
 		args = parent_doc.as_dict()
 		receipients = []
 		receipients = self.get_receipients()
-		template = frappe.db.get_single_value('HR Settings', 'employee_separation_clearance_approval_notification_template')
+		template = frappe.db.get_single_value('HR Settings', 'employee_separation_approval_notification_template')
 		if not template:
 			frappe.msgprint(_("Please set default template for Employee Separation Clearance Notification in HR Settings."))
 			return 
@@ -109,7 +104,7 @@ class EmployeeSeparationClearance(Document):
 			return
 		parent_doc = frappe.get_doc(self.doctype, self.name)
 		args = parent_doc.as_dict()
-		template = frappe.db.get_single_value('HR Settings', 'employee_separation_clearance_status_notification_template')
+		template = frappe.db.get_single_value('HR Settings', 'employee_separation_status_notification_template')
 		if not template:
 			frappe.msgprint(_("Please set default template for Employee Separation Clearance Status Notification in HR Settings."))
 			return
