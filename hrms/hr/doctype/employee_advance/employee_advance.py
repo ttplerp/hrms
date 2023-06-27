@@ -178,6 +178,7 @@ class EmployeeAdvance(Document):
 					and ea.salary_component ='Salary Advance Deductions'
 					and ea.salary_component = sd.salary_component
 					and sd.total_outstanding_amount > 0 
+					and ea.advance_settled = 0
 					and ea.posting_date between'{2}' and '{3}' """.format(self.employee, self.name, year_start_date,self.recovery_end_date))[0][0]
 	
 		remaining_pay = (flt(self.basic_pay) * flt(max_month_allow_from_employee_group)) - flt(pervious_advance) 
@@ -336,7 +337,7 @@ class EmployeeAdvance(Document):
 			)
 		).run(as_dict=True)[0].return_amount or 0
 
-		if paid_amount != 0:
+		if paid_amount != 0 and self.exchange_rate !=0:
 			paid_amount = flt(paid_amount) / flt(self.exchange_rate)
 		if return_amount != 0:
 			return_amount = flt(return_amount) / flt(self.exchange_rate)
