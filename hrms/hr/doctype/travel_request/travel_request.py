@@ -319,7 +319,7 @@ class TravelRequest(AccountsController):
 				})
 			
 		expense_claim.save(ignore_permissions=True)
-		expense_claim.submit()
+		# expense_claim.submit()
 		frappe.msgprint(
 			_("Expense Claim record {0} created")
 			.format("<a href='/app/Form/Expense Claim/{0}'>{0}</a>")

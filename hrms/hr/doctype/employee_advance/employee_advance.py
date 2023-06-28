@@ -174,21 +174,28 @@ class EmployeeAdvance(Document):
 					and advance_type = 'Salary Advance'
 					and salary_component ='Salary Advance Deductions'
 					and posting_date between'{2}' and '{3}' """.format(self.employee,self.name, year_start_date,self.recovery_end_date))[0][0]
-	
-		remaining_pay = (flt(self.basic_pay) * flt(max_month_allow_from_employee_group))- flt(pervious_advance) 
+		if not pervious_advance:
+			pervious_advance = 0
+		salary_advance_type = frappe.get_value("Employee Group", self.employee_group, "salary_advance_type")
+		if salary_advance_type== "Flat Amount":
+			max_amount = frappe.get_value("Employee Group", self.employee_group, "salary_advance_limit")
+			remaining_pay = flt(max_amount)-flt(pervious_advance)
+		else:
+			max_amount =(flt(self.basic_pay) * flt(max_month_allow_from_employee_group))
+			remaining_pay = flt(max_amount) - flt(pervious_advance) 
 		if flt(self.advance_amount) <= 0:
 			frappe.throw("Enter valid <b>Advance Amount</b>")
 		elif flt(self.advance_amount) >= (flt(remaining_pay)+1):
 			frappe.throw("<b>Advance Amount</b> should not be more than max amount limit")
-		elif flt(pervious_advance) == (flt(self.basic_pay) * flt(max_month_allow_from_employee_group)):
+		elif flt(pervious_advance) == flt(max_amount):
 			frappe.throw("Your <b>Salary Advance</b> was alrady claimed")
 		else:
 			self.max_no_of_installment = month_diff(self.recovery_end_date,self.recovery_start_date)
 			check_advance = flt(self.advance_amount) / flt(self.deduction_month)
-			if flt(self.advance_amount) > (flt(self.basic_pay) * flt(max_month_allow_from_employee_group)):
+			if flt(self.advance_amount) > flt(max_amount):
 				frappe.throw("<b>Advance Amount</b> can not exced <b>Maximum Advance Limit</b> ")
-			elif flt(check_advance) > flt(self.net_pay):
-				frappe.throw("Your <b>Advance Amount</b> can not exced <b>Net Pay</b>")
+			# elif flt(check_advance) > flt(self.net_pay):
+			# 	frappe.throw("Your <b>Advance Amount</b> can not exced <b>Net Pay</b>")
 			else:
 				self.monthly_deduction = ceil(check_advance)
 
@@ -244,7 +251,11 @@ class EmployeeAdvance(Document):
 		self.max_no_of_installment = month_diff(self.recovery_end_date,self.recovery_start_date)
 		self.deduction_month = self.max_no_of_installment
 		self.max_months_limit = frappe.get_value("Employee Group", self.employee_group, "salary_advance_max_months")
-		self.max_advance_limit = flt(self.max_months_limit) * flt(self.basic_pay)
+		salary_advance_type = frappe.get_value("Employee Group", self.employee_group, "salary_advance_type")
+		if salary_advance_type== "Flat Amount":
+			self.max_advance_limit = frappe.get_value("Employee Group", self.employee_group, "salary_advance_limit")
+		else:
+			self.max_advance_limit = flt(self.max_months_limit) * flt(self.basic_pay)
 		self.monthly_deduction = ceil(flt(self.advance_amount)/ flt(self.deduction_month))
 
 	def update_travel_request(self):

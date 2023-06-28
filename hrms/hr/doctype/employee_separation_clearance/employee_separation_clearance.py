@@ -44,6 +44,8 @@ class EmployeeSeparationClearance(Document):
 			frappe.throw("ICT & HR Division has not granted clearance.")
 		if self.iad_clearance == 0:
 			frappe.throw("Internal Audit Division has not granted clearance.")
+		if self.rtc_clearance == 0:
+			frappe.throw("Rental and Tenancy has not granted clearance.")
 
 	def update_reference(self):
 		id = frappe.get_doc("Employee Separation",self.employee_separation_id)
@@ -73,6 +75,8 @@ class EmployeeSeparationClearance(Document):
 			receipients.append(self.icthr)
 		if self.iad:
 			receipients.append(self.iad)
+		if self.rtc:
+			receipients.append(self.rtc)
 
 		return receipients
 
@@ -181,6 +185,13 @@ class EmployeeSeparationClearance(Document):
 		else:
 			self.iad = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "iad"),"user_id")
 		
+		#--------------------------- Rental and Tenancy-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		rtc_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "rtc"))
+		if rtc_officiate:
+			self.rtc = frappe.db.get_value("Employee",rtc_officiate[0].officiate,"user_id")
+		else:
+			self.rtc = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "rtc"),"user_id")
+		
 		self.db_set("approvers_set",1)
 
 # Following code added by SHIV on 2020/09/21
@@ -210,5 +221,7 @@ def get_permission_query_conditions(user):
 		(`tabEmployee Separation Clearance`.icthr = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
 		(`tabEmployee Separation Clearance`.iad = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		or
+		(`tabEmployee Separation Clearance`.rtc = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 
 	)""".format(user=user)

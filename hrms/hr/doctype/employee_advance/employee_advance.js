@@ -325,8 +325,4 @@ frappe.ui.form.on('Employee Advance', {
 			}
 		});
 	},
-
-	// advance_type: function(frm){
-	// 	frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
-	// }
 });

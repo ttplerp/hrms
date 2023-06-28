@@ -29,6 +29,9 @@
   "afd",
   "afd_clearance",
   "afd_remarks",
+  "rtc",
+  "rtc_clearance",
+  "rtc_remarks",
   "column_break_29",
   "spd",
   "spd_clearance",
@@ -305,11 +308,33 @@
    "label": "Internal Audit Division Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
    "read_only_depends_on": "eval:frappe.session.user != doc.iad"
+  },
+  {
+   "fieldname": "rtc",
+   "fieldtype": "Link",
+   "label": "Rental & Tenancy",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "rtc_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired(Rental & Tenancy)",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.rtc",
+   "read_only_depends_on": "eval:frappe.session.user != doc.rtc"
+  },
+  {
+   "fieldname": "rtc_remarks",
+   "fieldtype": "Small Text",
+   "label": "Rental & Tenancy Remarks",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.rtc",
+   "read_only_depends_on": "eval:frappe.session.user != doc.rtc"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-06-22 15:51:10.608670",
+ "modified": "2023-06-26 11:40:07.217006",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",

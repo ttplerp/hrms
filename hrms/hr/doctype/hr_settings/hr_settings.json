@@ -65,11 +65,13 @@
   "spd",
   "icthr",
   "iad",
+  "rtc",
   "column_break_60",
   "approver_name_afd",
   "approver_name_spd",
   "approver_name_icthr",
   "approver_name_iad",
+  "approver_name_rtc",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -920,13 +922,26 @@
    "fieldtype": "Link",
    "label": "Imprest Recoup Status Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "rtc",
+   "fieldtype": "Link",
+   "label": "Rental & Tenancy",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rtc.employee_name",
+   "fieldname": "approver_name_rtc",
+   "fieldtype": "Data",
+   "label": "Approver Name (Rental & Tenancy)"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-06-01 11:11:40.113481",
+ "modified": "2023-06-26 11:47:12.458582",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
