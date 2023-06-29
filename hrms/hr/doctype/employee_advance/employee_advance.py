@@ -6,7 +6,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from frappe.query_builder.functions import Sum
-from frappe.utils import flt, nowdate, today, cint, get_last_day, month_diff, get_year_start
+from frappe.utils import flt, nowdate, today, cint, get_last_day, month_diff, get_year_start,date_diff
 from frappe.utils import add_months,get_year_ending, datetime, getdate, get_first_day, math, ceil
 import erpnext
 from erpnext.accounts.doctype.journal_entry.journal_entry import get_default_bank_cash_account
@@ -89,9 +89,24 @@ class EmployeeAdvance(Document):
 	def validate_employment_status(self):
 		if self.advance_type == "Salary Advance":
 			employment_type = frappe.db.get_value("Employee",self.employee,"employment_status")
+			joining_date = frappe.db.get_value("Employee",self.employee,"date_of_joining")
+			working_days =date_diff(self.posting_date,joining_date)
 			if employment_type == "Probation":
-				frappe.throw("Employee {}({}) who is in Probation Period is not eligible for Salary Advance.")
-
+				frappe.throw("Employee who is in Probation Period is not eligible for Salary Advance.")
+			if working_days < 360 :
+				frappe.throw("Employee who did not serve 1 year is not eligible for Salary Advance")
+			
+			from_date = frappe.defaults.get_user_default("year_start_date")
+			advance_status = frappe.db.sql("""
+				select name 
+				from `tabEmployee Advance`
+				where name != '{0}'
+				and advance_type = "Salary Advance"
+				and employee = "{1}"
+				and posting_date between "{2}" and "{3}"
+			""".format(self.name,self.employee,from_date, today()))
+			if advance_status:
+				frappe.throw("Employee Advance for employee {} has been already Clamed ".format(self.employee_name))
 	def check_duplicate_advance(self):
 		if frappe.db.sql("""
 				select count(reference) 
@@ -101,7 +116,6 @@ class EmployeeAdvance(Document):
 				and docstatus != 2
 			""".format(self.reference, self.name))[0][0] >= 1 :
 			frappe.throw("Advance for Travel Request '{}' is already created".format(self.name))
-
 	def update_salary_structure(self, cancel=False):
 		if cancel:
 			rem_list = []

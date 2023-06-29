@@ -380,6 +380,7 @@
   },
   {
    "fetch_from": "employee.branch",
+   "fetch_if_empty": 1,
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
@@ -409,7 +410,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-04 12:40:26.734859",
+ "modified": "2023-06-29 14:51:22.787738",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",

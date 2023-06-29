@@ -4,13 +4,14 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-from frappe.utils import flt, getdate, cint
+from frappe.utils import flt, getdate, cint, date_diff
 from datetime import datetime
 import calendar
 from dateutil.relativedelta import relativedelta
 
 class LeaveTravelConcession(Document):
 	def validate(self):
+		self.validate_employee()
 		self.validate_duplicate()
 		self.calculate_values()
 
@@ -26,6 +27,15 @@ class LeaveTravelConcession(Document):
 				cc_amount[cc] = a.amount
 				
 		self.post_journal_entry(cc_amount)
+	def validate_employee():
+		if self.employee:
+			employment_type = frappe.db.get_value("Employee",self.employee,"employment_status")
+			joining_date = frappe.db.get_value("Employee",self.employee,"date_of_joining")
+			working_days =date_diff(self.posting_date,joining_date)
+			if employment_type == "Probation":
+				frappe.throw("Employee who is in Probation Period is not eligible for LTC.")
+			if working_days < 360 :
+				frappe.throw("Employee who did not serve 1 year is not eligible for LTC")
 
 	def validate_duplicate(self):
 		emp_list = ", ".join("'"+a.employee+"'" for a in self.items)
@@ -108,7 +118,6 @@ class LeaveTravelConcession(Document):
 	@frappe.whitelist()
 	def get_ltc_details(self):
 		start, end = frappe.db.get_value("Fiscal Year", self.fiscal_year, ["year_start_date", "year_end_date"])
-
 		entries = frappe.db.sql("""select 
 						e.date_of_joining, 
 						b.employee, 
@@ -133,25 +142,27 @@ class LeaveTravelConcession(Document):
 			d.basic_pay = d.amount
 			month_start = datetime.strptime(str(d.date_of_joining).split("-")[0]+"-"+str(d.date_of_joining).split("-")[1]+"-01","%Y-%m-%d")
 			dates = calendar.monthrange(month_start.year, month_start.month)[1]
-			if getdate(str(self.fiscal_year) + "-01-01") < getdate(d.date_of_joining) <  getdate(str(self.fiscal_year) + "-12-31"):
-				if cint(str(d.date_of_joining)[8:10]) < 15:
-					months = 12 - cint(str(d.date_of_joining)[5:7]) + 1
+			working_days =date_diff(self.posting_date,d.date_of_joining)
+			if working_days >= 360 :
+				if getdate(str(self.fiscal_year) + "-01-01") < getdate(d.date_of_joining) <  getdate(str(self.fiscal_year) + "-12-31"):
+					if cint(str(d.date_of_joining)[8:10]) < 15:
+						months = 12 - cint(str(d.date_of_joining)[5:7]) + 1
+					else:
+						months = 12 - cint(str(d.date_of_joining)[5:7])
+					
+					amount = d.amount
+					if flt(d.amount) > 15000:
+						amount = 15000
+
+					d.amount = round(flt((flt(months)/12.0) * amount), 2)
+					days = relativedelta(datetime.strptime(str(d.date_of_joining).split("-")[0]+"-"+str(d.date_of_joining).split("-")[1]+"-"+str(dates),"%Y-%m-%d"),datetime.strptime(str(d.date_of_joining),"%Y-%m-%d")).days
+					if int(days) < int(dates):
+						d.amount += round(flt((flt(days)/12.0/30.0) * amount), 2)
+
 				else:
-					months = 12 - cint(str(d.date_of_joining)[5:7])
-				
-				amount = d.amount
-				if flt(d.amount) > 15000:
-					amount = 15000
-
-				d.amount = round(flt((flt(months)/12.0) * amount), 2)
-				days = relativedelta(datetime.strptime(str(d.date_of_joining).split("-")[0]+"-"+str(d.date_of_joining).split("-")[1]+"-"+str(dates),"%Y-%m-%d"),datetime.strptime(str(d.date_of_joining),"%Y-%m-%d")).days
-				if int(days) < int(dates):
-					d.amount += round(flt((flt(days)/12.0/30.0) * amount), 2)
-
-			else:
-				if flt(d.amount) > 15000:
-					d.amount = 15000
-			row = self.append('items', {})
-			row.update(d)
+					if flt(d.amount) > 15000:
+						d.amount = 15000
+				row = self.append('items', {})
+				row.update(d)
 
 
