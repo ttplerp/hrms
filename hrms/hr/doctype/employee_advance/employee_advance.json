@@ -21,6 +21,7 @@
   "currency",
   "exchange_rate",
   "repay_unclaimed_amount_from_salary",
+  "advance_settled",
   "section_break_8",
   "basic_pay",
   "net_pay",
@@ -464,11 +465,20 @@
    "fieldtype": "Check",
    "label": "Expenses Claimed",
    "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "depends_on": "eval:doc.advance_type == \"Salary Advance\"",
+   "fieldname": "advance_settled",
+   "fieldtype": "Check",
+   "label": "Advance Settled",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-07 20:36:04.866286",
+ "modified": "2023-07-03 12:07:06.395707",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

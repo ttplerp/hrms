@@ -464,6 +464,22 @@ class EmployeeAdvance(Document):
 		je.flags.ignore_permissions=1
 		je.insert()
 		frappe.db.set_value(self.doctype, self.name, "je_reference", je.name)
+
+	@frappe.whitelist()
+	def create_advance_settlement(self):
+		eas = frappe.new_doc("Employee Advance Settlement")
+		eas.posting_date = nowdate()
+		eas.advance_type = self.advance_type
+		eas.employee_advance_id = self.name
+		eas.employee = self.employee
+		eas.advance_account = self.advance_account
+		eas.cost_center = self.cost_center
+		eas.advance_amount = self.advance_amount
+		eas.business_activity = "Common"
+		eas.salary_component = self.salary_component
+		eas.salary_structure = self.salary_structure
+
+		return eas.as_dict()
 		
 @frappe.whitelist()
 def get_pending_amount(employee, posting_date):

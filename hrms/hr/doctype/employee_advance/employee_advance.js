@@ -84,19 +84,32 @@ frappe.ui.form.on('Employee Advance', {
 				__('Create')
 			);
 		}
+		// if (
+		// 	frm.doc.docstatus === 1
+		// 	&& (flt(frm.doc.claimed_amount) < flt(frm.doc.paid_amount) - flt(frm.doc.return_amount))
+		// ) {
+		// 	if (frm.doc.repay_unclaimed_amount_from_salary == 0 && frappe.model.can_create("Journal Entry")) {
+		// 		frm.add_custom_button(__("Return"), function() {
+		// 			frm.trigger('make_return_entry');
+		// 		}, __('Create'));
+		// 	} else if (frm.doc.repay_unclaimed_amount_from_salary == 1 && frappe.model.can_create("Additional Salary")) {
+		// 		frm.add_custom_button(__("Deduction from Salary"), function() {
+		// 			frm.events.make_deduction_via_additional_salary(frm);
+		// 		}, __('Create'));
+		// 	}
+		// }
 		if (
-			frm.doc.docstatus === 1
-			&& (flt(frm.doc.claimed_amount) < flt(frm.doc.paid_amount) - flt(frm.doc.return_amount))
+			frm.doc.docstatus === 1 && frm.doc.advance_type === "Salary Advance" 
+			&& frm.doc.status == "Paid" && frm.doc.advance_settled === 0 && 
+			frappe.user.has_role(["Accounts User","Accounts Manager"])
 		) {
-			if (frm.doc.repay_unclaimed_amount_from_salary == 0 && frappe.model.can_create("Journal Entry")) {
-				frm.add_custom_button(__("Return"), function() {
-					frm.trigger('make_return_entry');
-				}, __('Create'));
-			} else if (frm.doc.repay_unclaimed_amount_from_salary == 1 && frappe.model.can_create("Additional Salary")) {
-				frm.add_custom_button(__("Deduction from Salary"), function() {
-					frm.events.make_deduction_via_additional_salary(frm);
-				}, __('Create'));
-			}
+			frm.add_custom_button(
+				__("Advance Settlement"),
+				function () {
+					frm.trigger('make_advance_settlement_entry');
+				},
+				__('Create')
+			);
 		}
 	},
 
@@ -171,6 +184,16 @@ frappe.ui.form.on('Employee Advance', {
 		});
 	},
 
+	make_advance_settlement_entry: function(frm) {
+		frappe.call({
+			method: "create_advance_settlement",
+			doc:frm.doc,
+			callback: function(r) {
+				const doclist = frappe.model.sync(r.message);
+				frappe.set_route('Form', doclist[0].doctype, doclist[0].name);
+			}
+		});
+	},
 	employee: function(frm, cdt, cdn) {
 		if (frm.doc.employee) {
 			frappe.call({

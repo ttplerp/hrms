@@ -1,0 +1,293 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-07-03 11:43:51.705485",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+    "title",
+    "advance_type",
+    "column_break_2",
+    "posting_date",
+    "edit_posting_date",
+    "employee_advance_details_section",
+    "employee_advance_id",
+    "employee",
+    "employee_name",
+    "advance_account",
+    "column_break_9",
+    "department",
+    "employee_grade",
+    "debit_account",
+    "amount_details_section",
+    "advance_amount",
+    "total_deducted_amount",
+    "balance_amount",
+    "column_break_16",
+    "settlement_amount",
+    "salary_structure",
+    "salary_component",
+    "accounting_details_section",
+    "company",
+    "business_activity",
+    "column_break_21",
+    "cost_center",
+    "column_break_23",
+    "currency",
+    "amended_from"
+   ],
+   "fields": [
+    {
+     "fieldname": "title",
+     "fieldtype": "Data",
+     "in_list_view": 1,
+     "label": "Title",
+     "reqd": 1
+    },
+    {
+     "fieldname": "column_break_2",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "posting_date",
+     "fieldtype": "Date",
+     "label": "Posting Date"
+    },
+    {
+     "fieldname": "advance_type",
+     "fieldtype": "Select",
+     "in_list_view": 1,
+     "label": "Advance Type",
+     "options": "Salary Advance",
+     "reqd": 1
+    },
+    {
+     "fieldname": "employee_advance_details_section",
+     "fieldtype": "Section Break",
+     "label": "Employee Advance Details"
+    },
+    {
+     "fieldname": "employee_advance_id",
+     "fieldtype": "Link",
+     "label": "Employee Advance ID",
+     "options": "Employee Advance",
+     "read_only": 1
+    },
+    {
+     "fieldname": "employee",
+     "fieldtype": "Link",
+     "in_list_view": 1,
+     "label": "Employee ",
+     "options": "Employee",
+     "read_only": 1,
+     "reqd": 1
+    },
+    {
+     "fetch_from": "employee.employee_name",
+     "fieldname": "employee_name",
+     "fieldtype": "Data",
+     "label": "Employee Name",
+     "read_only": 1
+    },
+    {
+     "fieldname": "column_break_9",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fetch_from": "employee.department",
+     "fieldname": "department",
+     "fieldtype": "Link",
+     "label": "Department",
+     "options": "Department",
+     "read_only": 1
+    },
+    {
+     "fieldname": "amended_from",
+     "fieldtype": "Link",
+     "label": "Amended From",
+     "no_copy": 1,
+     "options": "Employee Advance Settlement",
+     "print_hide": 1,
+     "read_only": 1
+    },
+    {
+     "fieldname": "advance_amount",
+     "fieldtype": "Currency",
+     "label": "Advance Amount",
+     "read_only": 1
+    },
+    {
+     "fieldname": "total_deducted_amount",
+     "fieldtype": "Currency",
+     "label": "Total Deducted Amount",
+     "read_only": 1,
+     "reqd": 1
+    },
+    {
+     "fieldname": "balance_amount",
+     "fieldtype": "Currency",
+     "label": "Balance Amount",
+     "read_only": 1,
+     "reqd": 1
+    },
+    {
+     "fieldname": "settlement_amount",
+     "fieldtype": "Currency",
+     "label": "Settlement Amount",
+     "reqd": 1
+    },
+    {
+     "fieldname": "currency",
+     "fieldtype": "Link",
+     "label": "Currency",
+     "options": "Currency",
+     "read_only": 1
+    },
+    {
+     "fieldname": "salary_structure",
+     "fieldtype": "Link",
+     "label": "Salary Structure",
+     "options": "Salary Structure",
+     "read_only": 1
+    },
+    {
+     "fieldname": "salary_component",
+     "fieldtype": "Link",
+     "label": "Salary Component",
+     "options": "Salary Component",
+     "read_only": 1
+    },
+    {
+     "fieldname": "advance_account",
+     "fieldtype": "Link",
+     "label": "Advance Account",
+     "options": "Account",
+     "read_only": 1
+    },
+    {
+     "fieldname": "cost_center",
+     "fieldtype": "Link",
+     "label": "Cost Center",
+     "options": "Cost Center"
+    },
+    {
+     "fieldname": "amount_details_section",
+     "fieldtype": "Section Break",
+     "label": "Amount Details"
+    },
+    {
+     "fieldname": "accounting_details_section",
+     "fieldtype": "Section Break",
+     "label": "Accounting Details"
+    },
+    {
+     "fieldname": "company",
+     "fieldtype": "Link",
+     "label": "Company",
+     "options": "Company",
+     "read_only": 1
+    },
+    {
+     "fieldname": "column_break_21",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "column_break_23",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "column_break_16",
+     "fieldtype": "Column Break"
+    },
+    {
+     "default": "0",
+     "fieldname": "edit_posting_date",
+     "fieldtype": "Check",
+     "label": "Edit Posting Date"
+    },
+    {
+     "fieldname": "business_activity",
+     "fieldtype": "Link",
+     "label": "Business Activity",
+     "options": "Business Activity",
+     "read_only": 1
+    },
+    {
+     "fetch_from": "employee.grade",
+     "fieldname": "employee_grade",
+     "fieldtype": "Link",
+     "label": "Employee Grade",
+     "options": "Employee Grade",
+     "read_only": 1
+    },
+    {
+     "fieldname": "debit_account",
+     "fieldtype": "Link",
+     "label": "Debit Account",
+     "options": "Account",
+     "reqd": 1
+    }
+   ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-07-03 11:47:41.705412",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Advance Settlement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee Self Service",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
