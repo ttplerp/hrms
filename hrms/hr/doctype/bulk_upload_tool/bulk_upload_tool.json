@@ -11,6 +11,7 @@
   "upload_type",
   "download_template",
   "branch",
+  "unit",
   "get_template",
   "column_break_3",
   "fiscal_year",
@@ -122,11 +123,17 @@
    "options": "Bulk Upload Tool",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Link",
+   "label": "Unit",
+   "options": "Department"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-31 17:52:11.304567",
+ "modified": "2023-07-06 10:59:28.865971",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Bulk Upload Tool",

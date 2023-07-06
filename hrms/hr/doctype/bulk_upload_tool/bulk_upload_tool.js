@@ -2,9 +2,24 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Bulk Upload Tool', {
-	// refresh: function(frm) {
-
-	// }
+	refresh: function(frm) {
+        // frm.set_query("section", function() {
+		// 	return {
+		// 		"filters": {
+		// 			"disabled":0,
+		// 			"is_section":1
+		// 		}
+		// 	};
+		// });
+		frm.set_query("unit", function() {
+			return {
+				"filters": {
+					"disabled":0,
+					"is_unit":1,
+				}
+			};
+		});
+	},
     upload_data:function(frm){
         frappe.call({
             method:"upload_data",
@@ -28,7 +43,8 @@ frappe.ui.form.on('Bulk Upload Tool', {
                 branch : frm.doc.branch,
                 month: frm.doc.month,
                 fiscal_year: frm.doc.fiscal_year,
-                upload_type: frm.doc.upload_type
+                upload_type: frm.doc.upload_type,
+                unit: frm.doc.unit
             }
         )
 	},

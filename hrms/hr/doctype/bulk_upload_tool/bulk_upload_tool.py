@@ -16,6 +16,7 @@ from frappe.utils.xlsxutils import (
 	read_xls_file_from_attached_file,
 	read_xlsx_file_from_attached_file,
 )
+
 class BulkUploadTool(Document):
 	pass
 
@@ -145,10 +146,10 @@ class BulkUploadTool(Document):
 		return {"messages": ret, "error": error}
 
 @frappe.whitelist()
-def download_template(file_type, branch, month, fiscal_year, upload_type):
+def download_template(file_type, branch, month, fiscal_year, upload_type, unit=None):
 	data = frappe._dict(frappe.local.form_dict)
 	writer = get_template(branch, month, fiscal_year)
-	for d in get_mr_data(branch, month, fiscal_year):
+	for d in get_mr_data(branch, month, fiscal_year, unit):
 		row = []
 		row.append(d.branch)
 		row.append(d.cost_center)
@@ -158,6 +159,7 @@ def download_template(file_type, branch, month, fiscal_year, upload_type):
 		row.append(d.fiscal_year)
 		row.append(d.month)
 		writer.writerow(row)
+	
 	if upload_type == "Overtime":
 		doctype = "Muster Roll Overtime Entry"
 	else:
@@ -188,12 +190,21 @@ def build_response_as_excel(writer, doctype):
 	frappe.response["filename"] = str(doctype) + ".xlsx"
 	frappe.response["filecontent"] = xlsx_file.getvalue()
 	frappe.response["type"] = "binary"
-def get_mr_data(branch, month, fiscal_year):
-	return frappe.db.sql('''select branch, cost_center, unit, name, person_name,
-						 "{fiscal_year}" as fiscal_year, "{month}" as month
-						from `tabMuster Roll Employee`
-						where status ="Active" and branch = {branch} 
-						'''.format(branch=frappe.db.escape(branch), month=month, fiscal_year=fiscal_year), as_dict=True)
+
+def get_mr_data(branch, month, fiscal_year, unit=None):
+	if unit:
+		return frappe.db.sql('''select branch, cost_center, unit, name, person_name,
+					"{fiscal_year}" as fiscal_year, "{month}" as month
+					from `tabMuster Roll Employee`
+					where status ="Active" and branch = {branch} and unit = {unit}
+					'''.format(branch=frappe.db.escape(branch), month=month, fiscal_year=fiscal_year, unit=frappe.db.escape(unit)), as_dict=True)
+
+	else:
+		return frappe.db.sql('''select branch, cost_center, unit, name, person_name,
+							"{fiscal_year}" as fiscal_year, "{month}" as month
+							from `tabMuster Roll Employee`
+							where status ="Active" and branch = {branch} 
+							'''.format(branch=frappe.db.escape(branch), month=month, fiscal_year=fiscal_year), as_dict=True)
 	
 def get_template(branch, month, fiscal_year):
 	if not frappe.has_permission("Muster Roll Overtime Entry", "create"):

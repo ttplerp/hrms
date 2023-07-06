@@ -325,12 +325,12 @@
    "fieldname": "unit",
    "fieldtype": "Link",
    "label": "Unit",
-   "options": "Unit"
+   "options": "Department"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-06-19 11:51:22.245648",
+ "modified": "2023-07-06 10:32:06.327628",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
