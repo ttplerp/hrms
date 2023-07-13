@@ -9,7 +9,9 @@
  "engine": "InnoDB",
  "field_order": [
   "dzongkhag_name",
-  "description"
+  "description",
+  "cb_1",
+  "rental_dzo_abbr"
  ],
  "fields": [
   {
@@ -24,11 +26,21 @@
    "fieldname": "description",
    "fieldtype": "Small Text",
    "label": "Description"
+  },
+  {
+   "fieldname": "cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Use in Rental Management",
+   "fieldname": "rental_dzo_abbr",
+   "fieldtype": "Data",
+   "label": "Abbr"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-06-22 17:16:48.156740",
+ "modified": "2023-07-13 16:59:37.857775",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dzongkhag",
