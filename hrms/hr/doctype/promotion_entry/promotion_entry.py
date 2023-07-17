@@ -172,7 +172,7 @@ class PromotionEntry(Document):
 		if not new_grade:
 			frappe.throw("Promote to Grade not set for Employee {}".format(employee))
 		new_lower_limit = frappe.db.get_value("Employee Grade", new_grade, "lower_limit")
-		frappe.msgprint("nll: " + str(new_lower_limit))
+		# frappe.msgprint("nll: " + str(new_lower_limit))
 		new_increment = frappe.db.get_value("Employee Grade", new_grade, "increment")
 		# frappe.msgprint("ni: " + str(new_increment))
 
