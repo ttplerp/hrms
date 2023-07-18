@@ -41,25 +41,46 @@ def get_columns(data):
 def get_data(filters):
 	conditions, filters = get_conditions(filters)
 
+	# data = frappe.db.sql("""
+	# 		select t1.employee, t3.employee_name, t1.designation, t3.passport_number,t3.pf_tiers,
+	# 				sum(case when t2.salary_component = 'Basic Pay' then ifnull(t2.amount,0) else 0 end) as basicpay,
+	# 				t3.pf_number,
+	# 				sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employeepf,
+	# 				sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employerpf,
+	# 				sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0)*2 else 0 end) as total,
+	# 				t1.company, t1.branch, t1.cost_center, t1.department, t1.division, t1.section,
+	# 				t1.fiscal_year, t1.month
+	# 		from `tabSalary Slip` t1, `tabSalary Detail` t2, `tabEmployee` t3
+	# 		where t1.docstatus = 1 %s
+	# 		and t3.employee = t1.employee
+	# 		and t2.parent = t1.name
+	# 		and t2.salary_component in ('Basic Pay','PF')
+	# 		group by t1.employee, t3.employee_name, t1.designation, t3.passport_number,
+	# 				t3.pf_number, t1.company, t1.branch, t1.department, t1.division, t1.section,
+	# 				t1.fiscal_year, t1.month
+	# 		""" % conditions, filters)
 	data = frappe.db.sql("""
 			select t1.employee, t3.employee_name, t1.designation, t3.passport_number,t3.pf_tiers,
-					sum(case when t2.salary_component = 'Basic Pay' then ifnull(t2.amount,0) else 0 end) as basicpay,
+					sum(case when t6.salary_component = 'Basic Pay' then ifnull(t6.amount,0) else 0 end) as basicpay,
 					t3.pf_number,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employeepf,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employerpf,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0)*2 else 0 end) as total,
 					t1.company, t1.branch, t1.cost_center, t1.department, t1.division, t1.section,
 					t1.fiscal_year, t1.month
-			from `tabSalary Slip` t1, `tabSalary Detail` t2, `tabEmployee` t3
+			from `tabSalary Slip` t1, `tabSalary Detail` t2, `tabEmployee` t3, `tabSalary Slip Item` t4, `tabSalary Structure` t5, `tabSalary Detail` t6
 			where t1.docstatus = 1 %s
 			and t3.employee = t1.employee
 			and t2.parent = t1.name
+			and t4.parent = t1.name
+			and t4.salary_structure = t5.name
+			and t6.parent = t5.name
 			and t2.salary_component in ('Basic Pay','PF')
 			group by t1.employee, t3.employee_name, t1.designation, t3.passport_number,
 					t3.pf_number, t1.company, t1.branch, t1.department, t1.division, t1.section,
 					t1.fiscal_year, t1.month
 			""" % conditions, filters)
-	
+
 	return data
 	
 def get_conditions(filters):
