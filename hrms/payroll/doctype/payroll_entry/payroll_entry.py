@@ -578,6 +578,7 @@ class PayrollEntry(Document):
 		# Salary Details
 		cc = frappe.db.sql("""
 			select
+				sc.name as sc_name,
 				(case
 					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 then c.company_cost_center
 					else t1.cost_center
@@ -650,6 +651,8 @@ class PayrollEntry(Document):
 		for rec in cc:
 			# To Payables
 			tot_payable_amt += (-1*flt(rec.amount) if rec.component_type == 'Deduction' else flt(rec.amount))
+			if not rec.gl_head:
+				frappe.throw("GL Head for Salary Component '{}' is not set.".format(rec.sc_name))
 			posting.setdefault("to_payables",[]).append({
 				"account"        : rec.gl_head,
 				"credit_in_account_currency" if rec.component_type == 'Deduction' else "debit_in_account_currency": flt(rec.amount),
@@ -745,8 +748,7 @@ class PayrollEntry(Document):
 				"reference_name": self.name,
 				"salary_component": "Net Pay"
 			})
-		# if frappe.session.user == "Administrator":
-		# 	frappe.throw(str(posting))
+
 		# Final Posting to accounts
 		if posting:
 			jv_name, v_title = None, ""

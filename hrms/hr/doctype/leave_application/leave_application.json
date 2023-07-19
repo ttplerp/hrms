@@ -11,10 +11,16 @@
   "naming_series",
   "employee",
   "employee_name",
+  "designation",
+  "division",
+  "section",
   "column_break_4",
+  "posting_date",
+  "branch",
   "leave_type",
-  "department",
   "leave_balance",
+  "department",
+  "status",
   "section_break_5",
   "from_date",
   "to_date",
@@ -25,16 +31,14 @@
   "description",
   "section_break_7",
   "leave_approver",
-  "leave_approver_name",
   "column_break_18",
-  "status",
-  "salary_slip",
+  "leave_approver_name",
+  "column_break_22",
+  "leave_approver_designation",
   "sb10",
-  "posting_date",
   "follow_via_email",
   "color",
   "column_break_17",
-  "branch",
   "company",
   "letter_head",
   "amended_from"
@@ -75,7 +79,7 @@
    "fieldname": "leave_type",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
-   "in_standard_filter": 1,
+   "in_list_view": 1,
    "label": "Leave Type",
    "options": "Leave Type",
    "reqd": 1,
@@ -145,17 +149,20 @@
   {
    "fieldname": "description",
    "fieldtype": "Small Text",
-   "label": "Reason"
+   "label": "Reason",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_7",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Approver Details"
   },
   {
    "fieldname": "leave_approver",
    "fieldtype": "Link",
    "label": "Leave Approver",
-   "options": "User"
+   "options": "User",
+   "read_only": 1
   },
   {
    "fieldname": "leave_approver_name",
@@ -166,17 +173,6 @@
   {
    "fieldname": "column_break_18",
    "fieldtype": "Column Break"
-  },
-  {
-   "default": "Open",
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "in_standard_filter": 1,
-   "label": "Status",
-   "no_copy": 1,
-   "options": "Open\nApproved\nRejected\nCancelled",
-   "permlevel": 1,
-   "reqd": 1
   },
   {
    "fieldname": "sb10",
@@ -213,13 +209,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "salary_slip",
-   "fieldtype": "Link",
-   "label": "Salary Slip",
-   "options": "Salary Slip",
-   "print_hide": 1
-  },
-  {
    "allow_on_submit": 1,
    "fieldname": "letter_head",
    "fieldtype": "Link",
@@ -232,6 +221,7 @@
    "allow_on_submit": 1,
    "fieldname": "color",
    "fieldtype": "Color",
+   "hidden": 1,
    "label": "Color",
    "print_hide": 1
   },
@@ -252,6 +242,46 @@
    "label": "Branch",
    "options": "Branch",
    "reqd": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fieldname": "leave_approver_designation",
+   "fieldtype": "Data",
+   "label": "Leave Approver Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_22",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.division",
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department"
+  },
+  {
+   "fetch_from": "employee.section",
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "options": "Department"
+  },
+  {
+   "default": "Open",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Open\nApproved\nRejected\nCancelled",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-calendar",
@@ -259,7 +289,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2023-04-17 12:13:03.574230",
+ "modified": "2023-06-27 12:34:26.355567",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
@@ -340,6 +370,5 @@
  "sort_order": "DESC",
  "states": [],
  "timeline_field": "employee",
- "title_field": "employee_name",
- "track_views": 1
+ "title_field": "employee_name"
 }

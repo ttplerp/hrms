@@ -1,0 +1,157 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-07-05 19:16:14.454862",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "competency",
+  "section_break_2",
+  "weightage",
+  "column_break_4",
+  "evaluator_1",
+  "eval_1_remarks",
+  "column_break_8",
+  "evaluator_2",
+  "eval_2_remarks",
+  "column_break_10",
+  "evaluator_3",
+  "eval_3_remarks",
+  "rating_description_section",
+  "rating_4",
+  "column_break_15",
+  "rating_3",
+  "column_break_17",
+  "rating_2",
+  "column_break_19",
+  "rating_1"
+ ],
+ "fields": [
+  {
+   "fieldname": "weightage",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Weightage",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "competency",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Competency",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:frappe.session.user==parent.eval_1_user_id;",
+   "fieldname": "evaluator_1",
+   "fieldtype": "Float",
+   "label": "Evaluator 1",
+   "precision": "2"
+  },
+  {
+   "depends_on": "eval:frappe.session.user===parent.eval_2_user_id;",
+   "fieldname": "evaluator_2",
+   "fieldtype": "Float",
+   "label": "Evaluator 2",
+   "precision": "2"
+  },
+  {
+   "depends_on": "eval:frappe.session.user==parent.eval_3_user_id;",
+   "fieldname": "evaluator_3",
+   "fieldtype": "Float",
+   "label": "Evaluator 3",
+   "precision": "2"
+  },
+  {
+   "fieldname": "rating_description_section",
+   "fieldtype": "Section Break",
+   "label": "Rating Description"
+  },
+  {
+   "fieldname": "rating_4",
+   "fieldtype": "Small Text",
+   "label": "Rating 4",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rating_3",
+   "fieldtype": "Small Text",
+   "label": "Rating 3",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rating_2",
+   "fieldtype": "Small Text",
+   "label": "Rating 2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rating_1",
+   "fieldtype": "Small Text",
+   "label": "Rating 1",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:frappe.session.user==parent.eval_1_user_id;",
+   "fieldname": "eval_1_remarks",
+   "fieldtype": "Small Text",
+   "label": "Comment"
+  },
+  {
+   "depends_on": "eval:frappe.session.user==parent.eval_2_user_id;",
+   "fieldname": "eval_2_remarks",
+   "fieldtype": "Small Text",
+   "label": "Comment"
+  },
+  {
+   "depends_on": "eval:frappe.session.user==parent.eval_3_user_id;",
+   "fieldname": "eval_3_remarks",
+   "fieldtype": "Small Text",
+   "label": "Comment"
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_19",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-07-17 16:25:09.349728",
+ "modified_by": "Administrator",
+ "module": "PMS",
+ "name": "Evaluate Competency Item",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

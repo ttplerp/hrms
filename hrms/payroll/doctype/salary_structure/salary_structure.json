@@ -32,9 +32,9 @@
   "salary_component",
   "hour_rate",
   "sb_eligibility",
-  "eligible_for_corporate_allowance",
-  "ca_method",
-  "ca",
+  "eligible_for_hydro_allowance",
+  "ha_method",
+  "ha",
   "eligible_for_contract_allowance",
   "contract_allowance_method",
   "contract_allowance",
@@ -51,18 +51,15 @@
   "shift_method",
   "shift",
   "cb_10",
-  "eligible_for_difficulty",
-  "difficulty_method",
-  "difficulty",
-  "eligible_for_high_altitude",
-  "high_altitude_method",
-  "high_altitude",
+  "eligible_for_foreign_allowance",
+  "fa_method",
+  "fa",
+  "eligible_for_conveyance_allowance",
+  "con_method",
+  "con",
   "eligible_for_psa",
   "psa_method",
   "psa",
-  "eligible_for_mpi",
-  "mpi_method",
-  "mpi",
   "eligible_for_deputation",
   "deputation_method",
   "deputation",
@@ -74,26 +71,20 @@
   "temporary_transfer_allowance_method",
   "temporary_transfer_allowance",
   "lumpsum_temp_transfer_amount",
-  "eligible_for_scarcity",
-  "scarcity_method",
-  "scarcity",
-  "eligible_for_cash_handling",
-  "cash_handling_method",
-  "cash_handling",
-  "eligible_for_honorarium",
-  "honorarium_method",
-  "honorarium",
+  "eligible_for_site_allowance",
+  "site_method",
+  "site",
   "sb_other_benefits",
   "eligible_for_gis",
   "eligible_for_pf",
   "eligible_for_health_contribution",
   "eligible_for_tax",
+  "eligible_for_sws",
   "cb_16",
   "eligible_for_leave_encashment",
-  "eligible_for_overtime_and_payment",
-  "eligible_for_sws",
-  "cb_17",
   "eligible_for_ltc",
+  "eligible_for_overtime_and_payment",
+  "cb_17",
   "eligible_for_pbva",
   "eligible_for_annual_bonus",
   "earning_deduction",
@@ -263,29 +254,6 @@
   },
   {
    "default": "0",
-   "fieldname": "eligible_for_corporate_allowance",
-   "fieldtype": "Check",
-   "label": "Eligible for Corporate Allowance",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eligible_for_corporate_allowance",
-   "fieldname": "ca_method",
-   "fieldtype": "Select",
-   "label": "Eligible for Corporate Allowance Payment Method",
-   "options": "Percent\nLumpsum",
-   "print_hide": 1
-  },
-  {
-   "default": "23",
-   "depends_on": "eval:doc.eligible_for_corporate_allowance==1",
-   "fieldname": "ca",
-   "fieldtype": "Int",
-   "label": "Value(Corporate Allowance)",
-   "print_hide": 1
-  },
-  {
-   "default": "0",
    "fieldname": "eligible_for_contract_allowance",
    "fieldtype": "Check",
    "label": "Eligible for Contract allowance"
@@ -398,50 +366,6 @@
   },
   {
    "default": "0",
-   "fieldname": "eligible_for_difficulty",
-   "fieldtype": "Check",
-   "label": "Eligible for Difficult Area Allowance",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eligible_for_difficulty",
-   "fieldname": "difficulty_method",
-   "fieldtype": "Select",
-   "label": "Eligible for Difficult Area Allowance Payment Method",
-   "options": "Percent\nLumpsum",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eval:doc.eligible_for_difficulty==1",
-   "fieldname": "difficulty",
-   "fieldtype": "Currency",
-   "label": "Value(Difficulty Allowance)",
-   "print_hide": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "eligible_for_high_altitude",
-   "fieldtype": "Check",
-   "label": "Eligible for High Altitude Allowance",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eligible_for_high_altitude",
-   "fieldname": "high_altitude_method",
-   "fieldtype": "Select",
-   "label": "Eligible for High Altitude Allowance Payment Method",
-   "options": "Percent\nLumpsum",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eval:doc.eligible_for_high_altitude==1",
-   "fieldname": "high_altitude",
-   "fieldtype": "Currency",
-   "label": "Value(High Altitude)",
-   "print_hide": 1
-  },
-  {
-   "default": "0",
    "fieldname": "eligible_for_psa",
    "fieldtype": "Check",
    "label": "Eligible for PSA",
@@ -460,28 +384,6 @@
    "fieldname": "psa",
    "fieldtype": "Int",
    "label": "Value(PSA)",
-   "print_hide": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "eligible_for_mpi",
-   "fieldtype": "Check",
-   "label": "Eligible for MPI",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eligible_for_mpi",
-   "fieldname": "mpi_method",
-   "fieldtype": "Select",
-   "label": "Eligible for MPI Payment Method",
-   "options": "Percent\nLumpsum",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eval:doc.eligible_for_mpi==1",
-   "fieldname": "mpi",
-   "fieldtype": "Int",
-   "label": "Value(MPI)",
    "print_hide": 1
   },
   {
@@ -558,72 +460,6 @@
    "print_hide": 1
   },
   {
-   "default": "0",
-   "fieldname": "eligible_for_scarcity",
-   "fieldtype": "Check",
-   "label": "Eligible for Scarcity Allowance",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eligible_for_scarcity",
-   "fieldname": "scarcity_method",
-   "fieldtype": "Select",
-   "label": "Eligible for Scarcity Allowance Payment Method",
-   "options": "Percent\nLumpsum",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eval:doc.eligible_for_scarcity==1",
-   "fieldname": "scarcity",
-   "fieldtype": "Int",
-   "label": "Value(Scarcity)",
-   "print_hide": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "eligible_for_cash_handling",
-   "fieldtype": "Check",
-   "label": "Eligible for Cash Handling Allowance",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eligible_for_cash_handling",
-   "fieldname": "cash_handling_method",
-   "fieldtype": "Select",
-   "label": "Payment Method(Cash Handling)",
-   "options": "Percent\nLumpsum",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eval:doc.eligible_for_cash_handling==1",
-   "fieldname": "cash_handling",
-   "fieldtype": "Currency",
-   "label": "Value(Cash Handling)",
-   "print_hide": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "eligible_for_honorarium",
-   "fieldtype": "Check",
-   "label": "Eligible for Honorarium",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eligible_for_honorarium",
-   "fieldname": "honorarium_method",
-   "fieldtype": "Select",
-   "label": "Eligible for Honorarium Payment Method",
-   "options": "Percent\nLumpsum",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eligible_for_honorarium",
-   "fieldname": "honorarium",
-   "fieldtype": "Currency",
-   "label": "Value(Honorarium)",
-   "print_hide": 1
-  },
-  {
    "default": "1",
    "fieldname": "eligible_for_pbva",
    "fieldtype": "Check",
@@ -652,9 +488,10 @@
    "print_hide": 1
   },
   {
-   "default": "1",
+   "default": "0",
    "fieldname": "eligible_for_gis",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Eligible for GIS",
    "print_hide": 1
   },
@@ -836,12 +673,102 @@
    "label": "Cost Center",
    "options": "Cost Center",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_hydro_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Hydro Allowance",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_foreign_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Foreign Allowance",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_conveyance_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Conveyance Allowance",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_site_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Site Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_hydro_allowance",
+   "fieldname": "ha_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Hydro Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.eligible_for_hydro_allowance==1",
+   "fieldname": "ha",
+   "fieldtype": "Int",
+   "label": "Value(Hydro Allowance)",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_foreign_allowance",
+   "fieldname": "fa_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Foreign Allowance Payment Method",
+   "options": "Lumpsum\nPercent",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_foreign_allowance==1",
+   "fieldname": "fa",
+   "fieldtype": "Currency",
+   "label": "Value(Foreign Allowance)",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_conveyance_allowance",
+   "fieldname": "con_method",
+   "fieldtype": "Select",
+   "label": "Eligible for  Conveyance Allowance Payment Method",
+   "options": "Lumpsum\nPercent",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_conveyance_allowance==1",
+   "fieldname": "con",
+   "fieldtype": "Currency",
+   "label": "Value(Conveyance Allowance)",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_site_allowance",
+   "fieldname": "site_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Site Allowance Payment Method",
+   "options": "Lumpsum\nPercent",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_site_allowance==1",
+   "fieldname": "site",
+   "fieldtype": "Currency",
+   "label": "Value(Site Allowance)",
+   "precision": "2",
+   "print_hide": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-04-17 12:12:21.587857",
+ "modified": "2023-06-14 11:45:50.763736",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

@@ -17,7 +17,7 @@
   "business_activity",
   "column_break_8",
   "designation",
-  "grade",
+  "employee_qualification",
   "prefered_email",
   "dsa_per_day",
   "travel_purpose_information",
@@ -309,15 +309,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "grade",
-   "fieldtype": "Link",
-   "label": "Grade",
-   "options": "Employee Grade",
-   "read_only": 1,
-   "reqd": 1
-  },
-  {
-   "fetch_from": "grade.dsa",
+   "fetch_from": "employee_qualification.dsa_per_day",
    "fieldname": "dsa_per_day",
    "fieldtype": "Currency",
    "label": "DSA Per Day"
@@ -574,11 +566,18 @@
    "fieldtype": "Attach",
    "ignore_user_permissions": 1,
    "label": "Attach Report"
+  },
+  {
+   "fieldname": "employee_qualification",
+   "fieldtype": "Link",
+   "label": "Employee Qualification",
+   "options": "Education Level",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-17 12:11:52.383396",
+ "modified": "2023-06-14 12:58:20.620170",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",

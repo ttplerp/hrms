@@ -166,7 +166,7 @@ class ExpenseClaim(AccountsController):
 				frappe.throw("Setup Expense Bank Account in Branch or Default Expense Bank Account in Company Accounts Settings")
 
 		# expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
-		employee_payable_account = frappe.db.get_value("Company", self.company, "employee_payable_account")
+		employee_payable_account = frappe.db.get_value("Company", self.company, "default_bank_account")
 		
 		# accounts for imprest settlement
 		account_imprest = frappe.db.get_value("Company", self.company,"imprest_advance_account")
@@ -191,7 +191,7 @@ class ExpenseClaim(AccountsController):
 			jeb.flags.ignore_permissions = 1
 			jeb.title = "Expense Claim Payment(" + self.employee_name + "  " + self.name + ")"
 			jeb.voucher_type = "Journal Entry"
-			jeb.naming_series = "ACC-JV-.YYYY.-"
+			jeb.naming_series = "Bank Payment Voucher"
 			expense_claim_type = ""
 			for b in self.expenses:
 				expense_claim_type = b.expense_type
@@ -241,19 +241,50 @@ class ExpenseClaim(AccountsController):
 						"party_name":self.employee_name
 					})
 			else:
-				jeb.append("accounts", {
-					"account": self.payable_account,
-					"reference_type": "Expense Claim",
-					"reference_name": self.name,
-					"cost_center": self.cost_center,
-					"debit_in_account_currency": self.grand_total,
-					"debit": self.grand_total,
-					"business_activity": "Common",
-					"party_type": "Employee",
-					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
-					"party": self.employee,
-					"party_name":self.employee_name
-				})
+				amount = 0
+				advance = 0
+				advance_amount = 0
+				payable_account = self.payable_account
+				advance_doc = ""
+				if len(self.advances) > 0:
+					advance = 1
+					for a in self.advances:
+						advance_doc = frappe.get_doc("Employee Advance", a.employee_advance)
+				if self.grand_total == 0 and advance == 1:
+					amount = self.total_sanctioned_amount
+					advance_amount = self.total_advance_amount
+					employee_payable_account = advance_doc.advance_account
+				else:
+					amount = advance_amount = self.grand_total
+				if self.grand_total == 0 and advance == 1:
+					for b in self.expenses:
+						jeb.append("accounts", {
+							"account": frappe.db.get_value("Expense Claim Account", {"parent": b.expense_type}, "default_account"),
+							"reference_type": "Expense Claim",
+							"reference_name": self.name,
+							"cost_center": self.cost_center,
+							"debit_in_account_currency": flt(b.amount,2),
+							"debit": flt(b.amount,2),
+							"business_activity": "Common",
+							"party_type": "Employee",
+							"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
+							"party": self.employee,
+							"party_name":self.employee_name
+						})
+				else:
+					jeb.append("accounts", {
+						"account": self.payable_account,
+						"reference_type": "Expense Claim",
+						"reference_name": self.name,
+						"cost_center": self.cost_center,
+						"debit_in_account_currency": amount,
+						"debit": amount,
+						"business_activity": "Common",
+						"party_type": "Employee",
+						"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
+						"party": self.employee,
+						"party_name":self.employee_name
+					})
 				jeb.append("accounts", {
 					"account": employee_payable_account,
 					"cost_center": self.cost_center,
@@ -262,12 +293,11 @@ class ExpenseClaim(AccountsController):
 					"party_type": "Employee",
 					"party": self.employee,
 					"party_name":self.employee_name,
-					"credit_in_account_currency": self.grand_total,
-					"credit": self.grand_total,
+					"credit_in_account_currency": advance_amount,
+					"credit": advance_amount,
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
 					"business_activity": "Common",
 				})
-
 			jeb.insert()
 
 			payment_journal = str(jeb.name)
@@ -337,10 +367,19 @@ class ExpenseClaim(AccountsController):
 			)
 		# expense entries
 		for data in self.expenses:
+			### --- Added by Dawa tshering 07/05/2023 --- ###
+			debit_account = ''
+			if data.reference_type == "Travel Request":
+				travel_type = frappe.db.get_value("Travel Request", {'name': data.reference}, "travel_type")
+				if travel_type == "Domestic":
+					debit_account = frappe.db.get_value("Company", {'name': self.company}, "travel_in_country_account")
+				elif travel_type == "International":
+					debit_account = frappe.db.get_value("Company", {'name': self.company}, "travel_out_country_account")
+
 			gl_entry.append(
 				self.get_gl_dict(
 					{
-						"account": data.default_account,
+						"account": debit_account if debit_account else data.default_account,
 						"debit": data.sanctioned_amount,
 						"debit_in_account_currency": data.sanctioned_amount,
 						"against": self.employee,
@@ -712,7 +751,7 @@ def validate_expense_claim_in_jv(doc, method=None):
 			for row in ex_claim.get('expenses'):
 				if row.expense_type != 'Imprest':
 					outstanding_amt = get_outstanding_amount_for_claim(d.reference_name)
-					if d.debit > outstanding_amt:
+					if d.debit > outstanding_amt and ex_claim.grand_total > 0:
 						frappe.throw(
 							_(
 								"Row No {0}: Amount cannot be greater than the Outstanding Amount against Expense Claim {1}. Outstanding Amount is {2}"

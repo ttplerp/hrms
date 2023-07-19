@@ -1,0 +1,235 @@
+{
+ "actions": [],
+ "autoname": "field:level",
+ "creation": "2023-06-08 14:33:02.956571",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "level",
+  "default_leave_policy",
+  "column_break_3",
+  "gis",
+  "dsa_per_day",
+  "eligible_for_overtime",
+  "pf_contribution_section",
+  "employee_pf",
+  "employer_pf",
+  "column_break_11",
+  "health_contribution",
+  "salary_increment_section",
+  "increment_method",
+  "column_break_15",
+  "increment_value",
+  "salary_advance_settings_section",
+  "salary_advance_type",
+  "default_salary_structure",
+  "leave_encashment_settings_section",
+  "min_encashment_days",
+  "max_encashment_days",
+  "encashment_min",
+  "encashment_lapse",
+  "column_break_22",
+  "leave_encashment_type",
+  "leave_encashment_amount",
+  "leave_encashment_months",
+  "encashment_frequency",
+  "leave_credits_section",
+  "leave_credit"
+ ],
+ "fields": [
+  {
+   "fieldname": "level",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Level",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "gis",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "GIS",
+   "precision": "2"
+  },
+  {
+   "fieldname": "default_leave_policy",
+   "fieldtype": "Link",
+   "label": "Default Leave Policy",
+   "options": "Leave Policy"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "dsa_per_day",
+   "fieldtype": "Currency",
+   "label": "DSA Per Day",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_overtime",
+   "fieldtype": "Check",
+   "label": "Eligible For Overtime"
+  },
+  {
+   "fieldname": "pf_contribution_section",
+   "fieldtype": "Section Break",
+   "label": "PF Contribution"
+  },
+  {
+   "fieldname": "employee_pf",
+   "fieldtype": "Percent",
+   "label": "Employee PF Contribution ( % )",
+   "precision": "2"
+  },
+  {
+   "fieldname": "employer_pf",
+   "fieldtype": "Percent",
+   "label": "Employer PF Contribution ( % )"
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "health_contribution",
+   "fieldtype": "Percent",
+   "label": "Health Contribution ( % )",
+   "precision": "2"
+  },
+  {
+   "fieldname": "leave_credits_section",
+   "fieldtype": "Section Break",
+   "label": "Leave Credits"
+  },
+  {
+   "fieldname": "default_salary_structure",
+   "fieldtype": "Link",
+   "label": "Default Salary Structure",
+   "options": "Salary Structure"
+  },
+  {
+   "fieldname": "salary_increment_section",
+   "fieldtype": "Section Break",
+   "label": "Salary Increment"
+  },
+  {
+   "fieldname": "increment_method",
+   "fieldtype": "Select",
+   "label": "Increment Method",
+   "options": "\nLumpsum\nPercent"
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "increment_value",
+   "fieldtype": "Currency",
+   "label": "Increment Value"
+  },
+  {
+   "fieldname": "salary_advance_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Salary Advance Settings"
+  },
+  {
+   "fieldname": "salary_advance_type",
+   "fieldtype": "Select",
+   "label": "Salary Advance Type",
+   "options": "\nFlat Amount\nBasic Pay\nNet Pay\nGross Pay"
+  },
+  {
+   "fieldname": "leave_encashment_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Leave Encashment Settings"
+  },
+  {
+   "fieldname": "min_encashment_days",
+   "fieldtype": "Float",
+   "label": "Minimum No. of Days Entitled For Encashment",
+   "precision": "2"
+  },
+  {
+   "fieldname": "leave_encashment_type",
+   "fieldtype": "Select",
+   "label": "Leave Encashment Type",
+   "options": "\nFlat Amount\nBasic Pay\nGross Pay"
+  },
+  {
+   "fieldname": "column_break_22",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "max_encashment_days",
+   "fieldtype": "Float",
+   "label": "Maximum No. of Days Entitled For Encashment",
+   "precision": "2"
+  },
+  {
+   "fieldname": "encashment_min",
+   "fieldtype": "Float",
+   "label": "Minimum Balance Required For Encashment",
+   "precision": "2"
+  },
+  {
+   "fieldname": "encashment_lapse",
+   "fieldtype": "Float",
+   "label": "Maximum Balance Limit",
+   "precision": "2"
+  },
+  {
+   "fieldname": "leave_encashment_amount",
+   "fieldtype": "Currency",
+   "label": "Entitled Amount"
+  },
+  {
+   "fieldname": "leave_encashment_months",
+   "fieldtype": "Float",
+   "label": "No. of Months Pay Entitled For Encashment",
+   "precision": "2"
+  },
+  {
+   "fieldname": "encashment_frequency",
+   "fieldtype": "Int",
+   "label": "Encashment Frequency ( No. of times permitted per Year)"
+  },
+  {
+   "fieldname": "leave_credit",
+   "fieldtype": "Table",
+   "label": "Leave Credits",
+   "options": "Leave Credit"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2023-06-30 16:18:01.529748",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Education Level",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_views": 1
+}

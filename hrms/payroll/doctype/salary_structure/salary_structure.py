@@ -72,7 +72,7 @@ class SalaryStructure(Document):
 		self.designation = emp.designation
 		self.employment_type = emp.employment_type
 		self.employee_group = emp.employee_group
-		self.employee_grade = emp.grade
+		# self.employee_grade = emp.grade
 		self.department = emp.department
 		self.division = emp.division
 		self.section = emp.section
@@ -170,7 +170,7 @@ class SalaryStructure(Document):
 			self.db_set("section", doc.section)
 			self.db_set("employment_type", doc.employment_type)
 			self.db_set("employee_group", doc.employee_group)
-			self.db_set("employee_grade", doc.grade)
+			# self.db_set("employee_grade", doc.grade)
 			self.db_set("designation", doc.designation)
 			self.db_set("business_activity", doc.business_activity)
 
@@ -229,7 +229,7 @@ class SalaryStructure(Document):
 
 		basic_pay = comm_allowance = gis_amt = pf_amt = health_cont_amt = tax_amt = basic_pay_arrears = payscale_lower_limit= 0
 		total_earning = total_deduction = net_pay = 0
-		payscale_lower_limit = frappe.db.get_value("Employee Grade", frappe.db.get_value("Employee",self.employee,"grade"), "lower_limit")
+		# payscale_lower_limit = frappe.db.get_value("Employee Grade", frappe.db.get_value("Employee",self.employee,"grade"), "lower_limit")
 		settings = get_payroll_settings(self.employee)
 		settings = settings if settings else {}
 

@@ -30,14 +30,14 @@ frappe.ui.form.on('Overtime Application', {
 		frm.set_value("total_amount", flt(frm.doc.rate) * flt(frm.doc.total_hours))
 	},
 	
-	employee: function(frm){
-		frappe.call({
-			method:'check_for_overtime_eligibility',
-			doc: frm.doc,
-			callback:function(r){
-			}
-		})
-	},
+	// employee: function(frm){
+	// 	frappe.call({
+	// 		method:'check_for_overtime_eligibility',
+	// 		doc: frm.doc,
+	// 		callback:function(r){
+	// 		}
+	// 	})
+	// },
 
 });
 

@@ -1,57 +1,34 @@
 {
  "actions": [],
- "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:employee_type_name",
- "creation": "2013-01-10 16:34:14",
+ "autoname": "field:employment_type",
+ "creation": "2023-06-05 14:47:02.322754",
  "doctype": "DocType",
- "document_type": "Setup",
+ "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "employee_type_name",
-  "sb_employee_groups",
-  "items",
-  "sb_description",
-  "description"
+  "employment_type",
+  "sws_contribution"
  ],
  "fields": [
   {
-   "fieldname": "employee_type_name",
+   "fieldname": "employment_type",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Employment Type",
-   "oldfieldname": "employee_type_name",
-   "oldfieldtype": "Data",
-   "reqd": 1,
    "unique": 1
   },
   {
-   "fieldname": "sb_employee_groups",
-   "fieldtype": "Section Break",
-   "label": " Employee Groups"
-  },
-  {
-   "fieldname": "items",
-   "fieldtype": "Table",
-   "options": "Employment Type Item"
-  },
-  {
-   "fieldname": "sb_description",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "description",
-   "fieldtype": "Text Editor",
-   "label": "Description"
+   "fieldname": "sws_contribution",
+   "fieldtype": "Currency",
+   "label": "SWS Contribution"
   }
  ],
- "icon": "fa fa-flag",
- "idx": 1,
  "links": [],
- "modified": "2023-04-17 12:13:17.937263",
+ "modified": "2023-06-30 16:14:10.242342",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employment Type",
+ "name_case": "Title Case",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -59,10 +36,11 @@
    "create": 1,
    "delete": 1,
    "email": 1,
+   "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "HR User",
+   "role": "System Manager",
    "share": 1,
    "write": 1
   },
@@ -71,11 +49,21 @@
    "delete": 1,
    "email": 1,
    "export": 1,
-   "import": 1,
    "print": 1,
    "read": 1,
    "report": 1,
    "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
    "share": 1,
    "write": 1
   },
@@ -89,10 +77,7 @@
    "share": 1
   }
  ],
- "quick_entry": 1,
- "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_views": 1
+ "states": []
 }

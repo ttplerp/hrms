@@ -146,14 +146,14 @@ class SalarySlip(TransactionBase):
 		self.cost_center        = emp.cost_center
 		self.designation        = emp.designation
 		self.section            = emp.section
-		self.employee_subgroup  = emp.grade
+		# self.employee_subgroup  = emp.grade
 		self.bank_name          = emp.bank_name
 		self.bank_account_no    = emp.bank_ac_no
 		self.gis_number         = emp.gis_number
 		self.gis_policy_number  = emp.gis_policy_number
 		self.employment_type    = emp.employment_type
 		self.employee_group     = emp.employee_group
-		self.employee_grade     = emp.grade
+		# self.employee_grade     = emp.grade
 		self.business_activity  = emp.business_activity
 			
 	def get_leave_details(self, joining_date=None, relieving_date=None, ss_doc=None, lwp=None):

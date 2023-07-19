@@ -1,0 +1,280 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "DIS.YY.####",
+ "creation": "2019-03-21 08:15:17.167595",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "disciplinary_action_taken",
+  "posting_date",
+  "nature",
+  "employee",
+  "employee_name",
+  "column_break_3",
+  "designation",
+  "branch",
+  "reason",
+  "section_break_2",
+  "from_date",
+  "column_break_4",
+  "to_date",
+  "sb_action_complaint",
+  "complaint_frequency",
+  "cb_a_c",
+  "action_taken",
+  "section_break_10",
+  "salary_increment",
+  "promotion_cycle",
+  "earned_leave",
+  "not_guilty_or_acquitted",
+  "attachment",
+  "column_break_11",
+  "increment_month",
+  "promotion_month",
+  "remarks",
+  "hrc",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Designation",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.branch",
+   "fieldname": "branch",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Branch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Suspension Dates"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "To Date"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "salary_increment",
+   "fieldtype": "Check",
+   "label": "Don't Allow Salary Increment"
+  },
+  {
+   "default": "0",
+   "fieldname": "promotion_cycle",
+   "fieldtype": "Check",
+   "label": "Don't Allow Promotion Cycle"
+  },
+  {
+   "default": "1",
+   "fieldname": "earned_leave",
+   "fieldtype": "Check",
+   "label": "Don't allocate Earned Leave"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "not_guilty_or_acquitted",
+   "fieldtype": "Check",
+   "label": "Not Guilty or Acquitted "
+  },
+  {
+   "fieldname": "attachment",
+   "fieldtype": "Attach",
+   "label": "Attachment"
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "increment_month",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Increment Month",
+   "read_only": 1
+  },
+  {
+   "fieldname": "promotion_month",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Promotion Month",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Disciplinary Record",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "disciplinary_action_taken",
+   "fieldtype": "Text",
+   "label": "Disciplinary Action Taken",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Text",
+   "label": "Reason",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb_action_complaint",
+   "fieldtype": "Section Break",
+   "label": "Actions and Complaint"
+  },
+  {
+   "fieldname": "complaint_frequency",
+   "fieldtype": "Int",
+   "label": "Complaint Frequency"
+  },
+  {
+   "fieldname": "cb_a_c",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "No",
+   "fieldname": "action_taken",
+   "fieldtype": "Select",
+   "label": "Action Taken",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "hrc",
+   "fieldtype": "Text",
+   "label": "HRC"
+  },
+  {
+   "fieldname": "nature",
+   "fieldtype": "Text",
+   "label": "Nature",
+   "reqd": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-07-17 14:23:09.122975",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Disciplinary Record",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "employee_name"
+}

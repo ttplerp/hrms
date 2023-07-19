@@ -53,9 +53,11 @@
   "sb_approver",
   "hrgm",
   "hr_approver",
+  "imprest_approver",
   "cb_01",
   "hrgm_name",
   "hr_approver_name",
+  "imprest_approver_name",
   "separation_clearance_approvers_section",
   "fsa",
   "itsa",
@@ -815,13 +817,26 @@
    "fieldtype": "Link",
    "label": "Employee Separation Clearance Status Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "imprest_approver",
+   "fieldtype": "Link",
+   "label": "Imprest Approver",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "imprest_approver.employee_name",
+   "fieldname": "imprest_approver_name",
+   "fieldtype": "Data",
+   "label": "Imprest Approver Name",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-04-17 12:12:19.113024",
+ "modified": "2023-07-04 12:14:16.790537",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
@@ -833,6 +848,15 @@
    "print": 1,
    "read": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR Manager",
    "share": 1,
    "write": 1
   },

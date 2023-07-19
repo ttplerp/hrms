@@ -108,6 +108,7 @@ permission_query_conditions = {
 	"Travel Request": "hrms.hr.doctype.travel_request.travel_request.get_permission_query_conditions",
 	"Expense Claim": "hrms.hr.doctype.expense_claim.expense_claim.get_permission_query_conditions",
 	"Employee Transfer": "hrms.hr.doctype.employee_transfer.employee_transfer.get_permission_query_conditions",
+    # "Employee Transfer": "hrms.pms.doctype.performance_evaluation.performance_evaluation.get_permission_query_conditions",
 }
 #
 # has_permission = {

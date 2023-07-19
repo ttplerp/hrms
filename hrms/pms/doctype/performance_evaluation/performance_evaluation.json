@@ -1,0 +1,385 @@
+{
+ "actions": [],
+ "autoname": "PEVA.DD.MM.YY.####",
+ "creation": "2023-06-30 11:09:17.611050",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "performance_evaluation_section",
+  "employee",
+  "column_break_2",
+  "employee_name",
+  "column_break_4",
+  "designation",
+  "section_break_6",
+  "employee_group",
+  "column_break_8",
+  "branch",
+  "column_break_9",
+  "posting_date",
+  "section_break_12",
+  "fiscal_year",
+  "start_date",
+  "column_break_14",
+  "month",
+  "month_name",
+  "end_date",
+  "section_part_b",
+  "work_competency",
+  "section_break_21",
+  "evaluator_1_score",
+  "column_break_23",
+  "evaluator_2_score",
+  "column_break_25",
+  "evaluator_3_score",
+  "final_score_section",
+  "competency_total_weightage",
+  "final_score",
+  "column_break_26",
+  "overall_rating",
+  "evaluator_details_section",
+  "evaluator_1",
+  "evaluator_2",
+  "evaluator_3",
+  "column_break_33",
+  "eval_1_name",
+  "eval_2_name",
+  "eval_3_name",
+  "column_break_35",
+  "eval_1_user_id",
+  "eval_2_user_id",
+  "eval_3_user_id",
+  "additional_information_section",
+  "company",
+  "column_break_39",
+  "process_performance_evaluation",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Performance Evaluation",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "label": "Designation ",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "employee.branch",
+   "fieldname": "branch",
+   "fieldtype": "Data",
+   "in_standard_filter": 1,
+   "label": "Branch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_12",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_part_b",
+   "fieldtype": "Section Break",
+   "label": "Work Competency Evaluation (refer to the work competency definition for evaluation)"
+  },
+  {
+   "fieldname": "column_break_26",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "final_score",
+   "fieldtype": "Float",
+   "label": "Final Score(%)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "competency_total_weightage",
+   "fieldtype": "Float",
+   "label": "Competency Total Weightage",
+   "precision": "2"
+  },
+  {
+   "fieldname": "overall_rating",
+   "fieldtype": "Data",
+   "label": "Overall Rating"
+  },
+  {
+   "fieldname": "performance_evaluation_section",
+   "fieldtype": "Section Break",
+   "label": "Performance Evaluation"
+  },
+  {
+   "fieldname": "work_competency",
+   "fieldtype": "Table",
+   "label": "Work Competency ",
+   "options": "Evaluate Competency Item"
+  },
+  {
+   "fieldname": "additional_information_section",
+   "fieldtype": "Section Break",
+   "label": "Additional Information"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Fiscal Year",
+   "options": "Fiscal Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "month",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Month",
+   "options": "\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12",
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_39",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "process_performance_evaluation",
+   "fieldtype": "Link",
+   "label": "Process Performance Evaluation ",
+   "options": "Process Performance Evaluation"
+  },
+  {
+   "fieldname": "evaluator_details_section",
+   "fieldtype": "Section Break",
+   "label": "Evaluator Details"
+  },
+  {
+   "fieldname": "evaluator_1",
+   "fieldtype": "Link",
+   "label": "Evaluator 1",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "column_break_33",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "evaluator_2",
+   "fieldtype": "Link",
+   "label": "Evaluator 2",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "column_break_35",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.employee_group != \"Administration & Support\";",
+   "fieldname": "evaluator_3",
+   "fieldtype": "Link",
+   "label": "Evaluator 3",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "section_break_21",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.eval_1_user_id === frappe.session.user",
+   "fieldname": "evaluator_1_score",
+   "fieldtype": "Float",
+   "label": "Evaluator 1 Score",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.eval_2_user_id === frappe.session.user",
+   "fieldname": "evaluator_2_score",
+   "fieldtype": "Float",
+   "label": "Evaluator 2 Score",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_25",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.eval_3_user_id === frappe.session.user",
+   "fieldname": "evaluator_3_score",
+   "fieldtype": "Float",
+   "label": "Evaluator 3 Score",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "evaluator_1.employee_name",
+   "fieldname": "eval_1_name",
+   "fieldtype": "Data",
+   "label": "Evaluator Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "evaluator_2.employee_name",
+   "fieldname": "eval_2_name",
+   "fieldtype": "Data",
+   "label": "Evaluator Name",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.employee_group != \"Administration & Support\";",
+   "fetch_from": "evaluator_3.employee_name",
+   "fieldname": "eval_3_name",
+   "fieldtype": "Data",
+   "label": "Evaluator Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "evaluator_1.user_id",
+   "fieldname": "eval_1_user_id",
+   "fieldtype": "Data",
+   "label": "Evaluator Email ID",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "evaluator_2.user_id",
+   "fieldname": "eval_2_user_id",
+   "fieldtype": "Data",
+   "label": "Evaluator Email ID",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.employee_group != \"Administration & Support\";",
+   "fetch_from": "evaluator_3.user_id",
+   "fieldname": "eval_3_user_id",
+   "fieldtype": "Data",
+   "label": "Evaluator Email ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "final_score_section",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "Final Score"
+  },
+  {
+   "fetch_from": "employee.employee_group",
+   "fieldname": "employee_group",
+   "fieldtype": "Link",
+   "label": "Employee Group",
+   "options": "Employee Group",
+   "reqd": 1
+  },
+  {
+   "fieldname": "month_name",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Month",
+   "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-07-18 10:29:18.089971",
+ "modified_by": "Administrator",
+ "module": "PMS",
+ "name": "Performance Evaluation",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -62,7 +62,7 @@ frappe.ui.form.on('Salary Structure', {
 		frm.toggle_display(['salary_component', 'hour_rate'], frm.doc.salary_slip_based_on_timesheet);
 		frm.toggle_reqd(['salary_component', 'hour_rate'], frm.doc.salary_slip_based_on_timesheet);
 	},
-	eligible_for_corporate_allowance: function(frm){
+	eligible_for_hydro_allowance: function(frm){
 		calculate_others(frm);
 	},
 	eligible_for_contract_allowance: function(frm){
@@ -80,10 +80,10 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_shift: function(frm){
 		calculate_others(frm);
 	},
-	eligible_for_difficulty: function(frm){
+	eligible_for_foreign_allowance: function(frm){
 		calculate_others(frm);
 	},
-	eligible_for_high_altitude: function(frm){
+	eligible_for_conveyance_allowance: function(frm){
 		calculate_others(frm);
 	},
 	eligible_for_psa: function(frm){
@@ -101,10 +101,7 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_temporary_transfer_allowance: function(frm){
 		calculate_others(frm);
 	},
-	eligible_for_scarcity: function(frm){
-		calculate_others(frm);
-	},
-	eligible_for_cash_handling: function(frm){
+	eligible_for_site_allowance: function(frm){
 		calculate_others(frm);
 	},
 	eligible_for_honorarium: function(frm){
@@ -161,7 +158,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_house_rent_deduction: function(frm){
 		calculate_others(frm);
 	},
-	ca: function(frm){
+
+	// values
+	ha: function(frm){
 		calculate_others(frm);
 	},
 	contract_allowance: function(frm){
@@ -203,16 +202,16 @@ frappe.ui.form.on('Salary Structure', {
 	underground: function(frm){
 		calculate_others(frm);
 	},
-	difficulty: function(frm){
+	fa: function(frm){
 		calculate_others(frm);
 	},
-	high_altitude: function(frm){
+	con: function(frm){
 		calculate_others(frm);
 	},
 	scarcity: function(frm){
 		calculate_others(frm);
 	},
-	cash_handling: function(frm){
+	site: function(frm){
 		calculate_others(frm);
 	},
 	honorarium: function(frm){
@@ -248,8 +247,9 @@ frappe.ui.form.on('Salary Structure', {
 	uniform_allowance: function(frm){
 		calculate_others(frm);
 	},
+
 	// Payment Methods
-	ca_method: function(frm){
+	ha_method: function(frm){
 		calculate_others(frm);
 	},
 	contract_allowance_method: function(frm){
@@ -285,16 +285,16 @@ frappe.ui.form.on('Salary Structure', {
 	underground_method: function(frm){
 		calculate_others(frm);
 	},
-	difficulty_method: function(frm){
+	fa_method: function(frm){
 		calculate_others(frm);
 	},
-	high_altitude_method: function(frm){
+	con_method: function(frm){
 		calculate_others(frm);
 	},
 	scarcity_method: function(frm){
 		calculate_others(frm);
 	},
-	cash_handling_method: function(frm){
+	site_method: function(frm){
 		calculate_others(frm);
 	},
 	honorarium_method: function(frm){
@@ -668,7 +668,7 @@ frappe.ui.form.on("Salary Structure", "refresh", function(frm) {
 // 		});
 // 		frm.trigger('set_earning_deduction_component');
 // 	},
-// 	eligible_for_corporate_allowance: function(frm){
+// 	eligible_for_hydro_allowance: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
 // 	eligible_for_contract_allowance: function(frm){
@@ -686,10 +686,10 @@ frappe.ui.form.on("Salary Structure", "refresh", function(frm) {
 // 	eligible_for_shift: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
-// 	eligible_for_difficulty: function(frm){
+// 	eligible_for_foreign_allowance: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
-// 	eligible_for_high_altitude: function(frm){
+// 	eligible_for_conveyance_allowance: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
 // 	eligible_for_psa: function(frm){
@@ -707,10 +707,7 @@ frappe.ui.form.on("Salary Structure", "refresh", function(frm) {
 // 	eligible_for_temporary_transfer_allowance: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
-// 	eligible_for_scarcity: function(frm){
-// 		calculate_others(frm.doc);
-// 	},
-// 	eligible_for_cash_handling: function(frm){
+// 	eligible_for_site_allowance: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
 // 	eligible_for_honorarium: function(frm){
@@ -773,23 +770,17 @@ frappe.ui.form.on("Salary Structure", "refresh", function(frm) {
 // 	underground: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
-// 	difficulty: function(frm){
-// 		calculate_others(frm.doc);
-// 	},
-// 	high_altitude: function(frm){
+// 	fa: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
 // 	scarcity: function(frm){
-// 		calculate_others(frm.doc);
-// 	},
-// 	cash_handling: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
 // 	honorarium: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
 // 	// Payment Methods
-// 	ca_method: function(frm){
+// 	ha_method: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
 // 	contract_allowance_method: function(frm){
@@ -825,16 +816,10 @@ frappe.ui.form.on("Salary Structure", "refresh", function(frm) {
 // 	underground_method: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
-// 	difficulty_method: function(frm){
-// 		calculate_others(frm.doc);
-// 	},
-// 	high_altitude_method: function(frm){
+// 	fa_method: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
 // 	scarcity_method: function(frm){
-// 		calculate_others(frm.doc);
-// 	},
-// 	cash_handling_method: function(frm){
 // 		calculate_others(frm.doc);
 // 	},
 // 	honorarium_method: function(frm){

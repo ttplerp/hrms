@@ -1,7 +1,7 @@
 {
  "actions": [],
  "autoname": "autoincrement",
- "creation": "2023-03-02 16:09:46.942667",
+ "creation": "2023-06-05 16:17:25.369800",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -14,27 +14,24 @@
   {
    "fieldname": "s_b_type",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Benefit Type"
   },
   {
    "fieldname": "s_b_currency",
    "fieldtype": "Currency",
-   "in_list_view": 1,
    "label": "Amount",
    "options": "Company:company:default_currency"
   },
   {
    "fieldname": "s_remarks",
    "fieldtype": "Small Text",
-   "in_list_view": 1,
    "label": "Remarks"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-17 12:12:33.710183",
+ "modified": "2023-06-05 16:17:25.369800",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Separation Benefits",
@@ -43,6 +40,5 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_views": 1
+ "states": []
 }

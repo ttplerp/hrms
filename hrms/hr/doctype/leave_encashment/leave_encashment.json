@@ -17,7 +17,7 @@
   "section",
   "employment_type",
   "employee_group",
-  "grade",
+  "employee_qualification",
   "column_break_4",
   "encashment_date",
   "leave_type",
@@ -173,15 +173,6 @@
    "hidden": 1,
    "label": "Employee Group",
    "options": "Employee Group",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.grade",
-   "fieldname": "grade",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Grade",
-   "options": "Employee Grade",
    "read_only": 1
   },
   {
@@ -358,11 +349,20 @@
    "fieldtype": "Link",
    "label": "Workflow State",
    "options": "Workflow State"
+  },
+  {
+   "fetch_from": "employee.employee_qualification",
+   "fieldname": "employee_qualification",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Employee Qualification",
+   "options": "Education Level",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-17 12:12:22.056093",
+ "modified": "2023-07-03 11:14:36.218924",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",

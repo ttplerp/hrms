@@ -1,0 +1,223 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "PPE.YYYY.####",
+ "creation": "2023-07-06 15:51:37.730780",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "select_pms_period_section",
+  "fiscal_year",
+  "month_name",
+  "month",
+  "column_break_2",
+  "processing_branch",
+  "select_employees_section",
+  "branch",
+  "department",
+  "column_break_8",
+  "designation",
+  "employee",
+  "process_status_section",
+  "number_of_employees",
+  "performance_evaluation_created",
+  "column_break_14",
+  "successful",
+  "failed",
+  "section_break_14",
+  "employees",
+  "sb_failed",
+  "employees_failed",
+  "additional_information_section",
+  "posting_date",
+  "column_break_15",
+  "company",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "processing_branch",
+   "fieldtype": "Link",
+   "label": "Processing Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Process Performance Evaluation",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "select_employees_section",
+   "fieldtype": "Section Break",
+   "label": "Select Employees"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "select_pms_period_section",
+   "fieldtype": "Section Break",
+   "label": "Select PMS Period"
+  },
+  {
+   "fieldname": "additional_information_section",
+   "fieldtype": "Section Break",
+   "label": "Additional Information"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "process_status_section",
+   "fieldtype": "Section Break",
+   "label": "Process Status"
+  },
+  {
+   "default": "0",
+   "fieldname": "performance_evaluation_created",
+   "fieldtype": "Check",
+   "label": "Performance Evaluation Created"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "number_of_employees",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Number Of Employees",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employees",
+   "fieldtype": "Table",
+   "label": "Employee Details",
+   "options": "PPE Employee Detail"
+  },
+  {
+   "fieldname": "successful",
+   "fieldtype": "Int",
+   "label": "Successful",
+   "read_only": 1
+  },
+  {
+   "fieldname": "failed",
+   "fieldtype": "Int",
+   "label": "Failed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "month_name",
+   "fieldtype": "Select",
+   "label": "Month",
+   "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
+   "reqd": 1
+  },
+  {
+   "fieldname": "month",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Month",
+   "options": "\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12"
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "label": "Fiscal Year",
+   "options": "Fiscal Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb_failed",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "employees_failed",
+   "fieldtype": "Table",
+   "options": "Payroll Employee Failed",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-07-07 14:53:19.367354",
+ "modified_by": "Administrator",
+ "module": "PMS",
+ "name": "Process Performance Evaluation",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

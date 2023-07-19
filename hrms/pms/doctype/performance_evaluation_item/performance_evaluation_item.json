@@ -1,0 +1,62 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-07-05 19:28:14.488693",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "performance_target",
+  "weightage",
+  "column_break_3",
+  "self_rating",
+  "supervisor_rating"
+ ],
+ "fields": [
+  {
+   "fieldname": "performance_target",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Performance Target",
+   "reqd": 1
+  },
+  {
+   "fieldname": "weightage",
+   "fieldtype": "Data",
+   "label": "Weightage"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "self_rating",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Self Rating",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "supervisor_rating",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Supervisor Rating",
+   "precision": "2",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-07-06 11:40:41.863215",
+ "modified_by": "Administrator",
+ "module": "PMS",
+ "name": "Performance Evaluation Item",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

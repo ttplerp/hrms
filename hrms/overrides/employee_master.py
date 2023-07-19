@@ -11,14 +11,22 @@ from erpnext.setup.doctype.employee.employee import Employee
 
 class EmployeeMaster(Employee):
 	def autoname(self):
+		new_name = ''
 		# naming done with combination with joining year, month and 4 digits series
-		# if self.old_id:
-		# 	self.employee =	self.name = self.old_id
-		# 	return
-		year_month = str(self.date_of_joining)[2:4] + str(self.date_of_joining)[5:7]
-		name = make_autoname('EMP.####')[3:]
-		self.employee = self.name = year_month + name
-
+		if self.old_id:
+			if len(self.old_id) == 10:
+				new_id = str(self.old_id)[0:8] + '0' + str(self.old_id)[8:10]
+				new_name = new_id
+			elif len(self.old_id) == 11:
+				new_name = self.old_id
+			else:
+				frappe.throw("Old Employee ID Should be 10 or 11 in length")
+		else:
+			year_month_day = str(self.date_of_joining)[0:4] + str(self.date_of_joining)[5:7] + str(self.date_of_joining)[8:10]
+			name = make_autoname('EMP.###')[3:]
+			new_name = year_month_day + name
+		self.employee =	self.name = new_name
+		# frappe.throw(str(self.name))
 def validate_onboarding_process(doc, method=None):
 	"""Validates Employee Creation for linked Employee Onboarding"""
 	if not doc.job_applicant:

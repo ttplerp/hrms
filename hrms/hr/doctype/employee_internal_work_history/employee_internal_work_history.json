@@ -15,7 +15,7 @@
   "section",
   "column_break_5",
   "designation",
-  "grade",
+  "employee_qualification",
   "reports_to",
   "from_date",
   "to_date",
@@ -100,13 +100,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "grade",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Grade",
-   "options": "Employee Grade"
-  },
-  {
    "fieldname": "reports_to",
    "fieldtype": "Link",
    "label": "Reports to",
@@ -135,12 +128,19 @@
    "label": "Region",
    "options": "Region",
    "read_only": 1
+  },
+  {
+   "fieldname": "employee_qualification",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee Qualification",
+   "options": "Education Level"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-17 12:12:08.684320",
+ "modified": "2023-06-30 11:41:55.255526",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Internal Work History",

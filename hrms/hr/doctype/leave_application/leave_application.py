@@ -32,9 +32,6 @@ from hrms.hr.utils import (
 	validate_active_employee,
 )
 from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
-from datetime import datetime, timedelta
-import calendar
-import pandas as pd
 
 class LeaveDayBlockedError(frappe.ValidationError):
 	pass
@@ -61,6 +58,7 @@ class LeaveAcrossAllocationsError(frappe.ValidationError):
 
 
 from frappe.model.document import Document
+
 
 class LeaveApplication(Document):
 	def get_feed(self):
@@ -96,11 +94,6 @@ class LeaveApplication(Document):
 	def on_submit(self):
 		#Added by Kinley 2022/11/16
 		notify_workflow_states(self)
-		if self.status in ["Open", "Cancelled"]:
-			frappe.throw(
-				_("Only Leave Applications with status 'Approved' and 'Rejected' can be submitted")
-			)
-
 		self.validate_back_dated_application()
 		self.update_attendance()
 		# notify leave applier about approval
@@ -408,6 +401,7 @@ class LeaveApplication(Document):
 				name, leave_type, posting_date, from_date, to_date, total_leave_days, half_day_date
 			from `tabLeave Application`
 			where employee = %(employee)s and docstatus < 2 and status in ('Open', 'Approved')
+			and workflow_state != "Rejected"
 			and to_date >= %(from_date)s and from_date <= %(to_date)s
 			and name != %(name)s""",
 			{
@@ -753,39 +747,14 @@ def get_number_of_leave_days(
 		number_of_days = date_diff(to_date, from_date) + 1
 
 	if not frappe.db.get_value("Leave Type", leave_type, "include_holiday"):
-		holiday_list = get_holiday_list_for_employee(employee)
 		number_of_days = flt(number_of_days) - flt(
 			get_holidays(employee, from_date, to_date, holiday_list=holiday_list)
 		)
-		days = pd.date_range(datetime.strptime(str(from_date).split(" ")[0],"%Y-%m-%d"),datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d")-timedelta(days=0),freq='d')
+	
 
-		if len(days) > 0:
-			for d in days:
-				day = calendar.day_name[datetime.strptime(str(d).split(" ")[0],"%Y-%m-%d").weekday()]
-				half_working_day = frappe.db.sql("""select day from `tabHoliday List Days` where parent = '{}'""".format(holiday_list))
-				count = 0
-				for hwd in half_working_day:
-					if day in hwd and count == 0:
-						if not frappe.db.exists("Holiday",{"parent":holiday_list,"holiday_date":datetime.strptime(str(d).split(" ")[0],"%Y-%m-%d")}):
-							number_of_days -= 0.5
-					count +=1
-
-			# day = calendar.day_name[datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d").weekday()]
-			# half_working_day = frappe.db.sql("""select day from `tabHoliday List Days` where parent = '{}' """.format(holiday_list))
-			# for hwd in half_working_day:
-			# 	frappe.msgprint('henjnkjnkree')
-			# 	if day in hwd:
-			# 		if not frappe.db.exists("Holiday",{"parent":holiday_list,"holiday_date":datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d")}):
-			# 			number_of_days -= 0.5
-		else:
-			day = calendar.day_name[datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d").weekday()]
-			half_working_day = frappe.db.sql("""select day from `tabHoliday List Days` where parent = '{}'""".format(holiday_list))
-			for hwd in half_working_day:
-				if day in hwd:
-					if not frappe.db.exists("Holiday",{"parent":holiday_list,"holiday_date":datetime.strptime(str(to_date).split(" ")[0],"%Y-%m-%d")}):
-						number_of_days -= 0.5
-
+	
 	return number_of_days
+
 
 @frappe.whitelist()
 def get_leave_details(employee, date):

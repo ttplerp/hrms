@@ -1,7 +1,7 @@
 {
  "actions": [],
  "autoname": "autoincrement",
- "creation": "2022-10-03 14:55:27.575213",
+ "creation": "2023-06-05 16:13:06.637541",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -21,9 +21,7 @@
   {
    "fieldname": "financial_system_code",
    "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Financial System Code",
-   "reqd": 1
+   "label": "Financial System Code"
   },
   {
    "fieldname": "financial_institution_branch",
@@ -35,7 +33,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-17 12:13:16.975970",
+ "modified": "2023-06-05 16:13:06.637541",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution Item",
@@ -44,6 +42,5 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_views": 1
+ "states": []
 }

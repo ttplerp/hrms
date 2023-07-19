@@ -1,8 +1,7 @@
 {
  "actions": [],
- "allow_import": 1,
  "allow_rename": 1,
- "creation": "2022-10-03 14:52:32.879972",
+ "creation": "2023-06-05 16:12:48.736721",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -14,18 +13,9 @@
  ],
  "fields": [
   {
-   "fieldname": "financial_institution",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Financial Institution",
-   "options": "Financial Institution",
-   "reqd": 1
-  },
-  {
    "fieldname": "short_form",
    "fieldtype": "Data",
-   "label": "Short Form",
-   "read_only": 1
+   "label": "Short Form"
   },
   {
    "fieldname": "branch_name",
@@ -38,11 +28,19 @@
    "fieldname": "financial_system_code",
    "fieldtype": "Data",
    "label": "Financial System Code"
+  },
+  {
+   "fieldname": "financial_institution",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Financial Institution",
+   "options": "Financial Institution",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-04-17 12:12:42.660754",
+ "modified": "2023-06-05 16:14:57.519411",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution Branch",
@@ -64,7 +62,5 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_changes": 1,
- "track_views": 1
+ "states": []
 }

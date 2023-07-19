@@ -422,6 +422,15 @@ frappe.ui.form.on("Expense Claim Detail", {
 });
 
 frappe.ui.form.on("Expense Claim Advance", {
+	refresh: function(frm, cdt, cdn){
+		item = locals[cdt][cdn];
+		frm.fields_dict['bank_account'].get_query = function(doc, dt, dn) {
+			return {
+				query: "erpnext.controller.queries.filter_advance_type",
+				filters:{"imprest_advance":frm.doc.imprest_advance, "employee":frm.doc.employee}
+			}
+		}
+	},
 	employee_advance: function(frm, cdt, cdn) {
 		var child = locals[cdt][cdn];
 		if(!frm.doc.employee){

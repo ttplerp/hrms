@@ -180,6 +180,7 @@ frappe.ui.form.on('Employee Advance', {
 			frappe.run_serially([
 				() => frm.trigger('get_pending_amount'),
 				() => frm.trigger('set_pay_details'),
+				() => frm.trigger('set_recovery_start_date'),
 				//() => frm.trigger('get_accumulated_advance_amount_from_employee_advance')
 			]);
 		}
@@ -209,34 +210,61 @@ frappe.ui.form.on('Employee Advance', {
 		});
 	},
 
-	advance_amount: function(frm){
-		if (frm.doc.advance_type == "Salary Advance"){
-			frappe.call({
-				method: "validate_advance_amount",
-				doc: frm.doc,
-				callback: function(r){
-					frm.refresh_field("advance_amount");
-					frm.refresh_field("recovery_start_date");
-					frm.refresh_field("recovery_end_date");
-					frm.refresh_field("monthly_deduction");
-					
-				}
-			})
+	// advance_amount: function(frm){
+	// 	if (frm.doc.advance_type == "Salary Advance"){
+	// 		frappe.call({
+	// 			method: "validate_advance_amount",
+	// 			doc: frm.doc,
+	// 			callback: function(r){
+	// 				frm.refresh_field("advance_amount");
+	// 				frm.refresh_field("recovery_start_date");
+	// 				frm.refresh_field("recovery_end_date");
+	// 				frm.refresh_field("monthly_deduction");
+	// 			}
+	// 		})
+	// 	}
+	// },
+	
+	advance_amount: function (frm) {
+		if (frm.doc.advance_type === "Salary Advance") { 
+			calculate_monthly_deduction(frm)
 		}
 	},
 
-	deduction_month: function(frm){
-		frappe.call({
-			method: "validate_deduction_month",
-			doc: frm.doc,
-			callback: function(r){
-				frm.refresh_field("deduction_month");
-				frm.refresh_field("recovery_start_date");
-				frm.refresh_field("recovery_end_date");
-				frm.refresh_field("monthly_deduction");
+	deduction_month: function (frm) {
+		if (frm.doc.advance_type === "Salary Advance") { 
+			calculate_monthly_deduction(frm)
+		}
+		if (frm.doc.deduction_month) { 
+			frappe.call({
+				method: "hrms.hr.doctype.employee_advance.employee_advance.calculate_recovery_end_date",
+				args: {
+					"start_date": frm.doc.recovery_start_date,
+					"months": frm.doc.deduction_month
+				},callback: function(r) {
+					console.log(r.message)
+					frm.set_value("recovery_end_date", r.message);
+				}
+			});
+		}
+	},
+
+	// deduction_month: function(frm){
+	// 	frappe.call({
+	// 		method: "validate_deduction_month",
+	// 		doc: frm.doc,
+	// 		callback: function(r){
+	// 			frm.refresh_field("deduction_month");
+	// 			frm.refresh_field("recovery_start_date");
+	// 			frm.refresh_field("recovery_end_date");
+	// 			frm.refresh_field("monthly_deduction");
 				
-			}
-		})
+	// 		}
+	// 	})
+	// },
+
+	set_recovery_start_date: function (frm) { 
+		frm.set_value("recovery_start_date", frm.doc.posting_date);
 	},
 
 	set_pay_details: function(frm){
@@ -249,10 +277,10 @@ frappe.ui.form.on('Employee Advance', {
 				frm.refresh_field("deduction_month");
 				frm.refresh_field("max_advance_limit");
 				frm.refresh_field("monthly_deduction");
-				
 			}
 		})
 	},
+
 	get_accumulated_advance_amount_from_employee_advance: function(frm){
 		frappe.call({
 			method: "get_accumulated_advance_amount",
@@ -325,8 +353,23 @@ frappe.ui.form.on('Employee Advance', {
 			}
 		});
 	},
-
 	// advance_type: function(frm){
 	// 	frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
 	// }
 });
+
+var calculate_monthly_deduction = function (frm) { 
+	if (frm.doc.deduction_month > 0 && frm.doc.advance_amount > 0) { 
+		const isDivisible = (frm.doc.advance_amount % frm.doc.deduction_month === 0)
+		if (!isDivisible) {
+			const monthly_amount = Math.ceil(flt(frm.doc.advance_amount / frm.doc.deduction_month))
+			const new_advance = flt(frm.doc.deduction_month * monthly_amount)
+			frappe.msgprint("Your advance amount is updated to " + new_advance + " in order to make it equally divisible by the no. of installments")
+			frm.set_value("advance_amount", new_advance);
+			frm.set_value("monthly_deduction", monthly_amount);
+		} else { 
+			const monthly_amount = flt(frm.doc.advance_amount / frm.doc.deduction_month)
+			frm.set_value("monthly_deduction", monthly_amount);
+		}
+	}
+}

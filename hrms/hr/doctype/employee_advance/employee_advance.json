@@ -11,13 +11,13 @@
   "employee",
   "employee_name",
   "department",
+  "employee_group",
   "column_break_4",
   "posting_date",
   "advance_type",
   "reference_type",
   "reference",
-  "employee_group",
-  "grade",
+  "employee_qualification",
   "currency",
   "exchange_rate",
   "repay_unclaimed_amount_from_salary",
@@ -48,17 +48,17 @@
   "company",
   "amended_from",
   "column_break_18",
-  "advance_account",
   "cost_center",
   "mode_of_payment",
   "expenses_claimed",
   "approver_details_section",
-  "advance_approver_name",
-  "column_break_42",
   "advance_approver",
+  "column_break_42",
+  "advance_approver_name",
   "column_break_50",
   "advance_approver_designation",
   "section_break_26",
+  "advance_account",
   "je_reference",
   "salary_structure",
   "salary_component",
@@ -153,7 +153,6 @@
    "read_only": 1
   },
   {
-   "collapsible": 1,
    "fieldname": "section_break_7",
    "fieldtype": "Section Break",
    "label": "Accounting Details"
@@ -287,22 +286,6 @@
   },
   {
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
-   "fetch_from": "employee.employee_group",
-   "fieldname": "employee_group",
-   "fieldtype": "Data",
-   "label": "Employee Group",
-   "read_only": 1
-  },
-  {
-   "depends_on": "eval:doc.advance_type == 'Salary Advance'",
-   "fetch_from": "employee.grade",
-   "fieldname": "grade",
-   "fieldtype": "Data",
-   "label": "Employee Grade",
-   "read_only": 1
-  },
-  {
-   "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fetch_from": "employee.cost_center",
    "fieldname": "cost_center",
    "fieldtype": "Data",
@@ -336,6 +319,7 @@
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fieldname": "max_advance_limit",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Maximum Advance Limit",
    "read_only": 1
   },
@@ -351,13 +335,15 @@
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fieldname": "recovery_start_date",
    "fieldtype": "Date",
-   "label": "Recovery Start Date"
+   "label": "Recovery Start Date",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fieldname": "recovery_end_date",
    "fieldtype": "Date",
-   "label": "Recovery End Date"
+   "label": "Recovery End Date",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
@@ -377,15 +363,16 @@
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.advance_type != \"Travel Advance\"",
    "fieldname": "approver_details_section",
    "fieldtype": "Section Break",
    "label": "APPROVER DETAILS"
   },
   {
+   "fetch_from": "advance_approver_name.user_id",
    "fieldname": "advance_approver_name",
-   "fieldtype": "Link",
-   "label": "Approver",
-   "options": "Employee",
+   "fieldtype": "Data",
+   "label": "Approver Name",
    "read_only": 1
   },
   {
@@ -393,10 +380,10 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "advance_approver_name.user_id",
    "fieldname": "advance_approver",
-   "fieldtype": "Data",
-   "label": "Approver Email ID",
+   "fieldtype": "Link",
+   "label": "Approver",
+   "options": "User",
    "read_only": 1
   },
   {
@@ -447,8 +434,9 @@
   },
   {
    "fieldname": "je_reference",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "JE Reference",
+   "options": "Journal Entry",
    "read_only": 1
   },
   {
@@ -468,11 +456,27 @@
   {
    "fieldname": "column_break_50",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.employee_qualification",
+   "fieldname": "employee_qualification",
+   "fieldtype": "Link",
+   "label": "Employee Qualification",
+   "options": "Education Level",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.employee_group",
+   "fieldname": "employee_group",
+   "fieldtype": "Link",
+   "label": "Employee Group",
+   "options": "Employee Group",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-17 12:11:54.688634",
+ "modified": "2023-07-05 12:41:20.401614",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

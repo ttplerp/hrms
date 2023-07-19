@@ -1,0 +1,194 @@
+{
+ "actions": [],
+ "autoname": "UOET.-.YY.-.MM.-.###",
+ "creation": "2023-05-30 12:21:14.193216",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "file_type",
+  "column_break_2",
+  "upload_type",
+  "download_template",
+  "branch",
+  "get_template",
+  "column_break_3",
+  "fiscal_year",
+  "column_break_5",
+  "month",
+  "section_break_9",
+  "import_file",
+  "upload_html",
+  "import_log",
+  "upload_data",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "CSV",
+   "fieldname": "file_type",
+   "fieldtype": "Select",
+   "label": "File Type",
+   "options": "\nCSV\nEXCEL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "upload_type",
+   "fieldtype": "Select",
+   "label": "Upload Type",
+   "options": "\nOvertime\nAttendance",
+   "reqd": 1
+  },
+  {
+   "description": "Download the Template, fill appropriate data and attach the modified file.\nAll dates and employee combination in the selected period will come in the template, with existing attendance records",
+   "fieldname": "download_template",
+   "fieldtype": "Section Break",
+   "label": "Download Template"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "get_template",
+   "fieldtype": "Button",
+   "label": "Download Template",
+   "oldfieldtype": "Button"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Fiscal Year",
+   "oldfieldname": "attenadnce_date",
+   "oldfieldtype": "Date",
+   "options": "Fiscal Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "month",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Month",
+   "options": "\nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "import_file",
+   "fieldtype": "Attach",
+   "label": "Import File"
+  },
+  {
+   "fieldname": "upload_html",
+   "fieldtype": "HTML",
+   "label": "Upload HTML"
+  },
+  {
+   "fieldname": "import_log",
+   "fieldtype": "HTML",
+   "label": "Import Log"
+  },
+  {
+   "depends_on": "eval:doc.docstatus == 1",
+   "fieldname": "upload_data",
+   "fieldtype": "Button",
+   "label": "Upload Data"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Bulk Tool",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-05-31 15:24:18.559744",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Bulk Tool",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Projects Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Unit Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

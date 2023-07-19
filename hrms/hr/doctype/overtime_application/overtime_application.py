@@ -21,8 +21,8 @@ class OvertimeApplication(Document):
 		if "Employee" not in frappe.get_roles(frappe.session.user):
 			frappe.msgprint(_("Only employee of {} can apply for Overtime").format(frappe.bold(self.company)), title="Not Allowed", indicator="red", raise_exception=1)
 
-		if cint(frappe.db.get_value('Employee Grade',self.grade,'eligible_for_overtime')) == 0:
-			frappe.msgprint(_("You are not eligible for overtime"), title="Not Eligible", indicator="red", raise_exception=1)
+		# if cint(frappe.db.get_value('Employee Grade',self.grade,'eligible_for_overtime')) == 0:
+		# 	frappe.msgprint(_("You are not eligible for overtime"), title="Not Eligible", indicator="red", raise_exception=1)
 
 	def calculate_totals(self):			
 		settings = frappe.get_single("HR Settings")
@@ -48,10 +48,10 @@ class OvertimeApplication(Document):
 	def on_submit(self):
 		notify_workflow_states(self)
 	
-	@frappe.whitelist()
-	def check_for_overtime_eligibility(self):
-		if not frappe.db.get_value("Employee Grade", frappe.db.get_value("Employee", self.employee, "grade"), "eligible_for_overtime"):
-			frappe.throw(_("Employee is not eligible for Overtime"))
+	# @frappe.whitelist()
+	# def check_for_overtime_eligibility(self):
+	# 	if not frappe.db.get_value("Employee Grade", frappe.db.get_value("Employee", self.employee, "grade"), "eligible_for_overtime"):
+	# 		frappe.throw(_("Employee is not eligible for Overtime"))
 
 	# Dont allow duplicate dates
 	##

@@ -1,7 +1,7 @@
 // Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 cur_frm.add_fetch("employee", "designation", "designation")
-cur_frm.add_fetch("employee", "grade", "grade")
+cur_frm.add_fetch("employee", "employee_qualification", "employee_qualification")
 
 frappe.ui.form.on('Travel Request', {
 	refresh: function(frm){
