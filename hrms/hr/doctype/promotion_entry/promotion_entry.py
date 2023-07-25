@@ -391,7 +391,10 @@ def create_employee_promotion_for_employees(employees, args, publish_progress=Tr
 			# 	amount = new_lower_limit + new_increment
 			# elif int(salary_structure[0].amount) > new_lower_limit:
 			# 	amount = int(salary_structure[0].amount)+new_increment
-			ep.new_basic_pay = amount
+			if not emp.new_basic_pay:
+				ep.new_basic_pay = amount
+			else:
+				ep.new_basic_pay = emp.new_basic_pay
 			#----------------------------------End--------------------------------------------------------#
 
 			if args.month == "January":
