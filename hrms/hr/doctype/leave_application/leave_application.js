@@ -6,15 +6,15 @@ cur_frm.add_fetch('employee', 'company', 'company');
 
 frappe.ui.form.on("Leave Application", {
 	setup: function(frm) {
-		frm.set_query("leave_approver", function() {
-			return {
-				query: "hrms.hr.doctype.department_approver.department_approver.get_approvers",
-				filters: {
-					employee: frm.doc.employee,
-					doctype: frm.doc.doctype
-				}
-			};
-		});
+		// frm.set_query("leave_approver", function() {
+		// 	return {
+		// 		query: "hrms.hr.doctype.department_approver.department_approver.get_approvers",
+		// 		filters: {
+		// 			employee: frm.doc.employee,
+		// 			doctype: frm.doc.doctype
+		// 		}
+		// 	};
+		// });
 
 		frm.set_query("employee", erpnext.queries.employee);
 	},
@@ -25,19 +25,19 @@ frappe.ui.form.on("Leave Application", {
 		if (!frm.doc.posting_date) {
 			frm.set_value("posting_date", frappe.datetime.get_today());
 		}
-		if (frm.doc.docstatus == 0) {
-			return frappe.call({
-				method: "hrms.hr.doctype.leave_application.leave_application.get_mandatory_approval",
-				args: {
-					doctype: frm.doc.doctype,
-				},
-				callback: function(r) {
-					if (!r.exc && r.message) {
-						frm.toggle_reqd("leave_approver", true);
-					}
-				}
-			});
-		}
+		// if (frm.doc.docstatus == 0) {
+		// 	return frappe.call({
+		// 		method: "hrms.hr.doctype.leave_application.leave_application.get_mandatory_approval",
+		// 		args: {
+		// 			doctype: frm.doc.doctype,
+		// 		},
+		// 		callback: function(r) {
+		// 			if (!r.exc && r.message) {
+		// 				frm.toggle_reqd("leave_approver", true);
+		// 			}
+		// 		}
+		// 	});
+		// }
 	},
 
 	validate: function(frm) {
@@ -64,10 +64,10 @@ frappe.ui.form.on("Leave Application", {
 					if (!r.exc && r.message['leave_allocation']) {
 						leave_details = r.message['leave_allocation'];
 					}
-					if (!r.exc && r.message['leave_approver']) {
-						frm.set_value('leave_approver', r.message['leave_approver']);
-						frm.set_value('leave_approver_name', r.message['leave_approver_name']);
-					}
+					// if (!r.exc && r.message['leave_approver']) {
+					// 	frm.set_value('leave_approver', r.message['leave_approver']);
+					// 	frm.set_value('leave_approver_name', r.message['leave_approver_name']);
+					// }
 					lwps = r.message["lwps"];
 				}
 			});
@@ -114,14 +114,14 @@ frappe.ui.form.on("Leave Application", {
 	employee: function(frm) {
 		frm.trigger("make_dashboard");
 		frm.trigger("get_leave_balance");
-		frm.trigger("set_leave_approver");
+		// frm.trigger("set_leave_approver");
 	},
 
-	leave_approver: function(frm) {
-		if (frm.doc.leave_approver) {
-			frm.set_value("leave_approver_name", frappe.user.full_name(frm.doc.leave_approver));
-		}
-	},
+	// leave_approver: function(frm) {
+	// 	if (frm.doc.leave_approver) {
+	// 		frm.set_value("leave_approver_name", frappe.user.full_name(frm.doc.leave_approver));
+	// 	}
+	// },
 
 	leave_type: function(frm) {
 		frm.trigger("get_leave_balance");
@@ -219,22 +219,22 @@ frappe.ui.form.on("Leave Application", {
 		}
 	},
 
-	set_leave_approver: function(frm) {
-		if (frm.doc.employee) {
-			// server call is done to include holidays in leave days calculations
-			return frappe.call({
-				method: 'hrms.hr.doctype.leave_application.leave_application.get_leave_approver',
-				args: {
-					"employee": frm.doc.employee,
-				},
-				callback: function(r) {
-					if (r && r.message) {
-						frm.set_value('leave_approver', r.message);
-					}
-				}
-			});
-		}
-	}
+	// set_leave_approver: function(frm) {
+	// 	if (frm.doc.employee) {
+	// 		// server call is done to include holidays in leave days calculations
+	// 		return frappe.call({
+	// 			method: 'hrms.hr.doctype.leave_application.leave_application.get_leave_approver',
+	// 			args: {
+	// 				"employee": frm.doc.employee,
+	// 			},
+	// 			callback: function(r) {
+	// 				if (r && r.message) {
+	// 					frm.set_value('leave_approver', r.message);
+	// 				}
+	// 			}
+	// 		});
+	// 	}
+	// }
 });
 
 frappe.tour["Leave Application"] = [
@@ -263,9 +263,9 @@ frappe.tour["Leave Application"] = [
 		title: "Half Day",
 		description: __("To apply for a Half Day check 'Half Day' and select the Half Day Date")
 	},
-	{
-		fieldname: "leave_approver",
-		title: "Leave Approver",
-		description: __("Select your Leave Approver i.e. the person who approves or rejects your leaves.")
-	}
+	// {
+	// 	fieldname: "leave_approver",
+	// 	title: "Leave Approver",
+	// 	description: __("Select your Leave Approver i.e. the person who approves or rejects your leaves.")
+	// }
 ];
