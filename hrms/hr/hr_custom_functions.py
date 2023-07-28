@@ -375,7 +375,7 @@ def get_payroll_settings(employee=None):
 		if employee:
 				settings = frappe.db.sql("""
 						select
-								e.employee_qualification,
+								e.education_level,
 								et.sws_contribution,
 								el.gis,
 								el.health_contribution,
