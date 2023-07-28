@@ -167,7 +167,6 @@
   {
    "fieldname": "company",
    "fieldtype": "Link",
-   "hidden": 1,
    "in_filter": 1,
    "label": "Company",
    "options": "Company"
@@ -875,7 +874,7 @@
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-05-08 11:39:05.056341",
+ "modified": "2023-07-28 13:17:35.332034",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
