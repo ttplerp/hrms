@@ -12,6 +12,7 @@
   "employee_name",
   "department",
   "employee_group",
+  "supervisor_remarks",
   "column_break_4",
   "posting_date",
   "advance_type",
@@ -460,9 +461,8 @@
   {
    "fetch_from": "employee.employee_qualification",
    "fieldname": "employee_qualification",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Employee Qualification",
-   "options": "Education Level",
    "read_only": 1
   },
   {
@@ -472,11 +472,18 @@
    "label": "Employee Group",
    "options": "Employee Group",
    "read_only": 1
+  },
+  {
+   "fieldname": "supervisor_remarks",
+   "fieldtype": "Small Text",
+   "label": "Supervisor Remarks",
+   "mandatory_depends_on": "eval:doc.workflow_state==\"Waiting Supervisor Approval\";",
+   "read_only_depends_on": "eval:doc.workflow_state==\"Draft\";"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-05 12:41:20.401614",
+ "modified": "2023-07-28 14:39:25.197320",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

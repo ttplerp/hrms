@@ -20,11 +20,12 @@
   {
    "fieldname": "sws_contribution",
    "fieldtype": "Currency",
-   "label": "SWS Contribution"
+   "label": "SWS Contribution",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2023-06-30 16:14:10.242342",
+ "modified": "2023-07-26 10:20:40.576548",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employment Type",

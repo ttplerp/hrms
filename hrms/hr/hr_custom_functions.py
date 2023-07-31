@@ -384,7 +384,7 @@ def get_payroll_settings(employee=None):
 						from `tabEmployee` e, `tabEducation Level` el, `tabEmployment Type` et
 						where e.name = '{}'
 						and et.name = e.employment_type
-						and el.name = e.employee_qualification
+						and el.name = e.education_level
 				""".format(employee), as_dict=True)
 		settings = settings[0] if settings else frappe._dict()
 		# sws_type = frappe.db.get_single_value('HR Settings', 'sws_type')
