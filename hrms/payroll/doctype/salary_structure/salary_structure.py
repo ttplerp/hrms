@@ -244,7 +244,6 @@ class SalaryStructure(Document):
 			for sc in frappe.db.sql("select * from `tabSalary Component` where `type`='{0}' and ifnull(field_name,'') != ''".format(tbl_list[ed]), as_dict=True):
 				sst_map.setdefault(ed, []).append(sc)
 			ed_map = [i.name for i in sst_map[ed]]
-
 			for ed_item in self.get(ed):
 				# validate component validity dates
 				if ed_item.from_date and ed_item.to_date and str(ed_item.to_date) < str(ed_item.from_date):
@@ -252,7 +251,6 @@ class SalaryStructure(Document):
 
 				ed_item.amount = roundoff(ed_item.amount)
 				amount = ed_item.amount
-
 				if ed_item.salary_component not in ed_map:
 					if ed == 'earnings':
 						if ed_item.salary_component == 'Basic Pay':

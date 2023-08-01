@@ -87,6 +87,9 @@
   "eligible_for_honorarium",
   "honorarium_method",
   "honorarium",
+  "eligible_for_deployment",
+  "deployment_method",
+  "deployment",
   "sb_other_benefits",
   "eligible_for_gis",
   "eligible_for_pf",
@@ -869,12 +872,29 @@
    "fieldtype": "Int",
    "label": "Value(Factory Allowance)",
    "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_deployment",
+   "fieldtype": "Check",
+   "label": "Eligible for Deployment Allowance"
+  },
+  {
+   "fieldname": "deployment_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Deployment Allowance",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "fieldname": "deployment",
+   "fieldtype": "Data",
+   "label": "Value Deployment"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-07-28 13:17:35.332034",
+ "modified": "2023-08-01 14:14:57.588127",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

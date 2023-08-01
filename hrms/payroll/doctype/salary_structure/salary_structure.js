@@ -71,6 +71,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_hra: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_deployment: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_factory_allowance: function(frm){
 		calculate_others(frm);
 	},
@@ -349,6 +352,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_others(frm);
 	},
 	eligible_for_tswf:function(frm){
+		calculate_others(frm);
+	},
+	deployment:function(frm){
 		calculate_others(frm);
 	}
 })
