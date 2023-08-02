@@ -15,6 +15,26 @@ class MRInvoiceEntry(Document):
 
     def on_submit(self):
         self.submit_mr_invoice()
+        
+    def on_cancel(self):
+        frappe.db.sql("""
+            UPDATE  
+                `tabJournal Entry` 
+            SET 
+                docstatus = 2 
+            WHERE 
+                referece_doctype = '{0}'
+            """.format(self.name))
+        
+        frappe.db.sql("""
+            UPDATE  
+                `tabMR Employee Invoice` 
+            SET 
+                docstatus = 2 
+            WHERE 
+                mr_invoice_entry = '{0}'
+            """.format(self.name))
+        # self.post_to_account(cancel=True)
 
     @frappe.whitelist()
     def post_to_account(self):
@@ -155,6 +175,7 @@ class MRInvoiceEntry(Document):
                 je.submit()
             else:
                 je.insert()
+                
 
     def submit_mr_invoice(self):
         if self.mr_invoice_created == 0:
@@ -196,16 +217,19 @@ class MRInvoiceEntry(Document):
 
     @frappe.whitelist()
     def get_mr_employee(self):
+        cond = ""
         if not self.branch or not self.month or not self.fiscal_year:
             frappe.throw("Either Branch/Month/Fiscal Year is missing")
+        if self.individual == 1:
+            cond = "and name = '{}'".format(self.mr_employee)
         self.set("items", [])
         for e in frappe.db.sql(
             """select 
 					name as mr_employee, person_name as mr_employee_name 
 					from `tabMuster Roll Employee` where status = 'Active'
-					and branch = {}
+					and branch = {0} {1}
 			""".format(
-                frappe.db.escape(self.branch)
+                frappe.db.escape(self.branch), cond
             ),
             as_dict=True,
         ):
@@ -255,11 +279,11 @@ class MRInvoiceEntry(Document):
                 mr_invoice = frappe.get_doc(args)
                 mr_invoice.get_ot()
                 mr_invoice.get_attendance()
-                mr_invoice.set("deduction", [])
+                mr_invoice.set("deductions", [])
                 for d in self.deductions:
                     if d.mr_employee == item.mr_employee:
                         mr_invoice.append(
-                            "deduction",
+                            "deductions",
                             {
                                 "account": d.account,
                                 "amount": d.amount,
@@ -290,3 +314,4 @@ class MRInvoiceEntry(Document):
             self.mr_invoice_created = 1
         self.save()
         self.reload()
+

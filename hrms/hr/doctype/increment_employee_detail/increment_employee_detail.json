@@ -88,7 +88,8 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Increment",
-   "read_only": 1
+   "read_only": 1,
+   "read_only_depends_on": "eval:parent.probation==0;"
   },
   {
    "fieldname": "cb_02",
@@ -113,7 +114,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-17 12:13:09.338522",
+ "modified": "2023-07-31 13:00:02.813550",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Increment Employee Detail",
@@ -122,6 +123,5 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_views": 1
+ "states": []
 }

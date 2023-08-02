@@ -16,8 +16,10 @@
   "fiscal_year",
   "month",
   "company",
-  "amended_from",
+  "individual",
+  "mr_employee",
   "section_break_8",
+  "amended_from",
   "items",
   "section_break_10",
   "deductions",
@@ -143,12 +145,26 @@
    "fieldtype": "Check",
    "label": "MR Invoice Submit",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "individual",
+   "fieldtype": "Check",
+   "label": "Individual"
+  },
+  {
+   "depends_on": "eval:doc.individual == \"1\"",
+   "fieldname": "mr_employee",
+   "fieldtype": "Link",
+   "label": "MR Employee",
+   "mandatory_depends_on": "eval:doc.individual == \"1\"",
+   "options": "Muster Roll Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-19 14:58:44.198483",
+ "modified": "2023-07-31 15:38:42.010314",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Invoice Entry",

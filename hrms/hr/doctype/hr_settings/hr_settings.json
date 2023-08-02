@@ -31,6 +31,9 @@
   "expense_approver_mandatory_in_expense_claim",
   "show_leaves_of_all_department_members_in_calendar",
   "auto_leave_encashment",
+  "sb_employee_transfer_request",
+  "employee_transfer_request_approval_notification_template",
+  "employee_transfer_request_status_notification_template",
   "sb_travel",
   "authorization_approval_notification_template",
   "authorization_status_notification_template",
@@ -830,13 +833,30 @@
    "fieldtype": "Data",
    "label": "Imprest Approver Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "sb_employee_transfer_request",
+   "fieldtype": "Section Break",
+   "label": "Employee Transfer Request Notification Templates"
+  },
+  {
+   "fieldname": "employee_transfer_request_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Transfer Request Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "employee_transfer_request_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Employee Transfer Request Status Notification Template",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-07-04 12:14:16.790537",
+ "modified": "2023-07-31 16:50:29.011572",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

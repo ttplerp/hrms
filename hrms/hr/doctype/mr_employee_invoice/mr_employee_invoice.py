@@ -2,30 +2,17 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.model.document import Document
 from erpnext.custom_utils import check_future_date
+# from hrms.hr.doctype.mr_invoice_entry.mr_invoice_entry \
+#     import post_to_account
 from frappe.utils import (
-    add_days,
-    add_months,
-    add_years,
     cint,
-    cstr,
-    date_diff,
     flt,
-    formatdate,
     get_last_day,
-    get_timestamp,
     getdate,
-    nowdate,
-    money_in_words,
 )
-from erpnext.accounts.general_ledger import (
-    get_round_off_account_and_cost_center,
-    make_gl_entries,
-    make_reverse_gl_entries,
-    merge_similar_entries,
-)
-from frappe import _, qb, throw, msgprint
+
+from frappe import _
 from erpnext.controllers.accounts_controller import AccountsController
 
 
@@ -36,16 +23,12 @@ class MREmployeeInvoice(AccountsController):
         self.set_status()
 
     def calculate_amount(self):
-        grand_total = (
-            outstanding_amount
-        ) = (
-            other_deductions
-        ) = net_payable = total_ot_amount = total_daily_wage_amount = 0
+        other_deductions = total_ot_amount = total_daily_wage_amount = 0
         for a in self.attendance:
             total_daily_wage_amount += flt(a.daily_wage, 2)
         for a in self.ot:
             total_ot_amount += flt(a.amount, 2)
-        for d in self.deduction:
+        for d in self.deductions:
             other_deductions += flt(d.amount, 2)
         self.other_deduction = flt(other_deductions, 2)
         self.total_ot_amount = flt(total_ot_amount, 2)
@@ -54,18 +37,6 @@ class MREmployeeInvoice(AccountsController):
         self.outstanding_amount = self.net_payable_amount = flt(
             self.grand_total - self.other_deduction, 2
         )
-
-    def on_submit(self):
-        pass
-        # self.make_gl_entries()
-
-    def on_cancel(self):
-        self.ignore_linked_doctypes = (
-            "GL Entry",
-            "Stock Ledger Entry",
-            "Payment Ledger Entry",
-        )
-        self.make_gl_entries()
 
     def set_status(self, update=False, status=None, update_modified=True):
         if self.is_new():
@@ -96,79 +67,8 @@ class MREmployeeInvoice(AccountsController):
                 "payment_status", self.payment_status, update_modified=update_modified
             )
 
-    def make_gl_entries(self):
-        gl_entries = []
-        self.make_party_gl_entry(gl_entries)
-        self.deduction_gl_entries(gl_entries)
-        self.expense_gl_entries(gl_entries)
-        gl_entries = merge_similar_entries(gl_entries)
-        make_gl_entries(gl_entries, update_outstanding="No", cancel=self.docstatus == 2)
-
-    def expense_gl_entries(self, gl_entries):
-        ot_account = frappe.db.get_value("Company", self.company, "mr_ot_account")
-        wages_account = frappe.db.get_value(
-            "Company", self.company, "mr_daily_wage_account"
-        )
-        if not ot_account or not wages_account:
-            frappe.throw("Either OT Account or Wage Account is missing in company")
-        gl_entries.append(
-            self.get_gl_dict(
-                {
-                    "account": wages_account,
-                    "debit": flt(self.total_daily_wage_amount, 2),
-                    "debit_in_account_currency": flt(self.total_daily_wage_amount, 2),
-                    "against_voucher": self.name,
-                    "against_voucher_type": self.doctype,
-                    "party_type": "Muster Roll Employee",
-                    "party": self.mr_employee,
-                    "cost_center": self.cost_center,
-                    "voucher_type": self.doctype,
-                    "voucher_no": self.name,
-                },
-                self.currency,
-            )
-        )
-        gl_entries.append(
-            self.get_gl_dict(
-                {
-                    "account": ot_account,
-                    "debit": flt(self.total_ot_amount, 2),
-                    "debit_in_account_currency": flt(self.total_ot_amount, 2),
-                    "against_voucher": self.name,
-                    "against_voucher_type": self.doctype,
-                    "party_type": "Muster Roll Employee",
-                    "party": self.mr_employee,
-                    "cost_center": self.cost_center,
-                    "voucher_type": self.doctype,
-                    "voucher_no": self.name,
-                },
-                self.currency,
-            )
-        )
-
-    def make_party_gl_entry(self, gl_entries):
-        if flt(self.net_payable_amount) > 0:
-            # Did not use base_grand_total to book rounding loss gle
-            gl_entries.append(
-                self.get_gl_dict(
-                    {
-                        "account": self.credit_account,
-                        "credit": flt(self.net_payable_amount, 2),
-                        "credit_in_account_currency": flt(self.net_payable_amount, 2),
-                        "against_voucher": self.name,
-                        "party_type": "Muster Roll Employee",
-                        "party": self.mr_employee,
-                        "against_voucher_type": self.doctype,
-                        "cost_center": self.cost_center,
-                        "voucher_type": self.doctype,
-                        "voucher_no": self.name,
-                    },
-                    self.currency,
-                )
-            )
-
     def deduction_gl_entries(self, gl_entries):
-        for d in self.deduction:
+        for d in self.deductions:
             gl_entries.append(
                 self.get_gl_dict(
                     {

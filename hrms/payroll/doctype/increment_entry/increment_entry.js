@@ -108,6 +108,14 @@ frappe.ui.form.on('Increment Entry', {
 	},
 });
 
+frappe.ui.form.on('Increment Employee Detail', {
+	increment: function(frm, cdt, cdn){
+		var item = locals[cdt][cdn];
+		frappe.model.set_value(cdt, cdn, "new_basic_pay", flt(flt(item.current_basic_pay)+flt(item.increment),2));
+		frm.refresh_fields();
+	}
+});
+
 // Submit salary slips
 
 const submit_salary_increment = function (frm) {

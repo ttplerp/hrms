@@ -353,16 +353,15 @@
   {
    "fetch_from": "employee.employee_qualification",
    "fieldname": "employee_qualification",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "hidden": 1,
    "label": "Employee Qualification",
-   "options": "Education Level",
    "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-03 11:14:36.218924",
+ "modified": "2023-07-28 14:36:53.468915",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",

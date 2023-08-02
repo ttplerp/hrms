@@ -98,7 +98,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-06-21 12:19:43.141966",
+ "modified": "2023-07-26 09:39:04.950865",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution",
@@ -116,6 +116,15 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Projects User",
+   "share": 1
   }
  ],
  "sort_field": "modified",

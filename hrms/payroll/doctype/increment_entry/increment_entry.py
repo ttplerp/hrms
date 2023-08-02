@@ -12,7 +12,8 @@ from erpnext.accounts.utils import get_fiscal_year
 from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
 from erpnext.accounts.doctype.business_activity.business_activity import get_default_ba
 import calendar
-import datetime
+from datetime import datetime, timedelta
+import math
 
 class IncrementEntry(Document):
 	def onload(self):
@@ -26,6 +27,8 @@ class IncrementEntry(Document):
 
 	def validate(self):
 		self.set_month_dates()
+		if self.probation == 1:
+			self.calculate_new_basic()
 		self.number_of_employees = len(self.employees)
 
 	def on_submit(self):
@@ -37,34 +40,69 @@ class IncrementEntry(Document):
 	def on_cancel(self):
 		self.remove_salary_increments()
 
+	def calculate_new_basic(self):
+		for a in self.employees:
+			a.new_basic_pay = flt(flt(a.current_basic_pay)+flt(a.increment),2)
+
 	def get_emp_list(self, process_type=None):
 		self.set_month_dates()
 
 		cond = self.get_filter_condition()
 		cond += self.get_joining_relieving_condition()
+		prob_cond = ""
+		if self.probation == 1:
+			cond += " and t1.employment_status = 'Probation'"
+		else:
+			cond += " and t1.employment_status != 'Probation'"
+		if self.probation == 1:
+			prob_cond += " and t4.probation = 1"
+		else:
+			prob_cond += " and t4.probation = 0"
 		data = []
 		emp_list = frappe.db.sql("""
-			select t1.name as employee, t1.employee_name, t1.grade, t1.department, t1.designation
+			select t1.name as employee, t1.employee_name, t1.date_of_joining, t1.probation_end_date, t1.grade, t1.department, t1.designation
 			from `tabEmployee` t1
 			where t1.status = 'Active'
-			and t1.increment_cycle = '{}' 
 			and not exists(select 1
-					from `tabSalary Increment` as t3
+					from `tabSalary Increment` as t3, `tabIncrement Entry` t4
 					where t3.employee = t1.name
+					and t4.name = t3.increment_entry
 					and t3.docstatus != 2
-					and t3.fiscal_year = '{}'
-					and t3.month = '{}')
+					and t3.fiscal_year = '{}' 
+					{}
+					)
 			and exists(select 1
 					from `tabSalary Structure` sst
 					where sst.employee = t1.name
 					and sst.is_active = 'Yes')
 			{}
 			order by t1.branch, t1.name
-		""".format(self.month_name, self.fiscal_year, self.month_name, cond), as_dict=True)
+		""".format(self.fiscal_year, prob_cond, cond), as_dict=True)
 		if emp_list:
 			for a in emp_list:
 				new_basic, increment, old_basic = self.get_employee_payscale(a.employee)
-				data.append({"employee":a.employee,"employee_name":a.employee_name,"grade":a.grade,"department":a.department,"designation":a.designation,"current_basic_pay":old_basic,"increment":increment,"new_basic_pay":new_basic})
+				one_year_service_completion = days = diff = 0
+				increment = frappe.db.get_value("Employee Group",frappe.db.get_value("Employee", a.employee, "employee_group"),"increment")
+				if a.date_of_joining:
+					if a.probation_end_date:
+						one_year_service_completion = add_to_date(a.probation_end_date, years = 1)
+					else:
+						one_year_service_completion = add_to_date(a.date_of_joining, years = 1)
+					if datetime.strptime(self.posting_date,"%Y-%m-%d") < datetime.strptime(str(one_year_service_completion),"%Y-%m-%d"):
+						if a.probation_end_date:
+							diff = datetime.strptime(str(self.posting_date),"%Y-%m-%d") - datetime.strptime(str(a.probation_end_date),"%Y-%m-%d")
+							days = datetime.strptime(str(one_year_service_completion),"%Y-%m-%d") - datetime.strptime(str(a.probation_end_date),"%Y-%m-%d")
+						else:
+							diff = datetime.strptime(str(self.posting_date),"%Y-%m-%d") - datetime.strptime(str(a.date_of_joining),"%Y-%m-%d")
+							days = datetime.strptime(str(one_year_service_completion),"%Y-%m-%d") - datetime.strptime(str(a.date_of_joining),"%Y-%m-%d")
+						diff_months = math.ceil(flt(diff.days/30,0))
+						increment = flt((flt(diff_months)/12)*increment,2)
+
+				new_basic = old_basic + increment
+				if self.probation == 0:
+					data.append({"employee":a.employee,"employee_name":a.employee_name,"department":a.department,"designation":a.designation,"current_basic_pay":old_basic,"increment":increment,"new_basic_pay":new_basic})
+				else:
+					data.append({"employee":a.employee,"employee_name":a.employee_name,"department":a.department,"designation":a.designation,"current_basic_pay":old_basic, "new_basic_pay":new_basic})
 		return data
 
 	def get_filter_condition(self):
@@ -199,25 +237,23 @@ class IncrementEntry(Document):
 				""".format(str(date_of_reference),str(effective_date)))[0][0]
 				
 				# Fetching Payscale from employee grade
-				grade= frappe.get_doc("Employee Grade", frappe.db.get_value("Employee",employee,"grade"))
-				payscale_minimum   = grade.lower_limit
-				payscale_increment_method = grade.increment_method
-				payscale_increment = grade.increment
-				payscale_maximum   = grade.upper_limit 
+				employee_group= frappe.get_doc("Employee Group", frappe.db.get_value("Employee",employee,"employee_group"))
+				payscale_minimum   = employee_group.lower_limit
+				payscale_increment = employee_group.increment
+				payscale_maximum   = employee_group.upper_limit 
 
 				# Calculating increment
-				if flt(total_months) >= flt(minimum_months):
-					calculated_factor    = 1 if flt(total_months)/12 >= 1 else round(flt(total_months if cint(group_doc.increment_prorated) else 12)/12,2)				
-					calculated_increment = (flt(old_basic)*flt(payscale_increment)*0.01) if payscale_increment_method == 'Percent' else flt(payscale_increment)
-					if cint(group_doc.increment_prorated):
-						calculated_increment = round((flt(calculated_increment)/12)*(flt(total_months) if flt(total_months) < 12 else 12))
+				# if flt(total_months) >= flt(minimum_months):
+				# 	calculated_factor    = 1 if flt(total_months)/12 >= 1 else round(flt(total_months if cint(group_doc.increment_prorated) else 12)/12,2)				
+				# 	calculated_increment = (flt(old_basic)*flt(payscale_increment)*0.01) if payscale_increment_method == 'Percent' else flt(payscale_increment)
+				# 	if cint(group_doc.increment_prorated):
+				# 		calculated_increment = round((flt(calculated_increment)/12)*(flt(total_months) if flt(total_months) < 12 else 12))
 						
-					increment = flt(calculated_increment)
-					new_basic = flt(old_basic) + flt(increment)
-				else:
-					new_basic = flt(old_basic)
-				
-				return new_basic, increment, old_basic
+				# 	increment = flt(calculated_increment)
+				# 	new_basic = flt(old_basic) + flt(increment)
+				# else:
+				new_basic = flt(flt(old_basic)+flt(increment),2)
+			return new_basic, increment, old_basic
 
 	@frappe.whitelist()
 	def fill_employee_details(self):
@@ -243,8 +279,8 @@ def get_salary_structure(employee, effective_date):
 
 	if sst:
 		return sst[0][0]
-	else:
-		frappe.throw(_('No Active Salary Structure found for the employee <a style="color: green" href="#Form/Employee/{0}">{0}</a>').format(employee))
+	# else:
+	# 	frappe.throw(_('No Active Salary Structure found for the employee <a style="color: green" href="#Form/Employee/{0}">{0}</a>').format(employee))
 
 def remove_salary_increments_for_employees(increment_entry, salary_increments, publish_progress=True):
 	deleted_si = []
@@ -282,8 +318,13 @@ def create_salary_increments_for_employees(employees, args, publish_progress=Tru
 				"doctype": "Salary Increment",
 				"employee": emp.employee
 			})
+			salary_structure = get_salary_structure(emp.employee, args.posting_date)
 			si = frappe.get_doc(args)
-			si.get_employee_payscale()
+			si.salary_structure = salary_structure
+			si.old_basic = emp.current_basic_pay
+			si.increment = emp.increment
+			si.new_basic = emp.new_basic_pay
+			si.get_employee_payscale(emp.employee)
 			si.insert()
 			count+=1
 

@@ -7,7 +7,6 @@
  "engine": "InnoDB",
  "field_order": [
   "disciplinary_action_taken",
-  "posting_date",
   "nature",
   "employee",
   "employee_name",
@@ -15,10 +14,8 @@
   "designation",
   "branch",
   "reason",
-  "section_break_2",
-  "from_date",
-  "column_break_4",
-  "to_date",
+  "misconducts_section",
+  "items",
   "sb_action_complaint",
   "complaint_frequency",
   "cb_a_c",
@@ -37,13 +34,6 @@
   "amended_from"
  ],
  "fields": [
-  {
-   "default": "Today",
-   "fieldname": "posting_date",
-   "fieldtype": "Date",
-   "label": "Posting Date",
-   "reqd": 1
-  },
   {
    "fieldname": "employee",
    "fieldtype": "Link",
@@ -79,28 +69,9 @@
    "read_only": 1
   },
   {
-   "fieldname": "section_break_2",
-   "fieldtype": "Section Break",
-   "label": "Suspension Dates"
-  },
-  {
-   "fieldname": "from_date",
-   "fieldtype": "Date",
-   "label": "From Date"
-  },
-  {
-   "fieldname": "column_break_4",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "to_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "To Date"
-  },
-  {
    "fieldname": "section_break_10",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hidden": 1
   },
   {
    "default": "0",
@@ -167,18 +138,19 @@
   {
    "fieldname": "disciplinary_action_taken",
    "fieldtype": "Text",
-   "label": "Disciplinary Action Taken",
-   "reqd": 1
+   "hidden": 1,
+   "label": "Disciplinary Action Taken"
   },
   {
    "fieldname": "reason",
    "fieldtype": "Text",
-   "label": "Reason",
-   "reqd": 1
+   "hidden": 1,
+   "label": "Reason"
   },
   {
    "fieldname": "sb_action_complaint",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Actions and Complaint"
   },
   {
@@ -205,13 +177,23 @@
   {
    "fieldname": "nature",
    "fieldtype": "Text",
-   "label": "Nature",
-   "reqd": 1
+   "hidden": 1,
+   "label": "Nature"
+  },
+  {
+   "fieldname": "misconducts_section",
+   "fieldtype": "Section Break",
+   "label": "Misconducts"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "items",
+   "options": "Employee Disciplinary Record Item"
   }
  ],
- "is_submittable": 1,
  "links": [],
- "modified": "2023-07-17 14:23:09.122975",
+ "modified": "2023-08-01 14:30:43.150721",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Disciplinary Record",
@@ -219,7 +201,6 @@
  "owner": "Administrator",
  "permissions": [
   {
-   "cancel": 1,
    "create": 1,
    "email": 1,
    "export": 1,
@@ -229,11 +210,9 @@
    "report": 1,
    "role": "Administrator",
    "share": 1,
-   "submit": 1,
    "write": 1
   },
   {
-   "cancel": 1,
    "create": 1,
    "email": 1,
    "export": 1,
@@ -242,11 +221,9 @@
    "report": 1,
    "role": "HR User",
    "share": 1,
-   "submit": 1,
    "write": 1
   },
   {
-   "cancel": 1,
    "create": 1,
    "email": 1,
    "export": 1,
@@ -255,11 +232,9 @@
    "report": 1,
    "role": "HR Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   },
   {
-   "cancel": 1,
    "create": 1,
    "email": 1,
    "export": 1,
@@ -269,7 +244,6 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],

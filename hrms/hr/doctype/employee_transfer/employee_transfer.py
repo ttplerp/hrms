@@ -14,6 +14,7 @@ from erpnext.custom_workflow import validate_workflow_states, notify_workflow_st
 class EmployeeTransfer(Document):
 	def validate(self):
 		validate_workflow_states(self)
+		self.validate_transfer_request()
 		self.check_duplicate()
 		self.validate_transfer_date()
 
@@ -42,6 +43,10 @@ class EmployeeTransfer(Document):
 		frappe.msgprint(str(user_roles))
 		# pass
 
+	def validate_transfer_request(self):
+		if not self.employee_transfer_request_id:
+			frappe.throw("Employee Transfer Request is mandatory to make Employee Transfer.")
+
 	def validate_transfer_date(self):
 		for t in frappe.db.get_all("Employee Transfer", {"employee": self.employee, "name": ("!=", self.name),
 			"transfer_date": (">", self.transfer_date), "docstatus": ("!=", 2)}):
@@ -53,12 +58,12 @@ class EmployeeTransfer(Document):
 
 	def update_employee_master(self, cancel=False):
 		employee = frappe.get_doc("Employee", self.employee)
-		employee.department = self.new_department if not cancel else self.old_department
-		employee.division	= self.new_division if not cancel else self.old_division
-		employee.designation= self.new_designation if not cancel else self.old_designation
-		employee.section	= self.new_section if not cancel else self.old_section
-		employee.branch		= self.new_branch if not cancel else self.old_branch
-		employee.cost_center= self.new_cost_center if not cancel else self.old_cost_center
+		employee.department = self.new_department if not cancel and self.new_department else self.old_department
+		employee.division	= self.new_division if not cancel and self.new_division else self.old_division
+		employee.designation= self.new_designation if not cancel and self.new_designation else self.old_designation
+		employee.section	= self.new_section if not cancel and self. new_section else self.old_section
+		employee.branch		= self.new_branch if not cancel and self.new_branch else self.old_branch
+		employee.cost_center= self.new_cost_center if not cancel and self.new_cost_center else self.old_cost_center
 		employee.reports_to = self.new_reports_to if not cancel and self.new_reports_to else self.old_reports_to
 		employee.expense_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")
 		employee.leave_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")

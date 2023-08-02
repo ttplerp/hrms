@@ -4,5 +4,5 @@
 # import frappe
 from frappe.model.document import Document
 
-class PMSCalendar(Document):
+class EmployeeDisciplinaryRecordItem(Document):
 	pass

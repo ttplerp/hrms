@@ -80,15 +80,3 @@ frappe.ui.form.on('MR Invoice Entry', {
     }
 });
 
-
-
-// frappe.ui.form.on("MR Employee Deduction Entry", {
-//     frm.fields_dict['items'].grid.get_field('account').get_query = function(){
-// 			return{
-// 				filters: {
-// 					'account_type': frm.doc.account_type,
-// 					'is_group':0
-// 				}
-// 			}
-// 		};
-// });

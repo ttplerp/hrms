@@ -11,8 +11,6 @@ from datetime import datetime
 from hrms.hr.doctype.leave_application.leave_application \
 	import get_leave_balance_on, get_leaves_for_period
 
-#from erpnext.hr.doctype.leave_encashment.leave_encashment import get_le_settings
-
 class LeaveAdjustment(Document):
 	def validate(self):
 		self.calculate_difference()

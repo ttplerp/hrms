@@ -10,73 +10,54 @@ from frappe.model.document import Document
 class PerformanceEvaluation(Document):
 	@frappe.whitelist()
 	def set_evaluation_period_dates(self):
-		month_start_date = "-".join([str(self.fiscal_year), self.month, "01"])
-		month_end_date = "-".join([str(self.fiscal_year), self.month, "10"])
+		month = int(self.month) + 1
+		if month > 12:
+			month = 1
+		month_start_date = "-".join([str(self.fiscal_year), str(month), "01"])
+		month_end_date = "-".join([str(self.fiscal_year), str(month), "10"])
 		self.start_date = getdate(month_start_date)
 		self.end_date = getdate(month_end_date)
 
 	def validate(self):
+		if not self.get("__islocal"):
+			self.validate_evaluator_score()
 		self.set_evaluation_period_dates()
 		self.check_duplicate_entry()
+
+	def on_submit(self):
+		self.is_evaluated()
+		
+	def is_evaluated(self):
+		if self.evaluator_score == 0:
+			frappe.throw('Evaluator has not evaluated')
+
+	def validate_evaluator_score(self):
+		for a in self.work_competency:
+			if not a.evaluator:
+				a.evaluator = 0
+			if a.evaluator < 1 or a.evaluator > a.weightage:
+				frappe.throw('Your rating should be in range from <b>1</b> to <b>{}</b>'.format(a.weightage))
+			if a.evaluator == 1 or a.evaluator == 4:
+				if not a.comment:
+					frappe.throw('Write comments for competency <b>{}</b> in row no <b>{}</b>.'.format(a.competency, a.idx))
+
 	
 	def check_duplicate_entry(self):
-		if frappe.db.exists("Performance Evaluation", {'employee': self.employee, 'fiscal_year': self.fiscal_year, 'docstatus': 1}):
-			frappe.throw(_('You have already set Performance evaluation <b>{}</b>'.format(self.fiscal_year)))
+		if frappe.db.exists("Performance Evaluation", {'employee': self.employee, 'fiscal_year': self.fiscal_year, 'month':self.month, 'evaluator': self.evaluator, 'docstatus': 1}):
+			frappe.throw(_('You have already evaluated for employee {} for month <b>{}</b> <b>{}</b>'.format(self.month_name, self.fiscal_year)))	
 
-	@frappe.whitelist()
-	def get_competency(self):
+@frappe.whitelist()
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
 
-		# fetch employee category based on employee designation
-		# employee_category = frappe.db.sql("""
-		# 	select ec.employee_category 
-		# 	from `tabEmployee Category` ec 
-		# 	inner join `tabEmployee Category Group` ecg
-		# 	on ec.name = ecg.parent
-		# 	where ecg.designation = '{}'
-		# """.format(self.designation), as_dict=True)
+	if user == "Administrator":
+		return
+	# if "HR User" in user_roles:
+	# 	return
 
-		# if not employee_category:
-		# 	frappe.throw(
-		# 		_('Your designation <b>{0}</b> is not defined in the Employee Category. Contact your HR for necessary changes'.format(self.designation)))
-
-		data = frappe.db.sql("""
-			select wc.competency, wc.weightage, wc.rating_4, wc.rating_3, wc.rating_2, wc.rating_1
-			from `tabWork Competency` wc
-			inner join `tabWork Competency Item` wci
-			on wc.name = wci.parent
-			where wci.applicable = 1
-			and wci.employee_group = '{}'
-			order by wc.competency
-		""".format(self.employee_group), as_dict=True)
-
-		if not data:
-			frappe.throw(_('There is no Work Competency defined'))
-		
-		self.set('work_competency', [])
-		for d in data:
-			row = self.append('work_competency', {})
-			row.update(d)
-
-	@frappe.whitelist()
-	def get_evaluators(self):
-		if (frappe.db.get_value('Employee', self.employee, 'eval_1')):
-			self.evaluator_1 = frappe.db.get_value('Employee', self.employee, 'eval_1')
-			self.eval_1_name = frappe.db.get_value('Employee', self.evaluator_1, 'employee_name')
-			self.eval_1_user_id = frappe.db.get_value('Employee', self.evaluator_1, 'user_id')
-		else: 
-			frappe.throw('Set Evaluator 1 for employee ID {}'.format(self.employee))
-
-		if (frappe.db.get_value('Employee', self.employee, 'eval_2')):
-			self.evaluator_2 = frappe.db.get_value('Employee', self.employee, 'eval_2')
-			self.eval_2_name = frappe.db.get_value('Employee', self.evaluator_2, 'employee_name')
-			self.eval_2_user_id = frappe.db.get_value('Employee', self.evaluator_2, 'user_id')
-		else: 
-			frappe.throw('Set Evaluator 2 for employee ID {}'.format(self.employee))
-
-		if self.employee_group != 'Administration & Support':
-			if (frappe.db.get_value('Employee', self.employee, 'eval_3')):
-				self.evaluator_3 = frappe.db.get_value('Employee', self.employee, 'eval_3')
-				self.eval_3_name = frappe.db.get_value('Employee', self.evaluator_3, 'employee_name')
-				self.eval_3_user_id = frappe.db.get_value('Employee', self.evaluator_3, 'user_id')
-			else: 
-				frappe.throw('Set Evaluator 3 for employee ID {}'.format(self.employee))
+	return """(
+		`tabPerformance Evaluation`.owner = '{user}'
+		or
+		(`tabPerformance Evaluation`.evaluator_user_id = '{user}' and `tabPerformance Evaluation`.docstatus = 0)
+	)""".format(user=user)

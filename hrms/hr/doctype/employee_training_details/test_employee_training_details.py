@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestPMSCalendar(FrappeTestCase):
+class TestEmployeeTrainingDetails(FrappeTestCase):
 	pass

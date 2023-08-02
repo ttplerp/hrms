@@ -326,16 +326,15 @@
   {
    "fetch_from": "employee.employee_qualification",
    "fieldname": "employee_qualification",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Employee Qualification",
-   "options": "Education Level",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-06-27 14:51:39.446549",
+ "modified": "2023-07-28 14:41:03.982955",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",

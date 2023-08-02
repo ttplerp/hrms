@@ -91,8 +91,8 @@ class ExpenseClaim(AccountsController):
 	# def calculate_grand_total(self):
 	# 	self.grand_total = flt(self.total_sanctioned_amount) + flt(self.total_taxes_and_charges) - flt(self.total_advance_amount)
 		
-	def on_update(self):
-		share_doc_with_approver(self, self.expense_approver)
+	# def on_update(self):
+	# 	share_doc_with_approver(self, self.expense_approver)
 
 	def set_payable_account(self):
 		if not self.payable_account and not self.is_paid:

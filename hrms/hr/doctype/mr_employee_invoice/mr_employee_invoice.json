@@ -31,7 +31,7 @@
   "ot",
   "total_ot_hrs",
   "deductions_details_section",
-  "deduction",
+  "deductions",
   "amount_details_section",
   "total_ot_amount",
   "grand_total",
@@ -220,17 +220,10 @@
    "label": "Deductions Details"
   },
   {
-   "fieldname": "deduction",
-   "fieldtype": "Table",
-   "label": "Deduction",
-   "options": "MR Employee Deduction"
-  },
-  {
    "fieldname": "credit_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Credit Account",
-   "options": "Account",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "total_ot_hrs",
@@ -285,12 +278,18 @@
    "label": "MR Invoice Entry",
    "options": "MR Invoice Entry",
    "read_only": 1
+  },
+  {
+   "fieldname": "deductions",
+   "fieldtype": "Table",
+   "label": "Deductions",
+   "options": "MR Employee Deduction"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-19 11:39:18.507104",
+ "modified": "2023-07-31 15:27:41.283002",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Employee Invoice",

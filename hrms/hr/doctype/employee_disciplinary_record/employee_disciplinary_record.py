@@ -12,14 +12,16 @@ class EmployeeDisciplinaryRecord(Document):
 		pass
 
 	def on_submit(self):
+		pass
 		#self.update_employee()
-		self.create_disciplinary_summary()
+		# self.create_disciplinary_summary()
 
-	def on_update_after_submit(self):
-		self.restore_on_guilty()
+	# def on_update_after_submit(self):
+	# 	self.restore_on_guilty()
 
 	def on_cancel(self):
-		frappe.db.sql("delete from `tabEmployee Disciplinary Summary` where disciplinary_record = %s", (self.name))
+		pass
+		# frappe.db.sql("delete from `tabEmployee Disciplinary Summary` where disciplinary_record = %s", (self.name))
 		# if today() <= self.to_date:
 		# 	emp = frappe.get_doc("Employee", self.employee)
 		# 	emp.employment_status = "In Service"

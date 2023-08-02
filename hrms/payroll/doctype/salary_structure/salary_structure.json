@@ -74,6 +74,9 @@
   "eligible_for_site_allowance",
   "site_method",
   "site",
+  "eligible_for_difficulty_allowance",
+  "difficulty_allowance_method",
+  "difficulty_allowance",
   "sb_other_benefits",
   "eligible_for_gis",
   "eligible_for_pf",
@@ -763,12 +766,32 @@
    "label": "Value(Site Allowance)",
    "precision": "2",
    "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_difficulty_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Difficulty Allowance"
+  },
+  {
+   "default": "Percent",
+   "depends_on": "eval:doc.eligible_for_difficulty_allowance==1",
+   "fieldname": "difficulty_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Difficulty Allowance Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_difficulty_allowance==1",
+   "fieldname": "difficulty_allowance",
+   "fieldtype": "Data",
+   "label": "Value (Difficulty Allowance)"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-06-14 11:45:50.763736",
+ "modified": "2023-07-27 10:11:37.003110",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

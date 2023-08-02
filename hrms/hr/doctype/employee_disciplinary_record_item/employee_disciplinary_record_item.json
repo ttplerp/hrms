@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-08-01 10:03:08.127672",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "disciplinary_ground",
+  "corrective_action",
+  "details",
+  "column_break_hfaxj",
+  "posting_date",
+  "remarks",
+  "suspension_date_section",
+  "from_date",
+  "column_break_jhwhc",
+  "to_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "disciplinary_ground",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Disciplinary Category",
+   "options": "\nMinor Misconduct\nSerious Misconduct",
+   "reqd": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "corrective_action",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Corrective Action",
+   "options": "Oral Reprimand/Verbal Warning\nWritten Warning\nSuspension\nTermination",
+   "reqd": 1
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Details",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_hfaxj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting date",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.corrective_action==\"Suspension\"",
+   "fieldname": "suspension_date_section",
+   "fieldtype": "Section Break",
+   "label": "Suspension Date"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From date",
+   "mandatory_depends_on": "eval:doc.corrective_action==\"Suspension\""
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Data",
+   "label": "To date",
+   "mandatory_depends_on": "eval:doc.corrective_action==\"Suspension\""
+  },
+  {
+   "fieldname": "column_break_jhwhc",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-08-01 14:25:35.715291",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Disciplinary Record Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

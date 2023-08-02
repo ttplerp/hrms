@@ -104,6 +104,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_site_allowance: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_difficulty_allowance: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_honorarium: function(frm){
 		calculate_others(frm);
 	},
@@ -214,6 +217,9 @@ frappe.ui.form.on('Salary Structure', {
 	site: function(frm){
 		calculate_others(frm);
 	},
+	difficulty_allowance: function(frm){
+		calculate_others(frm);
+	},
 	honorarium: function(frm){
 		calculate_others(frm);
 	},
@@ -295,6 +301,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_others(frm);
 	},
 	site_method: function(frm){
+		calculate_others(frm);
+	},
+	difficulty_allowance_method: function(frm){
 		calculate_others(frm);
 	},
 	honorarium_method: function(frm){

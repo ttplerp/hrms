@@ -7,7 +7,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import getdate, nowdate, today
 from frappe.utils import date_diff, flt, cint
-from hrms.hr.doctype.leave_application.leave_application import get_leaves_for_period
+from hrms.hr.doctype.leave_application.leave_application import get_leaves_for_period, get_leave_balance_on
 from hrms.hr.doctype.leave_ledger_entry.leave_ledger_entry import create_leave_ledger_entry
 from hrms.hr.utils import set_employee_name, validate_active_employee
 from hrms.payroll.doctype.salary_structure.salary_structure import get_basic_and_gross_pay, get_salary_tax
@@ -148,19 +148,22 @@ class LeaveEncashment(Document):
 				)
 			)
 
-		self.leave_balance = (
-			allocation.total_leaves_allocated
-			- allocation.carry_forwarded_leaves_count
-			# adding this because the function returns a -ve number
-			+ get_leaves_for_period(
-				self.employee, self.leave_type, allocation.from_date, self.encashment_date
+		# self.leave_balance = (
+		# 	allocation.total_leaves_allocated
+		# 	- allocation.carry_forwarded_leaves_count
+		# 	# adding this because the function returns a -ve number
+		# 	+ get_leaves_for_period(
+		# 		self.employee, self.leave_type, allocation.from_date, self.encashment_date
+		# 	)
+		# )
+		self.leave_balance = get_leave_balance_on(
+				self.employee, self.leave_type, self.encashment_date
 			)
-		)
 		employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
 		encashable_days = frappe.db.get_value("Employee Group", employee_group, "max_encashment_days")
 
-		if self.leave_balance < frappe.db.get_value("Employee Group", employee_group, "max_encashment_days"):
-			frappe.msgprint(_("Minimum '{}' days is Mandatory for Encashment").format(cint(encashable_days)),title="Leave Balance")
+		if self.leave_balance < frappe.db.get_value("Employee Group", employee_group, "encashment_min"):
+			frappe.throw(_("Minimum '{}' days is Mandatory for Encashment").format(cint(encashable_days)),title="Leave Balance")
 		
 		self.encashable_days = encashable_days if encashable_days > 0 else 0
 		self.encashment_days = encashable_days

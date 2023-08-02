@@ -152,18 +152,12 @@ def get_existing_performance_evaluation(employees, args):
     )
 
 
-def create_performance_evaluation_for_employees(
-    employees, args, title=None, publish_progress=True
-):
-    performance_evaluation_exists_for = get_existing_performance_evaluation(
-        employees, args
-    )
+def create_performance_evaluation_for_employees(employees, args, title=None, publish_progress=True):
+    performance_evaluation_exists_for = get_existing_performance_evaluation(employees, args)
     count = 0
     successful = 0
     failed = 0
-    process_performance_evaluation = frappe.get_doc(
-        "Process Performance Evaluation", args.process_performance_evaluation
-    )
+    process_performance_evaluation = frappe.get_doc("Process Performance Evaluation", args.process_performance_evaluation)
 
     process_performance_evaluation.set("employees_failed", [])
     refresh_interval = 25
@@ -173,29 +167,62 @@ def create_performance_evaluation_for_employees(
         employee_group = frappe.get_value("Employee", emp.employee, "employee_group")
         if not employee_group:
             frappe.throw(_("Set Employee Group for emplyee ID {}".format(emp.employee)))
-        if (
-            emp.employee in employees
-            and emp.employee not in performance_evaluation_exists_for
-        ):
-            error = None
-            args.update(
-                {
-                    "doctype": "Performance Evaluation",
-                    "employee": emp.employee,
-                    "employee_group": employee_group,
-                }
-            )
-            ppe_detail = frappe.get_doc("PPE Employee Detail", emp.name)
+        
+        if (emp.employee in employees and emp.employee not in performance_evaluation_exists_for):
+            evaluator_list = frappe.db.sql("""
+                select evaluator from `tabPerformance Evaluator` where parent = {}
+            """.format(emp.employee), as_dict=True)
 
-            try:
-                pe = frappe.get_doc(args)
-                pe.insert()
-                successful += 1
-                ppe_detail.db_set("performance_evaluation", pe.name)
-            except Exception as e:
-                error = str(e)
-                failed += 1
-            count += 1
+            if not evaluator_list: 
+                frappe.throw('Set Evaluator for Employee ID {} '.format(emp.employee))
+
+            evals = []
+            for a in evaluator_list:
+                evals.append(a.evaluator)
+
+            error = None
+
+            # get work competency
+            data = frappe.db.sql("""
+                select wc.competency, wc.weightage, wc.rating_4, wc.rating_3, wc.rating_2, wc.rating_1
+                from `tabWork Competency` wc
+                inner join `tabWork Competency Item` wci
+                on wc.name = wci.parent
+                where wci.applicable = 1
+                and wci.employee_group = '{}'
+                order by wc.competency
+            """.format(employee_group), as_dict=True)
+
+            if not data:
+                frappe.throw(_('There is no Work Competency defined'))
+
+            for ev in evals:
+                if ev:
+                    doc = frappe.new_doc("Performance Evaluation")
+                    doc.employee = emp.employee
+                    doc.employee_group = employee_group
+                    doc.fiscal_year = args.get("fiscal_year")
+                    doc.month = args.get("month")
+                    doc.month_name = args.get("month_name")
+                    doc.posting_date = args.get("posting_date")
+                    doc.company = args.get("company")
+                    doc.process_performance_evaluation = args.get("process_performance_evaluation")
+                    doc.evaluator = str(ev)
+
+                    doc.set('work_competency', [])
+                    for d in data:
+                        row = doc.append('work_competency', {})
+                        row.update(d)
+                        row.evaluator = 0
+                    ppe_detail = frappe.get_doc("PPE Employee Detail", emp.name)
+                    try:
+                        doc.save()
+                        successful += 1
+                        ppe_detail.db_set("performance_evaluation", doc.name)
+                    except Exception as e:
+                        error = str(e)
+                        failed += 1
+                    count += 1
 
             # ppe_detail.db_set("performance_evaluation", pe.name)
             if error:
@@ -221,10 +248,9 @@ def create_performance_evaluation_for_employees(
                     show_progress = 1
                 elif count % refresh_interval == 0:
                     show_progress = 1
-
                 if show_progress:
                     description = (
-                        " Processing {}: ".format(pe.name if pe else emp.employee)
+                        " Processing {}: ".format(doc.name if doc else emp.employee)
                         + "["
                         + str(count)
                         + "/"

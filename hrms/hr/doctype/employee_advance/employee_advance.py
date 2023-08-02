@@ -58,6 +58,8 @@ class EmployeeAdvance(Document):
         self.update_reference()
         self.check_duplicate_advance()
         self.select_advance_account()
+        if self.deduction_month <= 0:
+            frappe.throw(str("No. of installment must be greater than 0."))
         if self.workflow_state != "Approved":
             notify_workflow_states(self)
 

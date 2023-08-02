@@ -57,6 +57,7 @@
   "sb_benefits",
   "employee_benefit_claim_status",
   "workflow_state",
+  "employee_transfer_requset_id",
   "amended_from"
  ],
  "fields": [
@@ -403,12 +404,18 @@
    "label": "Employee Benefit Claim Status",
    "options": "Not Claimed\nClaimed",
    "read_only": 1
+  },
+  {
+   "fieldname": "employee_transfer_requset_id",
+   "fieldtype": "Link",
+   "label": "Employee Transfer Requset ID",
+   "options": "Employee Transfer Request"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-17 12:12:16.682701",
+ "modified": "2023-08-02 14:42:57.042945",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer",

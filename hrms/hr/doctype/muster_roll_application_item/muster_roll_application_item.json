@@ -13,6 +13,7 @@
   "citizenship_id",
   "person_name",
   "business_activity",
+  "muster_roll_type",
   "column_break_3",
   "designation",
   "gender",
@@ -188,12 +189,18 @@
    "fieldtype": "Link",
    "label": "Bank Account Type",
    "options": "Bank Account Type"
+  },
+  {
+   "fieldname": "muster_roll_type",
+   "fieldtype": "Select",
+   "label": "Muster roll type",
+   "options": "\nSkilled\nUnskilled"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-05-15 12:32:53.217423",
+ "modified": "2023-07-20 11:28:10.251045",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Application Item",

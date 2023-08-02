@@ -4,5 +4,5 @@
 # import frappe
 from frappe.model.document import Document
 
-class PMSGroup(Document):
+class EmployeeTrainingDetailItem(Document):
 	pass
