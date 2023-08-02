@@ -59,8 +59,8 @@ class EmployeeAdvance(Document):
 			self.advance_account = frappe.db.get_value("Company", self.company, "salary_advance_account")
 		elif self.advance_type == "Travel Advance":
 			self.advance_account = frappe.db.get_value("Company", self.company, "travel_advance_account")
-		elif self.advance_type == "Imprest Advance":
-			self.advance_account = frappe.db.get_value("Company", self.company, "imprest_advance_account")
+		# elif self.advance_type == "Imprest Advance":
+		# 	self.advance_account = frappe.db.get_value("Company", self.company, "imprest_advance_account")
 		else:
 			account = ""
 			
@@ -394,11 +394,11 @@ class EmployeeAdvance(Document):
 		frappe.db.set_value("Employee Advance", self.name, "claimed_amount", flt(claimed_amount))
 
 		# added by Dendup for imprest settlement
-		if cint(cancel) == 0:
-			if flt(self.paid_amount) == flt(claimed_amount):
-				frappe.db.set_value("Employee Advance", self.name, "expenses_claimed", 1)
-		else:
-			frappe.db.set_value("Employee Advance", self.name, "expenses_claimed", 0)
+		# if cint(cancel) == 0:
+		# 	if flt(self.paid_amount) == flt(claimed_amount):
+		# 		frappe.db.set_value("Employee Advance", self.name, "expenses_claimed", 1)
+		# else:
+		# 	frappe.db.set_value("Employee Advance", self.name, "expenses_claimed", 0)
 
 		self.reload()
 		self.set_status(update=True)
@@ -615,8 +615,8 @@ def select_account(advance_type, company):
 		account = frappe.db.get_value("Company", company, "salary_advance_account")
 	elif advance_type == "Travel Advance":
 		account = frappe.db.get_value("Company", company, "travel_advance_account")
-	elif advance_type == "Imprest Advance":
-		account = frappe.db.get_value("Company", company, "imprest_advance_account")
+	# elif advance_type == "Imprest Advance":
+	# 	account = frappe.db.get_value("Company", company, "imprest_advance_account")
 	else:
 		account = ""
 	return account

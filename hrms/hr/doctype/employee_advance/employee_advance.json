@@ -282,7 +282,7 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Advance Type",
-   "options": "\nSalary Advance\nTravel Advance\nImprest Advance\nOthers",
+   "options": "\nSalary Advance\nTravel Advance\nOthers",
    "reqd": 1
   },
   {
@@ -478,7 +478,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-03 12:07:06.395707",
+ "modified": "2023-08-02 14:52:56.504586",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
