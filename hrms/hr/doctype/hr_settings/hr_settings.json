@@ -35,9 +35,6 @@
   "expense_approver_mandatory_in_expense_claim",
   "show_leaves_of_all_department_members_in_calendar",
   "auto_leave_encashment",
-  "sb_travel",
-  "authorization_approval_notification_template",
-  "authorization_status_notification_template",
   "hiring_settings_section",
   "check_vacancies",
   "send_interview_reminder",
@@ -117,14 +114,6 @@
   "vehicle_request_approval_notification_template",
   "column_break_94",
   "vehicle_request_status_notification_template",
-  "eme_invoice_settings_section",
-  "eme_invoice_approval_notification_template",
-  "column_break_98",
-  "eme_invoice_status_notification_template",
-  "coal_raising_payment_settings_section",
-  "coal_raising_payment_approval_notification_template",
-  "column_break_102",
-  "coal_raising_payment_status_notification_template",
   "leave_application_settings_section",
   "leave_application_approval_notification_template",
   "column_break_106",
@@ -382,23 +371,6 @@
    "fieldname": "overtime_limit",
    "fieldtype": "Int",
    "label": "Overtime Limit In Hrs(Per Day)"
-  },
-  {
-   "fieldname": "sb_travel",
-   "fieldtype": "Section Break",
-   "label": "Travel Settings"
-  },
-  {
-   "fieldname": "authorization_approval_notification_template",
-   "fieldtype": "Link",
-   "label": "Authorization Approval Notification Template",
-   "options": "Email Template"
-  },
-  {
-   "fieldname": "authorization_status_notification_template",
-   "fieldtype": "Link",
-   "label": "Authorization Status Notification Template",
-   "options": "Email Template"
   },
   {
    "fieldname": "hr_approver",
@@ -678,48 +650,6 @@
    "options": "Email Template"
   },
   {
-   "fieldname": "eme_invoice_settings_section",
-   "fieldtype": "Section Break",
-   "label": "EME Invoice Settings"
-  },
-  {
-   "fieldname": "eme_invoice_approval_notification_template",
-   "fieldtype": "Link",
-   "label": "EME Invoice Approval Notification Template",
-   "options": "Email Template"
-  },
-  {
-   "fieldname": "column_break_98",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "eme_invoice_status_notification_template",
-   "fieldtype": "Link",
-   "label": "EME Invoice Status Notification Template",
-   "options": "Email Template"
-  },
-  {
-   "fieldname": "coal_raising_payment_settings_section",
-   "fieldtype": "Section Break",
-   "label": "Coal Raising Payment Settings"
-  },
-  {
-   "fieldname": "coal_raising_payment_approval_notification_template",
-   "fieldtype": "Link",
-   "label": "Coal Raising Payment Approval Notification Template",
-   "options": "Email Template"
-  },
-  {
-   "fieldname": "column_break_102",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "coal_raising_payment_status_notification_template",
-   "fieldtype": "Link",
-   "label": "Coal Raising Payment Status Notification Template",
-   "options": "Email Template"
-  },
-  {
    "fieldname": "leave_application_settings_section",
    "fieldtype": "Section Break",
    "label": "Leave Application Settings"
@@ -941,7 +871,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-06-26 11:47:12.458582",
+ "modified": "2023-08-02 15:48:34.804349",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
