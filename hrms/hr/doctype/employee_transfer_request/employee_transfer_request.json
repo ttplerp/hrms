@@ -3,7 +3,6 @@
  "allow_rename": 1,
  "autoname": "ETR-.YYYY.-.#####",
  "creation": "2023-07-28 10:28:39.607493",
- "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -14,7 +13,7 @@
   "branch",
   "cb_01",
   "employee_name",
-  "department",
+  "division",
   "cell_number",
   "amended_from",
   "email",
@@ -26,12 +25,15 @@
   "supervisor",
   "supervisor_name",
   "supervisor_designation",
-  "remarks"
+  "supervisor_remarks",
+  "remarks",
+  "workflow_state"
  ],
  "fields": [
   {
    "fieldname": "employee",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "label": "Employee",
    "options": "Employee",
@@ -61,22 +63,16 @@
    "fetch_from": "employee.designation",
    "fieldname": "designation",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Designation",
    "options": "Designation",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.department",
-   "fieldname": "department",
-   "fieldtype": "Link",
-   "label": "Department",
-   "options": "Department",
    "read_only": 1
   },
   {
    "fetch_from": "employee.branch",
    "fieldname": "branch",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Branch",
    "options": "Branch",
    "read_only": 1
@@ -103,11 +99,12 @@
   {
    "fieldname": "sb_personal_note",
    "fieldtype": "Section Break",
-   "label": "Personal Note"
+   "label": "Proposal Note"
   },
   {
    "fieldname": "new_branch",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "New Place of Work Proposed",
    "options": "Branch",
    "reqd": 1
@@ -116,6 +113,7 @@
    "fieldname": "reason",
    "fieldtype": "Small Text",
    "label": "Reason for Transfer",
+   "read_only_depends_on": "eval:doc.owner!=frappe.session.user;",
    "reqd": 1
   },
   {
@@ -133,6 +131,7 @@
   {
    "fieldname": "supervisor",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Current Supervisor",
    "options": "User",
    "read_only": 1
@@ -147,8 +146,8 @@
   {
    "fieldname": "remarks",
    "fieldtype": "Small Text",
-   "label": "Remarks",
-   "read_only_depends_on": "eval:doc.workflow_state != \"Waiting Supervisor Approval\" && frappe.session.user == doc.supervisor;"
+   "label": "HRAD's Recommendation",
+   "read_only_depends_on": "eval:doc.workflow_state != \"Waiting Approval\" && frappe.session.user != doc.supervisor;"
   },
   {
    "fetch_from": "supervisor.desk_theme",
@@ -156,12 +155,34 @@
    "fieldtype": "Data",
    "label": "Current Supervisor's Designation",
    "read_only": 1
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Division",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "supervisor_remarks",
+   "fieldtype": "Small Text",
+   "label": "Current Supervisor's Remcommendation",
+   "read_only_depends_on": "eval:doc.workflow_state != \"Waiting Supervisor Approval\" && frappe.session.user != doc.supervisor;"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-01 16:04:07.780493",
+ "modified": "2023-08-03 14:27:39.372963",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer Request",
