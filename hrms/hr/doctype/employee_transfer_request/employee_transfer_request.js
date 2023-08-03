@@ -3,14 +3,14 @@
 
 frappe.ui.form.on('Employee Transfer Request', {
 	refresh: function(frm) {
-		frm.set_query("employee",function(doc) {
-			return {
-				query: "erpnext.controllers.queries.filter_division_employees",
-				filters: {
-					'user': frappe.session.user
-				}
-			}
-		});
+		// frm.set_query("employee",function(doc) {
+		// 	return {
+		// 		query: "erpnext.controllers.queries.filter_division_employees",
+		// 		filters: {
+		// 			'user': frappe.session.user
+		// 		}
+		// 	}
+		// });
 		if (frm.doc.docstatus == 1) {
 			frappe.call({
 				method:"check_employee_transfer",
