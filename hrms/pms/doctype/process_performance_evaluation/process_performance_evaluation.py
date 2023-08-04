@@ -142,11 +142,11 @@ class ProcessPerformanceEvaluation(Document):
 def get_existing_performance_evaluation(employees, args):
     return frappe.db.sql_list(
         """
-							select distinct employee from `tabPerformance Evaluation`
-			   				where docstatus !=2 and company = %s
-			   				and month = %s
-			   				and employee in (%s)
-							"""
+			select distinct employee from `tabPerformance Evaluation`
+            where docstatus !=2 and company = %s
+            and month = %s
+            and employee in (%s)
+            """
         % ("%s", "%s", ", ".join(["%s"] * len(employees))),
         [args.company, args.month] + employees,
     )

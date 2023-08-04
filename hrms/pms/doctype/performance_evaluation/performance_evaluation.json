@@ -54,10 +54,10 @@
    "reqd": 1
   },
   {
+   "columns": 2,
    "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
-   "in_standard_filter": 1,
    "label": "Employee Name",
    "read_only": 1
   },
@@ -93,7 +93,6 @@
    "fetch_from": "employee.branch",
    "fieldname": "branch",
    "fieldtype": "Data",
-   "in_standard_filter": 1,
    "label": "Branch",
    "read_only": 1
   },
@@ -259,7 +258,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-02 09:26:32.607422",
+ "modified": "2023-08-04 12:12:36.892075",
  "modified_by": "Administrator",
  "module": "PMS",
  "name": "Performance Evaluation",
@@ -320,5 +319,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "employee_name",
  "track_changes": 1
 }
