@@ -122,6 +122,7 @@ class MusterRollApplication(Document):
 				doc.branch        = self.branch
 				doc.cost_center   = self.cost_center
 				doc.unit          = self.unit
+				doc.section       = self.section
 				doc.rate_per_day  = a.rate_per_day
 				doc.rate_per_hour = a.rate_per_hour
 				doc.company       = self.company

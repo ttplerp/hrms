@@ -17,6 +17,17 @@ frappe.ui.form.on('Muster Roll Application', {
 				}
 			};
 		});
+		frm.set_query("section", function() {
+			return {
+				"filters": {
+					"company": frm.doc.company,
+					"disabled":0,
+					"is_division":0,
+					"is_unit":0,
+					"is_section":1
+				}
+			};
+		});
 	},
 	onload: function(frm) {
 		if (!frm.doc.posting_date) {
