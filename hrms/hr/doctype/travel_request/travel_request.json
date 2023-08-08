@@ -208,6 +208,7 @@
   {
    "fieldname": "itinerary",
    "fieldtype": "Table",
+   "ignore_user_permissions": 1,
    "options": "Travel Itinerary",
    "read_only_depends_on": "workflow_state == \"Approved\""
   },
@@ -584,7 +585,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-23 12:34:55.661755",
+ "modified": "2023-08-08 14:38:44.095290",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",
