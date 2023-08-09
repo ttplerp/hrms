@@ -21,6 +21,13 @@ from frappe.utils import (
 )
 class MRInvoiceEntry(Document):
 	pass
+	def validate(self):
+		self.set_mr_payable_account()
+	
+	def set_mr_payable_account(self):
+		credit_account = frappe.db.get_value("Company", self.company, "mr_salary_payable_account")
+		self.db_set("credit_account", credit_account)
+
 	def on_submit(self):
 		self.submit_mr_invoice()
 
