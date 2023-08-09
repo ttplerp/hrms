@@ -12,7 +12,8 @@
   "column_break_4",
   "status",
   "column_break_6",
-  "daily_wage"
+  "daily_wage",
+  "is_lumpsum"
  ],
  "fields": [
   {
@@ -54,14 +55,22 @@
    "fieldname": "daily_wage",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Daily Wage",
+   "label": "Wage",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_lumpsum",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Lumpsum Pay",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-06-01 13:58:11.426431",
+ "modified": "2023-08-09 16:06:14.494082",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Attendance Item",

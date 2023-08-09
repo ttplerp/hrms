@@ -37,10 +37,10 @@ class MREmployeeInvoice(AccountsController):
 	def calculate_amount(self):
 		grand_total = outstanding_amount = other_deductions = net_payable = total_ot_amount = total_daily_wage_amount = 0
 		for a in self.attendance:
-			# if cint(a.is_lumpsum) == 0:
-			total_daily_wage_amount += flt(a.daily_wage,2)
-			# else:
-			# 	total_daily_wage_amount = flt(a.daily_wage,2)
+			if cint(a.is_lumpsum) == 0:
+				total_daily_wage_amount += flt(a.daily_wage,2)
+			else:
+			 	total_daily_wage_amount = flt(a.daily_wage,2)
 		for a in self.ot:
 			total_ot_amount += flt(a.amount,2)
 		for d in self.deduction:
@@ -50,6 +50,7 @@ class MREmployeeInvoice(AccountsController):
 		self.total_daily_wage_amount = flt(total_daily_wage_amount,2)
 		self.grand_total = flt(total_daily_wage_amount + total_ot_amount,2)
 		self.outstanding_amount = self.net_payable_amount = flt(self.grand_total - self.other_deduction,2)
+		
 	def on_submit(self):
 		self.make_gl_entries()
 
@@ -165,32 +166,21 @@ class MREmployeeInvoice(AccountsController):
 		self.total_days_worked = 0
 		self.set("attendance",[])
 		for d in frappe.db.sql('''
-			SELECT a.name as mr_attendance, a.status, a.date, b.is_lumpsum,
-				CASE
-					WHEN b.is_lumpsum = 1 THEN b.lumpsum / lumpsum_count.count
-					ELSE b.rate_per_day
-				END AS daily_wage
-			FROM `tabMuster Roll Attendance` a
-			JOIN `tabMuster Roll Employee` b ON a.mr_employee = b.name
-			LEFT JOIN (
-				SELECT mr_employee, COUNT(*) as count
-				FROM `tabMuster Roll Attendance`
-				WHERE date BETWEEN '{}' AND '{}'
-					AND status = 'Present'
-					AND docstatus = 1
-				GROUP BY mr_employee
-			) as lumpsum_count ON a.mr_employee = lumpsum_count.mr_employee
-			WHERE a.date BETWEEN '{}' AND '{}' AND a.status = 'Present'
-				AND a.docstatus = 1 AND a.mr_employee = '{}'
-				AND NOT EXISTS (
-					SELECT 1 FROM `tabMR Employee Invoice` e
-					INNER JOIN `tabMR Attendance Item` f ON e.name = f.parent
-					WHERE e.name != '{}' AND f.mr_attendance = a.name AND e.docstatus != 2
-				)
-			'''.format(start_date, end_date, start_date, end_date, self.mr_employee, self.name), as_dict=1):
+				select a.name as mr_attendance, a.status,
+					a.date, b.is_lumpsum, 
+					CASE
+						WHEN b.is_lumpsum = 1 THEN b.lumpsum
+						ELSE b.rate_per_day
+					END AS daily_wage
+				from `tabMuster Roll Attendance` a join
+				`tabMuster Roll Employee` b on a.mr_employee = b.name
+				where a.date between '{}' and '{}' and a.status = 'Present' 
+				and a.docstatus = 1 and a.mr_employee = '{}'
+				and not exists (select 1 from `tabMR Employee Invoice` e inner join `tabMR Attendance Item` f 
+								on e.name = f.parent where e.name != '{}' and f.mr_attendance = a.name and e.docstatus != 2)
+				'''.format(start_date, end_date, self.mr_employee, self.name), as_dict=1):
 			self.total_days_worked += 1
 			self.append("attendance", d)
-
 		if len(self.attendance) <= 0:
 			frappe.msgprint("No attendance found for year {} of month {}".format(frappe.bold(self.fiscal_year), frappe.bold(self.month)),raise_exception=True)
 
