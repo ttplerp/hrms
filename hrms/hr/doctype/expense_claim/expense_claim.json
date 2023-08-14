@@ -13,6 +13,7 @@
   "department",
   "column_break_5",
   "branch",
+  "cost_center",
   "expense_approver",
   "approval_status",
   "delivery_trip",
@@ -46,7 +47,6 @@
   "accounting_dimensions_section",
   "project",
   "dimension_col_break",
-  "cost_center",
   "more_details",
   "payment_journal",
   "status",
@@ -276,10 +276,12 @@
   },
   {
    "fetch_from": "branch.cost_center",
+   "fetch_if_empty": 1,
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
-   "options": "Cost Center"
+   "options": "Cost Center",
+   "reqd": 1
   },
   {
    "collapsible": 1,
@@ -402,15 +404,14 @@
   {
    "fieldname": "report_supporting_doc",
    "fieldtype": "Attach",
-   "label": "Report/Supporting Document",
-   "reqd": 1
+   "label": "Report/Supporting Document"
   }
  ],
  "icon": "fa fa-money",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-06-29 14:51:22.787738",
+ "modified": "2023-08-14 15:18:02.579599",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",

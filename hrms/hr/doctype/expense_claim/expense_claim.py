@@ -168,16 +168,6 @@ class ExpenseClaim(AccountsController):
 		# expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
 		employee_payable_account = frappe.db.get_value("Company", self.company, "employee_payable_account")
 		
-		# accounts for imprest settlement
-		account_imprest = frappe.db.get_value("Company", self.company,"imprest_advance_account")
-		mis_account = ''
-		for data in self.expenses:
-			mis_account = data.default_account
-		
-		ec_type = ''
-		for d in self.expenses:
-			ec_type = d.expense_type
-		
 		# if not expense_account:
 		# 	frappe.throw("Setup Leave Encashment Account in Company Settings")
 
@@ -199,74 +189,34 @@ class ExpenseClaim(AccountsController):
 			jeb.user_remark = 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name
 			jeb.posting_date = today()
 			jeb.branch = self.branch
-			jeb_cost_center = frappe.db.get_value("Branch", jeb.branch, "cost_center")
+			jeb_cost_center = self.cost_center
 
-			# for imprest claim settlement
-			if ec_type == 'Imprest':
-				jeb.append("accounts", {
-					"account": mis_account,
-					"cost_center": self.cost_center,
-					"reference_type": "Expense Claim",
-					"reference_name": self.name,
-					"debit_in_account_currency": self.total_claimed_amount,
-					"debit": self.total_claimed_amount,
-					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
-					"business_activity": "Common",
-				})
-				jeb.append("accounts", {
-					"account": account_imprest,
-					"reference_type": "Expense Claim",
-					"reference_name": self.name,
-					"cost_center": self.cost_center,
-					"credit_in_account_currency": self.total_advance_amount if self.total_advance_amount > 0 else self.total_claimed_amount,
-					"credit": self.total_advance_amount if self.total_advance_amount > 0 else self.total_claimed_amount,
-					"business_activity": "Common",
-					"party_type": "Employee",
-					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
-					"party": self.employee,
-					"party_name":self.employee_name
-				})
-				if self.total_advance_amount > 0 and flt(self.total_advance_amount) != self.total_claimed_amount:
-					jeb.append("accounts", {
-						"account": employee_payable_account,
-						"cost_center": self.cost_center,
-						"reference_type": "Expense Claim",
-						"reference_name": self.name,
-						"credit_in_account_currency": self.grand_total,
-						"credit": self.grand_total,
-						"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
-						"business_activity": "Common",
-						"party_type": "Employee",
-						"party": self.employee,
-						"party_name":self.employee_name
-					})
-			else:
-				jeb.append("accounts", {
-					"account": self.payable_account,
-					"reference_type": "Expense Claim",
-					"reference_name": self.name,
-					"cost_center": self.cost_center,
-					"debit_in_account_currency": self.grand_total,
-					"debit": self.grand_total,
-					"business_activity": "Common",
-					"party_type": "Employee",
-					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
-					"party": self.employee,
-					"party_name":self.employee_name
-				})
-				jeb.append("accounts", {
-					"account": employee_payable_account,
-					"cost_center": self.cost_center,
-					"reference_type": "Expense Claim",
-					"reference_name": self.name,
-					"party_type": "Employee",
-					"party": self.employee,
-					"party_name":self.employee_name,
-					"credit_in_account_currency": self.grand_total,
-					"credit": self.grand_total,
-					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
-					"business_activity": "Common",
-				})
+			jeb.append("accounts", {
+				"account": self.payable_account,
+				"reference_type": "Expense Claim",
+				"reference_name": self.name,
+				"cost_center": self.cost_center,
+				"debit_in_account_currency": self.grand_total,
+				"debit": self.grand_total,
+				"business_activity": "Common",
+				"party_type": "Employee",
+				"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
+				"party": self.employee,
+				"party_name":self.employee_name
+			})
+			jeb.append("accounts", {
+				"account": employee_payable_account,
+				"cost_center": self.cost_center,
+				"reference_type": "Expense Claim",
+				"reference_name": self.name,
+				"party_type": "Employee",
+				"party": self.employee,
+				"party_name":self.employee_name,
+				"credit_in_account_currency": self.grand_total,
+				"credit": self.grand_total,
+				"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
+				"business_activity": "Common",
+			})
 
 			jeb.insert()
 
@@ -304,14 +254,9 @@ class ExpenseClaim(AccountsController):
 			frappe.get_doc("Project", self.project).update_project()
 
 	def make_gl_entries(self, cancel=False):
-		ec_type = ''
-		for d in self.expenses:
-			ec_type = d.expense_type
-		
-		if ec_type != 'Imprest':
-			if flt(self.total_sanctioned_amount) > 0:
-				gl_entries = self.get_gl_entries()
-				make_gl_entries(gl_entries, cancel)
+		if flt(self.total_sanctioned_amount) > 0:
+			gl_entries = self.get_gl_entries()
+			make_gl_entries(gl_entries, cancel)
 
 	def get_gl_entries(self):
 		gl_entry = []

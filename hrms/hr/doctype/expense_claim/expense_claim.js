@@ -25,7 +25,7 @@ frappe.ui.form.on('Expense Claim', {
 				callback: function(r) {
 					if (r.message) {
 						expense.default_account = r.message.account;
-						expense.cost_center = r.message.cost_center;
+						// expense.cost_center = r.message.cost_center;
 					}
 				}
 			});
@@ -351,9 +351,7 @@ frappe.ui.form.on("Expense Claim", {
 
 	set_child_cost_center: function(frm){
 		(frm.doc.expenses || []).forEach(function(d) {
-			if (!d.cost_center){
-				d.cost_center = frm.doc.cost_center;
-			}
+			d.cost_center = frm.doc.cost_center;
 		});
 	},
 	get_taxes: function(frm) {

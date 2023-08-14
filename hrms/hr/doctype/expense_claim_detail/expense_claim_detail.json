@@ -15,8 +15,8 @@
   "sanctioned_amount",
   "accounting_dimensions_section",
   "cost_center",
-  "dimension_col_break",
   "reference_type",
+  "dimension_col_break",
   "reference",
   "section_break_4",
   "description"
@@ -39,14 +39,9 @@
   {
    "fieldname": "expense_type",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Expense Claim Type",
-   "oldfieldname": "expense_type",
-   "oldfieldtype": "Link",
    "options": "Expense Claim Type",
-   "print_width": "150px",
-   "reqd": 1,
-   "width": "150px"
+   "reqd": 1
   },
   {
    "depends_on": "expense_type",
@@ -103,6 +98,7 @@
    "width": "150px"
   },
   {
+   "fetch_if_empty": 1,
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
@@ -135,7 +131,7 @@
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-28 15:25:12.289319",
+ "modified": "2023-08-14 15:15:36.086544",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Detail",
