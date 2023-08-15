@@ -10,7 +10,7 @@ frappe.ui.form.on('Muster Roll Employee', {
 		frm.set_query("unit", function() {
 			return {
 				"filters": {
-					"branch": frm.doc.branch
+					"is_unit": 1
 				}
 			};
 		});
@@ -56,7 +56,7 @@ frappe.ui.form.on("Muster Roll Employee", "refresh", function(frm) {
 function validate_prev_doc(frm, title){
 	return frappe.call({
 		method: "erpnext.custom_utils.get_prev_doc",
-		args: {doctype: frm.doctype, docname: frm.docname, col_list: "cost_center,branch"},
+		args: {doctype: frm.doctype, docname: frm.docname, col_list: "cost_center, branch"},
 		callback: function(r) {
 			if(frm.doc.cost_center && (frm.doc.cost_center !== r.message.cost_center)){
 				frappe.prompt({
