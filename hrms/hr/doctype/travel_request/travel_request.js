@@ -17,6 +17,17 @@ frappe.ui.form.on('Travel Request', {
 				});
 			});
 		}
+		if (frm.doc.workflow_state == 'Draft') {
+			frm.add_custom_button(__('Notify Employee'), function(){
+				return frappe.call({
+					method:"notify_supervisor",
+					doc: frm.doc,
+					callback: function (){
+						frm.refresh_field("notify")
+					}
+				});
+			}, ("Notify"));
+		}
 	},
 	onload: function(frm) {
 		if (!frm.doc.posting_date) {

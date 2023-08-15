@@ -344,6 +344,56 @@ class TravelRequest(AccountsController):
 			& (advance.reference == self.name)
 		)
 		return query.run(as_dict=True)
+	@frappe.whitelist()
+	def notify_supervisor(self):
+		supervisor = frappe.db.get_value("Employee", frappe.db.get_value("Employee",self.employee,"reports_to"),"user_id")
+		if not supervisor:
+			frappe.throw("Set employee Supervisor for employee {}".format(self.employee))
+		parent_doc = frappe.get_doc(self.doctype, self.name)
+		args = parent_doc.as_dict()
+		template = frappe.db.get_single_value('HR Settings', 'travel_request_supervisor_notification_template')
+		if not template:
+			frappe.msgprint(_("Please set default template for Travel Request Supervisor Notification in HR Settings."))
+			return
+		email_template = frappe.get_doc("Email Template", template)
+		message = frappe.render_template(email_template.response, args)
+
+		self.notify({
+			# for post in messages
+			"message": message,
+			"message_to": supervisor,
+			# for email
+			"subject": email_template.subject,
+			"notify": "supervisor"
+		})
+
+	def notify(self, args, approver = 0):
+		args = frappe._dict(args)
+		# args -> message, message_to, subject
+
+		contact = args.message_to
+		if not isinstance(contact, list):
+			if not args.notify == "supervisor":
+				contact = frappe.get_doc('User', contact).email or contact
+
+		sender      	    = dict()
+		sender['email']     = frappe.get_doc('User', frappe.session.user).email
+		sender['full_name'] = frappe.utils.get_fullname(sender['email'])
+
+		try:
+			frappe.sendmail(
+				recipients = contact,
+				sender = sender['email'],
+				subject = args.subject,
+				message = args.message,
+			)
+			if approver == 0:
+				frappe.msgprint(_("Email sent to {0}").format(contact))
+			else:
+				return _("Email sent to {0}").format(contact)
+		except frappe.OutgoingEmailError:
+			pass
+
 
 @frappe.whitelist()
 def get_exchange_rate(from_currency, to_currency, posting_date):

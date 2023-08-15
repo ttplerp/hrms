@@ -120,6 +120,7 @@
   "leave_application_status_notification_template",
   "travel_request_settings_section",
   "travel_request_approval_notification_template",
+  "travel_request_supervisor_notification_template",
   "column_break_110",
   "travel_request_status_notification_template",
   "utility_bill_settings_section",
@@ -865,13 +866,19 @@
    "fieldname": "approver_name_rtc",
    "fieldtype": "Data",
    "label": "Approver Name (Rental & Tenancy)"
+  },
+  {
+   "fieldname": "travel_request_supervisor_notification_template",
+   "fieldtype": "Link",
+   "label": "Travel Request Supervisor Notification Template",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-08-02 15:48:34.804349",
+ "modified": "2023-08-15 10:29:32.155019",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
