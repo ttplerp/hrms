@@ -26,7 +26,10 @@ class MRInvoiceEntry(Document):
 	
 	def set_mr_payable_account(self):
 		credit_account = frappe.db.get_value("Company", self.company, "mr_salary_payable_account")
-		self.db_set("credit_account", credit_account)
+		if credit_account:
+			self.db_set("credit_account", credit_account)
+		else:
+			frappe.throw("Please set Muster Roll Payable Account in Company Settings")
 
 	def on_submit(self):
 		self.submit_mr_invoice()
