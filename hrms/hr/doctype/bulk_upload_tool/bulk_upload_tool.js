@@ -36,6 +36,8 @@ frappe.ui.form.on('Bulk Upload Tool', {
 			msgprint(__("Fiscal Year, Month, Branch and File Type are mandatory"));
 			return;
 		}
+		var unitValue = frm.doc.unit ? frm.doc.unit : 1;
+		console.log(unitValue)
         open_url_post(
             '/api/method/hrms.hr.doctype.bulk_upload_tool.bulk_upload_tool.download_template',
             {
@@ -44,7 +46,7 @@ frappe.ui.form.on('Bulk Upload Tool', {
                 month: frm.doc.month,
                 fiscal_year: frm.doc.fiscal_year,
                 upload_type: frm.doc.upload_type,
-                unit: frm.doc.unit
+                unit: unitValue
             }
         )
 	},

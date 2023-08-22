@@ -146,7 +146,7 @@ class BulkUploadTool(Document):
 		return {"messages": ret, "error": error}
 
 @frappe.whitelist()
-def download_template(file_type, branch, month, fiscal_year, upload_type, unit=None):
+def download_template(file_type, branch, month, fiscal_year, upload_type, unit):
 	data = frappe._dict(frappe.local.form_dict)
 	writer = get_template(branch, month, fiscal_year)
 	for d in get_mr_data(branch, month, fiscal_year, unit):
@@ -191,21 +191,21 @@ def build_response_as_excel(writer, doctype):
 	frappe.response["filecontent"] = xlsx_file.getvalue()
 	frappe.response["type"] = "binary"
 
-def get_mr_data(branch, month, fiscal_year, unit=None):
-	if unit:
+def get_mr_data(branch, month, fiscal_year, unit):
+	if unit == '1':
+		return frappe.db.sql('''select branch, cost_center, unit, name, person_name,
+							"{fiscal_year}" as fiscal_year, "{month}" as month
+							from `tabMuster Roll Employee`
+							where status ="Active" and branch = {branch} 
+							'''.format(branch=frappe.db.escape(branch), month=month, fiscal_year=fiscal_year), as_dict=True)
+
+	else:
 		return frappe.db.sql('''select branch, cost_center, unit, name, person_name,
 					"{fiscal_year}" as fiscal_year, "{month}" as month
 					from `tabMuster Roll Employee`
 					where status ="Active" and branch = {branch} and unit = {unit}
 					'''.format(branch=frappe.db.escape(branch), month=month, fiscal_year=fiscal_year, unit=frappe.db.escape(unit)), as_dict=True)
 
-	else:
-		return frappe.db.sql('''select branch, cost_center, unit, name, person_name,
-							"{fiscal_year}" as fiscal_year, "{month}" as month
-							from `tabMuster Roll Employee`
-							where status ="Active" and branch = {branch} 
-							'''.format(branch=frappe.db.escape(branch), month=month, fiscal_year=fiscal_year), as_dict=True)
-	
 def get_template(branch, month, fiscal_year):
 	if not frappe.has_permission("Muster Roll Overtime Entry", "create"):
 		raise frappe.PermissionError
