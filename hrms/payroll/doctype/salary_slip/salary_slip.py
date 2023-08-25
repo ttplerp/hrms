@@ -179,38 +179,38 @@ class SalarySlip(TransactionBase):
 
 		if ss_doc:
 			if getdate(ss_doc.from_date) > start_date:
-					start_date = getdate(ss_doc.from_date)
+				start_date = getdate(ss_doc.from_date)
 
 			if ss_doc.to_date:
-					if getdate(ss_doc.to_date) < end_date:
-							end_date = getdate(ss_doc.to_date)
+				if getdate(ss_doc.to_date) < end_date:
+					end_date = getdate(ss_doc.to_date)
 
 			if joining_date:
-					if joining_date > end_date:
-							return {}
-					elif joining_date > start_date:
-							start_date = joining_date
+				if joining_date > end_date:
+					return {}
+				elif joining_date > start_date:
+					start_date = joining_date
 
 			if relieving_date:
-					if relieving_date < start_date:
-							return {}
-					elif relieving_date < end_date:
-							end_date = relieving_date
+				if relieving_date < start_date:
+					return {}
+				elif relieving_date < end_date:
+					end_date = relieving_date
 
 			if end_date < start_date:
-					return {}
+				return {}
 			else:
-					days_in_month= date_diff(self.end_date, self.start_date) + 1
-					holidays     = self.get_holidays_for_employee(self.start_date, self.end_date)
-					working_days = date_diff(end_date, start_date) + 1
-					calc_holidays= self.get_holidays_for_employee(start_date, end_date)
-					lwp          = self.calculate_lwp(holidays, start_date, end_date)
-					
-					if not cint(frappe.db.get_value("HR Settings", None, "include_holidays_in_total_working_days")):
-							days_in_month -= len(holidays)
-							working_days  -= len(calc_holidays)
+				days_in_month= date_diff(self.end_date, self.start_date) + 1
+				holidays     = self.get_holidays_for_employee(self.start_date, self.end_date)
+				working_days = date_diff(end_date, start_date) + 1
+				calc_holidays= self.get_holidays_for_employee(start_date, end_date)
+				lwp          = self.calculate_lwp(holidays, start_date, end_date)
+				
+				# if not cint(frappe.db.get_value("HR Settings", None, "include_holidays_in_total_working_days")):
+				# 	days_in_month -= len(holidays)
+				# 	working_days  -= len(calc_holidays)
 
-					payment_days = flt(working_days)-flt(lwp) 
+				payment_days = flt(working_days)-flt(lwp) 
 
 		self.total_days_in_month = days_in_month
 		self.leave_without_pay = lwp
@@ -254,9 +254,9 @@ class SalarySlip(TransactionBase):
 
 		payment_days = date_diff(end_date, start_date) + 1
 
-		if not cint(frappe.db.get_value("HR Settings", None, "include_holidays_in_total_working_days")):
-			holidays = self.get_holidays_for_employee(start_date, end_date)
-			payment_days -= len(holidays)
+		# if not cint(frappe.db.get_value("HR Settings", None, "include_holidays_in_total_working_days")):
+		# 	holidays = self.get_holidays_for_employee(start_date, end_date)
+		# 	payment_days -= len(holidays)
 
 		return payment_days
 
