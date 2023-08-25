@@ -37,11 +37,11 @@ class BulkUploadTool(Document):
 			fcontent = file_name.get_content()
 			rows = read_csv_content(fcontent)
 
-		elif frappe.safe_encode(self.import_file).lower().endswith("xlsx".encode("utf-8")):			
+		elif frappe.safe_encode(self.import_file).lower().endswith("xlsx".encode("utf-8")):
 			try:
 				file_name = frappe.get_doc("File", {"file_url": self.import_file})
 				fcontent = file_name.get_content()
-				rows = read_xlsx_file_from_attached_file(fcontent = fcontent, filepath=self.import_file)
+				rows = read_xlsx_file_from_attached_file(fcontent=fcontent, filepath=self.import_file)
 			except Exception:
 				frappe.throw(
 					_("Unable to open attached file. Did you export it as excel?"), title=_("Invalid Excel Format")
@@ -51,58 +51,65 @@ class BulkUploadTool(Document):
 			return {"messages": msg, "error": msg}
 		ret = []
 		error = False
-		total_count = len(rows)-1
+		total_count = len(rows) - 1
 		count = successful = failed = 0
 		refresh_interval = 1
 		from frappe.utils.csvutils import check_record, import_doc
 
 		for i, row in enumerate(rows[1:]):
-			if not row: continue
+			if not row:
+				continue
 			count += 1
 			try:
 				row_idx = i + 6
-				for j in range(7, len(row)):
-					month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].index(row[6])
-					month = cint(month) + 1
-					month = str(month) if cint(month) > 9 else str("0" + str(month))
-					day   = cint(j)-6 if cint(j) > 9 else "0" + str(cint(j)-6)
-					# if j == 37:
-					# 	frappe.throw(str(day))
+				year = row[5]
+				month = row[6]
+
+				for day_idx, day_value in enumerate(row[7:], start=1):
+					if not day_value.strip():
+						continue
+
+					day = str(day_idx) if day_idx > 9 else "0" + str(day_idx)
+					month_number = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].index(row[6]) + 1
+					month_str = str(month_number).zfill(2)
+					year = row[5]
+					date_str = f"{year}-{month_str}-{day}" 
+
 					if self.upload_type == "Overtime":
-						old = frappe.db.get_value("Muster Roll Overtime Entry", {"mr_employee":str(row[3]).strip('\''), "date": str(row[5]) + '-' + str(month) + '-' + str(day), "docstatus": 1}, ["docstatus","name","number_of_hours"], as_dict=1)
+						old = frappe.db.get_value("Muster Roll Overtime Entry", {"mr_employee": str(row[3]).strip('\''), "date": date_str, "docstatus": 1}, ["docstatus", "name", "number_of_hours"], as_dict=1)
 						if old:
 							doc = frappe.get_doc("Muster Roll Overtime Entry", old.name)
-							doc.db_set('number_of_hours', flt(row[j-1]))
-						if not old and flt(row[j-1]) > 0:
+							doc.db_set('number_of_hours', flt(day_value))
+						if not old and flt(day_value) > 0:
 							doc = frappe.new_doc("Muster Roll Overtime Entry")
-							doc.branch          = row[0]
-							doc.cost_center     = row[1]
-							doc.unit 			= row[2]
-							doc.mr_employee     = str(row[3]).strip('\'')
-							doc.mr_employee_name= str(row[4]).strip('\'')
-							doc.date            = str(row[5]) + '-' + str(month) + '-' + str(day)
-							doc.number_of_hours = flt(row[j -1])
-							doc.reference		= self.name
-																				
+							doc.branch = row[0]
+							doc.cost_center = row[1]
+							doc.unit = row[2]
+							doc.mr_employee = str(row[3]).strip('\'')
+							doc.mr_employee_name = str(row[4]).strip('\'')
+							doc.date = date_str
+							doc.number_of_hours = flt(day_value)
+							doc.reference = self.name
+
 							if not getdate(doc.date) > getdate(nowdate()):
 								doc.submit()
 					else:
 						status = ''
-						if str(row[j -1]) in ("P","p","1"):
+						if str(day_value) in ("P", "p", "1"):
 							status = 'Present'
-						elif str(row[j -1]) in ("A","a","0"):
+						elif str(day_value) in ("A", "a", "0"):
 							status = 'Absent'
 						else:
 							status = ''
 
-						old = frappe.db.get_value("Muster Roll Attendance", {"mr_employee": str(row[3]).strip('\''), "date": str(row[5]) + '-' + str(month) + '-' + str(day), "docstatus": 1}, ["status","name"], as_dict=1)
+						old = frappe.db.get_value("Muster Roll Attendance", {"mr_employee": str(row[3]).strip('\''), "date": date_str, "docstatus": 1}, ["status", "name"], as_dict=1)
 						if old:
 							doc = frappe.get_doc("Muster Roll Attendance", old.name)
-							doc.db_set('status', status if status in ('Present','Absent') else doc.status)
+							doc.db_set('status', status if status in ('Present', 'Absent') else doc.status)
 							doc.db_set('branch', row[0])
 							doc.db_set('cost_center', row[1])
 							doc.db_set('unit', row[2])
-						if not old and status in ('Present','Absent'):
+						if not old and status in ('Present', 'Absent'):
 							doc = frappe.new_doc("Muster Roll Attendance")
 							doc.status = status
 							doc.branch = row[0]
@@ -110,17 +117,17 @@ class BulkUploadTool(Document):
 							doc.unit = row[2]
 							doc.mr_employee = str(row[3]).strip('\'')
 							doc.mr_employee_name = str(row[4]).strip('\'')
-							doc.date = str(row[5]) + '-' + str(month) + '-' + str(day)
+							doc.date = date_str
 							doc.reference = self.name
-										
-							if not getdate(doc.date) > getdate(nowdate()):
-								doc.submit()
+
+							# if not getdate(doc.date) > getdate(nowdate()):
+							doc.submit()
 					successful += 1
+
 			except Exception as e:
 				failed += 1
 				error = True
-				ret.append('Error for row (#%d) %s : %s' % (row_idx,
-					len(row)>1 and row[5] or "", cstr(e)))
+				ret.append('Error for row (#%d) %s : %s' % (row_idx, len(row) > 1 and row[5] or "", cstr(e)))
 				frappe.errprint(frappe.get_traceback())
 		if error:
 			frappe.db.rollback()
@@ -132,16 +139,16 @@ class BulkUploadTool(Document):
 			show_progress = 1
 		elif refresh_interval > total_count:
 			show_progress = 1
-		elif count%refresh_interval == 0:
+		elif count % refresh_interval == 0:
 			show_progress = 1
-		elif count > total_count-refresh_interval:
+		elif count > total_count - refresh_interval:
 			show_progress = 1
-		
+
 		if show_progress:
-			description = " Processing OT Of {}({}): ".format(frappe.bold(str(row[4]).strip('\'')),frappe.bold(row[3])) + "["+str(count)+"/"+str(total_count)+"]"
-			frappe.publish_progress(count*100/total_count,
-				title = _("Posting Overtime Entry..."),
-				description = description)
+			description = " Processing OT Of {}({}): ".format(frappe.bold(str(row[4]).strip('\'')), frappe.bold(row[3])) + "[" + str(count) + "/" + str(total_count) + "]"
+			frappe.publish_progress(count * 100 / total_count,
+									title=_("Posting Overtime Entry..."),
+									description=description)
 			pass
 		return {"messages": ret, "error": error}
 
