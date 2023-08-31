@@ -66,7 +66,7 @@ class BulkUploadTool(Document):
 				month = row[6]
 
 				for day_idx, day_value in enumerate(row[7:], start=1):
-					if not day_value.strip():
+					if not str(day_value).strip():
 						continue
 
 					day = str(day_idx) if day_idx > 9 else "0" + str(day_idx)
