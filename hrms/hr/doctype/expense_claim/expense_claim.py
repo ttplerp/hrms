@@ -215,8 +215,6 @@ class ExpenseClaim(AccountsController):
 				})
 				jeb.append("accounts", {
 					"account": account_imprest,
-					"reference_type": "Expense Claim",
-					"reference_name": self.name,
 					"cost_center": self.cost_center,
 					"credit_in_account_currency": self.total_advance_amount if self.total_advance_amount > 0 else self.total_claimed_amount,
 					"credit": self.total_advance_amount if self.total_advance_amount > 0 else self.total_claimed_amount,
@@ -230,8 +228,6 @@ class ExpenseClaim(AccountsController):
 					jeb.append("accounts", {
 						"account": employee_payable_account,
 						"cost_center": self.cost_center,
-						"reference_type": "Expense Claim",
-						"reference_name": self.name,
 						"credit_in_account_currency": self.grand_total,
 						"credit": self.grand_total,
 						"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
@@ -288,8 +284,6 @@ class ExpenseClaim(AccountsController):
 				jeb.append("accounts", {
 					"account": employee_payable_account,
 					"cost_center": self.cost_center,
-					"reference_type": "Expense Claim",
-					"reference_name": self.name,
 					"party_type": "Employee",
 					"party": self.employee,
 					"party_name":self.employee_name,

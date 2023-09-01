@@ -35,6 +35,8 @@
   "leave_approver_name",
   "column_break_22",
   "leave_approver_designation",
+  "section_break_swjcm",
+  "approver_remarks",
   "sb10",
   "follow_via_email",
   "color",
@@ -282,6 +284,16 @@
    "label": "Status",
    "options": "Open\nApproved\nRejected\nCancelled",
    "reqd": 1
+  },
+  {
+   "fieldname": "section_break_swjcm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval: (doc.workflow_state =='Waiting Supervisor Approval' || doc.workflow_state =='Waiting Approval')",
+   "fieldname": "approver_remarks",
+   "fieldtype": "Small Text",
+   "label": "Approver Remarks"
   }
  ],
  "icon": "fa fa-calendar",
@@ -289,7 +301,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2023-06-27 12:34:26.355567",
+ "modified": "2023-08-04 10:24:44.743357",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",

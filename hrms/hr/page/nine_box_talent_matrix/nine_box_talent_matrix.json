@@ -1,0 +1,38 @@
+{
+ "content": null,
+ "creation": "2023-08-24 15:12:38.150519",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2023-08-24 15:12:38.150519",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "nine_box_talent_matr",
+ "owner": "Administrator",
+ "page_name": "nine_box_talent_matr",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "HR Manager"
+  },
+  {
+   "role": "HR User"
+  },
+  {
+   "role": "CEO"
+  },
+  {
+   "role": "HR Master"
+  },
+  {
+   "role": "Management"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Nine Box Talent Matrix"
+}

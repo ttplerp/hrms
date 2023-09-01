@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"iFG9HrHjy3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":10}},{\"id\":\"m-3PhBra4q\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"p2Ez19MiQz\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":3}},{\"id\":\"j5x0uzt8n1\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"VS9k360xuP\",\"type\":\"card\",\"data\":{\"card_name\":\"Muster Management\",\"col\":4}},{\"id\":\"GA0FvfSA3R\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"IS2rccOkpa\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"iFG9HrHjy3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":10}},{\"id\":\"m-3PhBra4q\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"p2Ez19MiQz\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":3}},{\"id\":\"j5x0uzt8n1\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"VS9k360xuP\",\"type\":\"card\",\"data\":{\"card_name\":\"Muster Roll Management\",\"col\":4}},{\"id\":\"GA0FvfSA3R\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"IS2rccOkpa\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}},{\"id\":\"xJXykSHUiW\",\"type\":\"card\",\"data\":{\"card_name\":\"PMS Reports\",\"col\":4}}]",
  "creation": "2023-06-07 10:21:43.541768",
  "custom_blocks": [],
  "docstatus": 0,
@@ -27,162 +27,6 @@
    "link_count": 0,
    "link_to": "HR Settings",
    "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Management",
-   "link_count": 7,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Employee",
-   "link_count": 0,
-   "link_to": "Muster Roll Employee",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Application",
-   "link_count": 0,
-   "link_to": "Muster Roll Application",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Overtime Entry",
-   "link_count": 0,
-   "link_to": "Muster Roll Overtime Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "MR Employee Invoice",
-   "link_count": 0,
-   "link_to": "MR Employee Invoice",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "MR Invoice Entry",
-   "link_count": 0,
-   "link_to": "MR Invoice Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Attendance",
-   "link_count": 0,
-   "link_to": "Muster Roll Attendance",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bulk Upload Tool",
-   "link_count": 0,
-   "link_to": "Bulk Upload Tool",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Other Reports",
-   "link_count": 7,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Information",
-   "link_count": 0,
-   "link_to": "Employee Information",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Information Report",
-   "link_count": 0,
-   "link_to": "Employee Information Report",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee TDS Certificate",
-   "link_count": 0,
-   "link_to": "Employee TDS Certificate",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Attendance Register",
-   "link_count": 0,
-   "link_to": "Attendance Register",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Overtime Register",
-   "link_count": 0,
-   "link_to": "Overtime Register",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Travel Report",
-   "link_count": 0,
-   "link_to": "Travel Report",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Daily Work Report",
-   "link_count": 0,
-   "link_to": "Daily Work Report",
-   "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   },
@@ -267,56 +111,8 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Key Reports",
-   "link_count": 4,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Monthly Attendance Sheet",
-   "link_count": 0,
-   "link_to": "Monthly Attendance Sheet",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Leave Balance Summary",
-   "link_count": 0,
-   "link_to": "Employee Leave Balance Summary",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Advance Report",
-   "link_count": 0,
-   "link_to": "Employee Advance Report",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Leave Balance",
-   "link_count": 0,
-   "link_to": "Employee Leave Balance",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Employee",
-   "link_count": 8,
+   "link_count": 9,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -399,10 +195,292 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Training Details",
+   "link_count": 0,
+   "link_to": "Employee Training Details",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Other Reports",
+   "link_count": 6,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Information",
+   "link_count": 0,
+   "link_to": "Employee Information",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Information Report",
+   "link_count": 0,
+   "link_to": "Employee Information Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee TDS Certificate",
+   "link_count": 0,
+   "link_to": "Employee TDS Certificate",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Attendance Register",
+   "link_count": 0,
+   "link_to": "Attendance Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Overtime Register",
+   "link_count": 0,
+   "link_to": "Overtime Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Travel Report",
+   "link_count": 0,
+   "link_to": "Travel Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Management",
+   "link_count": 7,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Employee",
+   "link_count": 0,
+   "link_to": "Muster Roll Employee",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Application",
+   "link_count": 0,
+   "link_to": "Muster Roll Application",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Overtime Entry",
+   "link_count": 0,
+   "link_to": "Muster Roll Overtime Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "MR Employee Invoice",
+   "link_count": 0,
+   "link_to": "MR Employee Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "MR Invoice Entry",
+   "link_count": 0,
+   "link_to": "MR Invoice Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Attendance",
+   "link_count": 0,
+   "link_to": "Muster Roll Attendance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bulk Upload Tool",
+   "link_count": 0,
+   "link_to": "Bulk Upload Tool",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "PMS Reports",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Nine Box Talent Matrix",
+   "link_count": 0,
+   "link_to": "nine_box_talent_matrix",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Key Reports",
+   "link_count": 10,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Monthly Attendance Sheet",
+   "link_count": 0,
+   "link_to": "Monthly Attendance Sheet",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Leave Balance Summary",
+   "link_count": 0,
+   "link_to": "Employee Leave Balance Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Advance Report",
+   "link_count": 0,
+   "link_to": "Employee Advance Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Leave Balance",
+   "link_count": 0,
+   "link_to": "Employee Leave Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Advance Report",
+   "link_count": 0,
+   "link_to": "Employee Advance Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Information Report",
+   "link_count": 0,
+   "link_to": "Employee Information Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Leave Balance",
+   "link_count": 0,
+   "link_to": "Employee Leave Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Salary Structure",
+   "link_count": 0,
+   "link_to": "Employee Salary Structure",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee TDS Certificate",
+   "link_count": 0,
+   "link_to": "Employee TDS Certificate",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Monthly Salary Register",
+   "link_count": 0,
+   "link_to": "Monthly Salary Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2023-08-02 14:44:27.300183",
- "modified_by": "deki.wangmo@thimphutechpark.bt",
+ "modified": "2023-08-28 11:29:45.216343",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
  "number_cards": [],

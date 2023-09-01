@@ -30,7 +30,7 @@ class EmployeeTransferRequest(Document):
 		created = 0
 		doc = frappe.db.sql("""
 			select name from `tabEmployee Transfer` where employee_transfer_request_id = '{}'
-			and docstatus > 2
+			and docstatus < 2
 		""".format(str(self.name)))
 		if len(doc) > 0:
 			created = 1

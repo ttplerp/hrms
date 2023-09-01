@@ -26,10 +26,10 @@ def get_applicable_block_dates(from_date, to_date, employee=None, company=None, 
 	for block_list in get_applicable_block_lists(employee, company, all_lists):
 		block_dates.extend(
 			frappe.db.sql(
-				"""select block_date, reason
-			from `tabLeave Block List Date` where parent=%s
-			and block_date between %s and %s""",
-				(block_list, from_date, to_date),
+				"""select lbld.block_date, lbld.reason
+			from `tabLeave Block List Date` lbld, `tabLeave Block List` lbl where lbl.name = lbld.parent and lbld.parent=%s
+			and lbld.block_date between %s and %s and lbl.employee = %s""",
+				(block_list, from_date, to_date, employee),
 				as_dict=1,
 			)
 		)

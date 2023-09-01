@@ -71,6 +71,9 @@
   "it_approver_name",
   "internal_audit_approver_name",
   "home_store_approver_name",
+  "material_request_approval_section",
+  "mr_approvers",
+  "imprest_settlement_administrators",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -850,13 +853,30 @@
    "fieldtype": "Link",
    "label": "Employee Transfer Request Status Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "material_request_approval_section",
+   "fieldtype": "Section Break",
+   "label": "Material Request Approval"
+  },
+  {
+   "fieldname": "mr_approvers",
+   "fieldtype": "Table MultiSelect",
+   "label": "MR Approver",
+   "options": "MR Administrators"
+  },
+  {
+   "fieldname": "imprest_settlement_administrators",
+   "fieldtype": "Table MultiSelect",
+   "label": "Imprest Settlement Administrators",
+   "options": "Imprest Settlement Administrators"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-07-31 16:50:29.011572",
+ "modified": "2023-08-30 14:14:08.124595",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

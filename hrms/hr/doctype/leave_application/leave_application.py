@@ -72,8 +72,8 @@ class LeaveApplication(Document):
 		self.validate_balance_leaves()
 		self.validate_leave_overlap()
 		self.validate_max_days()
-		# self.show_block_day_warning()
-		# self.validate_block_days()
+		self.show_block_day_warning()
+		self.validate_block_days()
 		self.validate_salary_processed_days()
 		self.validate_attendance()
 		self.set_half_day_date()
@@ -89,7 +89,7 @@ class LeaveApplication(Document):
 			if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
 				self.notify_leave_approver()
 
-		share_doc_with_approver(self, self.leave_approver)
+		# share_doc_with_approver(self, self.leave_approver)
 
 	def on_submit(self):
 		#Added by Kinley 2022/11/16
@@ -322,17 +322,15 @@ class LeaveApplication(Document):
 		block_dates = get_applicable_block_dates(
 			self.from_date, self.to_date, self.employee, self.company, all_lists=True
 		)
-
 		if block_dates:
 			frappe.msgprint(_("Warning: Leave application contains following block dates") + ":")
 			for d in block_dates:
-				frappe.msgprint(formatdate(d.block_date) + ": " + d.reason)
+				frappe.throw(formatdate(d.block_date) + ": " + d.reason, title="Leave Application on Blocked Date(s)")
 
 	def validate_block_days(self):
 		block_dates = get_applicable_block_dates(
 			self.from_date, self.to_date, self.employee, self.company
 		)
-
 		if block_dates and self.status == "Approved":
 			frappe.throw(_("You are not authorized to approve leaves on Block Dates"), LeaveDayBlockedError)
 
@@ -973,6 +971,11 @@ def get_leaves_for_period(
 			and leave_entry.transaction_type == "Leave Allocation"
 			and leave_entry.is_expired
 			and not skip_expired_leaves
+		):
+			leave_days += leave_entry.leaves
+		elif (
+			inclusive_period
+			and leave_entry.transaction_type == "Attendance"
 		):
 			leave_days += leave_entry.leaves
 

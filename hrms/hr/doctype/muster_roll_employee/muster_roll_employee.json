@@ -331,12 +331,12 @@
    "fieldname": "muster_roll_type",
    "fieldtype": "Select",
    "label": "Muster Roll Type",
-   "options": "\nSkilled\nUnskilled"
+   "options": "\nSkilled\nSemiskilled\nUnskilled\nObservation\nTrainee"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-01 11:42:33.688925",
+ "modified": "2023-08-30 15:47:28.073460",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

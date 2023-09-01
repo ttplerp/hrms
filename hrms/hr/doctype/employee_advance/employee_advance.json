@@ -21,6 +21,7 @@
   "employee_qualification",
   "currency",
   "exchange_rate",
+  "pms_rating",
   "repay_unclaimed_amount_from_salary",
   "section_break_8",
   "basic_pay",
@@ -282,7 +283,7 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Advance Type",
-   "options": "\nSalary Advance\nTravel Advance\nImprest Advance",
+   "options": "\nSalary Advance\nImprest Advance",
    "reqd": 1
   },
   {
@@ -479,11 +480,18 @@
    "label": "Supervisor Remarks",
    "mandatory_depends_on": "eval:doc.workflow_state==\"Waiting Supervisor Approval\";",
    "read_only_depends_on": "eval:doc.workflow_state==\"Draft\";"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state=='Waiting Approval'",
+   "fieldname": "pms_rating",
+   "fieldtype": "Float",
+   "label": "PMS Rating",
+   "precision": "2"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-28 14:39:25.197320",
+ "modified": "2023-08-21 11:49:41.892681",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

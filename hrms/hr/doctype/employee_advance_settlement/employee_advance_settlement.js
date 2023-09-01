@@ -31,7 +31,39 @@ frappe.ui.form.on('Employee Advance Settlement', {
 			});
 		}
 	},
-
+	tds_percent: function(frm){
+		frappe.call({
+			method: "get_tds_account",
+			doc: frm.doc,
+			callback: function(r){
+				if(r.message){
+					frm.set_value("tds_account", r.message);
+				}
+			}
+		})
+		// frappe.call({
+		// 	method: "get_tds_account",
+		// 	doc: frm.doc,
+		// 	callback: function(r){
+		// 		if(r.message){
+		// 			frm.set_value("tds_account", r.message);
+		// 		}
+		// 	}
+		// })
+		frm.refresh_field("tds_account");
+	},
+	advance_type: function(frm){
+		frappe.call({
+			method: "get_credit_account",
+			doc: frm.doc,
+			callback: function(r){
+				if(r.message){
+					frm.set_value("credit_account", r.message);
+				}
+			}
+		})
+		frm.refresh_field("tds_account");
+	},
 	edit_posting_date: function(frm){
 		frm.set_df_property('posting_date','read_only', !frm.doc.edit_posting_date)
 	},
