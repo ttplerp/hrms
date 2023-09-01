@@ -379,11 +379,22 @@ def is_earned_leave_already_allocated(allocation, annual_allocation):
 
 
 def get_leave_allocations(date, leave_type):
+	# return frappe.db.sql(
+	# 	"""select name, employee, from_date, to_date, leave_policy_assignment, leave_policy
+	# 	from `tabLeave Allocation`
+	# 	where
+	# 		%s between from_date and to_date and docstatus=1
+	# 		and leave_type=%s""",
+	# 	(date, leave_type),
+	# 	as_dict=1,
+	# )
 	return frappe.db.sql(
-		"""select name, employee, from_date, to_date, leave_policy_assignment, leave_policy
-		from `tabLeave Allocation`
+		"""select la.name, la.employee, la.from_date, la.to_date, la.leave_policy_assignment, la.leave_policy
+		from `tabLeave Allocation` la, `tabEmployee` e
 		where
-			%s between from_date and to_date and docstatus=1
+			la.employee = e.name
+			and e.status = 'Active' and
+			%s between la.from_date and la.to_date and la.docstatus=1
 			and leave_type=%s""",
 		(date, leave_type),
 		as_dict=1,
