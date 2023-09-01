@@ -7,11 +7,21 @@ frappe.ui.form.on('MR Invoice Entry', {
             frm.add_custom_button(__('Get MR Employee'), function(doc) {
 				frm.events.get_mr_employee(frm)
 			},__("Create"))
-            if (!frm.doc.__islocal){
-                frm.add_custom_button(__('Create MR Invoice'), function(doc) {
-                    frm.events.create_mr_invoice(frm)
-                },__("Create"))
-            }
+            // if (!frm.doc.__islocal){
+            //     frm.add_custom_button(__('Create MR Invoice'), function(doc) {
+            //         frm.events.create_mr_invoice(frm)
+            //     },__("Create"))
+            // }
+		}
+        if(frm.doc.docstatus == 1 && frm.doc.mr_invoice_created == 0){
+            frm.add_custom_button(__('Create MR Invoice'), function(doc) {
+                frm.events.create_mr_invoice(frm)
+            },__("Create"))
+		}
+        if(frm.doc.docstatus == 1 && frm.doc.mr_invoice_created == 1 && frm.doc.mr_invoice_submit == 0){
+            frm.add_custom_button(__('Submit MR Invoice'), function(doc) {
+                frm.events.submit_mr_invoice(frm)
+            },__("Create"))
 		}
         if(frm.doc.docstatus == 1 && frm.doc.mr_invoice_submit == 1){
             frm.add_custom_button(__('Post To Account'), function(doc) {
@@ -31,7 +41,18 @@ frappe.ui.form.on('MR Invoice Entry', {
             method:"create_mr_invoice",
             doc:frm.doc,
             callback:function(r){
-                cur_frm.reload_doc()
+                frm.reload_doc()
+            },
+            freeze: true,
+            freeze_message: '<span style="color:white; background-color: red; padding: 10px 50px; border-radius: 5px;">Creating MR Invoice.....</span>'
+        })
+    },
+    submit_mr_invoice:function(frm){
+        frappe.call({
+            method:"submit_mr_invoice",
+            doc:frm.doc,
+            callback:function(r){
+                frm.reload_doc()
             },
             freeze: true,
             freeze_message: '<span style="color:white; background-color: red; padding: 10px 50px; border-radius: 5px;">Creating MR Invoice.....</span>'

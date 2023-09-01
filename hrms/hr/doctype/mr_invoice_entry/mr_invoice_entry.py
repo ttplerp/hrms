@@ -31,9 +31,10 @@ class MRInvoiceEntry(Document):
 		else:
 			frappe.throw("Please set Muster Roll Payable Account in Company Settings")
 
-	def on_submit(self):
-		self.submit_mr_invoice()
-
+	# def on_submit(self):
+	# 	self.submit_mr_invoice()
+	
+	@frappe.whitelist()
 	def submit_mr_invoice(self):
 		bank_account = frappe.db.get_value("Branch",self.branch,"expense_bank_account")
 		if not bank_account:
@@ -56,6 +57,7 @@ class MRInvoiceEntry(Document):
 				inv_item.db_set("submission_status","Successful")
 		if successful > failed :
 			self.db_set("mr_invoice_submit",1)
+			
 	@frappe.whitelist()
 	def post_to_account(self): 
 		total_payable_amount = 0

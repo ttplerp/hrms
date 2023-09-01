@@ -92,9 +92,11 @@ class MREmployeeInvoice(AccountsController):
 
 	def expense_gl_entries(self, gl_entries):
 		ot_account = frappe.db.get_value("Company",self.company,"mr_ot_account")
-		wages_account = frappe.db.get_value("Company",self.company,"mr_daily_wage_account")
-		if not ot_account or not wages_account:
-			frappe.throw("Either OT Account or Wage Account is missing in company")
+		wages_account = frappe.db.get_value("Branch",self.branch,"muster_roll_expense_account")
+		if not ot_account:
+			frappe.throw("MR Overtime Accountis missing in company")
+		if not wages_account:
+			frappe.throw("MR Wage Account is missing in branch <b>{}</b>".format(self.branch))
 		gl_entries.append(
 			self.get_gl_dict({
 					"account":  wages_account,
