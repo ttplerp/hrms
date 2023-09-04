@@ -23,7 +23,7 @@ class EmployeePMSEvaluatorMapper(Document):
 			emps.append(a.employee)
 			if not frappe.db.exists("Performance Evaluator", {"parent": a.employee, "evaluator": self.evaluator}):
 				query = frappe.db.sql("""
-					INSERT INTO `tabPerformance Evalutor`(parentfield, parenttype, evaluator, evaluator_name, parent)
+					INSERT INTO `tabPerformance Evaluator`(parentfield, parenttype, evaluator, evaluator_name, parent)
 					VALUES('evaluators','Employee','{evaluator}','{evaluator_name}','{parent}')
 				""".format(
 					evaluator=self.evaluator,
