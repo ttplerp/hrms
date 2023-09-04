@@ -24,7 +24,7 @@ class EmployeePMSEvaluatorMapper(Document):
 			if not frappe.db.exists("Performance Evaluator", {"parent": a.employee, "evaluator": self.evaluator}):
 				pe = frappe.new_doc("Performance Evaluator")
 				pe.parentfield='evaluators'
-				pe.parenttupe = 'Employee'
+				pe.parenttype = 'Employee'
 				pe.evaluator = self.evaluator
 				pe.evaluator_name = self.evaluator_name
 				pe.parent = a.employee
