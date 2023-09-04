@@ -21,16 +21,19 @@ class EmployeePMSEvaluatorMapper(Document):
 		emps = []
 		for a in self.employees:
 			emps.append(a.employee)
-			emp = frappe.get_doc("Employee", a.employee)
 			if not frappe.db.exists("Performance Evaluator", {"parent": a.employee, "evaluator": self.evaluator}):
-				row = emp.append("evaluators", {})
-				row.evaluator = self.evaluator
-				row.evaluator_name = self.evaluator_name
-			emp.save(ignore_permissions=1)
+				query = frappe.db.sql("""
+					INSERT INTO `tabPerformance Evalutor`(parentfield, parenttype, evaluator, evaluator_name, parent)
+					VALUES('evaluators','Employee','{evaluator}','{evaluator_name}','{parent}')
+				""".format(
+					evaluator=self.evaluator,
+					evaluator_name=self.evaluator_name,
+					parent=a.employee
+				))
 		for b in frappe.db.sql("""
 			select pe.name from `tabPerformance Evaluator` pe, `tabEmployee` e where pe.parent = e.name and
-			e.name not in ({})
-		""".format(", ".join("'"+em+"'" for em in emps)), as_dict=1):
+			e.name not in ({}) and pe.evaluator = '{}'
+		""".format(", ".join("'"+em+"'" for em in emps), self.evaluator), as_dict=1):
 			frappe.db.sql("""
 				delete from `tabPerformance Evaluator` where name = '{}'
 			""".format(b.name))
