@@ -866,6 +866,7 @@
    "options": "MR Administrators"
   },
   {
+   "description": "used for impress advance approver in employee advance when type is impress advance",
    "fieldname": "imprest_settlement_administrators",
    "fieldtype": "Table MultiSelect",
    "label": "Imprest Settlement Administrators",
@@ -876,7 +877,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-08-30 14:14:08.124595",
+ "modified": "2023-09-04 11:57:46.259740",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

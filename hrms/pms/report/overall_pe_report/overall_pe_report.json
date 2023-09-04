@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Vajra Builders Private Limited",
- "modified": "2023-08-15 14:08:13.121292",
+ "modified": "2023-09-01 14:55:51.970190",
  "modified_by": "Administrator",
  "module": "PMS",
  "name": "Overall PE Report",
@@ -31,6 +31,9 @@
   },
   {
    "role": "Administrator"
+  },
+  {
+   "role": "Employee"
   }
  ]
 }

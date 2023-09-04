@@ -40,6 +40,12 @@
   "cost_center",
   "column_break_23",
   "currency",
+  "section_break_ozlul",
+  "approver",
+  "column_break_cyu8q",
+  "approver_name",
+  "column_break_yonhk",
+  "approver_designation",
   "amended_from"
  ],
  "fields": [
@@ -266,12 +272,46 @@
    "label": "TDS Amount",
    "precision": "2",
    "read_only": 1
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "label": "Approver",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "approver.employee_name",
+   "fieldname": "approver_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "approver.designation",
+   "fieldname": "approver_designation",
+   "fieldtype": "Data",
+   "label": "Approver Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_cyu8q",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_yonhk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ozlul",
+   "fieldtype": "Section Break",
+   "label": "Approver Details"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-28 10:11:46.187497",
+ "modified": "2023-09-04 13:12:01.531076",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance Settlement",
