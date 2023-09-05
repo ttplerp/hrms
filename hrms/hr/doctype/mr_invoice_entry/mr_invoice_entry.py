@@ -179,3 +179,22 @@ class MRInvoiceEntry(Document):
 			self.mr_invoice_created = 1
 		self.save()
 		self.reload()
+
+@frappe.whitelist()
+def mr_invoice_entry_has_bank_entries(name):
+	response = {}
+	bank_entries = get_mr_entry_bank_entries(name)
+	response['submitted'] = 1 if bank_entries else 0
+
+	return response
+
+def get_mr_entry_bank_entries(mr_entry_name):
+	journal_entries = frappe.db.sql(
+		'select name from `tabJournal Entry` '
+		'where reference_type="MR Invoice Entry" '
+		'and referece_doctype=%s and docstatus != 2',
+		mr_entry_name,
+		as_dict=1
+	)
+
+	return journal_entries

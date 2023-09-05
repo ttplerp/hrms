@@ -24,9 +24,20 @@ frappe.ui.form.on('MR Invoice Entry', {
             },__("Create"))
 		}
         if(frm.doc.docstatus == 1 && frm.doc.mr_invoice_submit == 1){
-            frm.add_custom_button(__('Post To Account'), function(doc) {
-				frm.events.post_to_account(frm)
-			},__("Create"))
+            console.log('helllo')
+            frappe.call({
+                method: 'hrms.hr.doctype.mr_invoice_entry.mr_invoice_entry.mr_invoice_entry_has_bank_entries',
+                args: {
+                    'name': frm.doc.name
+                },
+                callback: function(r) {
+                    if (r.message && !r.message.submitted) {
+                        frm.add_custom_button(__('Post To Account'), function(doc) {
+                            frm.events.post_to_account(frm)
+                        },__("Create"))
+                    }
+                }
+            });
 		}
         frm.set_query("mr_employee","deductions",function(doc){
             return {
