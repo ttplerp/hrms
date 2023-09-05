@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:bank_name",
+ "autoname": "field:short_form",
  "creation": "2023-06-05 16:14:23.925293",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -35,35 +35,41 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Short Form",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.employee_loan_payment_in_bob_account",
    "fieldname": "bank_account_type",
    "fieldtype": "Link",
    "label": "Bank Account Type",
    "options": "Bank Account Type"
   },
   {
+   "depends_on": "eval:doc.employee_loan_payment_in_bob_account",
    "fieldname": "account_holder_name",
    "fieldtype": "Data",
    "label": "Account Holder Name"
   },
   {
+   "depends_on": "eval:doc.employee_loan_payment_in_bob_account",
    "fieldname": "account_no",
    "fieldtype": "Data",
    "label": "Account No"
   },
   {
+   "depends_on": "eval:doc.employee_loan_payment_in_bob_account",
    "fieldname": "bank_branch",
    "fieldtype": "Link",
    "label": "Bank Branch",
    "options": "Bank Branch"
   },
   {
+   "allow_bulk_edit": 1,
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Financial Institution Item",
@@ -93,12 +99,12 @@
   {
    "fieldname": "branches_section",
    "fieldtype": "Section Break",
-   "label": "BRANCHES"
+   "label": "BANK BRANCHES"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-07-26 09:39:04.950865",
+ "modified": "2023-09-05 13:22:58.881680",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution",
@@ -129,5 +135,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }
