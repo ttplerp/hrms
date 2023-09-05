@@ -46,6 +46,9 @@
   "approver_name",
   "column_break_yonhk",
   "approver_designation",
+  "sb_more_details",
+  "narration",
+  "bill_no",
   "amended_from"
  ],
  "fields": [
@@ -306,12 +309,27 @@
    "fieldname": "section_break_ozlul",
    "fieldtype": "Section Break",
    "label": "Approver Details"
+  },
+  {
+   "fieldname": "sb_more_details",
+   "fieldtype": "Section Break",
+   "label": "More Details"
+  },
+  {
+   "fieldname": "narration",
+   "fieldtype": "Small Text",
+   "label": "Narration"
+  },
+  {
+   "fieldname": "bill_no",
+   "fieldtype": "Data",
+   "label": "Bill No"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-04 13:12:01.531076",
+ "modified": "2023-09-05 12:25:17.989265",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance Settlement",
