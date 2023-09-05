@@ -14,6 +14,9 @@
   "column_break_4",
   "leave_type",
   "department",
+  "division",
+  "section",
+  "unit",
   "leave_balance",
   "section_break_5",
   "from_date",
@@ -251,6 +254,30 @@
    "label": "Branch",
    "options": "Branch",
    "reqd": 1
+  },
+  {
+   "fetch_from": "employee.division",
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.section",
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.unit",
+   "fieldname": "unit",
+   "fieldtype": "Link",
+   "label": "Unit",
+   "options": "Department",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-calendar",
@@ -258,7 +285,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2023-06-07 17:46:27.140562",
+ "modified": "2023-09-05 15:10:21.162344",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
