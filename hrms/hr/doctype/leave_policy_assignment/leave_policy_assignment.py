@@ -162,18 +162,23 @@ class LeavePolicyAssignment(Document):
 		from_date = getdate(self.effective_from)
 		if getdate(date_of_joining) > from_date:
 			from_date = getdate(date_of_joining)
-
+		
 		months_passed = 0
 		based_on_doj = leave_type_details.get(leave_type).based_on_date_of_joining
 
 		if current_date.year == from_date.year and current_date.month >= from_date.month:
 			months_passed = current_date.month - from_date.month
+			if from_date.day >= 15:
+				months_to_deduct = 1
+			else:
+				months_to_deduct = 0
+			months_passed = months_passed - months_to_deduct
 			months_passed = add_current_month_if_applicable(months_passed, date_of_joining, based_on_doj)
 
 		elif current_date.year > from_date.year:
 			months_passed = (12 - from_date.month) + current_date.month
 			months_passed = add_current_month_if_applicable(months_passed, date_of_joining, based_on_doj)
-
+		
 		if months_passed > 0:
 			monthly_earned_leave = get_monthly_earned_leave(
 				new_leaves_allocated,
@@ -250,7 +255,7 @@ def get_leave_type_details():
 			"expire_carry_forwarded_leaves_after_days",
 			"earned_leave_frequency",
 			"rounding",
-		],
+		]
 	)
 	for d in leave_types:
 		leave_type_details.setdefault(d.name, d)
