@@ -54,7 +54,9 @@
   "column_break_30",
   "reference_docname",
   "temp_doctype",
-  "temp_docname"
+  "temp_docname",
+  "evaluator_details_section",
+  "evaluators"
  ],
  "fields": [
   {
@@ -332,11 +334,21 @@
    "fieldtype": "Select",
    "label": "Muster Roll Type",
    "options": "\nSkilled\nSemiskilled\nUnskilled\nObservation\nTrainee"
+  },
+  {
+   "fieldname": "evaluator_details_section",
+   "fieldtype": "Section Break",
+   "label": "PMS Evaluator Details"
+  },
+  {
+   "fieldname": "evaluators",
+   "fieldtype": "Table",
+   "options": "Performance Evaluator"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-30 15:47:28.073460",
+ "modified": "2023-09-07 11:54:18.091598",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
