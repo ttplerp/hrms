@@ -118,8 +118,8 @@ class EmployeeAdvanceSettlement(AccountsController):
 						"cost_center": b.cost_center,
 						"voucher_no": self.name,
 						"voucher_type": self.doctype,
-						"party_type": b.party_type if frappe.db.get_value("Account", b.account, "account_type") in ("Payable", "Receivable"),
-						"party": b.party if frappe.db.get_value("Account", b.account, "account_type") in ("Payable", "Receivable"),
+						"party_type": b.party_type if frappe.db.get_value("Account", b.account, "account_type") in ("Payable", "Receivable") else "",
+						"party": b.party if frappe.db.get_value("Account", b.account, "account_type") in ("Payable", "Receivable") else "",
 					}, self.currency)
 				)
 				if flt(self.tds_percent)>0:
