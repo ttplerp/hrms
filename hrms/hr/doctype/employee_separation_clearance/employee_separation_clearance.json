@@ -171,8 +171,7 @@
    "fetch_from": "employee.passport_number",
    "fieldname": "cid",
    "fieldtype": "Data",
-   "label": "CID",
-   "reqd": 1
+   "label": "CID"
   },
   {
    "fetch_from": "employee.cell_number",
@@ -334,7 +333,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-06-26 11:40:07.217006",
+ "modified": "2023-09-12 14:08:03.840432",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",

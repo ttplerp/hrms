@@ -39,12 +39,6 @@
   "carraige_charges_doc",
   "column_break_29",
   "transfer_tada",
-  "section_break_31",
-  "approver",
-  "column_break_33",
-  "benefit_approver_name",
-  "column_break_35",
-  "benefit_approver_designation",
   "reference_section",
   "employee_separation_id",
   "employee_transfer_id",
@@ -56,7 +50,13 @@
   "pay_against_benefit_claim",
   "claimed_amount",
   "salary_slip",
-  "amended_from"
+  "amended_from",
+  "section_break_31",
+  "approver",
+  "column_break_33",
+  "benefit_approver_name",
+  "column_break_35",
+  "benefit_approver_designation"
  ],
  "fields": [
   {
@@ -291,7 +291,9 @@
   },
   {
    "fieldname": "section_break_31",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Approver Details",
+   "read_only": 1
   },
   {
    "fieldname": "approver",
@@ -347,7 +349,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-30 10:37:57.240294",
+ "modified": "2023-09-12 14:01:44.899870",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Employee Benefit Claim",

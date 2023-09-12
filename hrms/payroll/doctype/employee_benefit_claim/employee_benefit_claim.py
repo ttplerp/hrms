@@ -8,7 +8,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt, nowdate
 from datetime import date
-# from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 # from erpnext.accounts.doctype.hr_accounts_settings.hr_accounts_settings import get_bank_account
 from hrms.payroll.doctype.salary_structure.salary_structure import get_basic_and_gross_pay, get_salary_tax
 from hrms.hr.hr_custom_functions import get_salary_tax
@@ -17,10 +17,10 @@ import math
 
 class EmployeeBenefitClaim(Document):
 	def validate(self):
-		# validate_workflow_states(self)
+		validate_workflow_states(self)
 		self.check_duplicates()
 		self.validate_benefits()
-		# notify_workflow_states(self)
+		notify_workflow_states(self)
 		self.set_total()
 
 	def on_submit(self):
