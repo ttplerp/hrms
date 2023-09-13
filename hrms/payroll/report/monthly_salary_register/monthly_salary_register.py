@@ -24,22 +24,22 @@ def execute(filters=None):
 	for ss in salary_slips:
 		status = ""
 		if ss.docstatus == 1:
-				status = "Submitted"
+			status = "Submitted"
 		elif ss.docstatus == 0:
-				status = "Un-Submitted"
+			status = "Un-Submitted"
 		elif ss.docstatus == 2:
-				status = "Cancelled"
+			status = "Cancelled"
 		else:
-				status = str(ss.docstatus)
+			status = str(ss.docstatus)
 		
 		cid, joining_date = frappe.db.get_value("Employee", ss.employee, ["passport_number","date_of_joining"])
 						
 		row = [ss.employee, ss.employee_name, ss.employment_type, cid, joining_date,
 			ss.bank_name, ss.bank_account_no, 
 			ss.cost_center, ss.branch, ss.department,
-						 ss.division, ss.employee_grade, ss.designation, 
-			 ss.fiscal_year, ss.month, ss.leave_withut_pay, ss.payment_days,
-						 status]
+			ss.division, ss.employee_grade, ss.designation, 
+			ss.fiscal_year, ss.month, ss.leave_withut_pay, ss.payment_days,
+			status]
 			
 		for e in earning_types:
 			row.append(ss_earning_map.get(ss.name, {}).get(e))
@@ -132,15 +132,14 @@ def get_conditions(filters):
 	# 	conditions += " and cost_center in {0} ".format(tuple(all_ccs))
 		
 	if filters.get("process_status") == "All":
-			conditions += " and docstatus = docstatus"
+		conditions += " and docstatus = docstatus"
 	elif filters.get("process_status") == "Submitted":
-			conditions += " and docstatus = 1"
+		conditions += " and docstatus = 1"
 	elif filters.get("process_status") == "Un-Submitted":
-			conditions += " and docstatus = 0"
+		conditions += " and docstatus = 0"
 	elif filters.get("process_status") == "Cancelled":
-			conditions += " and docstatus = 2"
+		conditions += " and docstatus = 2"
 
-	
 	return conditions, filters
 	
 def get_ss_earning_map(salary_slips):
@@ -154,8 +153,8 @@ def get_ss_earning_map(salary_slips):
 							""" %(', '.join(['%s']*len(salary_slips))), tuple([d.name for d in salary_slips]), as_dict=1)
 			
 	for d in ss_earnings:
-			ss_earning_map.setdefault(d.parent, frappe._dict()).setdefault(d.salary_component, [])
-			ss_earning_map[d.parent][d.salary_component] = flt(d.amount)
+		ss_earning_map.setdefault(d.parent, frappe._dict()).setdefault(d.salary_component, [])
+		ss_earning_map[d.parent][d.salary_component] = flt(d.amount)
 	
 	return ss_earning_map
 
