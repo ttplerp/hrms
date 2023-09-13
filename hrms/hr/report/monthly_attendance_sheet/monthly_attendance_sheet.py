@@ -17,7 +17,7 @@ status_map = {
 	"Present": "P",
 	"Absent": "A",
 	"Half Day": "HD",
-	"Work From Home": "WFH",
+	"On Tour": "T",
 	"On Leave": "L",
 	"Holiday": "H",
 	"Weekly Off": "WO",
@@ -415,7 +415,7 @@ def get_attendance_summary_and_days(employee: str, filters: Filters) -> Tuple[Di
 
 	present_case = (
 		frappe.qb.terms.Case()
-		.when(((Attendance.status == "Present") | (Attendance.status == "Work From Home")), 1)
+		.when(((Attendance.status == "Present") | (Attendance.status == "On Tour")), 1)
 		.else_(0)
 	)
 	sum_present = Sum(present_case).as_("total_present")
@@ -594,7 +594,7 @@ def get_chart_data(attendance_map: Dict, filters: Filters) -> Dict:
 
 				if attendance_on_day == "Absent":
 					total_absent_on_day += 1
-				elif attendance_on_day in ["Present", "Work From Home"]:
+				elif attendance_on_day in ["Present", "On Tour"]:
 					total_present_on_day += 1
 				elif attendance_on_day == "Half Day":
 					total_present_on_day += 0.5

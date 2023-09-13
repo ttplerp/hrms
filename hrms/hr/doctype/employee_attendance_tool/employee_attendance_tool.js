@@ -124,7 +124,7 @@ erpnext.EmployeeSelector = class EmployeeSelector {
 
 		var mark_employee_toolbar = $('<div class="col-sm-12 bottom-toolbar">\
 			<button class="btn btn-primary btn-mark-present btn-xs"></button>\
-			<button class="btn btn-primary btn-mark-work-from-home btn-xs"></button>\
+			<button class="btn btn-primary btn-mark-on-tour btn-xs"></button>\
 			<button class="btn btn-warning btn-mark-half-day btn-xs"></button>\
 			<button class="btn btn-danger btn-mark-absent btn-xs"></button>\
 			</div>');
@@ -225,31 +225,30 @@ erpnext.EmployeeSelector = class EmployeeSelector {
 				});
 			});
 
+			mark_employee_toolbar.find(".btn-mark-on-tour")
+				.html(__('Mark On Tour'))
+				.on("click", function() {
+					var employee_on_tour = [];
+					$(me.wrapper).find('input[type="checkbox"]').each(function(i, check) {
+						if($(check).is(":checked")) {
+							employee_on_tour.push(employee[i]);
+						}
+					});
+					frappe.call({
+						method: "hrms.hr.doctype.employee_attendance_tool.employee_attendance_tool.mark_employee_attendance",
+						args:{
+							"employee_list":employee_on_tour,
+							"status":"On Tour",
+							"date":frm.doc.date,
+							"company":frm.doc.company
+						},
 
-		mark_employee_toolbar.find(".btn-mark-work-from-home")
-			.html(__('Mark Work From Home'))
-			.on("click", function() {
-				var employee_work_from_home = [];
-				$(me.wrapper).find('input[type="checkbox"]').each(function(i, check) {
-					if($(check).is(":checked")) {
-						employee_work_from_home.push(employee[i]);
-					}
+						callback: function(r) {
+							erpnext.employee_attendance_tool.load_employees(frm);
+
+						}
+					});
 				});
-				frappe.call({
-					method: "hrms.hr.doctype.employee_attendance_tool.employee_attendance_tool.mark_employee_attendance",
-					args:{
-						"employee_list":employee_work_from_home,
-						"status":"Work From Home",
-						"date":frm.doc.date,
-						"company":frm.doc.company
-					},
-
-					callback: function(r) {
-						erpnext.employee_attendance_tool.load_employees(frm);
-
-					}
-				});
-			});
 
 		var row;
 		$.each(employee, function(i, m) {

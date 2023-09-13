@@ -85,7 +85,7 @@ frappe.query_reports["Monthly Attendance Sheet"] = {
 
 		if (!summarized_view) {
 			if ((group_by && column.colIndex > 3) || (!group_by && column.colIndex > 2)) {
-				if (value == 'P' || value == 'WFH')
+				if (value == 'P' || value == 'T')
 					value = "<span style='color:green'>" + value + "</span>";
 				else if (value == 'A')
 					value = "<span style='color:red'>" + value + "</span>";
