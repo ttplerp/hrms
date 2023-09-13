@@ -17,22 +17,53 @@ class EmployeeAttendanceTool(Document):
 def get_employees(date, department=None, branch=None, company=None):
     attendance_not_marked = []
     attendance_marked = []
-    filters = {"status": "Active", "date_of_joining": ["<=", date]}
+    # filters = {"status": "Active", "date_of_joining": ["<=", date]}
+    # for field, value in {
+    #     "department": department,
+    #     "branch": branch,
+    #     "company": company,
+    # }.items():
+    #     if value:
+    #         filters[field] = value
+    # employee_list = frappe.get_list(
+    #     "Employee",
+    #     fields=["employee", "employee_name"],
+    #     filters=filters,
+    #     order_by="employee_name",
+    # )
+    cond = ""
+    if department:
+        cond += " AND e.department = '{}'".format(department)
+    if branch:
+        cond += " AND e.branch = '{}'".format(branch)
+    if company:
+        cond += " AND e.company = '{}'".format(company)
 
-    for field, value in {
-        "department": department,
-        "branch": branch,
-        "company": company,
-    }.items():
-        if value:
-            filters[field] = value
-
-    employee_list = frappe.get_list(
-        "Employee",
-        fields=["employee", "employee_name"],
-        filters=filters,
-        order_by="employee_name",
+    # Employee who has appplied leave will not be shown in the attendance tool
+    sql = """
+        SELECT 
+            e.employee, 
+            e.employee_name
+        FROM 
+            `tabEmployee` e
+        WHERE
+            e.status = 'Active' AND
+            e.date_of_joining <= '{date}' AND
+            e.name NOT IN (
+                SELECT 
+                    la.employee
+                FROM 
+                    `tabLeave Application` la
+                WHERE 
+                    '{date}' BETWEEN la.from_date AND la.to_date AND
+                    la.docstatus = '1'
+            )  {cond}
+        ORDER BY e.employee_name;
+    """.format(
+        date=date, cond=cond
     )
+
+    employee_list = frappe.db.sql(sql, as_dict=1)
     marked_employee = {}
     for emp in frappe.get_list(
         "Attendance",
