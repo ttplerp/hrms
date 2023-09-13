@@ -16,6 +16,7 @@
   "select_employees_section",
   "branch",
   "department",
+  "mr_employee",
   "column_break_8",
   "designation",
   "employee",
@@ -27,6 +28,9 @@
   "failed",
   "section_break_14",
   "employees",
+  "section_break_5upwf",
+  "number_of_mr_employees",
+  "mr_employees",
   "sb_failed",
   "employees_failed",
   "additional_information_section",
@@ -137,18 +141,21 @@
    "fieldtype": "Int",
    "in_list_view": 1,
    "label": "Number Of Employees",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "employees",
    "fieldtype": "Table",
    "label": "Employee Details",
+   "no_copy": 1,
    "options": "PPE Employee Detail"
   },
   {
    "fieldname": "successful",
    "fieldtype": "Int",
    "label": "Successful",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -191,12 +198,37 @@
    "fieldtype": "Table",
    "options": "Payroll Employee Failed",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_5upwf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "mr_employees",
+   "fieldtype": "Table",
+   "label": "MR Employee Details",
+   "no_copy": 1,
+   "options": "PPE MR Employee Detail"
+  },
+  {
+   "fieldname": "number_of_mr_employees",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Number Of MR Employees",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "mr_employee",
+   "fieldtype": "Link",
+   "label": "MR Employee",
+   "options": "Muster Roll Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-07 14:53:19.367354",
+ "modified": "2023-09-13 12:29:05.340181",
  "modified_by": "Administrator",
  "module": "PMS",
  "name": "Process Performance Evaluation",

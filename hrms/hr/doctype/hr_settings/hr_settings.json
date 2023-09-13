@@ -136,7 +136,11 @@
   "bank_payment_settings_section",
   "bank_payment_approval_notification_template",
   "column_break_118",
-  "bank_payment_status_notification_template"
+  "bank_payment_status_notification_template",
+  "employee_advance_settlement_section",
+  "employee_advance_settlement_approval_notification",
+  "column_break_k4cgm",
+  "employee_advance_settlement_status_notification"
  ],
  "fields": [
   {
@@ -871,13 +875,34 @@
    "fieldtype": "Table MultiSelect",
    "label": "Imprest Settlement Administrators",
    "options": "Imprest Settlement Administrators"
+  },
+  {
+   "fieldname": "employee_advance_settlement_section",
+   "fieldtype": "Section Break",
+   "label": "Employee Advance Settlement"
+  },
+  {
+   "fieldname": "employee_advance_settlement_approval_notification",
+   "fieldtype": "Link",
+   "label": "Employee Advance Settlement Approval Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_k4cgm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee_advance_settlement_status_notification",
+   "fieldtype": "Link",
+   "label": "Employee Advance Settlement Status Notification",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-09-04 11:57:46.259740",
+ "modified": "2023-09-13 15:24:13.152425",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

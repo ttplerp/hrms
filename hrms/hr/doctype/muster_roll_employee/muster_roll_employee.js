@@ -6,6 +6,9 @@
 // cur_frm.add_fetch("project", "branch", "branch")
 
 frappe.ui.form.on('Muster Roll Employee', {
+	onload_post_render: function(frm){
+		$(".grid-add-row").addClass('hidden');
+	},
 	refresh: function(frm) {
 		frm.set_query("unit", function() {
 			return {

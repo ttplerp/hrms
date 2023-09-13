@@ -20,14 +20,56 @@ frappe.ui.form.on('Process Performance Evaluation', {
 							frm.events.get_employee_details(frm);
 						}
 					);
+
+					frm.page.add_action_item(__("Get MR Employees"),
+						function() {
+							frm.events.get_mr_employee_details(frm);
+						}
+					);
 				}
 				if ((frm.doc.employees || []).length) {
 					frm.page.add_action_item(__('Create Performance Evaluation'), function() {
 						frm.events.create_performance_evaluation(frm);
 					});
 				}
+				if(frm.doc.successful){
+					// Cancel salary slips
+					frm.page.add_action_item(__('Cancel Salary Slips'), function() {
+						frm.save('Cancel').then(()=>{
+							frm.page.clear_actions_menu();
+							frm.page.clear_primary_action();
+							frm.refresh();
+							frm.events.refresh(frm);
+						});
+					});
+				}
 			}
-		} else{
+			else if(frm.doc.performacne_evaluation_created){
+				frm.page.clear_actions_menu();
+				frm.page.clear_primary_action();
+				if(!frm.doc.salary_slips_submitted){
+					// Submit salary slips
+					frm.page.add_action_item(__('Submit Salary Slips'), function() {
+						frm.save('Submit').then(()=>{
+							frm.page.clear_actions_menu();
+							frm.page.clear_primary_action();
+							frm.refresh();
+							frm.events.refresh(frm);
+						});
+					});
+	
+					// Cancel salary slips
+					frm.page.add_action_item(__('Cancel Salary Slips'), function() {
+						frm.save('Cancel').then(()=>{
+							frm.page.clear_actions_menu();
+							frm.page.clear_primary_action();
+							frm.refresh();
+							frm.events.refresh(frm);
+						});
+					});
+				}
+			}
+		} else {
 			cur_frm.page.clear_actions();
 		}
 	},
@@ -48,6 +90,25 @@ frappe.ui.form.on('Process Performance Evaluation', {
 			},
 			freeze: true,
 			freeze_message: '<span style="color:white; background-color: red; padding: 10px 50px; border-radius: 5px;">Fetching Employee Records...</span>'
+		});
+	},
+
+	get_mr_employee_details: function (frm) {
+		frm.set_value("number_of_mr_employees", 0);
+		frm.refresh_field("number_of_mr_employees")
+		return frappe.call({
+			doc: frm.doc,
+			method: 'get_mr_employee_details',
+			callback: function (r) {
+				if (r.message) {
+					frm.set_value("number_of_mr_employees", r.message);
+					frm.refresh_field("number_of_mr_employees");
+					frm.refresh_field("mr_employees");
+					frm.dirty();
+				}
+			},
+			freeze: true,
+			freeze_message: '<span style="color:white; background-color: red; padding: 10px 50px; border-radius: 5px;">Fetching MR Employee Records...</span>'
 		});
 	},
 

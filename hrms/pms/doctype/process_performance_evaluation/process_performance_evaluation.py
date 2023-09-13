@@ -86,6 +86,32 @@ class ProcessPerformanceEvaluation(Document):
                 _("No employees found for processing or performance evaluation is already created")
             )
         return emp_list
+    
+    def get_mr_emp_list(self, process_type=None):
+        condition = ""
+        # for f in ["company", "branch", "designation", "mr_employee"]:
+        #     if self.get(f):
+        #         condition += " and e." + f + " = '" + self.get(f).replace("'", "'") + "'"
+        if self.mr_employee:
+            condition += " and e.name = '"+str(self.mr_employee).replace("'", "'") + "'"
+        if self.branch:
+            condition += " and e.branch = '"+str(self.branch).replace("'", "'") + "'"
+        mr_emp_list = frappe.db.sql("""
+                                    select e.name as mr_employee, e.person_name as mr_employee_name,
+                                    e.designation from `tabMuster Roll Employee` e
+                                    where not exists(
+                                        select 1 from `tabPerformance Evaluation` as pe
+                                        where pe.employee = e.name
+                                        and pe.docstatus != 2
+                                        and pe.fiscal_year = '{}'
+                                        and pe.month = '{}'
+                                    ) {}
+                                    """.format(self.fiscal_year, self.month, condition), as_dict=True)
+        if not mr_emp_list:
+            frappe.msgprint(
+                _("No employees found for processing or performance evaluation is already created")
+            )
+        return mr_emp_list
 
     @frappe.whitelist()
     def get_employee_details(self):
@@ -99,31 +125,40 @@ class ProcessPerformanceEvaluation(Document):
 
         self.number_of_employees = len(employees)
         return self.number_of_employees
+    
+    @frappe.whitelist()
+    def get_mr_employee_details(self):
+        self.set("mr_employees", [])
+        mr_employees = self.get_mr_emp_list()
+        if not mr_employees:
+            frappe.throw(_("No employees for the mentioned criteria"))
+
+        for a in mr_employees:
+            self.append("mr_employees", a)
+        
+        self.number_of_mr_employees = len(mr_employees)
+        return self.number_of_mr_employees
 
     @frappe.whitelist()
     def create_performance_evaluation(self):
         """
-        Creates perforacne evaluation for selected employees if not created
+        Creates performance evaluation for selected employees if not created
         """
         self.check_permission("write")
         self.created = 1
         emp_list = [d.employee for d in self.get_emp_list()]
+        mr_emp_list = [d.mr_employee for d in self.get_mr_emp_list()]
 
-        if emp_list:
-            args = frappe._dict(
-                {
-                    "fiscal_year": self.fiscal_year,
-                    "month": self.month,
-                    "month_name": self.month_name,
-                    # "start_date": self.start_date,
-                    # "end_date": self.end_date,
-                    "posting_date": self.posting_date,
-                    "company": self.company,
-                    "process_performance_evaluation": self.name,
-                }
-            )
-            # frappe.throw("<pre>{}</pre>".format(frappe.as_json(args)))
-            
+        args = frappe._dict({
+            "fiscal_year": self.fiscal_year,
+            "month": self.month,
+            "month_name": self.month_name,
+            "posting_date": self.posting_date,
+            "company": self.company,
+            "process_performance_evaluation": self.name,
+        })
+        
+        if emp_list:        
             if len(emp_list) > 300:
                 frappe.enqueue(
                     create_performance_evaluation_for_employees,
@@ -138,6 +173,12 @@ class ProcessPerformanceEvaluation(Document):
                 # since this method is called via frm.call this doc needs to be updated manually
                 self.reload()
 
+        if mr_emp_list:
+            if len(mr_emp_list) > 300:
+                frappe.enqueue(create_performance_evaluation_for_mr_employees, timeout=600, employee=mr_emp_list, args=args,)
+            else:
+                create_performance_evaluation_for_mr_employees(mr_emp_list, args, publish_progress=True)
+                self.reload()
 
 def get_existing_performance_evaluation(employees, args):
     return frappe.db.sql_list(
@@ -151,6 +192,77 @@ def get_existing_performance_evaluation(employees, args):
         [args.company, args.month] + employees,
     )
 
+def get_eval_list(employee):
+    evaluator_list = frappe.db.sql("""
+                select evaluator from `tabPerformance Evaluator` where parent = {}
+            """.format(employee), as_dict=True)
+    return evaluator_list
+
+def get_work_competency(emp_group):
+    competency = frappe.db.sql("""
+                select wc.competency, wc.weightage, wc.rating_4, wc.rating_3, wc.rating_2, wc.rating_1
+                from `tabWork Competency` wc
+                inner join `tabWork Competency Item` wci
+                on wc.name = wci.parent
+                where wci.applicable = 1
+                and wci.employee_group = '{}'
+                order by wc.competency
+            """.format(emp_group), as_dict=True)
+    return competency
+
+def create_performance_evaluation_for_mr_employees(mr_employees, args, title=None, publish_progress=True):
+    performance_evaluation_exists_for = get_existing_performance_evaluation(mr_employees, args)
+    count = 0
+    process_performance_evaluation = frappe.get_doc("Process Performance Evaluation", args.process_performance_evaluation)
+    for mr_emp in process_performance_evaluation.get("mr_employees"):
+        pms_employee_group = frappe.get_value("Muster Roll Employee", mr_emp.mr_employee, "pms_employee_group")
+        if not pms_employee_group:
+            frappe.throw(_("Set PMS Employee Group for Muster Roll Emplyee ID {}".format(mr_emp.mr_employee)))
+
+        if (mr_emp.mr_employee in mr_employees and mr_emp.mr_employee not in performance_evaluation_exists_for):
+            evaluator_list = get_eval_list(mr_emp.mr_employee)
+            if not evaluator_list: 
+                frappe.throw('Set Evaluator for Muster Roll Employee ID {} '.format(mr_emp.mr_employee))
+            
+            evals = []
+            for a in evaluator_list:
+                evals.append(a.evaluator)
+            
+            data_wc = get_work_competency(pms_employee_group)
+            if not data_wc:
+                frappe.throw(_('There is no Work Competency defined'))
+
+            for ev in evals:
+                if ev:
+                    doc = frappe.new_doc("Performance Evaluation")
+                    doc.employee = mr_emp.mr_employee
+                    doc.employee_name = mr_emp.mr_employee_name
+                    doc.designation = mr_emp.designation
+                    doc.for_muster_roll_employee = 1
+                    doc.employee_group = pms_employee_group
+                    doc.fiscal_year = args.get("fiscal_year")
+                    doc.month = args.get("month")
+                    doc.month_name = args.get("month_name")
+                    doc.posting_date = args.get("posting_date")
+                    doc.company = args.get("company")
+                    doc.process_performance_evaluation = args.get("process_performance_evaluation")
+                    doc.evaluator = str(ev)
+
+                    doc.set('work_competency', [])
+                    for d in data_wc:
+                        row = doc.append('work_competency', {})
+                        row.update(d)
+                        row.evaluator = 0
+
+                    ppe_detail = frappe.get_doc("PPE MR Employee Detail", mr_emp.name)
+                    try:
+                        doc.save()
+                        ppe_detail.db_set("performance_evaluation", doc.name)
+                    except Exception as e:
+                        error = str(e)
+                    count += 1
+
+    process_performance_evaluation.reload()
 
 def create_performance_evaluation_for_employees(employees, args, title=None, publish_progress=True):
     performance_evaluation_exists_for = get_existing_performance_evaluation(employees, args)

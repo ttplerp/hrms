@@ -12,6 +12,7 @@
   "person_name",
   "designation",
   "muster_roll_type",
+  "pms_employee_group",
   "list_in_job_card",
   "column_break_4",
   "status",
@@ -344,11 +345,18 @@
    "fieldname": "evaluators",
    "fieldtype": "Table",
    "options": "Performance Evaluator"
+  },
+  {
+   "depends_on": "eval: (doc.muster_roll_type == \"Observation\" || doc.muster_roll_type == \"Trainee\")",
+   "fieldname": "pms_employee_group",
+   "fieldtype": "Select",
+   "label": "PMS Employee Group",
+   "options": "\nSupervisory & Managerial\nProfessional, Technical & Operational"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-07 11:54:18.091598",
+ "modified": "2023-09-12 16:07:59.104334",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
