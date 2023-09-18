@@ -119,7 +119,7 @@ def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False)
 
 	mapper = {
 		"Employee Transfer": {
-			"doctype": "Employee Benefit Claim",
+			"doctype": "Employee Benefits",
 		},
 	}
 	target_doc = get_mapped_doc("Employee Transfer", source_name, mapper, target_doc, update_item)

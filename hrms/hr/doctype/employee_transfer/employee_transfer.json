@@ -55,7 +55,7 @@
   "create_new_employee_id",
   "new_employee_id",
   "sb_benefits",
-  "employee_benefit_claim_status",
+  "employee_benefits_status",
   "workflow_state",
   "amended_from"
  ],
@@ -398,9 +398,9 @@
   {
    "allow_on_submit": 1,
    "default": "Not Claimed",
-   "fieldname": "employee_benefit_claim_status",
+   "fieldname": "employee_benefits_status",
    "fieldtype": "Select",
-   "label": "Employee Benefit Claim Status",
+   "label": "Employee Benefit Status",
    "options": "Not Claimed\nClaimed",
    "read_only": 1
   }
@@ -408,7 +408,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-30 17:42:45.227579",
+ "modified": "2023-09-18 12:28:48.947545",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer",
