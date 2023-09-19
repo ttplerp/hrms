@@ -95,13 +95,17 @@ class LeaveApplication(Document):
 		#Added by Kinley 2022/11/16
 		notify_workflow_states(self)
 		self.validate_back_dated_application()
-		self.status = "Approved"
+		# self.update_leave_status()
 		self.update_attendance()
 		# notify leave applier about approval
 		if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
 			self.notify_employee()
 		self.create_leave_ledger_entry()
 		self.reload()
+	
+	def before_submit(self):
+		frappe.msgprint('Here')
+		self.status = "Approved"
 
 	def before_cancel(self):
 		self.status = "Cancelled"
