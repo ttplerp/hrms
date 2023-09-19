@@ -140,7 +140,11 @@
   "employee_advance_settlement_section",
   "employee_advance_settlement_approval_notification",
   "column_break_k4cgm",
-  "employee_advance_settlement_status_notification"
+  "employee_advance_settlement_status_notification",
+  "pol_receive_section",
+  "pol_receive_approval_notification",
+  "column_break_x64pk",
+  "pol_receive_status_notification"
  ],
  "fields": [
   {
@@ -896,13 +900,34 @@
    "fieldtype": "Link",
    "label": "Employee Advance Settlement Status Notification",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "pol_receive_section",
+   "fieldtype": "Section Break",
+   "label": "POL Receive"
+  },
+  {
+   "fieldname": "pol_receive_approval_notification",
+   "fieldtype": "Link",
+   "label": "POL Receive Approval Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "column_break_x64pk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pol_receive_status_notification",
+   "fieldtype": "Link",
+   "label": "POL Receive Status Notification",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-09-13 15:24:13.152425",
+ "modified": "2023-09-15 15:25:31.053103",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
