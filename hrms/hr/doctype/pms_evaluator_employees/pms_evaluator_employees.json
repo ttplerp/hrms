@@ -22,6 +22,7 @@
    "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Employee Name",
    "read_only": 1
   }
@@ -29,7 +30,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-09-04 13:08:54.533084",
+ "modified": "2023-09-21 16:51:02.748724",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PMS Evaluator Employees",
