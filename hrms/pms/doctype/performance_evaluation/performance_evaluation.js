@@ -6,11 +6,30 @@ frappe.ui.form.on('Performance Evaluation', {
 		$(".grid-add-row").addClass('hidden');
 	},
 
-	// onload: function (frm) {
-	// },
-
-	// refresh: function(frm) {
-	// },
+	employee: function (frm) {
+		frappe.call({
+			method: 'get_employee_details',
+			doc: frm.doc,
+			callback: (r) => {
+				frm.refresh_field('employee_name');
+				frm.refresh_field('designation');
+				frm.refresh_field('branch');
+				frm.refresh_field()
+			}
+		})
+	},
+	mr_employee: function (frm) {
+		frappe.call({
+			method: 'get_employee_details',
+			doc: frm.doc,
+			callback: (r) => {
+				frm.refresh_field('employee_name');
+				frm.refresh_field('designation');
+				frm.refresh_field('branch');
+				frm.refresh_field()
+			}
+		})
+	},
 
 	month: (frm) => {
 		get_start_end_date(frm);

@@ -6,9 +6,10 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "document_type",
+  "for_muster_roll_employee",
   "performance_evaluation_section",
   "employee",
+  "mr_employee",
   "column_break_2",
   "employee_name",
   "column_break_4",
@@ -46,17 +47,15 @@
  ],
  "fields": [
   {
+   "depends_on": "eval: doc.for_muster_roll_employee == 0;",
    "fieldname": "employee",
-   "fieldtype": "Dynamic Link",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
+   "fieldtype": "Link",
    "label": "Employee",
-   "mandatory_depends_on": "eval: doc.for_muster_roll_employee == 0;",
-   "options": "document_type"
+   "mandatory_depends_on": "eval: doc.for_muster_roll_employee == 0; ",
+   "options": "Employee"
   },
   {
    "columns": 2,
-   "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
    "label": "Employee Name",
@@ -80,10 +79,10 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "employee.designation",
    "fieldname": "designation",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Designation ",
+   "options": "Designation",
    "read_only": 1
   },
   {
@@ -91,10 +90,10 @@
    "fieldtype": "Section Break"
   },
   {
-   "fetch_from": "employee.branch",
    "fieldname": "branch",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Branch",
+   "options": "Branch",
    "read_only": 1
   },
   {
@@ -202,6 +201,8 @@
    "fetch_from": "employee.employee_group",
    "fieldname": "employee_group",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Employee Group",
    "options": "Employee Group",
    "reqd": 1
@@ -256,16 +257,24 @@
    "label": "Remarks"
   },
   {
-   "fieldname": "document_type",
-   "fieldtype": "Select",
-   "label": "Document Type",
-   "options": "Employee\nMuster Roll Employee"
+   "default": "0",
+   "fieldname": "for_muster_roll_employee",
+   "fieldtype": "Check",
+   "label": "For Muster Roll Employee"
+  },
+  {
+   "depends_on": "eval: doc.for_muster_roll_employee == 1; ",
+   "fieldname": "mr_employee",
+   "fieldtype": "Link",
+   "label": "MR Employee",
+   "mandatory_depends_on": "eval: doc.for_muster_roll_employee == 1; ",
+   "options": "Muster Roll Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-13 12:54:57.305910",
+ "modified": "2023-09-21 11:51:47.022452",
  "modified_by": "Administrator",
  "module": "PMS",
  "name": "Performance Evaluation",

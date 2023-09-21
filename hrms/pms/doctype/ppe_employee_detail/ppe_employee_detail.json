@@ -9,6 +9,7 @@
   "employee_name",
   "column_break_3",
   "department",
+  "branch",
   "designation",
   "performance_evaluation",
   "section_break_7",
@@ -77,11 +78,18 @@
    "in_list_view": 1,
    "label": "Performance Evaluation",
    "read_only": 1
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "read_only": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2023-07-06 16:08:21.671964",
+ "modified": "2023-09-21 12:02:35.726147",
  "modified_by": "Administrator",
  "module": "PMS",
  "name": "PPE Employee Detail",

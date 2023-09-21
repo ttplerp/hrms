@@ -65,7 +65,7 @@ class ProcessPerformanceEvaluation(Document):
         cond = self.get_filter_condition()
         emp_list = frappe.db.sql(
             """
-								select e.name as employee, e.employee_name, e.department, e.designation
+								select e.name as employee, e.employee_name, e.department, e.designation, e.branch
 			   					from `tabEmployee` e
 			   					where not exists(
 									select 1 from `tabPerformance Evaluation` as pe
@@ -98,10 +98,10 @@ class ProcessPerformanceEvaluation(Document):
             condition += " and e.branch = '"+str(self.branch).replace("'", "'") + "'"
         mr_emp_list = frappe.db.sql("""
                                     select e.name as mr_employee, e.person_name as mr_employee_name,
-                                    e.designation from `tabMuster Roll Employee` e
+                                    e.designation, e.branch from `tabMuster Roll Employee` e
                                     where not exists(
                                         select 1 from `tabPerformance Evaluation` as pe
-                                        where pe.employee = e.name
+                                        where pe.mr_employee = e.name
                                         and pe.docstatus != 2
                                         and pe.fiscal_year = '{}'
                                         and pe.month = '{}'
@@ -109,7 +109,7 @@ class ProcessPerformanceEvaluation(Document):
                                     """.format(self.fiscal_year, self.month, condition), as_dict=True)
         if not mr_emp_list:
             frappe.msgprint(
-                _("No employees found for processing or performance evaluation is already created")
+                _("No MR employees found for processing or performance evaluation is already created")
             )
         return mr_emp_list
 
@@ -230,14 +230,15 @@ def create_performance_evaluation_for_mr_employees(mr_employees, args, title=Non
             
             data_wc = get_work_competency(pms_employee_group)
             if not data_wc:
-                frappe.throw(_('There is no Work Competency defined'))
+                frappe.throw(_('There is no Work Competency defined for Muster Roll Employee'))
 
             for ev in evals:
                 if ev:
                     doc = frappe.new_doc("Performance Evaluation")
-                    doc.employee = mr_emp.mr_employee
+                    doc.mr_employee = mr_emp.mr_employee
                     doc.employee_name = mr_emp.mr_employee_name
                     doc.designation = mr_emp.designation
+                    doc.branch = mr_emp.branch
                     doc.for_muster_roll_employee = 1
                     doc.employee_group = pms_employee_group
                     doc.fiscal_year = args.get("fiscal_year")
@@ -312,6 +313,9 @@ def create_performance_evaluation_for_employees(employees, args, title=None, pub
                 if ev:
                     doc = frappe.new_doc("Performance Evaluation")
                     doc.employee = emp.employee
+                    doc.employee_name = emp.employee_name
+                    doc.designation = emp.designation
+                    doc.branch = emp.branch
                     doc.employee_group = employee_group
                     doc.fiscal_year = args.get("fiscal_year")
                     doc.month = args.get("month")

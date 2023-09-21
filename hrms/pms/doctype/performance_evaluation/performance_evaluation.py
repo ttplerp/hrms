@@ -9,6 +9,17 @@ from frappe.model.document import Document
 
 class PerformanceEvaluation(Document):
 	@frappe.whitelist()
+	def get_employee_details(self):
+		if self.for_muster_roll_employee == 0:
+			self.employee_name = frappe.db.get_value("Employee", self.employee, "employee_name")
+			self.designation = frappe.db.get_value("Employee", self.employee, "designation")
+			self.branch = frappe.db.get_value("Employee", self.employee, "branch")
+		else:
+			self.employee_name = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "person_name")
+			self.designation = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "designation")
+			self.branch = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "branch")
+
+	@frappe.whitelist()
 	def set_evaluation_period_dates(self):
 		month = int(self.month) + 1
 		if month > 12:

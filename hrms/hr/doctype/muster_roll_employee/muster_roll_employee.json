@@ -349,14 +349,14 @@
   {
    "depends_on": "eval: (doc.muster_roll_type == \"Observation\" || doc.muster_roll_type == \"Trainee\")",
    "fieldname": "pms_employee_group",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "PMS Employee Group",
-   "options": "\nSupervisory & Managerial\nProfessional, Technical & Operational"
+   "options": "Employee Group"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-12 16:07:59.104334",
+ "modified": "2023-09-21 11:43:20.811351",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
