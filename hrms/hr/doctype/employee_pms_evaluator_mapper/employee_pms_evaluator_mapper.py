@@ -18,6 +18,9 @@ class EmployeePMSEvaluatorMapper(Document):
 		""".format(self.evaluator, self.name)):
 			frappe.throw("Another Mapper already exists for this Evaluator")
 
+	# def on_delete(self):
+	# 	frappe.throw('Here')
+
 	def update_employee_evaluators(self):
 		emps = []
 		for a in self.employees:
@@ -30,14 +33,15 @@ class EmployeePMSEvaluatorMapper(Document):
 				pe.evaluator_name = self.evaluator_name
 				pe.parent = a.employee
 				pe.insert()
-		for b in frappe.db.sql("""
-			select pe.name from `tabPerformance Evaluator` pe, `tabEmployee` e where pe.parent = e.name and
-			e.name not in ({}) and pe.evaluator = '{}'
-		""".format(", ".join("'"+em+"'" for em in emps), self.evaluator), as_dict=1):
-			frappe.db.sql("""
-				delete from `tabPerformance Evaluator` where name = '{}'
-			""".format(b.name))
-		frappe.msgprint("Updated Evaluator Information in Employees")
+		if emps:
+			for b in frappe.db.sql("""
+				select pe.name from `tabPerformance Evaluator` pe, `tabEmployee` e where pe.parent = e.name and
+				e.name not in ({}) and pe.evaluator = '{}'
+			""".format(", ".join("'"+em+"'" for em in emps), self.evaluator), as_dict=1):
+				frappe.db.sql("""
+					delete from `tabPerformance Evaluator` where name = '{}'
+				""".format(b.name))
+			frappe.msgprint("Updated Evaluator Information in Employees")
 
 	def update_mr_employee_evaluators(self):
 		mr_emps = []
@@ -51,14 +55,15 @@ class EmployeePMSEvaluatorMapper(Document):
 				pe.evaluator_name = self.evaluator_name
 				pe.parent = a.muster_roll_employee
 				pe.insert()
-		for b in frappe.db.sql("""
-			select pe.name from `tabPerformance Evaluator` pe, `tabMuster Roll Employee` mre where pe.parent = mre.name and
-			mre.name not in ({}) and pe.evaluator = '{}'
-		""".format(", ".join("'"+em+"'" for em in mr_emps), self.evaluator), as_dict=1):
-			frappe.db.sql("""
-				delete from `tabPerformance Evaluator` where name = '{}'
-			""".format(b.name))
-		frappe.msgprint("Updated Evaluator Information in Muster Roll Employees")
+		if mr_emps:
+			for b in frappe.db.sql("""
+				select pe.name from `tabPerformance Evaluator` pe, `tabMuster Roll Employee` mre where pe.parent = mre.name and
+				mre.name not in ({}) and pe.evaluator = '{}'
+			""".format(", ".join("'"+em+"'" for em in mr_emps), self.evaluator), as_dict=1):
+				frappe.db.sql("""
+					delete from `tabPerformance Evaluator` where name = '{}'
+				""".format(b.name))
+			frappe.msgprint("Updated Evaluator Information in Muster Roll Employees")
 
 
 	def validate_self(self):
