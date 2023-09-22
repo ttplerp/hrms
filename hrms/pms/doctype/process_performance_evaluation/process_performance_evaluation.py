@@ -247,7 +247,14 @@ def create_performance_evaluation_for_mr_employees(mr_employees, args, title=Non
                     doc.posting_date = args.get("posting_date")
                     doc.company = args.get("company")
                     doc.process_performance_evaluation = args.get("process_performance_evaluation")
-                    doc.evaluator = str(ev)
+                    if frappe.db.exists("Muster Roll Employee", {"name": ev}):
+                        # doc.document_type = "Muster Roll Employee"
+                        doc.evaluator = str(ev)
+                        doc.evaluator_name = frappe.get_value("Muster Roll Employee", ev, "person_name")
+                        doc.evaluator_user_id = frappe.get_value("Muster Roll Employee", ev, "user_id")
+                    else:
+                        # doc.document_type = "Employee"
+                        doc.evaluator = str(ev)
 
                     doc.set('work_competency', [])
                     for d in data_wc:

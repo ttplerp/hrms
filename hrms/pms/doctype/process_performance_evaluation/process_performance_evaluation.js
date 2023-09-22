@@ -27,7 +27,7 @@ frappe.ui.form.on('Process Performance Evaluation', {
 						}
 					);
 				}
-				if ((frm.doc.employees || []).length) {
+				if ((frm.doc.employees || []).length || (frm.doc.mr_employees || []).length) {
 					frm.page.add_action_item(__('Create Performance Evaluation'), function() {
 						frm.events.create_performance_evaluation(frm);
 					});

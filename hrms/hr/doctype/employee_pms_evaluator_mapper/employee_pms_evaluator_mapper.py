@@ -29,6 +29,7 @@ class EmployeePMSEvaluatorMapper(Document):
 				pe = frappe.new_doc("Performance Evaluator")
 				pe.parentfield='evaluators'
 				pe.parenttype = 'Employee'
+				pe.document_type = 'Employee'
 				pe.evaluator = self.evaluator
 				pe.evaluator_name = self.evaluator_name
 				pe.parent = a.employee
@@ -51,6 +52,7 @@ class EmployeePMSEvaluatorMapper(Document):
 				pe = frappe.new_doc("Performance Evaluator")
 				pe.parentfield='evaluators'
 				pe.parenttype = 'Muster Roll Employee'
+				pe.document_type = 'Muster Roll Employee'
 				pe.evaluator = self.evaluator
 				pe.evaluator_name = self.evaluator_name
 				pe.parent = a.muster_roll_employee
@@ -74,8 +76,8 @@ class EmployeePMSEvaluatorMapper(Document):
 	@frappe.whitelist()
 	def get_employee_name(self):
 		if self.document_type == "Employee":
-			employee_name = frappe.db.get_value("Employee", self.evaluator, "employee_name")
-			self.evaluator_name = employee_name
+			emp_name = frappe.db.get_value("Employee", self.evaluator, "employee_name")
+			self.evaluator_name = emp_name
 		else:
 			mr_employee_name = frappe.db.get_value("Muster Roll Employee", self.evaluator, "person_name")
 			self.evaluator_name = mr_employee_name
@@ -100,7 +102,7 @@ class EmployeePMSEvaluatorMapper(Document):
 		self.set("mr_employees",[])
 		for emp in frappe.db.sql("""
 			select name, person_name from `tabMuster Roll Employee` where status = 'Active'
-			and name != '{}'
+			and name != '{}' and muster_roll_type in ('Observation', 'Trainee')
 		""".format(self.evaluator),as_dict=1):
 			row = self.append("mr_employees", {})
 			row.muster_roll_employee = emp.name
