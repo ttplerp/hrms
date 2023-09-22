@@ -46,7 +46,7 @@ def get_data(filters):
 			select t1.employee, t3.employee_name, t1.designation, t1.employment_type, t3.passport_number, t3.pf_number,
 					sum(case when t2.salary_component = 'Basic Pay' then ifnull(t2.amount,0) else 0 end) as basicpay,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employeepf,
-					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employerpf,
+					ifnull(t1.employer_pf,0) as employerpf,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0)*2 else 0 end) as total,
 					t1.company, t1.branch, t1.cost_center, t1.department, t1.division, t1.section,
 					t1.fiscal_year, t1.month
