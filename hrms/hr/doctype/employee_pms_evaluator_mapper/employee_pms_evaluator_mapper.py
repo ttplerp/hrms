@@ -29,7 +29,10 @@ class EmployeePMSEvaluatorMapper(Document):
 				pe = frappe.new_doc("Performance Evaluator")
 				pe.parentfield='evaluators'
 				pe.parenttype = 'Employee'
-				pe.document_type = 'Employee'
+				if frappe.db.exists("Employee", {"name": self.evaluator}):
+					pe.document_type = 'Employee'
+				else:
+					pe.document_type = 'Muster Roll Employee'
 				pe.evaluator = self.evaluator
 				pe.evaluator_name = self.evaluator_name
 				pe.parent = a.employee
@@ -52,7 +55,10 @@ class EmployeePMSEvaluatorMapper(Document):
 				pe = frappe.new_doc("Performance Evaluator")
 				pe.parentfield='evaluators'
 				pe.parenttype = 'Muster Roll Employee'
-				pe.document_type = 'Muster Roll Employee'
+				if frappe.db.exists("Employee", {"name": self.evaluator}):
+					pe.document_type = 'Employee'
+				else:
+					pe.document_type = 'Muster Roll Employee'
 				pe.evaluator = self.evaluator
 				pe.evaluator_name = self.evaluator_name
 				pe.parent = a.muster_roll_employee
