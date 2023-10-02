@@ -194,7 +194,7 @@ def get_existing_performance_evaluation(employees, args):
 
 def get_eval_list(employee):
     evaluator_list = frappe.db.sql("""
-                select evaluator from `tabPerformance Evaluator` where parent = {}
+                select evaluator from `tabPerformance Evaluator` where parent = '{}'
             """.format(employee), as_dict=True)
     return evaluator_list
 
