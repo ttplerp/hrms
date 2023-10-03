@@ -54,8 +54,14 @@ class PerformanceEvaluation(Document):
 
 	
 	def check_duplicate_entry(self):
-		if frappe.db.exists("Performance Evaluation", {'employee': self.employee, 'fiscal_year': self.fiscal_year, 'month':self.month, 'evaluator': self.evaluator, 'docstatus': 1}):
-			frappe.throw(_('You have already evaluated for employee {} for month <b>{}</b> <b>{}</b>'.format(self.month_name, self.fiscal_year)))	
+		if self.for_muster_roll_employee == 0:
+			self.employee_name = frappe.db.get_value("Employee", self.employee, "employee_name")
+			self.designation = frappe.db.get_value("Employee", self.employee, "designation")
+			self.branch = frappe.db.get_value("Employee", self.employee, "branch")
+		else:
+			self.employee_name = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "person_name")
+			self.designation = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "designation")
+			self.branch = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "branch")
 
 @frappe.whitelist()
 def get_permission_query_conditions(user):
