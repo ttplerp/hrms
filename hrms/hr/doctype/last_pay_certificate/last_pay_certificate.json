@@ -6,302 +6,302 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-    "signed_by",
-    "posting_date",
-    "order_no",
-    "reason",
-    "salary_slip_id",
-    "cb_01",
-    "signed_by_name",
-    "relieving_order_no",
-    "relieving_order_date",
-    "last_pay_date",
-    "ltc_paid",
-    "sb_pay_details",
-    "employee",
-    "employee_name",
-    "employment_type",
-    "employee_group",
-    "employee_grade",
-    "designation",
-    "cb_02",
-    "company",
-    "branch",
-    "cost_center",
-    "department",
-    "division",
-    "section",
-    "sb_period",
-    "fiscal_year",
-    "cb_03",
-    "month",
-    "sb_earning_deduction",
-    "earnings",
-    "cb_04",
-    "deductions",
-    "sb_total",
-    "gross_pay",
-    "employer_pf",
-    "cb_05",
-    "total_deduction",
-    "net_pay",
-    "amended_from"
-   ],
-   "fields": [
-    {
-     "default": "Today",
-     "fieldname": "posting_date",
-     "fieldtype": "Date",
-     "in_list_view": 1,
-     "label": "Posting Date",
-     "reqd": 1
-    },
-    {
-     "fieldname": "amended_from",
-     "fieldtype": "Link",
-     "label": "Amended From",
-     "no_copy": 1,
-     "options": "Last Pay Certificate",
-     "print_hide": 1,
-     "read_only": 1
-    },
-    {
-     "fieldname": "order_no",
-     "fieldtype": "Data",
-     "label": "Order No.",
-     "reqd": 1
-    },
-    {
-     "fieldname": "cb_01",
-     "fieldtype": "Column Break"
-    },
-    {
-     "fieldname": "relieving_order_no",
-     "fieldtype": "Data",
-     "label": "Relieving Order No.",
-     "reqd": 1
-    },
-    {
-     "fieldname": "relieving_order_date",
-     "fieldtype": "Date",
-     "label": "Relieving Order Date",
-     "reqd": 1
-    },
-    {
-     "fieldname": "last_pay_date",
-     "fieldtype": "Date",
-     "label": "Last Pay Date",
-     "reqd": 1
-    },
-    {
-     "fieldname": "sb_pay_details",
-     "fieldtype": "Section Break",
-     "label": "Pay Details"
-    },
-    {
-     "fieldname": "reason",
-     "fieldtype": "Select",
-     "label": "Reason For Issue of LPC",
-     "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract",
-     "reqd": 1
-    },
-    {
-     "fieldname": "salary_slip_id",
-     "fieldtype": "Data",
-     "label": "Salary Slip ID",
-     "read_only": 1
-    },
-    {
-     "fieldname": "employee",
-     "fieldtype": "Link",
-     "label": "Employee",
-     "options": "Employee",
-     "read_only": 1,
-     "reqd": 1
-    },
-    {
-     "fieldname": "employee_name",
-     "fieldtype": "Data",
-     "label": "Employee Name",
-     "read_only": 1,
-     "reqd": 1
-    },
-    {
-     "fieldname": "employment_type",
-     "fieldtype": "Link",
-     "label": "Employment Type",
-     "options": "Employment Type"
-    },
-    {
-     "fieldname": "employee_group",
-     "fieldtype": "Link",
-     "label": "Employee Group",
-     "options": "Employee Group",
-     "read_only": 1
-    },
-    {
-     "fieldname": "employee_grade",
-     "fieldtype": "Link",
-     "label": "Employee Grade",
-     "options": "Employee Grade",
-     "read_only": 1
-    },
-    {
-     "fieldname": "designation",
-     "fieldtype": "Link",
-     "label": "Designation",
-     "options": "Designation",
-     "read_only": 1
-    },
-    {
-     "fieldname": "cb_02",
-     "fieldtype": "Column Break"
-    },
-    {
-     "fieldname": "company",
-     "fieldtype": "Link",
-     "label": "Company",
-     "options": "Company",
-     "reqd": 1
-    },
-    {
-     "fieldname": "branch",
-     "fieldtype": "Link",
-     "label": "Branch",
-     "options": "Branch",
-     "read_only": 1
-    },
-    {
-     "fieldname": "cost_center",
-     "fieldtype": "Link",
-     "label": "Cost Center",
-     "options": "Cost Center",
-     "read_only": 1
-    },
-    {
-     "fieldname": "department",
-     "fieldtype": "Link",
-     "label": "Department",
-     "options": "Department",
-     "read_only": 1
-    },
-    {
-     "fieldname": "division",
-     "fieldtype": "Link",
-     "label": "Division",
-     "options": "Division",
-     "read_only": 1
-    },
-    {
-     "fieldname": "section",
-     "fieldtype": "Link",
-     "label": "Section",
-     "options": "Section",
-     "read_only": 1
-    },
-    {
-     "fieldname": "sb_period",
-     "fieldtype": "Section Break"
-    },
-    {
-     "fieldname": "fiscal_year",
-     "fieldtype": "Link",
-     "label": "Fiscal Year",
-     "options": "Fiscal Year",
-     "read_only": 1
-    },
-    {
-     "fieldname": "month",
-     "fieldtype": "Data",
-     "label": "Month",
-     "read_only": 1
-    },
-    {
-     "fieldname": "cb_03",
-     "fieldtype": "Column Break"
-    },
-    {
-     "fieldname": "sb_earning_deduction",
-     "fieldtype": "Section Break",
-     "label": "Earning & Deduction"
-    },
-    {
-     "fieldname": "earnings",
-     "fieldtype": "Table",
-     "label": "Earnings",
-     "options": "LPC Detail"
-    },
-    {
-     "fieldname": "cb_04",
-     "fieldtype": "Column Break"
-    },
-    {
-     "fieldname": "deductions",
-     "fieldtype": "Table",
-     "label": "Deductions",
-     "options": "LPC Detail"
-    },
-    {
-     "fieldname": "sb_total",
-     "fieldtype": "Section Break"
-    },
-    {
-     "fieldname": "gross_pay",
-     "fieldtype": "Currency",
-     "label": "Gross Pay",
-     "options": "Company:company:default_currency",
-     "read_only": 1
-    },
-    {
-     "fieldname": "employer_pf",
-     "fieldtype": "Currency",
-     "label": "Employer PF",
-     "read_only": 1
-    },
-    {
-     "fieldname": "cb_05",
-     "fieldtype": "Column Break"
-    },
-    {
-     "fieldname": "total_deduction",
-     "fieldtype": "Currency",
-     "label": "Total Deduction",
-     "options": "Company:company:default_currency",
-     "read_only": 1
-    },
-    {
-     "fieldname": "net_pay",
-     "fieldtype": "Currency",
-     "label": "Net Pay",
-     "options": "Company:company:default_currency",
-     "read_only": 1
-    },
-    {
-     "fieldname": "ltc_paid",
-     "fieldtype": "Data",
-     "label": "LTC Paid",
-     "read_only": 1
-    },
-    {
-     "fieldname": "signed_by",
-     "fieldtype": "Link",
-     "label": "Signed By",
-     "options": "Employee",
-     "reqd": 1
-    },
-    {
-     "fetch_from": "signed_by.employee_name",
-     "fieldname": "signed_by_name",
-     "fieldtype": "Data",
-     "label": "Signed By Name",
-     "read_only": 1,
-     "reqd": 1
-    }
-   ],
+  "signed_by",
+  "posting_date",
+  "order_no",
+  "reason",
+  "salary_slip_id",
+  "cb_01",
+  "signed_by_name",
+  "relieving_order_no",
+  "relieving_order_date",
+  "last_pay_date",
+  "ltc_paid",
+  "sb_pay_details",
+  "employee",
+  "employee_name",
+  "employment_type",
+  "employee_group",
+  "employee_grade",
+  "designation",
+  "cb_02",
+  "company",
+  "branch",
+  "cost_center",
+  "department",
+  "division",
+  "section",
+  "sb_period",
+  "fiscal_year",
+  "cb_03",
+  "month",
+  "sb_earning_deduction",
+  "earnings",
+  "cb_04",
+  "deductions",
+  "sb_total",
+  "gross_pay",
+  "employer_pf",
+  "cb_05",
+  "total_deduction",
+  "net_pay",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Last Pay Certificate",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "order_no",
+   "fieldtype": "Data",
+   "label": "Order No.",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "relieving_order_no",
+   "fieldtype": "Data",
+   "label": "Relieving Order No.",
+   "reqd": 1
+  },
+  {
+   "fieldname": "relieving_order_date",
+   "fieldtype": "Date",
+   "label": "Relieving Order Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "last_pay_date",
+   "fieldtype": "Date",
+   "label": "Last Pay Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb_pay_details",
+   "fieldtype": "Section Break",
+   "label": "Pay Details"
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Select",
+   "label": "Reason For Issue of LPC",
+   "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract",
+   "reqd": 1
+  },
+  {
+   "fieldname": "salary_slip_id",
+   "fieldtype": "Data",
+   "label": "Salary Slip ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "employment_type",
+   "fieldtype": "Link",
+   "label": "Employment Type",
+   "options": "Employment Type"
+  },
+  {
+   "fieldname": "employee_group",
+   "fieldtype": "Link",
+   "label": "Employee Group",
+   "options": "Employee Group",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_grade",
+   "fieldtype": "Link",
+   "label": "Employee Grade",
+   "options": "Employee Grade",
+   "read_only": 1
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_02",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_period",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "label": "Fiscal Year",
+   "options": "Fiscal Year",
+   "read_only": 1
+  },
+  {
+   "fieldname": "month",
+   "fieldtype": "Data",
+   "label": "Month",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_03",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb_earning_deduction",
+   "fieldtype": "Section Break",
+   "label": "Earning & Deduction"
+  },
+  {
+   "fieldname": "earnings",
+   "fieldtype": "Table",
+   "label": "Earnings",
+   "options": "LPC Detail"
+  },
+  {
+   "fieldname": "cb_04",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "deductions",
+   "fieldtype": "Table",
+   "label": "Deductions",
+   "options": "LPC Detail"
+  },
+  {
+   "fieldname": "sb_total",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "gross_pay",
+   "fieldtype": "Currency",
+   "label": "Gross Pay",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employer_pf",
+   "fieldtype": "Currency",
+   "label": "Employer PF",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_05",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_deduction",
+   "fieldtype": "Currency",
+   "label": "Total Deduction",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_pay",
+   "fieldtype": "Currency",
+   "label": "Net Pay",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ltc_paid",
+   "fieldtype": "Data",
+   "label": "LTC Paid",
+   "read_only": 1
+  },
+  {
+   "fieldname": "signed_by",
+   "fieldtype": "Link",
+   "label": "Signed By",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "signed_by.employee_name",
+   "fieldname": "signed_by_name",
+   "fieldtype": "Data",
+   "label": "Signed By Name",
+   "read_only": 1,
+   "reqd": 1
+  }
+ ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-06-12 16:26:00.194068",
+ "modified": "2023-09-29 14:36:32.348417",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Last Pay Certificate",

@@ -24,6 +24,7 @@ class EmployeeBenefits(Document):
 		self.validate_gratuity()
 		self.check_duplicates()
 		self.validate_benefits()
+		self.set_netamount()
 		notify_workflow_states(self)
 		self.set_total()
 
@@ -59,6 +60,10 @@ class EmployeeBenefits(Document):
 		# 	frappe.throw(_("<b>Total Deduction Amount</b> cannot be more than Total Benefits"))
 
 		self.net_amount = flt(self.total_amount) - flt(self.total_deducted_amount)
+	def set_netamount(self):
+		for d in self.items:
+			d.net_amount = flt(d.amount)-flt(d.tax_amount)
+			self.db_set('net_amount', d.net_amount)
 
 	def check_duplicates(self):
 		if self.employee_separation_id:
@@ -161,34 +166,34 @@ class EmployeeBenefits(Document):
 				party_type = "Employee"
 				party = self.employee
 
-			if a.benefit_type != "Gratuity":
-				total_amount = flt(total_amount,2) + flt(a.payable_amount,2)
+			# if a.benefit_type != "Gratuity":
+			total_amount = flt(total_amount,2) + flt(a.payable_amount,2)
+			je.append("accounts", {
+				"account": a.gl_account,
+				"reference_type": "Employee Benefits",
+				"reference_name": self.name,
+				"cost_center": emp.cost_center,
+				"debit_in_account_currency": flt(a.amount),
+				"debit": flt(a.amount),
+				"party_type": party_type,
+				"party": party,
+				"business_activity": emp.business_activity,
+			})
+
+			if flt(a.tax_amount > 0):
+				if not tax_account:
+					frappe.throw("Setup Tax Account in Company")
+
 				je.append("accounts", {
-					"account": a.gl_account,
+					"account": tax_account,
+					"credit_in_account_currency": flt(a.tax_amount,2),
+					"credit": flt(a.tax_amount,2),
 					"reference_type": "Employee Benefits",
 					"reference_name": self.name,
 					"cost_center": emp.cost_center,
-					"debit_in_account_currency": flt(a.amount),
-					"debit": flt(a.amount),
-					"party_type": party_type,
-					"party": party,
 					"business_activity": emp.business_activity,
 				})
-
-				if flt(a.tax_amount > 0):
-					if not tax_account:
-						frappe.throw("Setup Tax Account in Company")
-
-					je.append("accounts", {
-						"account": tax_account,
-						"credit_in_account_currency": flt(a.tax_amount,2),
-						"credit": flt(a.tax_amount,2),
-						"reference_type": "Employee Benefits",
-						"reference_name": self.name,
-						"cost_center": emp.cost_center,
-						"business_activity": emp.business_activity,
-					})
-					tax_amount += flt(a.tax_amount)
+				tax_amount += flt(a.tax_amount)
 
 		# Deductions
 		for b in self.deduction_details:
