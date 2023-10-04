@@ -105,7 +105,7 @@ class EmployeeTransfer(Document):
 				date1 = date_of_joining[0].date_of_joining
 				# d1 = datetime.datetime.strptime(str(datetime.datetime.today().strftime('%Y-%m-%d')),'%Y-%m-%d')
 			d1 = datetime.strptime(str(date1),'%Y-%m-%d')
-			d2 = datetime.strptime(self.transfer_date, '%Y-%m-%d')
+			d2 = datetime.strptime(str(self.transfer_date), '%Y-%m-%d')
 
 			datediff = relativedelta(d2,d1).years
 			if datediff < 4:
