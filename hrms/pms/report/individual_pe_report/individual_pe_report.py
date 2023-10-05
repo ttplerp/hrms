@@ -21,6 +21,14 @@ def get_conditions(filters):
 	conditions = ''
 	if filters.get("employee"):
 		conditions += " and employee = %(employee)s"
+	if filters.get("mr_employee"):
+		conditions += " and mr_employee = %(mr_employee)s"
+	if filters.get("branch"):
+		conditions += " and branch = %(branch)s"
+	if filters.get("document_type") == "Employee":
+		conditions += " and for_muster_roll_employee = 0"
+	if filters.get("document_type") == "Muster Roll Employee":
+		conditions += " and for_muster_roll_employee = 1"
 	return conditions, filters
 
 def get_data(filters):
@@ -102,6 +110,7 @@ def get_data(filters):
 						pre_data[a.mr_employee+"-"+a.fiscal_year][a.month]["score"]   += a.evaluator_score
 						pre_data[a.mr_employee+"-"+a.fiscal_year][a.month]["average"] = pre_data[a.mr_employee+"-"+a.fiscal_year][a.month]["score"]/pre_data[a.mr_employee+"-"+a.fiscal_year][a.month]["count"]
 		count = 0
+		# frappe.throw(str(pre_data))
 		for b in pre_data:
 			avg = 0.0
 			c = 0
@@ -129,7 +138,8 @@ def get_data(filters):
 				})
 			for c in pre_data[b]:
 				month_field = get_period(int(flt(c)))
-				data[count][scrub(month_field)]=flt(pre_data[b][c].get('average'),2) if pre_data[b][c].get('average') else 0
+				temp = str(flt(pre_data[b][c].get('average'),2))+' ('+str(pre_data[b][c].get('count'))+')'
+				data[count][scrub(month_field)] = temp 
 			count+=1
 
 	return data
@@ -148,6 +158,11 @@ def get_columns(data, filters):
 			{"label": _("Designation"), "options": "Designation", "fieldname": "designation", "fieldtype": "Link", "width": 140},
 			{"label": _("Branch"), "options": "Branch", "fieldname": "branch", "fieldtype": "Link", "width": 140},
 		]
+		for a in range(1,13):
+			period = get_period(a)
+			columns.append(
+				{"label": _(period), "fieldname": scrub(period), "fieldtype": "Data", "width": 100}
+			)
 	else:
 		columns =  [
 			{"label": _("Fiscal Year"), "options": "Fiscal Year", "fieldname": "fiscal_year", "fieldtype": "Link", "width": 100},
@@ -157,11 +172,11 @@ def get_columns(data, filters):
 			{"label": _("Employee ID"), "options": "Employee", "fieldname": "employee", "fieldtype": "Data", "width": 140},
 			{"label": _("Employee Name"), "fieldname": "emp_name", "fieldtype": "Data", "width": 140},
 		]
-	for a in range(1,13):
-		period = get_period(a)
-		columns.append(
-			{"label": _(period), "fieldname": scrub(period), "fieldtype": "Float", "width": 120}
-		)
+		for a in range(1,13):
+			period = get_period(a)
+			columns.append(
+				{"label": _(period), "fieldname": scrub(period), "fieldtype": "Float", "width": 100}
+			)
 	
 	columns += [
 		{"label": _("Average %"), "fieldname": "average", "fieldtype": "Float", "width": 100},	

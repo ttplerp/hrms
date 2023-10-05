@@ -1,5 +1,5 @@
 {
- "add_total_row": 1,
+ "add_total_row": 0,
  "columns": [],
  "creation": "2023-08-01 13:51:00.132273",
  "disable_prepared_report": 0,
@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Vajra Builders Private Limited",
- "modified": "2023-08-22 16:57:24.947318",
+ "modified": "2023-10-05 10:38:56.376072",
  "modified_by": "Administrator",
  "module": "PMS",
  "name": "Individual PE Report",
@@ -25,9 +25,6 @@
   },
   {
    "role": "HR Manager"
-  },
-  {
-   "role": "Approver"
   }
  ]
 }
