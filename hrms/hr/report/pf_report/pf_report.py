@@ -61,7 +61,7 @@ def get_data(filters):
 	# 		""" % conditions, filters)
 	data = frappe.db.sql("""
 			select t1.employee, t3.employee_name, t1.designation, t3.passport_number,t3.pf_tiers,
-					(select sum(t6.amount) from `tabSalary Structure` t5, `tabSalary Slip Item` t4, `tabSalary Detail` t6 where t4.parent = t1.name and t4.salary_structure = t5.name and t6.parent = t5.name and t6.salary_component = 'Basic Pay') as basicpay,
+					(select sum(t6.amount) from `tabSalary Slip` t5, `tabSalary Slip Item` t4, `tabSalary Detail` t6 where t4.parent = t1.name and t4.salary_structure = t5.name and t6.parent = t5.name and t6.salary_component = 'Basic Pay' and t1.name  = t5.name) as basicpay,
 					t3.pf_number,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employeepf,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employerpf,
