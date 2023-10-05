@@ -33,16 +33,23 @@ def get_data(filters):
 			month,
 			evaluator,
 			evaluator_name,
+			mr_employee,
 			employee,
 			employee_name,
 			evaluator_score from `tabPerformance Evaluation` where docstatus = 1 %s
 			"""%conditions, filters, as_dict=True)
 	if not filters.get("overall"):
 		for a in evaluation_data:
-			if a.evaluator+"-"+a.employee+"-"+a.fiscal_year not in pre_data:
-				pre_data.update({a.evaluator+"-"+a.employee+"-"+a.fiscal_year: [{"score":a.evaluator_score, "month":a.month}]})
+			if not a.mr_employee:
+				if str(a.evaluator)+"-"+str(a.employee)+"-"+str(a.fiscal_year) not in pre_data:
+					pre_data.update({str(a.evaluator)+"-"+str(a.employee)+"-"+a.fiscal_year: [{"score":a.evaluator_score, "month":a.month}]})
+				else:
+					pre_data[a.evaluator+"-"+a.employee+"-"+a.fiscal_year].append({"score":a.evaluator_score, "month":a.month})
 			else:
-				pre_data[a.evaluator+"-"+a.employee+"-"+a.fiscal_year].append({"score":a.evaluator_score, "month":a.month})
+				if str(a.evaluator)+"-"+str(a.mr_employee)+"-"+str(a.fiscal_year) not in pre_data:
+					pre_data.update({str(a.evaluator)+"-"+str(a.mr_employee)+"-"+a.fiscal_year: [{"score":a.evaluator_score, "month":a.month}]})
+				else:
+					pre_data[a.evaluator+"-"+a.mr_employee+"-"+a.fiscal_year].append({"score":a.evaluator_score, "month":a.month})
 
 		count = 0
 		for b in pre_data:
@@ -55,24 +62,45 @@ def get_data(filters):
 			avg = avg/c
 			
 			evaluator, employee, fiscal_year = str(b).split("-")[0], str(b).split("-")[1], str(b).split("-")[2]
-			data.append({"fiscal_year": fiscal_year, "evaluator": evaluator, "evaluator_name": frappe.db.get_value("Employee", evaluator, "employee_name"), "evaluator_designation": frappe.db.get_value("Employee", evaluator, "designation"), "employee": employee, "emp_name": frappe.db.get_value("Employee", employee, "employee_name"), 'average': flt(avg,2)})
+			if not frappe.db.exists("Employee", {"employee": employee}):
+				emp_name = frappe.db.get_value("Muster Roll Employee", employee, "person_name")
+			else:
+				emp_name = frappe.db.get_value("Employee", employee, "employee_name")
+				
+			if not frappe.db.exists("Employee", {"employee": evaluator}):
+				evaluator_name = frappe.db.get_value("Muster Roll Employee", evaluator, "person_name")
+				evaluator_designation = frappe.db.get_value("Muster Roll Employee", evaluator, "designation")
+			else:
+				evaluator_name = frappe.db.get_value("Employee", evaluator, "employee_name")
+				evaluator_designation = frappe.db.get_value("Employee", evaluator, "designation")
+
+			data.append({"fiscal_year": fiscal_year, "evaluator": evaluator, "evaluator_name": evaluator_name, "evaluator_designation": evaluator_designation, "employee": employee, "emp_name": emp_name, 'average': flt(avg,2)})
 			for c in pre_data[b]:
 				month_field = get_period(int(flt(c.get('month'))))
 				data[count][scrub(month_field)]=flt(c.get('score'),2) if c.get('score') else 0
 			count+=1
 	else:
 		for a in evaluation_data:
-			if a.employee == "20230601185":
-				frappe.msgprint(a)
-			if a.employee+"-"+a.fiscal_year not in pre_data:
-				pre_data.update({a.employee+"-"+a.fiscal_year: {str(a.month):{"count": 1, "score": a.evaluator_score,"average":a.evaluator_score}}})
-			else:
-				if str(a.month) not in pre_data[a.employee+"-"+a.fiscal_year]:
-					pre_data[a.employee+"-"+a.fiscal_year].update({str(a.month):{"count": 1, "score": a.evaluator_score, "average":a.evaluator_score}})
+			if not a.mr_employee:
+				if str(a.employee)+"-"+str(a.fiscal_year) not in pre_data:
+					pre_data.update({str(a.employee)+"-"+str(a.fiscal_year): {str(a.month):{"count": 1, "score": a.evaluator_score,"average":a.evaluator_score}}})
 				else:
-					pre_data[a.employee+"-"+a.fiscal_year][a.month]["count"]   += 1
-					pre_data[a.employee+"-"+a.fiscal_year][a.month]["score"]   += a.evaluator_score
-					pre_data[a.employee+"-"+a.fiscal_year][a.month]["average"] = pre_data[a.employee+"-"+a.fiscal_year][a.month]["score"]/pre_data[a.employee+"-"+a.fiscal_year][a.month]["count"]
+					if str(a.month) not in pre_data[a.employee+"-"+a.fiscal_year]:
+						pre_data[a.employee+"-"+a.fiscal_year].update({str(a.month):{"count": 1, "score": a.evaluator_score, "average":a.evaluator_score}})
+					else:
+						pre_data[a.employee+"-"+a.fiscal_year][a.month]["count"]   += 1
+						pre_data[a.employee+"-"+a.fiscal_year][a.month]["score"]   += a.evaluator_score
+						pre_data[a.employee+"-"+a.fiscal_year][a.month]["average"] = pre_data[a.employee+"-"+a.fiscal_year][a.month]["score"]/pre_data[a.employee+"-"+a.fiscal_year][a.month]["count"]
+			else:
+				if str(a.mr_employee)+"-"+str(a.fiscal_year) not in pre_data:
+					pre_data.update({str(a.mr_employee)+"-"+str(a.fiscal_year): {str(a.month):{"count": 1, "score": a.evaluator_score,"average":a.evaluator_score}}})
+				else:
+					if str(a.month) not in pre_data[a.mr_employee+"-"+a.fiscal_year]:
+						pre_data[a.mr_employee+"-"+a.fiscal_year].update({str(a.month):{"count": 1, "score": a.evaluator_score, "average":a.evaluator_score}})
+					else:
+						pre_data[a.mr_employee+"-"+a.fiscal_year][a.month]["count"]   += 1
+						pre_data[a.mr_employee+"-"+a.fiscal_year][a.month]["score"]   += a.evaluator_score
+						pre_data[a.mr_employee+"-"+a.fiscal_year][a.month]["average"] = pre_data[a.mr_employee+"-"+a.fiscal_year][a.month]["score"]/pre_data[a.mr_employee+"-"+a.fiscal_year][a.month]["count"]
 		count = 0
 		for b in pre_data:
 			avg = 0.0
@@ -83,12 +111,20 @@ def get_data(filters):
 			avg = avg/c
 			
 			employee, fiscal_year = str(b).split("-")[0], str(b).split("-")[1]
+			if not frappe.db.exists("Employee", {"employee": employee}):
+				employee_name = frappe.db.get_value("Muster Roll Employee", employee, "person_name")
+				designation = frappe.db.get_value("Muster Roll Employee", employee, "designation")
+				branch = frappe.db.get_value("Muster Roll Employee", employee, "branch")
+			else:
+				employee_name = frappe.db.get_value("Employee", employee, "employee_name")
+				designation = frappe.db.get_value("Employee", employee, "designation")
+				branch = frappe.db.get_value("Employee", employee, "branch")
 			data.append({
 				"fiscal_year": fiscal_year,
 				"employee": employee,
-				"emp_name": frappe.db.get_value("Employee", employee, "employee_name"),
-				"designation":frappe.db.get_value("Employee", employee, "designation"),
-				"branch":frappe.db.get_value("Employee", employee, "branch"),
+				"emp_name": employee_name,
+				"designation": designation,
+				"branch": branch,
 				'average': flt(avg,2)
 				})
 			for c in pre_data[b]:
@@ -107,7 +143,7 @@ def get_columns(data, filters):
 	if filters.get("overall") == 1:
 		columns =  [
 			{"label": _("Fiscal Year"), "options": "Fiscal Year", "fieldname": "fiscal_year", "fieldtype": "Link", "width": 100},
-			{"label": _("Employee ID"), "options": "Employee", "fieldname": "employee", "fieldtype": "Link", "width": 140},
+			{"label": _("Employee ID"), "options": "Employee", "fieldname": "employee", "fieldtype": "Data", "width": 140},
 			{"label": _("Employee Name"), "fieldname": "emp_name", "fieldtype": "Data", "width": 140},
 			{"label": _("Designation"), "options": "Designation", "fieldname": "designation", "fieldtype": "Link", "width": 140},
 			{"label": _("Branch"), "options": "Branch", "fieldname": "branch", "fieldtype": "Link", "width": 140},
@@ -115,10 +151,10 @@ def get_columns(data, filters):
 	else:
 		columns =  [
 			{"label": _("Fiscal Year"), "options": "Fiscal Year", "fieldname": "fiscal_year", "fieldtype": "Link", "width": 100},
-			{"label": _("Evaluator ID"), "options": "Employee", "fieldname": "evaluator", "fieldtype": "Link", "width": 120},
+			{"label": _("Evaluator ID"), "options": "Employee", "fieldname": "evaluator", "fieldtype": "Data", "width": 120},
 			{"label": _("Evaluator Name"), "fieldname": "evaluator_name", "fieldtype": "Data", "width": 140},
 			{"label": _("Evaluator Designation"), "options": "Designation", "fieldname": "evaluator_designation", "fieldtype": "Link", "width": 140},
-			{"label": _("Employee ID"), "options": "Employee", "fieldname": "employee", "fieldtype": "Link", "width": 140},
+			{"label": _("Employee ID"), "options": "Employee", "fieldname": "employee", "fieldtype": "Data", "width": 140},
 			{"label": _("Employee Name"), "fieldname": "emp_name", "fieldtype": "Data", "width": 140},
 		]
 	for a in range(1,13):
