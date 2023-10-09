@@ -509,9 +509,8 @@
   },
   {
    "fieldname": "journal_entry",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Journal Entry",
-   "options": "Journal Entry",
    "read_only": 1
   },
   {
@@ -575,7 +574,7 @@
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-26 17:26:13.635975",
+ "modified": "2023-10-09 11:26:28.623685",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
