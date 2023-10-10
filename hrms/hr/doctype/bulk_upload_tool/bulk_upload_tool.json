@@ -11,6 +11,7 @@
   "upload_type",
   "download_template",
   "branch",
+  "muster_roll_type",
   "get_template",
   "column_break_3",
   "fiscal_year",
@@ -54,8 +55,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Branch",
-   "options": "Branch",
-   "reqd": 1
+   "options": "Branch"
   },
   {
    "fieldname": "get_template",
@@ -122,11 +122,17 @@
    "options": "Bulk Upload Tool",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "muster_roll_type",
+   "fieldtype": "Select",
+   "label": "Muster Roll Type",
+   "options": "\nSkilled\nSemiskilled\nUnskilled\nObservation\nTrainee"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-02 17:19:29.097727",
+ "modified": "2023-09-29 11:35:11.387149",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Bulk Upload Tool",

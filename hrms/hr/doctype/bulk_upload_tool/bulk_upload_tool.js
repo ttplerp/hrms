@@ -17,7 +17,7 @@ frappe.ui.form.on('Bulk Upload Tool', {
         })
     },
 	get_template:function(frm) {
-		if(!frm.doc.fiscal_year || !frm.doc.month || !frm.doc.branch || !frm.doc.file_type || !frm.doc.upload_type) {
+		if(!frm.doc.fiscal_year || !frm.doc.month || !frm.doc.file_type || !frm.doc.upload_type) {
 			msgprint(__("Fiscal Year, Month, Branch and File Type are mandatory"));
 			return;
 		}
@@ -27,6 +27,7 @@ frappe.ui.form.on('Bulk Upload Tool', {
                 file_type: frm.doc.file_type,
                 branch : frm.doc.branch,
                 month: frm.doc.month,
+                muster_roll_type: frm.doc.muster_roll_type,
                 fiscal_year: frm.doc.fiscal_year,
                 upload_type: frm.doc.upload_type
             }
