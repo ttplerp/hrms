@@ -12,28 +12,30 @@ frappe.query_reports["Individual Talent Matrix"] = {
 			"default": frappe.sys_defaults.fiscal_year,
 		},
 		{
-			fieldname: "potential",
-			label: __("Potential"),
-			fieldtype: "Select",
-			options: [
-				{ "value": "Weekly", "label": __("High Potentail") },
-				{ "value": "Monthly", "label": __("Moderate Potential") },
-				{ "value": "Quarterly", "label": __("Low Potentail") },
-			],
-			default: "High Potentail",
-			reqd: 1
+			"fieldname": "from_month",
+			"label": __("From"),
+			"fieldtype": "Select",
+			"options": "\nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec",
+			"default": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth()],
 		},
 		{
-			fieldname: "performance",
-			label: __("Performance"),
+			"fieldname": "to_month",
+			"label": __("To"),
+			"fieldtype": "Select",
+			"options": "\nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec",
+			"default": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth()],
+		},
+		{
+			fieldname: "pot_per",
+			label: __("Select"),
 			fieldtype: "Select",
-			options: [
-				{ "value": "Weekly", "label": __("High Performance") },
-				{ "value": "Monthly", "label": __("Moderate Performance") },
-				{ "value": "Quarterly", "label": __("Low Performance") },
-			],
-			default: "High Performance",
-			reqd: 1
+			"options": "\nUnrealized Performer\nGrowth Employee\nFuture Senior Leader\nInconsistent Performer\nCore Employee\nHigh-Impact Performer\nLow Performer\nEffective Employee\nTrusted Professional",
+		},
+		{
+			"fieldname":"exclude_muster_roll",
+			"fieldtype":"Check",
+			"label": __("Exclude Muster Roll"),
+			"default": 0,
 		},
 		{
 			"fieldname": "company",

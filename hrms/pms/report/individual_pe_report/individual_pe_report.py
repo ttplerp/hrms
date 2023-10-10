@@ -19,6 +19,8 @@ def execute(filters=None):
 
 def get_conditions(filters):
 	conditions = ''
+	if filters.get("fiscal_year"):
+		conditions += " and fiscal_year = %(fiscal_year)s"
 	if filters.get("employee"):
 		conditions += " and employee = %(employee)s"
 	if filters.get("mr_employee"):
