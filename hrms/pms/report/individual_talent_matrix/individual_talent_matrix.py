@@ -41,19 +41,30 @@ def get_data(filters):
 	evaluation_data = []
 	pre_data = {}
 	evaluation_data = frappe.db.sql("""
-							SELECT (CASE WHEN p.for_muster_roll_employee = 1 THEN p.mr_employee ELSE p.employee END) as employee, p.fiscal_year, p.month, i.competency, i.evaluator  
+							SELECT (CASE WHEN p.for_muster_roll_employee = 1 THEN p.mr_employee ELSE p.employee END) as employee, p.fiscal_year, p.month, i.competency, i.evaluator, p.name  
 					  		from `tabPerformance Evaluation` as p
 					  		inner join `tabEvaluate Competency Item` i
-					  		on i.parent = p.name 
+					  		on i.parent = p.name and p.employee = '20230523211'
 					  		where p.docstatus = 1 %s
 						"""%conditions, filters, as_dict=True)
 	
 	for a in evaluation_data:
 		if str(a.employee)+'-'+str(a.fiscal_year) not in pre_data:
-			pre_data.update({str(a.employee)+'-'+str(a.fiscal_year): { a.competency: str(a.evaluator)}})
+			pre_data.update({str(a.employee)+'-'+str(a.fiscal_year): {str(a.name): { "count": 1, "score": a.evaluator, a.competency: a.evaluator}}})
 		else:
-			pre_data[str(a.employee)+'-'+str(a.fiscal_year)].update({a.competency: str(a.evaluator)})
-		
+			if a.name not in pre_data[a.employee+"-"+a.fiscal_year]:
+				pre_data[str(a.employee)+'-'+str(a.fiscal_year)].update({str(a.name): { "count": 1, "score": a.evaluator, a.competency: a.evaluator}})	
+			else:
+				pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name]["count"] += 1
+				pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name]["score"] += 1
+			# 	pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name][a.competency] = pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name]["score"]/pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name]["count"]
+
+
+
+	
+	frappe.throw(str(pre_data))	
+	frappe.throw(str(evaluation_data))
+
 	for p in pre_data:
 		potential = 0
 		performance = 0
@@ -67,16 +78,21 @@ def get_data(filters):
 			4. Initiative & Responsibility				Potential 
 		'''
 		for i in pre_data[p]:
-			if i in ['Initiative & Responsibility', 'Job Knowledge /Technical Skills']:
+			if i in ['Initiative & Responsibility', 'Job Knowledge/Technical Skills']:
 				potential += flt(pre_data[p][i])
 				pot += 1
 			elif i in ['Productivity & Use of Time', 'Quality of Work']:
 				performance += flt(pre_data[p][i])
 				per += 1
+		
 		if potential != 0:
 			potential = potential/pot
 		if performance != 0:
 			performance = performance/per
+
+		frappe.throw(str(pot)+' '+str(per))
+
+		# frappe.throw(str(potential)+' '+str(performance))
 
 		pot_per = determine_pot_per(potential, performance)
 
@@ -85,6 +101,10 @@ def get_data(filters):
 			emp_name = frappe.db.get_value("Muster Roll Employee", employee, "person_name")
 			designation = frappe.db.get_value("Muster Roll Employee", employee, "designation")
 			branch = frappe.db.get_value("Muster Roll Employee", employee, "branch")
+			education_level = "NULL"
+			employee_qualification = frappe.db.get_value("Employee", employee, "employee_qualification")
+			date_of_joining = frappe.db.get_value("Employee", employee, "date_of_joining")
+			employment_type = frappe.db.get_value("Employee", employee, "employment_type")
 		else:
 			emp_name = frappe.db.get_value("Employee", employee, "employee_name")
 			designation = frappe.db.get_value("Employee", employee, "designation")
@@ -109,7 +129,7 @@ def get_data(filters):
 	return data
 
 def is_between(a, x, b):
-	return min(a, b) < x < max(a, b)
+	return min(a, b) <= x <= max(a, b)
 
 def determine_pot_per(potential, performance):
 	total_score = 0.0

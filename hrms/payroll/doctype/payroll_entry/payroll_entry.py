@@ -648,6 +648,7 @@ class PayrollEntry(Document):
 		posting        = frappe._dict()
 		cc_wise_totals = frappe._dict()
 		tot_payable_amt= 0
+		# frappe.throw(str(cc))
 		for rec in cc:
 			# To Payables
 			tot_payable_amt += (-1*flt(rec.amount) if rec.component_type == 'Deduction' else flt(rec.amount))
@@ -677,7 +678,8 @@ class PayrollEntry(Document):
 					remit_amount += flt(rec.amount)
 					if r == default_gpf_account:
 						for i in self.get_cc_wise_entries(salary_component_pf):
-							  posting.setdefault(rec.salary_component,[]).append({
+							# frappe.throw(str(i))
+							posting.setdefault(rec.salary_component,[]).append({
 								"account"       : r,
 								"debit_in_account_currency" : flt(i.amount),
 								"cost_center"   : i.cost_center,
@@ -749,6 +751,7 @@ class PayrollEntry(Document):
 				"salary_component": "Net Pay"
 			})
 
+		# frappe.throw(str(posting))
 		# Final Posting to accounts
 		if posting:
 			jv_name, v_title = None, ""
