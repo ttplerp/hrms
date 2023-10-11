@@ -70,8 +70,8 @@ def get_permission_query_conditions(user):
 
 	if user == "Administrator":
 		return
-	# if "HR User" in user_roles:
-	# 	return
+	if "HR Manager" in user_roles:
+		return
 
 	return """(
 		`tabPerformance Evaluation`.owner = '{user}'
