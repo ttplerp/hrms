@@ -495,7 +495,7 @@ class PayrollEntry(Document):
 					else ifnull(sc.is_remittable,0)
 				end)                       as is_remittable,
 				sc.gl_head                 as gl_head,
-				sum(ifnull(sd.amount,0))   as amount,
+				sum(ifnull(t1.employer_pf,0))   as amount,
 				(case
 					when ifnull(sc.make_party_entry,0) = 1 then 'Payable'
 					else 'Other'
@@ -675,9 +675,10 @@ class PayrollEntry(Document):
 				remit_gl_list   = [rec.gl_head,default_gpf_account] if rec.salary_component == salary_component_pf else [rec.gl_head]
 
 				for r in remit_gl_list:
-					remit_amount += flt(rec.amount)
+					# remit_amount += flt(rec.amount)
 					if r == default_gpf_account:
 						for i in self.get_cc_wise_entries(salary_component_pf):
+							remit_amount += flt(i.amount)
 							# frappe.throw(str(i))
 							posting.setdefault(rec.salary_component,[]).append({
 								"account"       : r,
@@ -693,6 +694,7 @@ class PayrollEntry(Document):
 								"salary_component": rec.salary_component
 							})
 					else:
+						remit_amount += flt(rec.amount)
 						posting.setdefault(rec.salary_component,[]).append({
 							"account"       : r,
 							"debit_in_account_currency" : flt(rec.amount),
@@ -751,7 +753,7 @@ class PayrollEntry(Document):
 				"salary_component": "Net Pay"
 			})
 
-		# frappe.throw(str(posting))
+		# frappe.throw('here: '+str(posting))
 		# Final Posting to accounts
 		if posting:
 			jv_name, v_title = None, ""
