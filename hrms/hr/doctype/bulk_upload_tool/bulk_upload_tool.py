@@ -192,13 +192,18 @@ def build_response_as_excel(writer, doctype):
 	frappe.response["filecontent"] = xlsx_file.getvalue()
 	frappe.response["type"] = "binary"
 def get_mr_data(branch, muster_roll_type, month, fiscal_year):
+	mr_condition = ""
+	if muster_roll_type:
+		mr_condition = "and muster_roll_type = '{}'".format(muster_roll_type)
+	else:
+		mr_condition = ""
 	return frappe.db.sql('''select branch, cost_center, muster_roll_type, unit, name, person_name,
 						 "{fiscal_year}" as fiscal_year, "{month}" as month
 						from `tabMuster Roll Employee`
 						where status ="Active" 
 						and case when {branch} != 'undefined' then branch = {branch} else 1 = 1 end
-						and case when {muster_roll_type} != 'undefined' then muster_roll_type = {muster_roll_type} else 1 = 1 end
-						'''.format(branch=frappe.db.escape(branch), muster_roll_type = frappe.db.escape(muster_roll_type), month=month, fiscal_year=fiscal_year), as_dict=True)
+						{mr_condition}
+						'''.format(branch=frappe.db.escape(branch), mr_condition = mr_condition, month=month, fiscal_year=fiscal_year), as_dict=True)
 	
 def get_template(branch, muster_roll_type, month, fiscal_year):
 	if not frappe.has_permission("Muster Roll Overtime Entry", "create"):
