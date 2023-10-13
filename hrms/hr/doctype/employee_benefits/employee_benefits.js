@@ -66,30 +66,30 @@ frappe.ui.form.on("Separation Item", {
 		frappe.model.set_value(cdt, cdn, "terrain_rate", null);
 		frappe.model.set_value(cdt, cdn, "load_capacity", null);
 		if(frm.doc.purpose != "Separation" && frm.doc.purpose != "Upgradation"){
-			if(row.benefit_type == "Leave Encashment"){
+			if(row.benefit_type == "Provision for Leave Encashment"){
 				frappe.model.set_value(cdt, cdn, "amount", null);
 				frappe.model.set_value(cdt, cdn, "earned_leave_balance", null);
 				frappe.model.set_value(cdt, cdn, "benefit_type", null);
 				frm.refresh_fields();
 				frappe.throw("Leave Encashment cannot be claimed for Transfer.")
 			}
-			if(row.benefit_type == "Gratuity"){
+			if(row.benefit_type == "Provision for Employee Gratuity Fund"){
 				frappe.model.set_value(cdt, cdn, "amount", null);
 				frappe.model.set_value(cdt, cdn, "benefit_type", null);
 				frm.refresh_fields();
 				frappe.throw("Gratuity cannot be claimed for Transfer.")
 			}
 		}
-		if(row.benefit_type != "Carriage Charges"){
+		if(row.benefit_type != "Carriage Charges" || row.benefit_type != "Provision for Carriage Charges"){
 			frappe.model.set_value(cdt, cdn, "distance", null);
 			frappe.model.set_value(cdt, cdn, "terrain_rate", null);
 			frappe.model.set_value(cdt, cdn, "load_capacity", null);
 		}
-		else if(row.benefit_type != "Leave Encashment"){
+		else if(row.benefit_type != "Provision for Leave Encashment"){
 			frappe.model.set_value(cdt, cdn, "earned_leave_balance", null);
 		}
     	var item = locals[cdt][cdn]
-		if(item.benefit_type == "Transfer Grant" || item.benefit_type == "Travel Allowance"){
+		if(item.benefit_type == "Transfer Grant" || item.benefit_type == "Provision for Travel Allowance" || item.benefit_type == "Provision for Transfer Grant"){
 			return frappe.call({
 				method: "hrms.hr.doctype.employee_benefits.employee_benefits.get_basic_salary",
 				args: {"employee": frm.doc.employee},
@@ -102,7 +102,7 @@ frappe.ui.form.on("Separation Item", {
 				}
 			});
 		}
-		else if(item.benefit_type == "Gratuity"){
+		else if(item.benefit_type == "Provision for Employee Gratuity Fund"){
 			return frappe.call({
 				method: "hrms.hr.doctype.employee_benefits.employee_benefits.get_gratuity_amount",
 				args: {"employee": frm.doc.employee},
@@ -115,7 +115,7 @@ frappe.ui.form.on("Separation Item", {
 				}
 			});
 		}
-		else if (item.benefit_type == "Leave Encashment"){
+		else if (item.benefit_type == "Provision for Leave Encashment"){
 			if(frm.doc.purpose == "Separation"){
 				if(frm.doc.separation_date && frm.doc.employee){
 					return frappe.call({
@@ -155,7 +155,7 @@ frappe.ui.form.on("Separation Item", {
 			}
 
 		}
-		else if(item.benefit_type == "Carriage Charges"){
+		else if(item.benefit_type == "Carriage Charges" || item.benefit_type == "Provision for Carriage Charges"){
 			if(item.terrain_rate && item.distance != 0 && item.load_capacity){
 				frappe.model.set_value(cdt, cdn, "amount",flt(item.terrain_rate)*flt(item.distance)*flt(item.load_capacity))
 			}
@@ -164,7 +164,7 @@ frappe.ui.form.on("Separation Item", {
 
 	"distance": function(frm, cdt, cdn){
 		var item = locals[cdt][cdn];
-		if(item.benefit_type == "Carriage Charges"){
+		if(item.benefit_type == "Carriage Charges" || item.benefit_type == "Provision for Carriage Charges"){
 			if(item.terrain_rate && item.distance != 0 && item.load_capacity){
 				frappe.model.set_value(cdt, cdn, "amount",flt(item.terrain_rate)*flt(item.distance)*flt(item.load_capacity))
 			}
@@ -178,7 +178,7 @@ frappe.ui.form.on("Separation Item", {
 
 	"terrain_rate": function(frm, cdt, cdn){
 		var item = locals[cdt][cdn];
-		if(item.benefit_type == "Carriage Charges"){
+		if(item.benefit_type == "Carriage Charges" || item.benefit_type == "Provision for Carriage Charges"){
 			if(item.terrain_rate && item.distance != 0 && item.load_capacity){
 				frappe.model.set_value(cdt, cdn, "amount",flt(item.terrain_rate)*flt(item.distance)*flt(item.load_capacity))
 			}
@@ -195,7 +195,7 @@ frappe.ui.form.on("Separation Item", {
 
 	"load_capacity": function(frm, cdt, cdn){
 		var item = locals[cdt][cdn];
-		if(item.benefit_type == "Carriage Charges"){
+		if(item.benefit_type == "Carriage Charges" || item.benefit_type == "Provision for Carriage Charges"){
 			if(item.terrain_rate && item.distance != 0 && item.load_capacity){
 				frappe.model.set_value(cdt, cdn, "amount",flt(item.terrain_rate)*flt(item.distance)*flt(item.load_capacity))
 			}
@@ -243,7 +243,7 @@ var get_outstanding_amount = function(frm, cdt, cdn){
 
 var set_tax_amount = function(frm, cdt, cdn){
 	var row = locals[cdt][cdn];
-	if(row.benefit_type == "Leave Encashment"){
+	if(row.benefit_type == "Provision for Leave Encashment"){
 		frappe.call({
 			"method": "hrms.hr.doctype.employee_benefits.employee_benefits.get_leave_encashment_tax",
 			"args": {

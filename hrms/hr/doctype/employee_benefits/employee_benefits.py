@@ -81,15 +81,16 @@ class EmployeeBenefits(Document):
 	def validate_benefits(self):
 		for a in self.items:
 			a.payable_amount = flt(a.amount) - flt(a.tax_amount)
-			if a.benefit_type == "Leave Encashment":
+			if a.benefit_type == "Provision for Leave Encashment":
 				if self.purpose != "Separation" and self.purpose != "Upgradation":
 					frappe.throw("Leave Encashment cannot be claimed for {}".format(self.purpose))
 
-			if a.benefit_type != "Carriage Charges":
+			if a.benefit_type != "Carriage Charges" or a.benefit_type != "Provision for Carriage Charges":
 				a.distance = None
 			else:
 				if not a.distance:
 					frappe.throw(_("#Raw:{} Distance</b> for <b>Carriage Charges</b> cannot be 0").format(a.idx))
+
 	def update_reference(self):
 		if self.employee_separation_id:
 			id = frappe.get_doc("Employee Separation",self.employee_separation_id)
@@ -104,7 +105,7 @@ class EmployeeBenefits(Document):
 		# self.total_amount = 0
 		for a in self.items:
 			# self.total_amount = self.total_amount + a.amount 
-			if a.benefit_type=="Gratuity":
+			if a.benefit_type=="Provision for Employee Gratuity Fund":
 				date_of_joining = frappe.db.get_value("Employee", self.employee, "date_of_joining")
 				employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
 				today_date = date.today()
@@ -116,7 +117,7 @@ class EmployeeBenefits(Document):
 	
 	def check_leave_encashment(self):
 		for a in self.items:
-			if a.benefit_type == "Leave Encashment":
+			if a.benefit_type == "Provision for Leave Encashment":
 				balance = 0
 				le = frappe.get_doc("Employee Group",frappe.db.get_value("Employee",self.employee,"employee_group")) # Line added by SHIV on 2018/10/16
 				las = frappe.db.sql("select name from `tabLeave Allocation` where employee = %s and leave_type = %s and to_date >= %s and YEAR(from_date) = %s and docstatus = 1", (self.employee, "Earned Leave", nowdate(), nowdate()), as_dict=True)
@@ -338,7 +339,7 @@ def get_leave_encashment_amount(employee, date):
 
 @frappe.whitelist()
 def get_leave_encashment_tax(amount, benefit_type):
-	if benefit_type == "Leave Encashment":
+	if benefit_type == "Provision for Leave Encashment":
 		encashment_tax = get_salary_tax(amount)
 		return encashment_tax
 
