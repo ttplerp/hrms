@@ -41,21 +41,11 @@ def get_data(filters):
 	evaluation_data = []
 	pre_data = {}
 
-	# query = frappe.db.sql("""
-	# 			SELECT 
-	# 				(CASE WHEN p.for_muster_roll_employee = 1 THEN p.mr_employee ELSE p.employee END) as employee, p.fiscal_year, p.month, i.competency, i.evaluator, p.name  
-	# 			FROM `tabPerformance Evaluation` as p
-	# 			INNER JOIN `tabEvaluate Competency Item` i
-	# 			ON i.parent = p.name and p.employee = '20230523211'
-	# 			WHERE p.docstatus = 1 %s
-	# 		"""%conditions, filters, as_dict=True)
-	# frappe.throw(str(query))
-
 	evaluation_data = frappe.db.sql("""
 							SELECT (CASE WHEN p.for_muster_roll_employee = 1 THEN p.mr_employee ELSE p.employee END) as employee, p.fiscal_year, p.month, i.competency, i.evaluator, p.name  
 					  		from `tabPerformance Evaluation` as p
 					  		inner join `tabEvaluate Competency Item` i
-					  		on i.parent = p.name and p.employee = '20230523211'
+					  		on i.parent = p.name
 					  		where p.docstatus = 1 %s
 						"""%conditions, filters, as_dict=True)
 	
