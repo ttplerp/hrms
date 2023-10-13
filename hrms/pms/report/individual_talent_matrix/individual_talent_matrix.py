@@ -40,6 +40,17 @@ def get_data(filters):
 	data = []
 	evaluation_data = []
 	pre_data = {}
+
+	# query = frappe.db.sql("""
+	# 			SELECT 
+	# 				(CASE WHEN p.for_muster_roll_employee = 1 THEN p.mr_employee ELSE p.employee END) as employee, p.fiscal_year, p.month, i.competency, i.evaluator, p.name  
+	# 			FROM `tabPerformance Evaluation` as p
+	# 			INNER JOIN `tabEvaluate Competency Item` i
+	# 			ON i.parent = p.name and p.employee = '20230523211'
+	# 			WHERE p.docstatus = 1 %s
+	# 		"""%conditions, filters, as_dict=True)
+	# frappe.throw(str(query))
+
 	evaluation_data = frappe.db.sql("""
 							SELECT (CASE WHEN p.for_muster_roll_employee = 1 THEN p.mr_employee ELSE p.employee END) as employee, p.fiscal_year, p.month, i.competency, i.evaluator, p.name  
 					  		from `tabPerformance Evaluation` as p
@@ -50,21 +61,14 @@ def get_data(filters):
 	
 	for a in evaluation_data:
 		if str(a.employee)+'-'+str(a.fiscal_year) not in pre_data:
-			pre_data.update({str(a.employee)+'-'+str(a.fiscal_year): {str(a.name): { "count": 1, "score": a.evaluator, a.competency: a.evaluator}}})
+			pre_data.update({str(a.employee)+'-'+str(a.fiscal_year): {str(a.name): { a.competency: a.evaluator}}})
 		else:
 			if a.name not in pre_data[a.employee+"-"+a.fiscal_year]:
-				pre_data[str(a.employee)+'-'+str(a.fiscal_year)].update({str(a.name): { "count": 1, "score": a.evaluator, a.competency: a.evaluator}})	
+				pre_data[str(a.employee)+'-'+str(a.fiscal_year)].update({str(a.name): { a.competency: a.evaluator}})	
 			else:
-				pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name]["count"] += 1
-				pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name]["score"] += 1
-			# 	pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name][a.competency] = pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name]["score"]/pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name]["count"]
-
-
-
+				pre_data[str(a.employee)+'-'+str(a.fiscal_year)][a.name][a.competency] = a.evaluator
 	
-	frappe.throw(str(pre_data))	
-	frappe.throw(str(evaluation_data))
-
+	# frappe.throw(str(pre_data))
 	for p in pre_data:
 		potential = 0
 		performance = 0
@@ -72,26 +76,26 @@ def get_data(filters):
 		per = 0
 		''''
 			COMPETENCY									CATEGORY
-			1. Job Knowledge /Technical Skills			Potential
+			1. Job Knowledge/Technical Skills			Potential
 			2. Productivity & Use of Time				Performance
 			3. Quality of Work							Performance
 			4. Initiative & Responsibility				Potential 
 		'''
 		for i in pre_data[p]:
-			if i in ['Initiative & Responsibility', 'Job Knowledge/Technical Skills']:
-				potential += flt(pre_data[p][i])
-				pot += 1
-			elif i in ['Productivity & Use of Time', 'Quality of Work']:
-				performance += flt(pre_data[p][i])
-				per += 1
+			for a in pre_data[p][i]:
+				if a in ['Initiative & Responsibility', 'Job Knowledge/Technical Skills']:
+					potential += flt(pre_data[p][i][a])
+					pot += 1
+				elif a in ['Productivity & Use of Time', 'Quality of Work']:
+					performance += flt(pre_data[p][i][a])
+					per += 1
 		
 		if potential != 0:
 			potential = potential/pot
 		if performance != 0:
 			performance = performance/per
 
-		frappe.throw(str(pot)+' '+str(per))
-
+		# frappe.throw(str(pot)+' '+str(per))
 		# frappe.throw(str(potential)+' '+str(performance))
 
 		pot_per = determine_pot_per(potential, performance)
