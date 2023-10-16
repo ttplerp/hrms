@@ -583,11 +583,12 @@ class EmployeeAdvance(Document):
         default_payment_account = frappe.db.get_value(
             "Company", self.company, "default_bank_account"
         )
-        if self.advance_type in ("Salary Advance","Employee Loan"):
-            account_select = frappe.db.get_value(
-                "Company", self.company, "salary_advance_account"
-            )
-        elif self.advance_type == "Travel Advance":
+        # if self.advance_type in ("Salary Advance","Employee Loan"):
+        #     account_select = frappe.db.get_value(
+        #         "Company", self.company, "salary_advance_account"
+        #     )
+        
+        if self.advance_type == "Travel Advance":
             account_select = frappe.db.get_value(
                 "Company", self.company, "travel_advance_account"
             )
@@ -596,8 +597,8 @@ class EmployeeAdvance(Document):
                 "Company", self.company, "imprest_advance_account"
             )
         else:
-            frappe.throw("Choose different advance type")
-
+            account_select = self.advance_account
+            
         je = frappe.new_doc("Journal Entry")
         je.posting_date = nowdate()
         je.voucher_type = "Bank Entry"
