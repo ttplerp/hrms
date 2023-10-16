@@ -4,7 +4,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import _
-from frappe.utils import flt, getdate
+from frappe.utils import flt, getdate, today
 from frappe.model.document import Document
 
 class PerformanceEvaluation(Document):
@@ -71,7 +71,7 @@ def get_permission_query_conditions(user):
 	if user == "Administrator":
 		return
 	if "HR Manager" in user_roles:
-		return
+		return """CAST(`tabPerformance Evaluation`.month as signed) = Month('{}')""".format(today())
 
 	return """(
 		`tabPerformance Evaluation`.owner = '{user}'
