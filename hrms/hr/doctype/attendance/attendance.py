@@ -49,12 +49,15 @@ class Attendance(Document):
 
     def on_cancel(self):
         self.unlink_attendance_from_checkins()
+        self.delete_leave_ledger_entry()
 
     def on_submit(self):
         self.create_leave_ledger_entry()
 
-    def on_cancel(self):
-        self.create_leave_ledger_entry(submit=False)
+    def delete_leave_ledger_enty(self):
+        frappe.db.sql("""
+            delete from `tabLeave Ledger Entry` where transaction_name = '{}'
+        """.format(self.name))
 
     def create_leave_ledger_entry(self, submit=True):
         leave_types = ["Casual Leave", "Earned Leave", "Medical Leave"]
