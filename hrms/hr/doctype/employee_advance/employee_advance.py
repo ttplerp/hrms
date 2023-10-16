@@ -47,23 +47,22 @@ class EmployeeAdvance(Document):
         validate_active_employee(self.employee)
         self.validate_employment_status()
         self.set_status()
-        # if (
-        #     self.advance_type != "Travel Advance"
-        #     and self.advance_type != "Imprest Advance"
-        # ):
-        #     self.validate_advance_amount()
-            # self.validate_deduction_month()
+        self.validate_advance_amount()
         self.update_defaults()
         self.update_pending_amount()
         self.update_reference()
         self.check_duplicate_advance()
-        self.select_advance_account()
-        if self.advance_type == "Salary Advance":
+        # this is already there in js.
+        # self.select_advance_account()
+        if self.advance_type in ("Salary Advance", "Employee Loan"):
             if self.deduction_month <= 0:
                 frappe.throw(str("No. of installment must be greater than 0."))
         if self.workflow_state != "Approved":
             notify_workflow_states(self)
-
+            
+    def validate_advance_amount(self):
+        if self.advance_type == "Salary Advance" and flt(self.advance_amount) > 100000.00:
+            frappe.throw('You cannot apply for salary advance if the amount is greater than 100,000.00. You can apply for Employee Loan.')
     def on_cancel(self):
         self.ignore_linked_doctypes = "GL Entry"
         self.set_status(update=True)
@@ -74,7 +73,7 @@ class EmployeeAdvance(Document):
     def on_submit(self):
         if self.advance_type == "Travel Advance":
             self.update_travel_request()
-        if self.advance_type == "Salary Advance":
+        if self.advance_type in ("Salary Advance", "Employee Loan"):
             self.update_salary_structure()
         self.make_bank_entry()
         if self.advance_type != "Travel Advance":
@@ -85,6 +84,8 @@ class EmployeeAdvance(Document):
             self.advance_account = frappe.db.get_value(
                 "Company", self.company, "salary_advance_account"
             )
+        elif self.advance_type == "Employee Loan":
+            self.advance_account = frappe.db.get_value("Company", self.company, "employee_loan_account")
         elif self.advance_type == "Travel Advance":
             self.advance_account = frappe.db.get_value(
                 "Company", self.company, "travel_advance_account"
@@ -97,7 +98,11 @@ class EmployeeAdvance(Document):
             account = ""
 
     def update_defaults(self):
-        self.salary_component = "Salary Advance Deductions"
+        if self.advance_type == "Salary Advance":
+            self.salary_component = "Salary Advance Deductions"
+        elif self.advance_type == "Employee Loan":
+            self.salary_component = "Employee Loan"
+            
 
     def update_pending_amount(self):
         self.pending_amount = self.advance_amount
@@ -132,7 +137,7 @@ class EmployeeAdvance(Document):
 
     @frappe.whitelist()
     def validate_employment_status(self):
-        if self.advance_type == "Salary Advance":
+        if self.advance_type in ("Salary Advance", "Employee Loan"):
             employment_type = frappe.db.get_value(
                 "Employee", self.employee, "employment_status"
             )
@@ -578,7 +583,7 @@ class EmployeeAdvance(Document):
         default_payment_account = frappe.db.get_value(
             "Company", self.company, "default_bank_account"
         )
-        if self.advance_type == "Salary Advance":
+        if self.advance_type in ("Salary Advance","Employee Loan"):
             account_select = frappe.db.get_value(
                 "Company", self.company, "salary_advance_account"
             )
@@ -782,6 +787,8 @@ def get_voucher_type(mode_of_payment=None):
 def select_account(advance_type, company):
     if advance_type == "Salary Advance":
         account = frappe.db.get_value("Company", company, "salary_advance_account")
+    elif advance_type == "Employee Loan":
+        account = frappe.db.get_value("Company", company, "employee_loan_account")
     elif advance_type == "Travel Advance":
         account = frappe.db.get_value("Company", company, "travel_advance_account")
     elif advance_type == "Imprest Advance":
