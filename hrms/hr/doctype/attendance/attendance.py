@@ -46,21 +46,23 @@ class Attendance(Document):
         self.validate_overlapping_shift_attendance()
         self.validate_employee_status()
         self.check_leave_record()
+    def before_cancel(self):
+        self.delete_leave_ledger_entry()
 
     def on_cancel(self):
         self.unlink_attendance_from_checkins()
-        self.delete_leave_ledger_entry()
 
     def on_submit(self):
         self.create_leave_ledger_entry()
 
-    def delete_leave_ledger_enty(self):
+    def delete_leave_ledger_entry(self):
         frappe.db.sql("""
             delete from `tabLeave Ledger Entry` where transaction_name = '{}'
         """.format(self.name))
 
     def create_leave_ledger_entry(self, submit=True):
         leave_types = ["Casual Leave", "Earned Leave", "Medical Leave"]
+        leave_deducted = 0
         if self.status == "Absent":
             if submit == True:
                 for a in leave_types:
@@ -72,7 +74,7 @@ class Attendance(Document):
                         consider_all_leaves_in_the_allocation_period=True,
                         for_consumption=True,
                     )
-                    if leave_balance >= 1:
+                    if leave_balance >= 1 and leave_deducted == 0:
                         args = dict(
                             leaves=-1,
                             from_date=self.attendance_date,
@@ -87,18 +89,7 @@ class Attendance(Document):
                         frappe.db.commit()
                         create_leave_ledger_entry(self, args, submit)
                         return
-            else:
-                args = dict(
-                    leaves=-1,
-                    from_date=self.attendance_date,
-                    to_date=self.attendance_date,
-                    leave_type=self.leave_type,
-                    holiday_list=get_holiday_list_for_employee(
-                        self.employee, raise_exception=True
-                    )
-                    or "",
-                )
-                create_leave_ledger_entry(self, args, submit)
+
 
     def validate_attendance_date(self):
         date_of_joining = frappe.db.get_value(

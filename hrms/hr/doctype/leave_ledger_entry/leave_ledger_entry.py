@@ -18,7 +18,8 @@ class LeaveLedgerEntry(Document):
 		if self.is_expired:
 			frappe.db.set_value("Leave Allocation", self.transaction_name, "expired", 0)
 		else:
-			frappe.throw(_("Only expired allocation can be cancelled"))
+			if self.transaction_type != "Attendance":
+				frappe.throw(_("Only expired allocation can be cancelled"))
 
 
 def validate_leave_allocation_against_leave_application(ledger):
