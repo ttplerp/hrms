@@ -12,6 +12,7 @@
   "download_template",
   "branch",
   "muster_roll_type",
+  "muster_roll_group",
   "get_template",
   "column_break_3",
   "fiscal_year",
@@ -128,11 +129,17 @@
    "fieldtype": "Select",
    "label": "Muster Roll Type",
    "options": "\nSkilled\nSemiskilled\nUnskilled\nObservation\nTrainee"
+  },
+  {
+   "fieldname": "muster_roll_group",
+   "fieldtype": "Select",
+   "label": "Muster Roll Group",
+   "options": "\nNational\nNon-National"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-29 11:35:11.387149",
+ "modified": "2023-10-12 12:42:57.539280",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Bulk Upload Tool",

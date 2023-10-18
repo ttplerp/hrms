@@ -28,6 +28,7 @@ frappe.ui.form.on('Bulk Upload Tool', {
                 branch : frm.doc.branch,
                 month: frm.doc.month,
                 muster_roll_type: frm.doc.muster_roll_type,
+                muster_roll_group: frm.doc.muster_roll_group,
                 fiscal_year: frm.doc.fiscal_year,
                 upload_type: frm.doc.upload_type
             }

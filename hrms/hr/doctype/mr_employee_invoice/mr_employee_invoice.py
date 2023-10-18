@@ -25,7 +25,13 @@ class MREmployeeInvoice(AccountsController):
     def calculate_amount(self):
         other_deductions = total_ot_amount = total_daily_wage_amount = 0
         for a in self.attendance:
-            total_daily_wage_amount += flt(a.daily_wage, 2)
+            if a.status == "Present":
+                total_daily_wage_amount += flt(a.daily_wage,2)
+            elif a.status == "Half Day":
+                total_daily_wage_amount += flt(flt(a.daily_wage,2)/2,2)
+                a.daily_wage = flt(flt(a.daily_wage,2)/2,2)
+            else:
+                total_daily_wage_amount += flt(a.daily_wage,2)
         for a in self.ot:
             total_ot_amount += flt(a.amount, 2)
         for d in self.deductions:
@@ -89,58 +95,31 @@ class MREmployeeInvoice(AccountsController):
 
     @frappe.whitelist()
     def get_attendance(self):
-        if (
-            not self.mr_employee
-            or not self.fiscal_year
-            or not self.month
-            or not self.mr_employee
-        ):
-            frappe.msgprint(
-                "MR Employee or Fiscal Year or Month is missing", raise_exception=True
-            )
-        month = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ].index(self.month) + 1
+        if not self.mr_employee or not self.fiscal_year or not self.month or not self.mr_employee:
+            frappe.msgprint("MR Employee or Fiscal Year or Month is missing",raise_exception=True)
+        month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].index(self.month) + 1
         month = str(month) if cint(month) > 9 else str("0" + str(month))
-        start_date = getdate(str(self.fiscal_year) + "-" + str(month) + "-01")
+        start_date = getdate(str(self.fiscal_year)+"-"+str(month)+"-01")
         end_date = get_last_day(start_date)
         self.total_days_worked = 0
-        self.set("attendance", [])
-        for d in frappe.db.sql(
-            """
-				select a.name as mr_attendance, a.status,
-					a.date, b.rate_per_day as daily_wage
-				from `tabMuster Roll Attendance` a join
-				`tabMuster Roll Employee` b on a.mr_employee = b.name
-				where a.date between '{}' and '{}' and a.status = 'Present' 
-				and a.docstatus = 1 and a.mr_employee = '{}'
+        self.set("attendance",[])
+        for d in frappe.db.sql('''
+                select a.name as mr_attendance, a.status,
+                    a.date, b.rate_per_day daily_wage
+                from `tabMuster Roll Attendance` a join
+                `tabMuster Roll Employee` b on a.mr_employee = b.name
+                where a.date between '{}' and '{}' and a.status in ('Present','Half Day') 
+                and a.docstatus = 1 and a.mr_employee = '{}'
                 and not exists (select 1 from `tabMR Employee Invoice` e inner join `tabMR Attendance Item` f 
-                                    on e.name = f.parent where e.name != '{}' and f.mr_attendance = a.name and e.docstatus != 2)
-				""".format(
-                start_date, end_date, self.mr_employee, self.name
-            ),
-            as_dict=1,
-        ):
-            self.total_days_worked += 1
+                                on e.name = f.parent where e.name != '{}' and f.mr_attendance = a.name and e.docstatus != 2)
+                '''.format(start_date, end_date, self.mr_employee, self.name), as_dict=1):
+            if d.status == "Present":
+                self.total_days_worked += 1
+            else:
+                self.total_days_worked += 0.5
             self.append("attendance", d)
         if len(self.attendance) <= 0:
-            frappe.msgprint(
-                "No attendance found for year {} of month {}".format(
-                    frappe.bold(self.fiscal_year), frappe.bold(self.month)
-                ),
-                raise_exception=True,
-            )
+            frappe.msgprint("No attendance found for year {} of month {}".format(frappe.bold(self.fiscal_year), frappe.bold(self.month)),raise_exception=True)
 
     @frappe.whitelist()
     def get_ot(self):
@@ -172,15 +151,15 @@ class MREmployeeInvoice(AccountsController):
         self.set("attendance", [])
         for d in frappe.db.sql(
             """
-				select a.name as overtime_entries, a.number_of_hours,
-					a.date, b.rate_per_hour as ot_rate
-				from `tabMuster Roll Overtime Entry` a join
-				`tabMuster Roll Employee` b on a.mr_employee = b.name
-				where a.date between '{}' and '{}' 
-				and a.docstatus = 1 and a.mr_employee = '{}'
+                select a.name as overtime_entries, a.number_of_hours,
+                    a.date, b.rate_per_hour as ot_rate
+                from `tabMuster Roll Overtime Entry` a join
+                `tabMuster Roll Employee` b on a.mr_employee = b.name
+                where a.date between '{}' and '{}' 
+                and a.docstatus = 1 and a.mr_employee = '{}'
                 and not exists(select 1 from `tabMR Employee Invoice` c inner join `tabOvertime Invoice Item` d
                  on c.name = d.parent where c.docstatus != 2 and c.name != '{}' and d.overtime_entries = a.name )
-				""".format(
+                """.format(
                 start_date, end_date, self.mr_employee, self.name
             ),
             as_dict=1,
