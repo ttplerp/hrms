@@ -93,7 +93,16 @@ class LeaveApplication(Document):
 
 	def on_submit(self):
 		#Added by Kinley 2022/11/16
+		if self.workflow_state == "Approved":
+			self.db_set("status", "Approved")
+		elif self.workflow_state == "Rejected":
+			self.db_set("status", "Rejected")
+
 		notify_workflow_states(self)
+		if self.status in ["Open", "Cancelled"]:
+			frappe.throw(
+				_("Only Leave Applications with status 'Approved' and 'Rejected' can be submitted")
+			)
 		self.validate_back_dated_application()
 		self.update_attendance()
 		# notify leave applier about approval

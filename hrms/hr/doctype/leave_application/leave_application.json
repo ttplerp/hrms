@@ -33,7 +33,6 @@
   "leave_approver_name",
   "column_break_22",
   "leave_approver_designation",
-  "column_break_18",
   "status",
   "salary_slip",
   "sb10",
@@ -171,18 +170,15 @@
    "read_only": 1
   },
   {
-   "fieldname": "column_break_18",
-   "fieldtype": "Column Break"
-  },
-  {
    "default": "Open",
    "fieldname": "status",
    "fieldtype": "Select",
-   "hidden": 1,
    "label": "Status",
    "no_copy": 1,
    "options": "Open\nApproved\nRejected\nCancelled",
-   "permlevel": 1
+   "permlevel": 1,
+   "read_only": 1,
+   "reqd": 1
   },
   {
    "fieldname": "sb10",
@@ -298,7 +294,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2023-08-30 10:11:17.235336",
+ "modified": "2023-10-19 10:01:05.175432",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
