@@ -35,7 +35,7 @@ def execute(filters=None):
 		cid, joining_date, tpn_number, nationality = frappe.db.get_value("Employee", ss.employee, ["passport_number","date_of_joining", "tpn_number", "nationality"])
 						
 		row = [ss.employee, ss.employee_name, ss.employment_type, cid, joining_date, tpn_number, nationality,
-			ss.bank_name, ss.bank_account_no, 
+			ss.bank_name, ss.bank_code, ss.bank_branch, ss.bank_account_no, 
 			ss.cost_center, ss.branch, ss.department,
 						 ss.division, ss.unit, ss.employee_grade, ss.designation, 
 			 ss.fiscal_year, ss.month, ss.leave_withut_pay, ss.payment_days,
@@ -64,7 +64,9 @@ def get_columns(salary_slips):
 		_("Joining Date") + ":Date:100", 
 		_("TPN Number") + "::100",
 		_("Nationality") + "::100",
-		_("Bank Name")+ "::80", 
+		_("Bank Name")+ "::80",
+		_("Bank/IFS Code")+ "::80",
+		_("Bank Branch")+ "::80",
 		_("Bank A/C#")+"::100", 
 		_("Cost Center") + ":Link/Cost Center:120",
 		_("Branch") + ":Link/Branch:120", 
@@ -107,7 +109,7 @@ def get_columns(salary_slips):
 def get_salary_slips(filters):
 	conditions, filters = get_conditions(filters)
 	salary_slips = frappe.db.sql("""
-								select ss.*, e.unit from `tabSalary Slip` ss, `tabEmployee` e where ss.employee = e.name %s
+								select ss.*, e.unit, e.bank_branch, (select fi.bank_code from `tabFinancial Institution` fi where fi.name = ss.bank_name) as bank_code from `tabSalary Slip` ss, `tabEmployee` e where ss.employee = e.name %s
 								order by ss.employee, ss.month
 							""" % conditions, filters, as_dict=1)
 	'''
