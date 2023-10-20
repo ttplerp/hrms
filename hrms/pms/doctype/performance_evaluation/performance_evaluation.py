@@ -70,6 +70,10 @@ def get_permission_query_conditions(user):
 
 	if user == "Administrator":
 		return
+	
+	if "Analytics" in user_roles:
+		return
+	
 	if "HR Manager" in user_roles:
 		return """(CAST(`tabPerformance Evaluation`.month as signed) = Month('{}') and `tabPerformance Evaluation`.docstatus = 0)""".format(today())
 

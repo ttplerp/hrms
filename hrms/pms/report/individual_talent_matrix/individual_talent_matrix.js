@@ -16,7 +16,8 @@ frappe.query_reports["Individual Talent Matrix"] = {
 			"label": __("From"),
 			"fieldtype": "Select",
 			"options": "\nJan\nFeb\nMar\nApr\nMay\nJun\nJul\nAug\nSep\nOct\nNov\nDec",
-			"default": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth()],
+			"default": "Jan",
+			// "default": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth()],
 		},
 		{
 			"fieldname": "to_month",
@@ -26,10 +27,11 @@ frappe.query_reports["Individual Talent Matrix"] = {
 			"default": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth()],
 		},
 		{
-			fieldname: "pot_per",
-			label: __("Select"),
-			fieldtype: "Select",
+			"fieldname": "pot_per",
+			"label": __("Select"),
+			"fieldtype": "Select",
 			"options": "\nUnrealized Performer\nGrowth Employee\nFuture Senior Leader\nInconsistent Performer\nCore Employee\nHigh-Impact Performer\nLow Performer\nEffective Employee\nTrusted Professional",
+			"default": "Core Employee"
 		},
 		{
 			"fieldname":"exclude_muster_roll",
