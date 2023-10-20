@@ -49,6 +49,9 @@
   "sb_more_details",
   "narration",
   "bill_no",
+  "column_break_y3lbo",
+  "reference_type",
+  "reference_doctype",
   "amended_from"
  ],
  "fields": [
@@ -66,7 +69,8 @@
   {
    "fieldname": "posting_date",
    "fieldtype": "Date",
-   "label": "Posting Date"
+   "label": "Posting Date",
+   "reqd": 1
   },
   {
    "fieldname": "advance_type",
@@ -324,12 +328,28 @@
    "fieldname": "bill_no",
    "fieldtype": "Data",
    "label": "Bill No"
+  },
+  {
+   "fieldname": "column_break_y3lbo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reference_type",
+   "fieldtype": "Link",
+   "label": "Reference Type",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "reference_doctype",
+   "fieldtype": "Dynamic Link",
+   "label": "Reference Doctype",
+   "options": "reference_type"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-05 12:25:17.989265",
+ "modified": "2023-10-20 16:46:45.197032",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance Settlement",
