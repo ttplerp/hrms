@@ -13,6 +13,7 @@
   "department",
   "employee_group",
   "supervisor_remarks",
+  "approver_remarks",
   "column_break_4",
   "posting_date",
   "advance_type",
@@ -487,11 +488,19 @@
    "fieldtype": "Float",
    "label": "PMS Rating",
    "precision": "2"
+  },
+  {
+   "depends_on": "eval:doc.workflow_state == \"Approved\" || doc.workflow_state == \"Waiting Approval\";",
+   "fieldname": "approver_remarks",
+   "fieldtype": "Small Text",
+   "label": "Approver Remarks",
+   "mandatory_depends_on": "eval:doc.workflow_state==\"Waiting Approval\";",
+   "read_only_depends_on": "eval:doc.workflow_state==\"Draft\";"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-16 14:12:14.801809",
+ "modified": "2023-10-25 11:50:52.116106",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
