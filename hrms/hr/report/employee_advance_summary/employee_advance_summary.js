@@ -25,16 +25,16 @@ frappe.query_reports["Employee Advance Summary"] = {
 			"default": frappe.datetime.get_today()
 		},
 		{
-			"fieldname":"company",
-			"label": __("Company"),
-			"fieldtype": "Link",
-			"options": "Company"
-		},
-		{
 			"fieldname":"status",
 			"label": __("Status"),
 			"fieldtype": "Select",
 			"options": "\nDraft\nPaid\nUnpaid\nClaimed\nCancelled"
+		},
+		{
+			"fieldname":"type",
+			"label": __("Advance Type"),
+			"fieldtype": "Select",
+			"options": "\nSalary Advance\nTravel Advance\nOthers"
 		}
 	]
 };

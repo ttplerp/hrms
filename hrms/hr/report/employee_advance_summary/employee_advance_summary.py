@@ -4,8 +4,6 @@
 
 import frappe
 from frappe import _, msgprint
-
-
 def execute(filters=None):
 	if not filters:
 		filters = {}
@@ -41,21 +39,21 @@ def get_columns():
 			"fieldname": "title",
 			"fieldtype": "Link",
 			"options": "Employee Advance",
-			"width": 120,
+			"width": 200,
 		},
 		{
 			"label": _("Employee"),
 			"fieldname": "employee",
 			"fieldtype": "Link",
 			"options": "Employee",
-			"width": 120,
+			"width": 150,
 		},
 		{
 			"label": _("Company"),
 			"fieldname": "company",
 			"fieldtype": "Link",
 			"options": "Company",
-			"width": 120,
+			"width": 200,
 		},
 		{"label": _("Posting Date"), "fieldname": "posting_date", "fieldtype": "Date", "width": 120},
 		{
@@ -69,7 +67,7 @@ def get_columns():
 			"label": _("Claimed Amount"),
 			"fieldname": "claimed_amount",
 			"fieldtype": "Currency",
-			"width": 120,
+			"width": 150,
 		},
 		{"label": _("Status"), "fieldname": "status", "fieldtype": "Data", "width": 120},
 	]
@@ -77,17 +75,16 @@ def get_columns():
 
 def get_conditions(filters):
 	conditions = ""
-
 	if filters.get("employee"):
 		conditions += "and employee = %(employee)s"
-	if filters.get("company"):
-		conditions += " and company = %(company)s"
 	if filters.get("status"):
 		conditions += " and status = %(status)s"
 	if filters.get("from_date"):
 		conditions += " and posting_date>=%(from_date)s"
 	if filters.get("to_date"):
 		conditions += " and posting_date<=%(to_date)s"
+	if filters.get("type"):
+		conditions += " and advance_type = %(type)s"
 
 	return conditions
 
