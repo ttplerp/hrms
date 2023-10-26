@@ -76,6 +76,7 @@ class SalaryStructure(Document):
 		self.department = emp.department
 		self.division = emp.division
 		self.section = emp.section
+		# self.unit = emp.unit
 		self.backup_employee = self.employee
 		self.business_activity = emp.business_activity
 
@@ -168,6 +169,7 @@ class SalaryStructure(Document):
 			self.db_set("department", doc.department)
 			self.db_set("division", doc.division)
 			self.db_set("section", doc.section)
+			# self.db_set("unit", doc.unit)
 			self.db_set("employment_type", doc.employment_type)
 			self.db_set("employee_group", doc.employee_group)
 			# self.db_set("employee_grade", doc.grade)
