@@ -358,7 +358,7 @@ class SalarySlip(TransactionBase):
 			ss_name = ''
 			payment_made = 'Unpaid'
 		for a in self.ot_items:
-			frappe.db.sql(""" update `tabOvertime Application` set processed = '{0}', salary_slip = '{3}'  where name = '{1}' and employee = '{2}', payment_made = '{4}'
+			frappe.db.sql(""" update `tabOvertime Application` set processed = '{0}', salary_slip = '{3}', payment_made = '{4}'  where name = '{1}' and employee = '{2}'
 		""".format(processed, a.reference, self.employee, ss_name, payment_made))
 
 	def post_sws_entry(self):
