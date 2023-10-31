@@ -12,6 +12,7 @@
   "person_name",
   "designation",
   "muster_roll_type",
+  "muster_roll_group",
   "pms_employee_group",
   "list_in_job_card",
   "column_break_4",
@@ -352,11 +353,17 @@
    "fieldtype": "Link",
    "label": "PMS Employee Group",
    "options": "Employee Group"
+  },
+  {
+   "fieldname": "muster_roll_group",
+   "fieldtype": "Select",
+   "label": "Muster Roll Group",
+   "options": "\nNational\nNon-National"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-22 12:04:54.961241",
+ "modified": "2023-10-12 12:45:06.065210",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

@@ -47,6 +47,7 @@
    "options": "\nPresent\nAbsent\nHalf Day"
   },
   {
+   "fetch_from": "mr_employee.branch",
    "fieldname": "branch",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -55,6 +56,7 @@
    "options": "Branch"
   },
   {
+   "fetch_from": "mr_employee.cost_center",
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
@@ -63,6 +65,7 @@
   {
    "fieldname": "unit",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Unit",
    "options": "Department"
   },
@@ -91,7 +94,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-16 13:57:52.700470",
+ "modified": "2023-10-30 15:26:00.366418",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Attendance",

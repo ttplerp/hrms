@@ -32,19 +32,22 @@
   "total_ot_hrs",
   "deductions_details_section",
   "deductions",
+  "section_break_y7dgi",
+  "arrears_and_allowance",
   "amount_details_section",
   "total_ot_amount",
+  "total_arrears_and_allowance",
   "grand_total",
   "outstanding_amount",
   "column_break_10",
   "total_daily_wage_amount",
   "other_deduction",
   "net_payable_amount",
-  "amended_from",
   "section_break_34",
   "remarks",
   "journal_entry",
-  "mr_invoice_entry"
+  "mr_invoice_entry",
+  "amended_from"
  ],
  "fields": [
   {
@@ -284,12 +287,29 @@
    "fieldtype": "Table",
    "label": "Deductions",
    "options": "MR Employee Deduction"
+  },
+  {
+   "fieldname": "section_break_y7dgi",
+   "fieldtype": "Section Break",
+   "label": "Arrears and Allowance Details"
+  },
+  {
+   "fieldname": "arrears_and_allowance",
+   "fieldtype": "Table",
+   "label": "Arrears and Allowance",
+   "options": "MR Employee Arrears Allowance"
+  },
+  {
+   "fieldname": "total_arrears_and_allowance",
+   "fieldtype": "Currency",
+   "label": "Total Arrears and Allowance",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-31 15:27:41.283002",
+ "modified": "2023-10-30 11:20:25.281463",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Employee Invoice",

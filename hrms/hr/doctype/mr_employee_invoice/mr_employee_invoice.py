@@ -11,6 +11,10 @@ from frappe.utils import (
     get_last_day,
     getdate,
 )
+from erpnext.accounts.general_ledger import (
+    make_gl_entries,
+    merge_similar_entries,
+)
 
 from frappe import _
 from erpnext.controllers.accounts_controller import AccountsController
@@ -23,7 +27,7 @@ class MREmployeeInvoice(AccountsController):
         self.set_status()
 
     def calculate_amount(self):
-        other_deductions = total_ot_amount = total_daily_wage_amount = 0
+        other_deductions = total_ot_amount = total_daily_wage_amount = total_arrears_and_allowance = 0
         for a in self.attendance:
             if a.status == "Present":
                 total_daily_wage_amount += flt(a.daily_wage,2)
@@ -36,13 +40,130 @@ class MREmployeeInvoice(AccountsController):
             total_ot_amount += flt(a.amount, 2)
         for d in self.deductions:
             other_deductions += flt(d.amount, 2)
+        for arr in self.arrears_and_allowance:
+            total_arrears_and_allowance += flt(arr.amount, 2)
         self.other_deduction = flt(other_deductions, 2)
         self.total_ot_amount = flt(total_ot_amount, 2)
         self.total_daily_wage_amount = flt(total_daily_wage_amount, 2)
-        self.grand_total = flt(total_daily_wage_amount + total_ot_amount, 2)
+        self.total_arrears_and_allowance = flt(total_arrears_and_allowance, 2)
+        self.grand_total = flt(total_daily_wage_amount + total_ot_amount + total_arrears_and_allowance, 2)
         self.outstanding_amount = self.net_payable_amount = flt(
             self.grand_total - self.other_deduction, 2
         )
+    
+    def on_submit(self):
+        self.make_gl_entries()
+
+    def on_cancel(self):
+        self.ignore_linked_doctypes = ("GL Entry", "Stock Ledger Entry", "Payment Ledger Entry")
+        self.make_gl_entries()
+
+    def make_gl_entries(self):
+       
+        gl_entries = []
+        self.make_party_gl_entry(gl_entries)
+        self.make_deduction_gl_entries(gl_entries)
+        self.make_expense_gl_entries(gl_entries)
+        self.make_arrear_allowance_gl_entries(gl_entries)
+
+        gl_entries = merge_similar_entries(gl_entries)
+        make_gl_entries(gl_entries, update_outstanding="No", cancel=self.docstatus == 2)
+
+    def make_party_gl_entry(self, gl_entries):
+        if flt(self.net_payable_amount) > 0:
+            # Did not use base_grand_total to book the rounding loss gle
+            gl_entries.append(
+                self.get_gl_dict({
+                    "account": self.credit_account,
+                    "credit": flt(self.net_payable_amount, 2),
+                    "credit_in_account_currency": flt(self.net_payable_amount, 2),
+                    "against_voucher": self.name,
+                    "party_type": "Muster Roll Employee",
+                    "party": self.mr_employee,
+                    "against_voucher_type": self.doctype,
+					"cost_center": self.cost_center,
+					"voucher_type":self.doctype,
+					"voucher_no":self.name
+                }, self.currency)
+            )
+
+    def make_deduction_gl_entries(self, gl_entries):
+        for d in self.deductions:
+            gl_entries.append(
+                self.get_gl_dict(
+                    {
+                        "account": d.account,
+                        "credit": flt(d.amount, 2),
+                        "credit_in_account_currency": flt(d.amount, 2),
+                        "against_voucher": self.name,
+                        "against_voucher_type": self.doctype,
+                        "party_type": "Muster Roll Employee",
+                        "party": self.mr_employee,
+                        "cost_center": self.cost_center,
+                        "voucher_type": self.doctype,
+                        "voucher_no": self.name,
+                    },
+                    self.currency,
+                )
+            )
+    
+    def make_expense_gl_entries(self, gl_entries):
+        ot_account = frappe.db.get_value("Company", self.company, "overtime_allowance_account")
+        muster_roll_group = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "muster_roll_group")
+        acc = "national_wage" if muster_roll_group == "National" else "foreign_wage"
+        wages_payable_account = frappe.db.get_single_value("Projects Settings", acc)
+        if not ot_account:
+            frappe.throw("Overtime Allownace Account is missing in company")
+        if not wages_payable_account:
+            frappe.throw("Wage Account is missing in branch <b>{}</b>".format(self.branch))
+        gl_entries.append(
+			self.get_gl_dict({
+					"account":  wages_payable_account,
+					"debit": flt(self.total_daily_wage_amount,2),
+					"debit_in_account_currency": flt(self.total_daily_wage_amount,2),
+					"against_voucher": self.name,
+					"against_voucher_type": self.doctype,
+					"party_type": "Muster Roll Employee",
+					"party": self.mr_employee,
+					"cost_center": self.cost_center,
+					"voucher_type":self.doctype,
+					"voucher_no":self.name
+			}, self.currency)
+		)
+        gl_entries.append(
+			self.get_gl_dict({
+					"account":  ot_account,
+					"debit": flt(self.total_ot_amount,2),
+					"debit_in_account_currency": flt(self.total_ot_amount,2),
+					"against_voucher": self.name,
+					"against_voucher_type": self.doctype,
+					"party_type": "Muster Roll Employee",
+					"party": self.mr_employee,
+					"cost_center": self.cost_center,
+					"voucher_type":self.doctype,
+					"voucher_no":self.name
+			}, self.currency)
+		)
+    
+    def make_arrear_allowance_gl_entries(self, gl_entries):
+        for d in self.arrears_and_allowance:
+            gl_entries.append(
+                self.get_gl_dict(
+                    {
+                        "account": d.account,
+                        "debit": flt(d.amount, 2),
+                        "debit_in_account_currency": flt(d.amount, 2),
+                        "against_voucher": self.name,
+                        "against_voucher_type": self.doctype,
+                        "party_type": "Muster Roll Employee",
+                        "party": self.mr_employee,
+                        "cost_center": self.cost_center,
+                        "voucher_type": self.doctype,
+                        "voucher_no": self.name,
+                    },
+                    self.currency,
+                )
+            )
 
     def set_status(self, update=False, status=None, update_modified=True):
         if self.is_new():
@@ -71,26 +192,6 @@ class MREmployeeInvoice(AccountsController):
         if update:
             self.db_set(
                 "payment_status", self.payment_status, update_modified=update_modified
-            )
-
-    def deduction_gl_entries(self, gl_entries):
-        for d in self.deductions:
-            gl_entries.append(
-                self.get_gl_dict(
-                    {
-                        "account": d.account,
-                        "credit": flt(d.amount, 2),
-                        "credit_in_account_currency": flt(d.amount, 2),
-                        "against_voucher": self.name,
-                        "against_voucher_type": self.doctype,
-                        "party_type": "Muster Roll Employee",
-                        "party": self.mr_employee,
-                        "cost_center": self.cost_center,
-                        "voucher_type": self.doctype,
-                        "voucher_no": self.name,
-                    },
-                    self.currency,
-                )
             )
 
     @frappe.whitelist()

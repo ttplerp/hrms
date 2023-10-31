@@ -15,29 +15,41 @@ class MRInvoiceEntry(Document):
 
     def on_submit(self):
         self.submit_mr_invoice()
-        
+
     def on_cancel(self):
-        frappe.db.sql("""
+        frappe.db.sql(
+            """
             UPDATE  
                 `tabJournal Entry` 
             SET 
                 docstatus = 2 
             WHERE 
                 referece_doctype = '{0}'
-            """.format(self.name))
-        
-        frappe.db.sql("""
+            """.format(
+                self.name
+            )
+        )
+
+        frappe.db.sql(
+            """
             UPDATE  
                 `tabMR Employee Invoice` 
             SET 
                 docstatus = 2 
             WHERE 
                 mr_invoice_entry = '{0}'
-            """.format(self.name))
+            """.format(
+                self.name
+            )
+        )
         # self.post_to_account(cancel=True)
 
+
+    '''
+    # Commented by Dawa Tshering
     @frappe.whitelist()
     def post_to_account(self):
+        frappe.throw('Here')
         bank_account = frappe.db.get_value(
             "Branch", self.branch, "expense_bank_account"
         )
@@ -65,7 +77,6 @@ class MRInvoiceEntry(Document):
         wages_account = frappe.db.get_value(
             "Company", self.company, "mr_daily_wage_account"
         )
-
         net_payable_amount = 0.00
         total_ot_amount = 0.00
         total_daily_wage_amount = 0.00
@@ -107,14 +118,23 @@ class MRInvoiceEntry(Document):
                 }
             )
             if j["type"] == "payable":
+                je.update(
+                    {
+                        "total_debit": flt(total_daily_wage_amount, 2)
+                        + flt(total_ot_amount, 2),
+                        "total_credit": flt(total_daily_wage_amount, 2)
+                        + flt(total_ot_amount, 2),
+                    }
+                )
                 je.append(
                     "accounts",
                     {
                         "account": wages_account,
                         "debit_in_account_currency": flt(total_daily_wage_amount, 2),
-                        "cost_center": self.cost_center,
+                        "debit": flt(total_daily_wage_amount, 2),
                         "reference_type": self.doctype,
                         "reference_name": self.name,
+                        "cost_center": self.cost_center,
                     },
                 )
                 if total_ot_amount:
@@ -123,20 +143,26 @@ class MRInvoiceEntry(Document):
                         {
                             "account": ot_account,
                             "debit_in_account_currency": flt(total_ot_amount, 2),
+                            "debit": flt(total_ot_amount, 2),
                             "cost_center": self.cost_center,
                             "reference_type": self.doctype,
                             "reference_name": self.name,
                         },
                     )
-
-                je.append(
-                    "accounts",
-                    {
-                        "account": credit_account,
-                        "credit_in_account_currency": flt(net_payable_amount, 2),
-                        "cost_center": self.cost_center,
-                    },
-                )
+                for mr in self.items:
+                    je.append(
+                        "accounts",
+                        {
+                            "account": credit_account,
+                            "credit_in_account_currency": flt(mr.net_payable_amount, 2),
+                            "party_type": "Muster Roll Employee",
+                            "party": mr.mr_employee,
+                            "credit": flt(mr.net_payable_amount, 2),
+                            "cost_center": self.cost_center,
+                            "reference_type": self.doctype,
+                            "reference_name": self.name
+                        },
+                    )
                 if self.deductions:
                     for d in self.deductions:
                         je.append(
@@ -145,29 +171,42 @@ class MRInvoiceEntry(Document):
                                 "account": d.account,
                                 "credit": flt(d.amount, 2),
                                 "credit_in_account_currency": flt(d.amount, 2),
+                                "party_type": "Muster Roll Employee",
+                                "party": self.mr_employee,
                                 "reference_name": self.name,
                                 "reference_type": self.doctype,
                                 "cost_center": self.cost_center,
-                                # "voucher_type": self.doctype,
-                                # "voucher_no": self.name,
+                                "reference_type": self.doctype,
+                                "reference_name": self.name,
                             },
                         )
             else:
-                je.append(
-                    "accounts",
+                je.update(
                     {
-                        "account": credit_account,
-                        "debit_in_account_currency": flt(net_payable_amount, 2),
-                        "cost_center": self.cost_center,
-                        "reference_type": self.doctype,
-                        "reference_name": self.name,
-                    },
+                        "total_debit": flt(net_payable_amount, 2),
+                        "total_credit": flt(net_payable_amount, 2),
+                    }
                 )
+                for mrb in self.items:
+                    je.append(
+                            "accounts",
+                            {
+                                "account": credit_account,
+                                "debit_in_account_currency": flt(mrb.net_payable_amount, 2),
+                                "debit": flt(mrb.net_payable_amount, 2),
+                                "party_type": "Muster Roll Employee",
+                                "party": mrb.mr_employee,
+                                "cost_center": self.cost_center,
+                                "reference_type": self.doctype,
+                                "reference_name": self.name,
+                            },
+                        )
                 je.append(
                     "accounts",
                     {
                         "account": bank_account,
                         "credit_in_account_currency": flt(net_payable_amount, 2),
+                        "credit": flt(net_payable_amount, 2),
                         "cost_center": self.cost_center,
                     },
                 )
@@ -175,7 +214,57 @@ class MRInvoiceEntry(Document):
                 je.submit()
             else:
                 je.insert()
-                
+    '''
+
+    # Added by Dawa Tshering
+    @frappe.whitelist()
+    def post_to_account(self):
+        total_payable_amount = 0
+        accounts = []
+        bank_account = frappe.db.get_value("Company",self.company,"default_bank_account")
+        if not bank_account:
+            frappe.throw('Set default bank account in company {}'.format(self.company))
+        for d in frappe.db.sql('''
+				select name from `tabMR Employee Invoice` 
+				where docstatus = 1 and mr_invoice_entry = '{}'
+				and branch = '{}' and outstanding_amount > 0 
+				'''.format(self.name, self.branch), as_dict=True):
+                mr_invoice = frappe.get_doc("MR Employee Invoice",d.name)
+                total_payable_amount += flt(mr_invoice.net_payable_amount,2)
+                accounts.append({
+					"account": mr_invoice.credit_account,
+					"debit_in_account_currency": flt(mr_invoice.net_payable_amount,2),
+					"cost_center": mr_invoice.cost_center,
+					"party_check": 1,
+					"party_type": "Muster Roll Employee",
+					"party": mr_invoice.mr_employee,
+					"party_name":mr_invoice.mr_employee_name,
+					"reference_type": mr_invoice.doctype,
+					"reference_name": mr_invoice.name,
+				})
+        accounts.append({
+            "account": bank_account,
+            "credit_in_account_currency": flt(total_payable_amount,2),
+            "cost_center": self.cost_center
+        })
+        je = frappe.new_doc("Journal Entry")
+        je.flags.ignore_permissions=1
+        je.update({
+			"doctype": "Journal Entry",
+			"voucher_type": "Bank Entry",
+			"naming_series": "Bank Payment Voucher",
+			"title": "MR Employee Invoice Payment ",
+			"user_remark": "Note: MR Employee Invoice Payment of {} for year {}".format(self.month, self.fiscal_year),
+			"posting_date": self.posting_date,
+			"company": self.company,
+			"total_amount_in_words": money_in_words(total_payable_amount),
+			"branch": self.branch,
+			"reference_type":self.doctype,
+			"reference_doctype":self.name,
+			"accounts":accounts
+		})
+        je.insert()
+        frappe.msgprint(_('Journal Entry {0} posted to accounts').format(frappe.get_desk_link("Journal Entry", je.name)))
 
     def submit_mr_invoice(self):
         if self.mr_invoice_created == 0:
@@ -223,13 +312,19 @@ class MRInvoiceEntry(Document):
         if self.individual == 1:
             cond = "and name = '{}'".format(self.mr_employee)
         self.set("items", [])
+        mr_cond = ""
+        if self.muster_roll_type:
+            mr_cond += " and muster_roll_type = '{}'".format(self.muster_roll_type)
+        if self.muster_roll_group:
+            mr_cond += " and muster_roll_group = '{}'".format(self.muster_roll_group)
+
         for e in frappe.db.sql(
             """select 
 					name as mr_employee, person_name as mr_employee_name 
 					from `tabMuster Roll Employee` where status = 'Active'
-					and branch = {0} {1}
+					and branch = {0} {1} {2}
 			""".format(
-                frappe.db.escape(self.branch), cond
+                frappe.db.escape(self.branch), cond, mr_cond
             ),
             as_dict=True,
         ):
@@ -238,17 +333,14 @@ class MRInvoiceEntry(Document):
     @frappe.whitelist()
     def create_mr_invoice(self):
         self.check_permission("write")
-        credit_account = frappe.db.get_value(
-            "Company", self.company, "mr_payable_account"
-        )
+        account = "national_wage_payable" if self.muster_roll_group == "National" else "foreign_wage_payable"
+        credit_account = frappe.db.get_single_value("Projects Settings", account)
         if not credit_account:
             frappe.throw(
                 _(
-                    "Mr Payable account is not set in company {}".format(
-                        frappe.bold(self.company)
+                    "Mr Payable account is not set in Projects Settings"
                     )
                 )
-            )
 
         # self.created = 1
         args = frappe._dict(
@@ -290,6 +382,16 @@ class MRInvoiceEntry(Document):
                                 "remarks": d.remarks,
                             },
                         )
+                for a in self.arrears_and_allownace:
+                    if a.mr_employee == item.mr_employee:
+                        mr_invoice.append(
+                            "arrears_and_allowance",
+                            {
+                                "account": a.account,
+                                "amount": a.amount,
+                                "remarks": a.remarks
+                            }
+                        )
                 mr_invoice.save()
                 item.total_days_worked = mr_invoice.total_days_worked
                 item.total_daily_wage_amount = mr_invoice.total_daily_wage_amount
@@ -314,4 +416,3 @@ class MRInvoiceEntry(Document):
             self.mr_invoice_created = 1
         self.save()
         self.reload()
-

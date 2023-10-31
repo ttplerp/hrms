@@ -2,6 +2,20 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('MR Employee Invoice', {
+    refresh: function (frm) {
+        if (frm.doc.docstatus == 1) {
+            frm.add_custom_button(__('Ledger'), function(){
+				frappe.route_options = {
+                    voucher_no: frm.doc.name,
+                    from_date: frm.doc.posting_date,
+                    to_date: frm.doc.posting_date,
+                    company: frm.doc.company,
+                    group_by_voucher: false
+				};
+				frappe.set_route("query-report", "General Ledger");
+			},__('View'));
+        }
+    },
 	
     onload:function(frm){
         frm.set_query("credit_account",function(doc){

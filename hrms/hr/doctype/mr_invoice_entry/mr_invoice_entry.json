@@ -21,14 +21,16 @@
   "individual",
   "mr_employee",
   "section_break_8",
-  "amended_from",
   "items",
   "section_break_10",
   "deductions",
   "section_break_12",
+  "arrears_and_allownace",
+  "section_break_hr9eg",
   "mr_invoice_created",
   "column_break_17",
-  "mr_invoice_submit"
+  "mr_invoice_submit",
+  "amended_from"
  ],
  "fields": [
   {
@@ -113,6 +115,7 @@
    "fieldname": "mr_invoice_created",
    "fieldtype": "Check",
    "label": "MR Invoice Created",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -146,6 +149,7 @@
    "fieldname": "mr_invoice_submit",
    "fieldtype": "Check",
    "label": "MR Invoice Submit",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -173,12 +177,22 @@
    "fieldtype": "Select",
    "label": "Muster Roll Group",
    "options": "\nNational\nNon-National"
+  },
+  {
+   "fieldname": "section_break_hr9eg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "arrears_and_allownace",
+   "fieldtype": "Table",
+   "label": "Arrears and Allownace",
+   "options": "MR Employee Arrears Allowance Entry"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-16 16:16:23.541435",
+ "modified": "2023-10-30 12:08:32.303839",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Invoice Entry",
