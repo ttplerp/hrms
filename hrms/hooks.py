@@ -99,6 +99,7 @@ after_migrate = ["hrms.setup.update_select_perm_after_install"]
 permission_query_conditions = {
 	# "Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
 	"Employee Advance":"hrms.hr.doctype.employee_advance.employee_advance.get_permission_query_conditions",
+    "Overtime Application": "hrms.hr.doctype.overtime_application.overtime_application.get_permission_query_conditions",
 	"Employee Separation":"hrms.hr.doctype.employee_separation.employee_separation.get_permission_query_conditions",
 	"Employee Separation Clearance":"hrms.hr.doctype.employee_separation_clearance.employee_separation_clearance.get_permission_query_conditions",
 	"Employee Benefits":"hrms.hr.doctype.employee_benefits.employee_benefits.get_permission_query_conditions",
