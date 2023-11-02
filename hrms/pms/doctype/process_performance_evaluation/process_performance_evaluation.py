@@ -22,6 +22,10 @@ class ProcessPerformanceEvaluation(Document):
     def validate(self):
         self.set_month_dates()
 
+    def on_submit(self):
+        if not self.mr_employees and not self.employees:
+            frappe.throw("Can't sumbit this document because neither employee nor mr employee exist to process further")
+
     def set_month_dates(self):
         months = [
             "January",
@@ -87,9 +91,6 @@ class ProcessPerformanceEvaluation(Document):
     
     def get_mr_emp_list(self, process_type=None):
         condition = ""
-        # for f in ["company", "branch", "designation", "mr_employee"]:
-        #     if self.get(f):
-        #         condition += " and e." + f + " = '" + self.get(f).replace("'", "'") + "'"
         if self.mr_employee:
             condition += " and e.name = '"+str(self.mr_employee).replace("'", "'") + "'"
         if self.branch:
@@ -195,6 +196,18 @@ def get_existing_performance_evaluation(employees, args):
         [args.company, args.month] + employees,
     )
 
+def get_existing_performance_evaluation_mr(mr_employees, args):
+    return frappe.db.sql_list(
+        """
+			select distinct mr_employee from `tabPerformance Evaluation`
+            where docstatus !=2 and company = %s
+            and month = %s
+            and mr_employee in (%s)
+            """
+        % ("%s", "%s", ", ".join(["%s"] * len(mr_employees))),
+        [args.company, args.month] + mr_employees,
+    )
+
 def get_eval_list(employee):
     evaluator_list = frappe.db.sql("""
                 select evaluator from `tabPerformance Evaluator` where parent = '{}'
@@ -214,7 +227,7 @@ def get_work_competency(emp_group):
     return competency
 
 def create_performance_evaluation_for_mr_employees(mr_employees, args, title=None, publish_progress=True):
-    performance_evaluation_exists_for = get_existing_performance_evaluation(mr_employees, args)
+    performance_evaluation_exists_for = get_existing_performance_evaluation_mr(mr_employees, args)
     count = 0
     process_performance_evaluation = frappe.get_doc("Process Performance Evaluation", args.process_performance_evaluation)
     for mr_emp in process_performance_evaluation.get("mr_employees"):

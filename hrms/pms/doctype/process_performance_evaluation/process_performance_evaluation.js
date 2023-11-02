@@ -9,47 +9,19 @@ frappe.ui.form.on('Process Performance Evaluation', {
 	},
 
 	refresh: function(frm) {
-		if (frm.doc.docstatus == 0) {
-			frm.set_intro("");
-			if (!frm.is_new() && !frm.doc.performacne_evaluation_created) {
-				frm.page.clear_actions_menu();
-				frm.page.clear_primary_action();
-				if (!frm.doc.successful){
-					frm.page.add_action_item(__("Get Employees"),
-						function() {
-							frm.events.get_employee_details(frm);
-						}
-					);
-
-					frm.page.add_action_item(__("Get MR Employees"),
-						function() {
-							frm.events.get_mr_employee_details(frm);
-						}
-					);
-				}
-				if ((frm.doc.employees || []).length || (frm.doc.mr_employees || []).length) {
-					frm.page.add_action_item(__('Create Performance Evaluation'), function() {
-						frm.events.create_performance_evaluation(frm);
-					});
-				}
-			}
-			else if(frm.doc.performance_evaluation_created){
-				frm.page.clear_actions_menu();
-				frm.page.clear_primary_action();
-				// if(!frm.doc.salary_slips_submitted){
-					// Submit salary slips
-					frm.page.add_action_item(__('Submit PPE'), function() {
-						frm.save('Submit').then(()=>{
-							frm.page.clear_actions_menu();
-							frm.page.clear_primary_action();
-							frm.refresh();
-							frm.events.refresh(frm);
-						});
-					});
-				// }
-			}
-		} else {
-			cur_frm.page.clear_actions();
+		if(frm.doc.docstatus == 0 && frm.doc.performance_evaluation_created == 0){
+            cur_frm.add_custom_button(__('Get Employee'), function(doc) {
+				frm.events.get_employee_details(frm)
+			},__("Create"))
+			cur_frm.add_custom_button(__('Get MR Employee'), function(doc) {
+				frm.events.get_mr_employee_details(frm)
+			},__("Create"))
+			
+		}
+		if (!frm.doc.__islocal && frm.doc.docstatus == 1 && (((frm.doc.employees || []).length || (frm.doc.mr_employees || []).length))){
+			cur_frm.add_custom_button(__('Create Performance Evaluation'), function(doc) {
+				frm.events.create_performance_evaluation(frm)
+			},__("Create"))
 		}
 	},
 
@@ -107,9 +79,26 @@ frappe.ui.form.on('Process Performance Evaluation', {
 
 frappe.ui.form.on("PPE MR Employee Detail", { 
 	mr_employees_remove: function (frm) {
-		cal_total_mr_employee(frm)
+		cal_total_employee(frm)
 	}
 });
+frappe.ui.form.on("PPE Employee Detail", { 
+	employees_remove: function (frm) {
+		cal_total_employee(frm)
+	}
+});
+
+function cal_total_employee(frm){
+	let total_count = 0
+
+	if (frm.doc.employees){
+		frm.doc.employees.map(item => {
+			total_count += 1
+		})
+	}
+	cur_frm.set_value('number_of_employees', total_count)
+	cur_frm.refresh_field('number_of_employees')
+}
 
 function cal_total_mr_employee(frm){
 	let total_count = 0
@@ -117,7 +106,6 @@ function cal_total_mr_employee(frm){
 	if (frm.doc.mr_employees){
 		frm.doc.mr_employees.map(item => {
 			total_count += 1
-			console.log(item);
 		})
 	}
 	cur_frm.set_value('number_of_mr_employees', total_count)
