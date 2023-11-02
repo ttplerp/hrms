@@ -104,3 +104,22 @@ frappe.ui.form.on('Process Performance Evaluation', {
 		})
 	},
 });
+
+frappe.ui.form.on("PPE MR Employee Detail", { 
+	mr_employees_remove: function (frm) {
+		cal_total_mr_employee(frm)
+	}
+});
+
+function cal_total_mr_employee(frm){
+	let total_count = 0
+
+	if (frm.doc.mr_employees){
+		frm.doc.mr_employees.map(item => {
+			total_count += 1
+			console.log(item);
+		})
+	}
+	cur_frm.set_value('number_of_mr_employees', total_count)
+	cur_frm.refresh_field('number_of_mr_employees')
+}

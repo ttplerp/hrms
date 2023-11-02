@@ -57,7 +57,8 @@
   "reference_docname",
   "temp_doctype",
   "temp_docname",
-  "evaluator_details_section",
+  "performance_evaluation_section",
+  "include_in_performance_evaluation",
   "evaluators"
  ],
  "fields": [
@@ -338,11 +339,6 @@
    "options": "\nSkilled\nSemiskilled\nUnskilled\nObservation\nTrainee"
   },
   {
-   "fieldname": "evaluator_details_section",
-   "fieldtype": "Section Break",
-   "label": "PMS Evaluator Details"
-  },
-  {
    "fieldname": "evaluators",
    "fieldtype": "Table",
    "options": "Performance Evaluator"
@@ -359,11 +355,22 @@
    "fieldtype": "Select",
    "label": "Muster Roll Group",
    "options": "\nNational\nNon-National"
+  },
+  {
+   "default": "0",
+   "fieldname": "include_in_performance_evaluation",
+   "fieldtype": "Check",
+   "label": " Include in Performance Evaluation"
+  },
+  {
+   "fieldname": "performance_evaluation_section",
+   "fieldtype": "Section Break",
+   "label": "Performance Evaluation"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-12 12:45:06.065210",
+ "modified": "2023-11-02 11:47:04.257606",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

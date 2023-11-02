@@ -74,6 +74,8 @@ class ProcessPerformanceEvaluation(Document):
 			   						and pe.fiscal_year = '{}'
 			   						and pe.month = '{}'
 								)
+                                and e.include_in_performance_evaluation=1
+                                and e.status = 'Active'
 			   					{}
 			   					order by e.branch, e.name
 								""".format(
@@ -81,10 +83,6 @@ class ProcessPerformanceEvaluation(Document):
             ),
             as_dict=True,
         )
-        if not emp_list:
-            frappe.msgprint(
-                _("No employees found for processing or performance evaluation is already created")
-            )
         return emp_list
     
     def get_mr_emp_list(self, process_type=None):
@@ -105,12 +103,11 @@ class ProcessPerformanceEvaluation(Document):
                                         and pe.docstatus != 2
                                         and pe.fiscal_year = '{}'
                                         and pe.month = '{}'
-                                    ) {}
+                                    ) 
+                                    and e.include_in_performance_evaluation=1
+                                    and e.status = 'Active'
+                                    {}
                                     """.format(self.fiscal_year, self.month, condition), as_dict=True)
-        if not mr_emp_list:
-            frappe.msgprint(
-                _("No MR employees found for processing or performance evaluation is already created")
-            )
         return mr_emp_list
 
     @frappe.whitelist()
@@ -118,7 +115,9 @@ class ProcessPerformanceEvaluation(Document):
         self.set("employees", [])
         employees = self.get_emp_list()
         if not employees:
-            frappe.throw(_("No employees for the mentioned criteria"))
+            frappe.msgprint(
+                _("No employees found for processing or performance evaluation is already created")
+            )
 
         for a in employees:
             self.append("employees", a)
@@ -131,7 +130,9 @@ class ProcessPerformanceEvaluation(Document):
         self.set("mr_employees", [])
         mr_employees = self.get_mr_emp_list()
         if not mr_employees:
-            frappe.throw(_("No employees for the mentioned criteria"))
+            frappe.msgprint(
+                _("No MR employees found for processing or performance evaluation is already created")
+            )
 
         for a in mr_employees:
             self.append("mr_employees", a)
@@ -146,8 +147,11 @@ class ProcessPerformanceEvaluation(Document):
         """
         self.check_permission("write")
         self.created = 1
-        emp_list = [d.employee for d in self.get_emp_list()]
-        mr_emp_list = [d.mr_employee for d in self.get_mr_emp_list()]
+        emp_list = [d.employee for d in self.employees]
+        mr_emp_list = [d.mr_employee for d in self.mr_employees]
+
+        if not emp_list and not mr_emp_list:
+            frappe.throw("Don't have both Employee and Muster Roll Employee")
 
         args = frappe._dict({
             "fiscal_year": self.fiscal_year,
@@ -158,7 +162,8 @@ class ProcessPerformanceEvaluation(Document):
             "process_performance_evaluation": self.name,
         })
         
-        if emp_list:        
+        if emp_list: 
+            '''       
             if len(emp_list) > 300:
                 frappe.enqueue(
                     create_performance_evaluation_for_employees,
@@ -167,18 +172,16 @@ class ProcessPerformanceEvaluation(Document):
                     args=args,
                 )
             else:
-                create_performance_evaluation_for_employees(
-                    emp_list, args, publish_progress=False
-                )
+                create_performance_evaluation_for_employees(emp_list, args, publish_progress=False)
                 # since this method is called via frm.call this doc needs to be updated manually
                 self.reload()
+            '''
+            create_performance_evaluation_for_employees(emp_list, args, publish_progress=False)
+            self.reload()
 
         if mr_emp_list:
-            if len(mr_emp_list) > 300:
-                frappe.enqueue(create_performance_evaluation_for_mr_employees, timeout=600, employee=mr_emp_list, args=args,)
-            else:
-                create_performance_evaluation_for_mr_employees(mr_emp_list, args, publish_progress=True)
-                self.reload()
+            create_performance_evaluation_for_mr_employees(mr_emp_list, args, publish_progress=True)
+            self.reload()
 
 def get_existing_performance_evaluation(employees, args):
     return frappe.db.sql_list(
