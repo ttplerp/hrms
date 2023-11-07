@@ -41,7 +41,6 @@ class EmployeeAdvance(Document):
                 indicator="red",
                 raise_exception=1,
             )
-
         if self.advance_type != "Travel Advance":
             validate_workflow_states(self)
         validate_active_employee(self.employee)
@@ -52,8 +51,7 @@ class EmployeeAdvance(Document):
         self.update_pending_amount()
         self.update_reference()
         self.check_duplicate_advance()
-        # this is already there in js.
-        # self.select_advance_account()
+        self.select_advance_account()
         if self.advance_type in ("Salary Advance", "Employee Loan"):
             if self.deduction_month <= 0:
                 frappe.throw(str("No. of installment must be greater than 0."))
