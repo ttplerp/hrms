@@ -41,11 +41,15 @@ class EmployeeSeparationClearance(Document):
 		if self.spd_clearance == 0:
 			frappe.throw("Store & Procurement Division has not granted clearance.")
 		if self.icthr_clearance == 0:
-			frappe.throw("ICT & HR Division has not granted clearance.")
+			frappe.throw("HR Division has not granted clearance.")
 		if self.iad_clearance == 0:
 			frappe.throw("Internal Audit Division has not granted clearance.")
 		if self.rtc_clearance == 0:
 			frappe.throw("Rental and Tenancy has not granted clearance.")
+		if self.ict_clearance == 0:
+			frappe.throw("ICT Division has not granted clearance.")
+		if self.sws_clearance == 0:
+			frappe.throw("SWS Treasurer has not granted clearance.")
 
 	def update_reference(self):
 		id = frappe.get_doc("Employee Separation",self.employee_separation_id)
@@ -77,6 +81,10 @@ class EmployeeSeparationClearance(Document):
 			receipients.append(self.iad)
 		if self.rtc:
 			receipients.append(self.rtc)
+		if self.ict:
+			receipients.append(self.ict)
+		if self.sws:
+			receipients.append(self.sws)
 
 		return receipients
 
@@ -192,6 +200,20 @@ class EmployeeSeparationClearance(Document):
 		else:
 			self.rtc = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "rtc"),"user_id")
 		
+		#--------------------------- ICT Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		ict_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ict"))
+		if ict_officiate:
+			self.ict = frappe.db.get_value("Employee",ict_officiate[0].officiate,"user_id")
+		else:
+			self.ict = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "ict"),"user_id")
+		
+		#--------------------------- SWS Treasurer-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		sws_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ict"))
+		if sws_officiate:
+			self.sws = frappe.db.get_value("Employee",sws_officiate[0].officiate,"user_id")
+		else:
+			self.sws = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "sws"),"user_id")
+
 		self.db_set("approvers_set",1)
 
 # Following code added by SHIV on 2020/09/21
@@ -223,5 +245,9 @@ def get_permission_query_conditions(user):
 		(`tabEmployee Separation Clearance`.iad = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
 		(`tabEmployee Separation Clearance`.rtc = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		or
+		(`tabEmployee Separation Clearance`.ict = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		or
+		(`tabEmployee Separation Clearance`.sws = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 
 	)""".format(user=user)

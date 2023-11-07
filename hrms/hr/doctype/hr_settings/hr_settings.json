@@ -63,12 +63,16 @@
   "icthr",
   "iad",
   "rtc",
+  "ict",
+  "sws",
   "column_break_60",
   "approver_name_afd",
   "approver_name_spd",
   "approver_name_icthr",
   "approver_name_iad",
   "approver_name_rtc",
+  "approver_name_ict",
+  "approver_name_sws",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -136,7 +140,20 @@
   "imprest_recoup_approval_notification_template",
   "column_break_137",
   "imprest_advance_status_notification_template",
-  "imprest_recoup_status_notification_template"
+  "imprest_recoup_status_notification_template",
+  "enote_approval_notification",
+  "enote_copyto_notification",
+  "enote_status_notification",
+  "pms_section",
+  "target_set_up_status_notification_template",
+  "review_status_notification_template",
+  "evaluation_status_notification_template",
+  "pms_appeal_status_notification_template",
+  "pms_col",
+  "target_set_up_approval_notification_template",
+  "review_approval_notification_template",
+  "evaluation_approval_notification_template",
+  "pms_appeal_approval_notification_template"
  ],
  "fields": [
   {
@@ -775,7 +792,7 @@
   {
    "fieldname": "icthr",
    "fieldtype": "Link",
-   "label": "ICT & HR Division",
+   "label": "HR Division",
    "options": "Employee",
    "reqd": 1
   },
@@ -797,7 +814,7 @@
    "fetch_from": "icthr.employee_name",
    "fieldname": "approver_name_icthr",
    "fieldtype": "Data",
-   "label": "Approver Name (ICT & HR Division)",
+   "label": "Approver Name (HR Division)",
    "read_only": 1
   },
   {
@@ -872,13 +889,117 @@
    "fieldtype": "Link",
    "label": "Travel Request Supervisor Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "enote_approval_notification",
+   "fieldtype": "Link",
+   "label": "eNote Approval Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "enote_copyto_notification",
+   "fieldtype": "Link",
+   "label": "eNote CopyTo Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "enote_status_notification",
+   "fieldtype": "Link",
+   "label": "eNote Status Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "ict",
+   "fieldtype": "Link",
+   "label": "ICT Division",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sws",
+   "fieldtype": "Link",
+   "label": "SWS Treasurer",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "ict.employee_name",
+   "fieldname": "approver_name_ict",
+   "fieldtype": "Data",
+   "label": "Approver Name(ICT Division)",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "sws.employee_name",
+   "fieldname": "approver_name_sws",
+   "fieldtype": "Data",
+   "label": "Approver Name(SWS Treasurer)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "pms_section",
+   "fieldtype": "Section Break",
+   "label": "PMS "
+  },
+  {
+   "fieldname": "target_set_up_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Target Set Up Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "target_set_up_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Target Set Up Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "review_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Review Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "default": "0",
+   "fieldname": "pms_col",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "review_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Review Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "evaluation_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Evaluation Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "evaluation_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Evaluation Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "pms_appeal_status_notification_template",
+   "fieldtype": "Link",
+   "label": "PMS Appeal Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "pms_appeal_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "PMS Appeal Approval Notification Template",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-08-15 10:29:32.155019",
+ "modified": "2023-11-06 12:13:50.439276",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

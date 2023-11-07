@@ -42,11 +42,14 @@
   "iad",
   "iad_clearance",
   "iad_remarks",
-  "workflow_state",
+  "ict",
+  "ict_clearance",
+  "ict_remarks",
   "sb_reference",
   "mail_sent",
   "approvers_set",
   "employee_separation_id",
+  "workflow_state",
   "amended_from"
  ],
  "fields": [
@@ -267,7 +270,7 @@
   {
    "fieldname": "icthr",
    "fieldtype": "Link",
-   "label": "ICT & HR Division",
+   "label": "HR Division",
    "options": "User",
    "read_only": 1
   },
@@ -275,14 +278,14 @@
    "default": "0",
    "fieldname": "icthr_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (ICT & HR Division)",
+   "label": "Clearance Acquired (HR Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
    "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
   },
   {
    "fieldname": "icthr_remarks",
    "fieldtype": "Small Text",
-   "label": "ICT & HR Division Remarks",
+   "label": "HR Division Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
    "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
   },
@@ -329,11 +332,32 @@
    "label": "Rental & Tenancy Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.rtc",
    "read_only_depends_on": "eval:frappe.session.user != doc.rtc"
+  },
+  {
+   "fieldname": "ict",
+   "fieldtype": "Link",
+   "label": "ICT Division",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ict_clearance",
+   "fieldtype": "Data",
+   "label": "Clearance Acquired(ICT Division)",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
+   "read_only_depends_on": "eval:frappe.session.user != doc.ict"
+  },
+  {
+   "fieldname": "ict_remarks",
+   "fieldtype": "Data",
+   "label": "ICT Division Remarks",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
+   "read_only_depends_on": "eval:frappe.session.user != doc.ict"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-12 14:08:03.840432",
+ "modified": "2023-10-25 11:16:31.892369",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",
