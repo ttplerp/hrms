@@ -89,25 +89,25 @@ class MusterRollEmployee(Document):
                                 if (getdate(prev_doc.separation_date) == getdate(wh.to_date)):
                                     wh.to_date = self.separation_date
                                                 
-                        elif (self.cost_center != prev_doc.cost_center):
-                            if getdate(self.date_of_transfer) > getdate(today()):
-                                frappe.throw(_("Date of transfer cannot be a future date."),title="Invalid Date")      
-                            elif not wh.to_date:
-                                if getdate(self.date_of_transfer) < getdate(wh.from_date):
-                                    frappe.throw(_("Row#{0} : Date of transfer({1}) cannot be beyond current effective entry.").format(wh.idx,self.date_of_transfer),title="Invalid Date")
+                    #     elif (self.cost_center != prev_doc.cost_center):
+                    #         if getdate(self.date_of_transfer) > getdate(today()):
+                    #             frappe.throw(_("Date of transfer cannot be a future date."),title="Invalid Date")      
+                    #         elif not wh.to_date:
+                    #             if getdate(self.date_of_transfer) < getdate(wh.from_date):
+                    #                 frappe.throw(_("Row#{0} : Date of transfer({1}) cannot be beyond current effective entry.").format(wh.idx,self.date_of_transfer),title="Invalid Date")
                                                 
-                                wh.to_date = wh.from_date if add_days(getdate(self.date_of_transfer),-1) < getdate(wh.from_date) else add_days(self.date_of_transfer,-1)
+                    #             wh.to_date = wh.from_date if add_days(getdate(self.date_of_transfer),-1) < getdate(wh.from_date) else add_days(self.date_of_transfer,-1)
                                             
-                    if (self.cost_center != prev_doc.cost_center):
-                        self.append("internal_work_history",{
-                            "branch": self.branch,
-                            "cost_center": self.cost_center,
-                            "from_date": self.date_of_transfer,
-                            "owner": frappe.session.user,
-                            "creation": nowdate(),
-                            "modified_by": frappe.session.user,
-                            "modified": nowdate(),
-                            "reference_doctype": self.temp_doctype,
-                            "reference_docname": self.temp_docname
-                        })
+                    # if (self.cost_center != prev_doc.cost_center):
+                    #     self.append("internal_work_history",{
+                    #         "branch": self.branch,
+                    #         "cost_center": self.cost_center,
+                    #         "from_date": self.date_of_transfer,
+                    #         "owner": frappe.session.user,
+                    #         "creation": nowdate(),
+                    #         "modified_by": frappe.session.user,
+                    #         "modified": nowdate(),
+                    #         "reference_doctype": self.temp_doctype,
+                    #         "reference_docname": self.temp_docname
+                    #     })
 
