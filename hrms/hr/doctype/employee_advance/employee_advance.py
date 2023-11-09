@@ -45,6 +45,7 @@ class EmployeeAdvance(Document):
             validate_workflow_states(self)
         validate_active_employee(self.employee)
         self.validate_employment_status()
+        self.set_recovery_start_date()
         self.set_status()
         self.validate_advance_amount()
         self.update_defaults()
@@ -57,6 +58,9 @@ class EmployeeAdvance(Document):
                 frappe.throw(str("No. of installment must be greater than 0."))
         if self.workflow_state != "Approved":
             notify_workflow_states(self)
+
+    def set_recovery_start_date(self):
+        self.recovery_start_date = self.posting_date
             
     def validate_advance_amount(self):
         if self.advance_type == "Salary Advance" and flt(self.advance_amount) > 100000.00:
