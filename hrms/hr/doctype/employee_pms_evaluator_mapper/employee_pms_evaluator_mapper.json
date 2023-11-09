@@ -65,13 +65,14 @@
    "fieldname": "evaluator",
    "fieldtype": "Dynamic Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Evaluator",
    "options": "document_type"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-09-13 11:35:04.882623",
+ "modified": "2023-11-09 10:58:29.127760",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee PMS Evaluator Mapper",

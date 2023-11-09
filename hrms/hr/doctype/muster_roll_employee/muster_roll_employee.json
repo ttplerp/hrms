@@ -334,9 +334,9 @@
   },
   {
    "fieldname": "muster_roll_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Muster Roll Type",
-   "options": "\nSkilled\nSemiskilled\nUnskilled\nObservation\nTrainee"
+   "options": "Muster Roll Type"
   },
   {
    "fieldname": "evaluators",
@@ -370,7 +370,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-02 11:47:04.257606",
+ "modified": "2023-11-09 11:22:13.319570",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
