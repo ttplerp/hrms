@@ -132,7 +132,7 @@ class MREmployeeInvoice(AccountsController):
 		)
         gl_entries.append(
 			self.get_gl_dict({
-					"account":  ot_account,
+					"account": ot_account,
 					"debit": flt(self.total_ot_amount,2),
 					"debit_in_account_currency": flt(self.total_ot_amount,2),
 					"against_voucher": self.name,
