@@ -30,7 +30,9 @@
   "sb_promotion_settings",
   "next_promotion_years",
   "column_break_22",
-  "promotion_grade"
+  "promotion_grade",
+  "sb_allowances",
+  "fixed_allowance"
  ],
  "fields": [
   {
@@ -157,11 +159,21 @@
    "fieldtype": "Link",
    "label": "Promote To Grade",
    "options": "Employee Grade"
+  },
+  {
+   "fieldname": "sb_allowances",
+   "fieldtype": "Section Break",
+   "label": "Allowances"
+  },
+  {
+   "fieldname": "fixed_allowance",
+   "fieldtype": "Currency",
+   "label": "Fixed Allowance"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-14 09:46:17.223593",
+ "modified": "2023-11-14 10:52:20.463903",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Grade",
