@@ -9,6 +9,7 @@ from hrms.hr.hr_custom_functions import get_month_details, get_payroll_settings,
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 from erpnext.accounts.doctype.business_activity.business_activity import get_default_ba
 from frappe.model.document import Document
+import math
 
 class SalaryArrearPayment(Document):
 	def validate(self):
@@ -110,6 +111,12 @@ class SalaryArrearPayment(Document):
 					d.basic_pay = flt(d.prev_basic_pay + d.prev_basic_pay * 0.05,0)
 				else:
 					d.basic_pay = flt(d.prev_basic_pay + d.prev_basic_pay * 0.02,0)
+				d.basic_pay = math.ceil(d.basic_pay)
+				if flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) > 0 and flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) <= 5:
+					d.basic_pay = flt(str(d.basic_pay)[0:len(str(d.basic_pay))-1]+"5")
+				elif flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) > 5 and flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) <= 9:
+					value_to_add = 10 - flt(str(d.basic_pay)[len(str(d.basic_pay))-1])
+					d.basic_pay = d.basic_pay + value_to_add
 				if sal_struct.contract_allowance_method == "Percent":
 					d.contract_allowance = flt(d.basic_pay*(sal_struct.contract_allowance*0.01),0)
 				elif sal_struct.contract_allowance_method == "Lumpsum":
@@ -120,6 +127,12 @@ class SalaryArrearPayment(Document):
 					d.basic_pay = flt(d.prev_basic_pay + d.prev_basic_pay * 0.02,0)
 				else:
 					d.basic_pay = flt(d.prev_basic_pay + d.prev_basic_pay * 0.05,0)
+				d.basic_pay = math.ceil(d.basic_pay)
+				if flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) > 0 and flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) <= 5:
+					d.basic_pay = flt(str(d.basic_pay)[0:len(str(d.basic_pay))-1]+"5")
+				elif flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) > 5 and flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) <= 9:
+					value_to_add = 10 - flt(str(d.basic_pay)[len(str(d.basic_pay))-1])
+					d.basic_pay = d.basic_pay + value_to_add
 				if sal_struct.ca_method == "Percent":
 					d.corporate_allowance = flt(d.basic_pay*(sal_struct.ca*0.01),0)
 				elif sal_struct.ca_method == "Lumpsum":
