@@ -386,8 +386,8 @@ class SalaryArrearPayment(Document):
 		pf_je = frappe.new_doc("Journal Entry")
 		pf_je.voucher_type= "Bank Entry"
 		pf_je.naming_series = "Bank Payment Voucher"
-		pf_je.title = "Arrear PF contribution of BTL staff for the month of "+self.from_month
-		pf_je.remark =  "Arrear PF contribution of BTL staff for the month of "+self.from_month
+		pf_je.title = "Arrear PF contribution of SMCL staff for the month of "+self.from_month
+		pf_je.remark =  "Arrear PF contribution of SMCL staff for the month of "+self.from_month
 		pf_je.posting_date = nowdate()               
 		pf_je.company = self.company
 		pf_je.branch = self.branch
