@@ -107,8 +107,8 @@ class SalaryArrearPayment(Document):
 			emp_doc = frappe.get_doc("Employee", d.employee)
 			sal_struct = frappe.get_doc("Salary Structure",d.salary_struct)
 			d.new_minimum_basic_pay, d.fixed_allowance = frappe.db.get_value("Employee Grade", emp_doc.grade, ["lower_limit","fixed_allowance"])
-			start_date = datetime.strptime(str(get_first_day(str(ss_year)"-"+str(ss_month)+"01")).split("-")[0],"%Y-%m-%d")
-			end_date = datetime.strptime(str(get_last_day(str(ss_year)"-"+str(ss_month)+"01")).split("-")[0],"%Y-%m-%d")
+			start_date = datetime.strptime(str(get_first_day(str(ss_year)"-"+str(ss_month)+"-01")).split("-")[0],"%Y-%m-%d")
+			end_date = datetime.strptime(str(get_last_day(str(ss_year)"-"+str(ss_month)+"-01")).split("-")[0],"%Y-%m-%d")
 			total_days = end_date - start_date
 			d.fixed_allowance = flt(flt(d.fixed_allowance) * (flt(d.working_days)/flt(d.total_days.days)),0)
 			row = self.append('items', {})
