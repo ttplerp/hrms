@@ -10,6 +10,8 @@ frappe.ui.form.on('Muster Roll Employee', {
 		$(".grid-add-row").addClass('hidden');
 	},
 	refresh: function(frm) {
+		frm.set_df_property("branch", "read_only", frm.doc.__islocal ? 0 : 1);
+
 		frm.set_query("unit", function() {
 			return {
 				"filters": {
