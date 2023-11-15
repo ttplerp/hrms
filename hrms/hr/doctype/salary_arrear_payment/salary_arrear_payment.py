@@ -111,7 +111,7 @@ class SalaryArrearPayment(Document):
 				start_date = datetime.strptime(str(get_first_day(str(d.ss_year)+"-"+str(d.ss_month)+"-01")).split(" ")[0],"%Y-%m-%d")
 				end_date = datetime.strptime(str(get_last_day(str(d.ss_year)+"-"+str(d.ss_month)+"-01")).split(" ")[0],"%Y-%m-%d")
 				total_days = end_date - start_date
-				if d.employee == "":
+				if d.employee == "202010181":
 					d.fixed_allowance = flt(flt(d.fixed_allowance) * (flt(18)/(flt(total_days.days)+1)),0)
 				else:
 					d.fixed_allowance = flt(flt(d.fixed_allowance) * (flt(17)/(flt(total_days.days)+1)),0)
