@@ -41,7 +41,7 @@ class SalaryArrearPayment(Document):
 
 		month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].index(self.from_month) + 1
 		month = str(month) if cint(month) > 9 else str("0" + str(month))
-		query = """select ss.name as salary_slip, ss.posting_date,  e.name as employee, e.employee_name, e.branch, (select salary_structure from `tabSalary Slip Item` ssi where ssi.parent = ss.name) as salary_struct,
+		query = """select ss.name as salary_slip, e.name as employee, e.employee_name, e.branch, (select salary_structure from `tabSalary Slip Item` ssi where ssi.parent = ss.name) as salary_struct,
 				(select total_days_in_month from `tabSalary Slip Item` ssi where ssi.parent = ss.name) as total_days,
 				(select	working_days from `tabSalary Slip Item` ssi where ssi.parent = ss.name) as working_days,
 				e.bank_name, e.bank_ac_no, ss.employer_pf as previous_employer_pf, ss.fiscal_year as ss_year, ss.month as ss_month,
