@@ -4,11 +4,12 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils import cint, flt, nowdate
+from frappe.utils import cint, flt, nowdate, get_first_day, get_last_day
 from hrms.hr.hr_custom_functions import get_month_details, get_payroll_settings, get_salary_tax
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 from erpnext.accounts.doctype.business_activity.business_activity import get_default_ba
 from frappe.model.document import Document
+from datetime import datetime
 import math
 
 class SalaryArrearPayment(Document):
@@ -40,10 +41,10 @@ class SalaryArrearPayment(Document):
 
 		month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].index(self.from_month) + 1
 		month = str(month) if cint(month) > 9 else str("0" + str(month))
-		query = """select ss.name as salary_slip, e.name as employee, e.employee_name, e.branch, (select salary_structure from `tabSalary Slip Item` ssi where ssi.parent = ss.name) as salary_struct,
+		query = """select ss.name as salary_slip, ss.posting_date,  e.name as employee, e.employee_name, e.branch, (select salary_structure from `tabSalary Slip Item` ssi where ssi.parent = ss.name) as salary_struct,
 				(select total_days_in_month from `tabSalary Slip Item` ssi where ssi.parent = ss.name) as total_days,
 				(select	working_days from `tabSalary Slip Item` ssi where ssi.parent = ss.name) as working_days,
-				e.bank_name, e.bank_ac_no, ss.employer_pf as previous_employer_pf,
+				e.bank_name, e.bank_ac_no, ss.employer_pf as previous_employer_pf, ss.fiscal_year as ss_year, ss.month as ss_month,
 				ss.employer_pf as previous_pf,
 				(
 					select eg.employee_pf from `tabEmployee Group` eg where eg.name = e.employee_group
@@ -106,7 +107,10 @@ class SalaryArrearPayment(Document):
 			emp_doc = frappe.get_doc("Employee", d.employee)
 			sal_struct = frappe.get_doc("Salary Structure",d.salary_struct)
 			d.new_minimum_basic_pay, d.fixed_allowance = frappe.db.get_value("Employee Grade", emp_doc.grade, ["lower_limit","fixed_allowance"])
-			d.fixed_allowance = flt(flt(d.fixed_allowance) * (flt(d.working_days)/flt(d.total_days)),0)
+			start_date = datetime.strptime(str(get_first_day(str(ss_year)"-"+str(ss_month)+"01")).split("-")[0],"%Y-%m-%d")
+			end_date = datetime.strptime(str(get_last_day(str(ss_year)"-"+str(ss_month)+"01")).split("-")[0],"%Y-%m-%d")
+			total_days = end_date - start_date
+			d.fixed_allowance = flt(flt(d.fixed_allowance) * (flt(d.working_days)/flt(d.total_days.days)),0)
 			row = self.append('items', {})
 			d.contract_allowance = d.corporate_allowance = d.mpi = d.officiating_allowance = 0
 			if emp_doc.employment_type == "Contract":
