@@ -29,8 +29,8 @@ class BulkUploadTool(Document):
 		if not frappe.has_permission(doctype, "create"):
 			raise frappe.PermissionError
 
-		# from frappe.utils.csvutils import read_csv_content_from_attached_file
-		# from frappe.modules import scrub
+		from frappe.utils.csvutils import read_csv_content_from_attached_file
+		from frappe.modules import scrub
 		if frappe.safe_encode(self.import_file).lower().endswith("csv".encode("utf-8")):
 			from frappe.utils.csvutils import read_csv_content
 			file_name = frappe.get_doc("File", {"file_url": self.import_file})
@@ -62,13 +62,20 @@ class BulkUploadTool(Document):
 			count += 1
 			try:
 				row_idx = i + 7
+				year = row[6]
 				for j in range(9, len(row)+1):
 					month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].index(row[7])
 					month = cint(month) + 1
 					month = str(month) if cint(month) > 9 else str("0" + str(month))
 					day   = cint(j)-8 if cint(j) > 9 else "0" + str(cint(j)-8)
+					date_str = f"{year}-{month}-{day}"
+
 					if self.upload_type == "Overtime":
-						old = frappe.db.get_value("Muster Roll Overtime Entry", {"mr_employee":str(row[3]).strip('\''), "date": str(row[5]) + '-' + str(month) + '-' + str(day), "docstatus": 1}, ["docstatus","name","number_of_hours"], as_dict=1)
+						# frappe.throw(str(row))
+						# frappe.throw(str(row[4])+' <--> '+str(row[9]))
+						old = frappe.db.get_value("Muster Roll Overtime Entry", {"mr_employee":str(row[4]).strip('\''), "date": date_str, "docstatus": 1}, ["docstatus","name","number_of_hours"], as_dict=1)
+						# frappe.throw(str(old))
+						
 						if old:
 							doc = frappe.get_doc("Muster Roll Overtime Entry", old.name)
 							doc.db_set('number_of_hours', flt(row[j-1]) if row[j-1] else doc.number_of_hours)
@@ -98,7 +105,7 @@ class BulkUploadTool(Document):
 							status = ''
 						
 
-						old = frappe.db.get_value("Muster Roll Attendance", {"mr_employee": str(row[2]).strip('\''), "date": str(row[4]) + '-' + str(month) + '-' + str(day), "docstatus": 1}, ["status","name"], as_dict=1)
+						old = frappe.db.get_value("Muster Roll Attendance", {"mr_employee": str(row[4]).strip('\''), "date": date_str, "docstatus": 1}, ["status","name"], as_dict=1)
 						if old:
 							doc = frappe.get_doc("Muster Roll Attendance", old.name)
 							doc.db_set('status', status if status in ('Present','Absent','Half Day') else doc.status)
