@@ -55,10 +55,14 @@
   "overtime_limit",
   "sb_approver",
   "hrgm",
+  "finance_director",
+  "project_gm",
   "hr_approver",
   "imprest_approver",
   "cb_01",
   "hrgm_name",
+  "fd_name",
+  "project_gm_name",
   "hr_approver_name",
   "imprest_approver_name",
   "separation_clearance_approvers_section",
@@ -143,8 +147,10 @@
   "employee_advance_settlement_status_notification",
   "pol_receive_section",
   "pol_receive_approval_notification",
+  "transportation_charge_approval_notification",
   "column_break_x64pk",
-  "pol_receive_status_notification"
+  "pol_receive_status_notification",
+  "transportation_charge_status_notification"
  ],
  "fields": [
   {
@@ -921,13 +927,51 @@
    "fieldtype": "Link",
    "label": "POL Receive Status Notification",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "finance_director",
+   "fieldtype": "Link",
+   "label": "Finance Director",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "finance_director.employee_name",
+   "fieldname": "fd_name",
+   "fieldtype": "Data",
+   "label": "FD Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "transportation_charge_approval_notification",
+   "fieldtype": "Link",
+   "label": "Transportation Charge Approval Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "transportation_charge_status_notification",
+   "fieldtype": "Link",
+   "label": "Transportation Charge Status Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "project_gm",
+   "fieldtype": "Link",
+   "label": "Project GM",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "project_gm.employee_name",
+   "fieldname": "project_gm_name",
+   "fieldtype": "Data",
+   "label": "Project GM Name",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-09-15 15:25:31.053103",
+ "modified": "2023-11-16 15:22:44.117983",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
