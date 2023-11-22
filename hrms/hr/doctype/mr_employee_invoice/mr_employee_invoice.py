@@ -46,9 +46,9 @@ class MREmployeeInvoice(AccountsController):
         self.total_ot_amount = flt(total_ot_amount, 2)
         self.total_daily_wage_amount = flt(total_daily_wage_amount, 2)
         self.total_arrears_and_allowance = flt(total_arrears_and_allowance, 2)
-        self.grand_total = flt(total_daily_wage_amount + total_ot_amount + total_arrears_and_allowance, 2)
+        self.grand_total = flt(total_daily_wage_amount + total_ot_amount + total_arrears_and_allowance, 0)
         self.outstanding_amount = self.net_payable_amount = flt(
-            self.grand_total - self.other_deduction, 2
+            self.grand_total - self.other_deduction, 0
         )
     
     def on_submit(self):
