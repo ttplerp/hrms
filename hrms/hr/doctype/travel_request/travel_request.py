@@ -27,9 +27,12 @@ class TravelRequest(AccountsController):
 		self.update_amount()
 		self.update_total_amount()
 		self.validate_advance_amount()
+		if self.workflow_state == "Verified By Supervisor":
+			self.notify_supervisor()
 		if self.workflow_state == "Waiting Supervisor Approval":
 			self.check_date()
 			self.check_advance_and_report()
+			self.notify_supervisor()
 		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
 
@@ -344,9 +347,10 @@ class TravelRequest(AccountsController):
 			& (advance.reference == self.name)
 		)
 		return query.run(as_dict=True)
-	@frappe.whitelist()
+	
 	def notify_supervisor(self):
-		supervisor = frappe.db.get_value("Employee", frappe.db.get_value("Employee",self.employee,"reports_to"),"user_id")
+		division = frappe.db.get_value("Employee",self.employee,"division")
+		supervisor = frappe.db.get_value("Employee", frappe.db.get_value("Department",division,"approver"),"user_id")
 		if not supervisor:
 			frappe.throw("Set employee Supervisor for employee {}".format(self.employee))
 		parent_doc = frappe.get_doc(self.doctype, self.name)
