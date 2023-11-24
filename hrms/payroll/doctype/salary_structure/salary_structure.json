@@ -83,6 +83,7 @@
   "eligible_for_honorarium",
   "honorarium_method",
   "honorarium",
+  "eligible_for_fixed_allowance",
   "sb_other_benefits",
   "eligible_for_gis",
   "eligible_for_pf",
@@ -836,12 +837,18 @@
    "label": "Cost Center",
    "options": "Cost Center",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_fixed_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Fixed Allowance"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2022-12-29 20:28:53.611249",
+ "modified": "2023-11-23 10:48:41.212610",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

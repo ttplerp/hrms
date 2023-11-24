@@ -202,7 +202,7 @@ class SalaryStructure(Document):
 				calc_amt = rec.amount
 			else:
 				calc_amt = 0
-		else:    
+		else:	
 			calc_amt = rec.amount
 
 		if rec.parentfield == "deductions":
@@ -304,7 +304,8 @@ class SalaryStructure(Document):
 								calc_amt = flt(basic_pay)*flt(self.get(m['field_value']))*0.01
 						else:
 							calc_amt = flt(self.get(m['field_value']))
-						
+						if m["field_name"] == "eligible_for_fixed_allowance":
+							calc_amt = frappe.db.get_value("Employee Grade", self.employee_grade, "fixed_allowance")
 						calc_amt = roundoff(calc_amt)
 						comm_allowance += flt(calc_amt) if m['name'] == 'Communication Allowance' else 0
 						total_earning += calc_amt
@@ -491,8 +492,8 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 		total_overtime_amount = 0.0
 		for d in ot_details:
 			row = target.append("ot_items",{})
-			row.reference    = d.name
-			row.ot_date      = d.posting_date
+			row.reference	= d.name
+			row.ot_date	  = d.posting_date
 			row.hourly_rate  = d.rate
 			row.total_hours  = d.total_hours
 			row.total_amount = d.total_amount
@@ -1076,14 +1077,14 @@ def get_basic_and_gross_pay(employee, effective_date=today()):
 # 	return list(set([d.employee for d in employees]))
 
 # def get_permission_query_conditions(user):
-#     if not user:
-#         user = frappe.session.user
-#     user_roles = frappe.get_roles(user)
+#	 if not user:
+#		 user = frappe.session.user
+#	 user_roles = frappe.get_roles(user)
 
-#     if "HR User" in user_roles or "HR Manager" in user_roles:
-#         return
-#     else:
-#         return """(
+#	 if "HR User" in user_roles or "HR Manager" in user_roles:
+#		 return
+#	 else:
+#		 return """(
 # 			exists(select 1
 # 				from `tabEmployee` as e
 # 				where e.name = `tabSalary Structure`.employee
@@ -1093,14 +1094,14 @@ def get_basic_and_gross_pay(employee, effective_date=today()):
 
 
 # def has_record_permission(doc, user):
-#     if not user:
-#         user = frappe.session.user
-#     user_roles = frappe.get_roles(user)
+#	 if not user:
+#		 user = frappe.session.user
+#	 user_roles = frappe.get_roles(user)
 
-#     if "HR User" in user_roles or "HR Manager" in user_roles:
-#         return True
-#     else:
-#         if frappe.db.exists("Employee", {"name": doc.employee, "user_id": user}):
-#             return True
-#         else:
-#             return False
+#	 if "HR User" in user_roles or "HR Manager" in user_roles:
+#		 return True
+#	 else:
+#		 if frappe.db.exists("Employee", {"name": doc.employee, "user_id": user}):
+#			 return True
+#		 else:
+#			 return False
