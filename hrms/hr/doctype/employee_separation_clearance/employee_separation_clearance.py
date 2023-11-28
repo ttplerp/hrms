@@ -247,7 +247,5 @@ def get_permission_query_conditions(user):
 		(`tabEmployee Separation Clearance`.rtc = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
 		(`tabEmployee Separation Clearance`.ict = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
-		or
-		(`tabEmployee Separation Clearance`.sws = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 
 	)""".format(user=user)
