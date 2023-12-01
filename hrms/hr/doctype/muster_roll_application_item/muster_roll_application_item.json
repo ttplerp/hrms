@@ -191,15 +191,15 @@
   },
   {
    "fieldname": "muster_roll_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Muster roll type",
-   "options": "\nSkilled\nUnskilled\nSemiskilled"
+   "options": "Muster Roll Type"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-11-08 12:13:07.582092",
+ "modified": "2023-12-01 11:37:18.846769",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Application Item",
