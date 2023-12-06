@@ -81,12 +81,9 @@ def get_data(filters):
 					per += 1
 		
 		if potential != 0:
-			potential = potential/pot
+			potential = flt(potential/pot, 1)
 		if performance != 0:
-			performance = performance/per
-
-		# frappe.throw(str(pot)+' '+str(per))
-		# frappe.throw(str(potential)+' '+str(performance))
+			performance = flt(performance/per, 1)
 
 		pot_per = determine_pot_per(potential, performance)
 
@@ -95,16 +92,12 @@ def get_data(filters):
 			emp_name = frappe.db.get_value("Muster Roll Employee", employee, "person_name")
 			designation = frappe.db.get_value("Muster Roll Employee", employee, "designation")
 			branch = frappe.db.get_value("Muster Roll Employee", employee, "branch")
-			education_level = "NULL"
-			employee_qualification = frappe.db.get_value("Employee", employee, "employee_qualification")
-			date_of_joining = frappe.db.get_value("Employee", employee, "date_of_joining")
-			employment_type = frappe.db.get_value("Employee", employee, "employment_type")
+			date_of_joining = frappe.db.get_value("Muster Roll Employee", employee, "joining_date")
+			employment_type = frappe.db.get_value("Muster Roll Employee", employee, "muster_roll_type")
 		else:
 			emp_name = frappe.db.get_value("Employee", employee, "employee_name")
 			designation = frappe.db.get_value("Employee", employee, "designation")
 			branch = frappe.db.get_value("Employee", employee, "branch")
-			education_level = frappe.db.get_value("Employee", employee, "education_level")
-			employee_qualification = frappe.db.get_value("Employee", employee, "employee_qualification")
 			date_of_joining = frappe.db.get_value("Employee", employee, "date_of_joining")
 			employment_type = frappe.db.get_value("Employee", employee, "employment_type")
 
@@ -114,9 +107,10 @@ def get_data(filters):
 				'emp_name': emp_name,
 				'designation': designation,
 				'branch': branch,
-				'education_level': education_level,
-				'employee_qualification': employee_qualification,
 				'date_of_joining': date_of_joining,
+				'performance': flt(performance, 1),
+				'potential': flt(potential, 1),
+				'total_score': flt(performance+potential, 1),
 				'employment_type': employment_type,
 			})
 			
@@ -129,23 +123,23 @@ def determine_pot_per(potential, performance):
 	total_score = 0.0
 	return_value = ''
 	total_score = flt(performance + potential)
-	if is_between(5.1, total_score, 6) and potential > performance:
+	if is_between(5.5, total_score, 6.4) and potential > performance:
 		return_value = "Unrealized Performer"
-	elif is_between(6.1, total_score, 7.5) and potential > performance:
+	elif is_between(6.5, total_score, 7.4) and potential > performance:
 		return_value = "Growth Employee"
-	elif is_between(7.6, total_score, 8):
+	elif is_between(7.5, total_score, 8):
 		return_value = "Future Senior Leader"
-	elif is_between(4.1, total_score, 5) and potential > performance:
+	elif is_between(4.5, total_score, 5.4) and potential > performance:
 		return_value = "Inconsistent Performer"
-	elif potential == 3 and performance == 3:
+	elif is_between(5.5, total_score, 6.4) and potential == performance:
 		return_value = "Core Employee"
-	elif is_between(6.1, total_score, 7.5) and potential < performance:
+	elif is_between(6.5, total_score, 7.4) and potential < performance:
 		return_value = "High-Impact Performer"
-	elif total_score < 4:
+	elif total_score < 4.4:
 		return "Low Performer"
-	elif is_between(4.1, total_score, 5) and potential < performance:
+	elif is_between(4.5, total_score, 5.4) and potential < performance:
 		return "Effective Employee"
-	elif is_between(5.1, total_score, 6) and potential < performance:
+	elif is_between(5.5, total_score, 6.4) and potential < performance:
 		return "Trusted Professional"
 	return return_value
 
@@ -155,10 +149,12 @@ def get_columns(data, filters):
 		{"label": _("Employee Name"), "fieldname": "emp_name", "fieldtype": "Data", "width": 150},
 		{"label": _("Designation"), "fieldname": "designation", "fieldtype": "Link", "options": "Designation", "width": 150},
 		{"label": _("Branch"), "fieldname": "branch", "fieldtype": "Link", "options": "Branch", "width": 150},
-		{"label": _("Education Level"), "fieldname": "education_level", "fieldtype": "Link", "options": "Education Level", "width": 150},
-		{"label": _("Employee Qualification"), "fieldname": "employee_qualification", "fieldtype": "Data", "width": 150},
+		{"label": _("Perfromacne"), "fieldname": "performance", "fieldtype": "Data", "width": 120},
+		{"label": _("Potential"), "fieldname": "potential", "fieldtype": "Data", "width": 120},
+		{"label": _("Total Score"), "fieldname": "total_score", "fieldtype": "Data", "width": 120},
 		{"label": _("Joining Date"), "fieldname": "date_of_joining", "fieldtype": "Date", "width": 120},
-		{"label": _("Employment Type"), "fieldname": "employement_type", "fieldtype": "Link", "options": "Employement Type", "width": 120},
+		{"label": _("Employment Type"), "fieldname": "employment_type", "fieldtype": "Data", "width": 120},
+
 	]
 
 	return columns

@@ -30,7 +30,7 @@ frappe.query_reports["Individual Talent Matrix"] = {
 			"fieldname": "pot_per",
 			"label": __("Select"),
 			"fieldtype": "Select",
-			"options": "\nUnrealized Performer\nGrowth Employee\nFuture Senior Leader\nInconsistent Performer\nCore Employee\nHigh-Impact Performer\nLow Performer\nEffective Employee\nTrusted Professional",
+			"options": "\nFuture Senior Leader\nGrowth Employee\nHigh-Impact Performer\nTrusted Professional\nUnrealized Performer\nCore Employee\nEffective Employee\nInconsistent Performer\nLow Performer",
 			"default": "Core Employee"
 		},
 		{
