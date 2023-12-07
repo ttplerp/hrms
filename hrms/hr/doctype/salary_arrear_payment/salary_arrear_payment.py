@@ -187,7 +187,7 @@ class SalaryArrearPayment(Document):
 			d.new_gross_pay = flt(d.fixed_allowance+d.arrear_contract_allowance)
 			d.arrear_hc = flt(d.new_gross_pay*(d.health_con_per*0.01),0)
 
-			d.new_gross_pay = flt(d.fixed_allowance+ltc+d.arrear_contract_allowance)
+			d.new_gross_pay = flt(d.fixed_allowance+d.arrear_ltc+d.arrear_contract_allowance)
 			d.total_deduction = flt(d.arrear_hc+d.arrear_salary_tax+d.communication_allowance)
 			d.net_payable_arrear = d.new_gross_pay - d.total_deduction
 			# d.months_in_service = flt(self.get_months(from_date, to_date),2)
