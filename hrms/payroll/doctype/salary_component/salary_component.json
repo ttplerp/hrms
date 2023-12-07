@@ -99,7 +99,7 @@
    "label": "Is PF Deductible?"
   },
   {
-   "depends_on": "eval:doc.type === 'Deduction'",
+   "depends_on": "eval:doc.type == 'Deduction'",
    "fieldname": "sb_posting_settings",
    "fieldtype": "Tab Break",
    "label": "Accounts Posting"
@@ -115,7 +115,7 @@
   },
   {
    "default": "0",
-   "depends_on": "eval:doc.type === 'Deduction'",
+   "depends_on": "eval:doc.type == 'Deduction';",
    "description": "Employee wise entries shall be created under Journal Entry at the time of salary posting, For example like `Salary Advance Deductions`. Applicable for only type `Deduction`",
    "fieldname": "make_party_entry",
    "fieldtype": "Check",
@@ -203,7 +203,7 @@
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-24 18:34:45.287141",
+ "modified": "2023-10-12 09:48:49.895931",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",

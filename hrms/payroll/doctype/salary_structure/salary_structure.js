@@ -116,6 +116,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_cash_handling: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_fixed_allowance: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_honorarium: function(frm){
 		calculate_others(frm);
 	},

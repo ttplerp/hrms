@@ -30,7 +30,11 @@
   "sb_promotion_settings",
   "next_promotion_years",
   "column_break_22",
-  "promotion_grade"
+  "promotion_grade",
+  "sb_allowances",
+  "fixed_allowance",
+  "column_break_26",
+  "ltc"
  ],
  "fields": [
   {
@@ -157,11 +161,30 @@
    "fieldtype": "Link",
    "label": "Promote To Grade",
    "options": "Employee Grade"
+  },
+  {
+   "fieldname": "sb_allowances",
+   "fieldtype": "Section Break",
+   "label": "Allowances"
+  },
+  {
+   "fieldname": "fixed_allowance",
+   "fieldtype": "Currency",
+   "label": "Lumpsum Increment"
+  },
+  {
+   "fieldname": "column_break_26",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ltc",
+   "fieldtype": "Currency",
+   "label": "LTC"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-03 16:56:40.386713",
+ "modified": "2023-12-06 16:29:25.183330",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Grade",

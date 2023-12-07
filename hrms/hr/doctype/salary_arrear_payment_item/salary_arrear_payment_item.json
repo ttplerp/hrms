@@ -1,0 +1,353 @@
+{
+ "actions": [],
+ "creation": "2023-11-08 12:10:03.667678",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "branch",
+  "sb_01",
+  "basic_pay",
+  "new_minimum_basic_pay",
+  "corporate_allowance",
+  "contract_allowance",
+  "cb_01",
+  "fixed_allowance",
+  "officiating_allowance",
+  "mpi",
+  "total",
+  "health_contribution",
+  "pf",
+  "employer_pf",
+  "salary_tax",
+  "net_payable",
+  "cb_02",
+  "prev_basic_pay",
+  "prev_corporate",
+  "prev_contract",
+  "prev_mpi",
+  "prev_officiating",
+  "prev_hc",
+  "previous_total",
+  "previous_pf",
+  "previous_employer_pf",
+  "previous_salary_tax",
+  "previous_net_payable",
+  "sb_02s",
+  "arrear_basic_pay",
+  "arrear_corporate_allowance",
+  "arrear_contract_allowance",
+  "arrear_officiating_allowance",
+  "arrear_mpi",
+  "new_gross_pay",
+  "arrear_hc",
+  "arrear_salary_tax",
+  "arrear_pf",
+  "arrear_communication_allowance",
+  "arrear_ltc",
+  "total_deduction",
+  "cb_03",
+  "arrear_employer_pf",
+  "net_payable_arrear",
+  "sb_03",
+  "bank_name",
+  "bank_ac_no"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "basic_pay",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "New Basic Pay"
+  },
+  {
+   "fieldname": "corporate_allowance",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Corporate Allowance"
+  },
+  {
+   "fieldname": "fixed_allowance",
+   "fieldtype": "Currency",
+   "label": "Lumpsum Increment"
+  },
+  {
+   "fieldname": "officiating_allowance",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Officiating Allowance"
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Total"
+  },
+  {
+   "fieldname": "health_contribution",
+   "fieldtype": "Currency",
+   "label": "Health Contribution"
+  },
+  {
+   "fieldname": "pf",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "PF"
+  },
+  {
+   "fieldname": "employer_pf",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Employer PF",
+   "read_only": 1
+  },
+  {
+   "fieldname": "salary_tax",
+   "fieldtype": "Currency",
+   "label": "Salary Tax"
+  },
+  {
+   "fieldname": "total_deduction",
+   "fieldtype": "Currency",
+   "label": "Total Deduction"
+  },
+  {
+   "fieldname": "net_payable_arrear",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Net Payable Arrear",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_01",
+   "fieldtype": "Section Break",
+   "label": "Salary Details"
+  },
+  {
+   "fieldname": "net_payable",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Net Payable"
+  },
+  {
+   "fieldname": "cb_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "previous_total",
+   "fieldtype": "Currency",
+   "label": "Previous Months Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "previous_pf",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Previous PF",
+   "read_only": 1
+  },
+  {
+   "fieldname": "previous_employer_pf",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Previous Employer PF",
+   "read_only": 1
+  },
+  {
+   "fieldname": "previous_salary_tax",
+   "fieldtype": "Currency",
+   "label": "Previous Salary Tax",
+   "read_only": 1
+  },
+  {
+   "fieldname": "previous_net_payable",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Previous Net Payable"
+  },
+  {
+   "fieldname": "arrear_hc",
+   "fieldtype": "Currency",
+   "label": "Arrear HC"
+  },
+  {
+   "fieldname": "arrear_salary_tax",
+   "fieldtype": "Currency",
+   "label": "Arrear Salary Tax"
+  },
+  {
+   "fieldname": "arrear_pf",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Arrear PF"
+  },
+  {
+   "fieldname": "arrear_employer_pf",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Arrear Employer PF"
+  },
+  {
+   "fieldname": "sb_03",
+   "fieldtype": "Section Break",
+   "label": "Bank Account Details"
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Link",
+   "label": "Bank Name",
+   "options": "Financial Institution"
+  },
+  {
+   "fieldname": "bank_ac_no",
+   "fieldtype": "Data",
+   "label": "Bank A/C No."
+  },
+  {
+   "fieldname": "new_minimum_basic_pay",
+   "fieldtype": "Currency",
+   "label": "New Minimum Basic Pay"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "cb_02",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_03",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "prev_basic_pay",
+   "fieldtype": "Currency",
+   "label": "Previous Basic Pay"
+  },
+  {
+   "fieldname": "contract_allowance",
+   "fieldtype": "Currency",
+   "label": "Contract Allowance"
+  },
+  {
+   "fieldname": "prev_corporate",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Previous Corporate Allowance"
+  },
+  {
+   "fieldname": "prev_contract",
+   "fieldtype": "Currency",
+   "label": "Previous Contract Allowance"
+  },
+  {
+   "fieldname": "prev_officiating",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Previous Officiating Allowance"
+  },
+  {
+   "fieldname": "prev_hc",
+   "fieldtype": "Currency",
+   "label": "Previous Health Contribution"
+  },
+  {
+   "fieldname": "new_gross_pay",
+   "fieldtype": "Currency",
+   "label": "Arrear Gross Pay"
+  },
+  {
+   "fieldname": "arrear_basic_pay",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Arrear Basic Pay"
+  },
+  {
+   "fieldname": "arrear_corporate_allowance",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Arrear Corporate Allowance"
+  },
+  {
+   "fieldname": "arrear_contract_allowance",
+   "fieldtype": "Currency",
+   "label": "Arrear Contract Allowance"
+  },
+  {
+   "fieldname": "arrear_officiating_allowance",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Arrear Officiating Allowance"
+  },
+  {
+   "fieldname": "mpi",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "MPI",
+   "read_only": 1
+  },
+  {
+   "fieldname": "prev_mpi",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Previous MPI",
+   "read_only": 1
+  },
+  {
+   "fieldname": "arrear_mpi",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Arrear MPI",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_02s",
+   "fieldtype": "Section Break",
+   "label": "Arrear Details"
+  },
+  {
+   "fieldname": "arrear_ltc",
+   "fieldtype": "Currency",
+   "label": "Arrear Ltc"
+  },
+  {
+   "fieldname": "arrear_communication_allowance",
+   "fieldtype": "Currency",
+   "label": "Arrear Communication Allowance"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2023-12-07 11:45:42.849995",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Salary Arrear Payment Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

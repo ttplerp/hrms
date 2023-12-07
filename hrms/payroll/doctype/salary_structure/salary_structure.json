@@ -70,6 +70,7 @@
   "eligible_for_factory_allowance",
   "fa_method",
   "factory_allowance",
+  "eligible_for_fixed_allowance",
   "cb_12",
   "eligible_for_officiating_allowance",
   "officiating_allowance_method",
@@ -889,12 +890,18 @@
    "fieldname": "deployment",
    "fieldtype": "Data",
    "label": "Value Deployment"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_fixed_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Fixed Allowance"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-08-01 14:14:57.588127",
+ "modified": "2023-11-28 10:46:16.076972",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
