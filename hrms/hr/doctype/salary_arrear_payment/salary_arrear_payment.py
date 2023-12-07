@@ -167,6 +167,8 @@ class SalaryArrearPayment(Document):
 				d.arrear_ltc =0
 
 			if d.employee in ("NHDCL1805112","NHDCL2104001","NHDCL1904032"):
+				if  d.employee =="NHDCL1904032":
+					d.arrear_ltc= 520
 				d.fixed_allowance=0
 			d.new_gross_pay = flt(d.fixed_allowance-d.communication_allowance+d.arrear_contract_allowance)
 
