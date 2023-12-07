@@ -199,7 +199,7 @@ class SalaryArrearPayment(Document):
 			# d.arrear_officiating_allowance = d.officiating_allowance - d.prev_officiating
 			# d.arrear_mpi = d.mpi - d.prev_mpi
 			
-			d.new_gross_pay = flt(d.fixed_allowance)
+			d.new_gross_pay = flt(d.fixed_allowance-d.communication_allowance+d.arrear_contract_allowance)
 
 			if d.employee in ("dsaddad","adsada"):
 				d.salary_tax = 0
@@ -213,6 +213,7 @@ class SalaryArrearPayment(Document):
 				d.arrear_employer_pf = 0
 				
 			d.health_contribution = flt((d.basic_pay+d.deployment_allowance+d.contract_allowance+d.hra+d.fuel_allowance+d.factory_allowance+d.fixed_allowance) * (d.health_con_per * 0.01),0)
+			d.new_gross_pay = flt(d.fixed_allowance+d.arrear_contract_allowance)
 			d.arrear_hc = flt(d.new_gross_pay*(d.health_con_per*0.01),0)
 
 			d.new_gross_pay = flt(d.fixed_allowance+ltc+d.arrear_contract_allowance)
