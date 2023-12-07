@@ -119,6 +119,8 @@ class SalaryArrearPayment(Document):
 			sal_struct = frappe.get_doc("Salary Structure",d.salary_struct)
 			ltc =frappe.db.get_value("Employee Grade", emp_doc.grade,"ltc")
 			d.new_minimum_basic_pay, d.fixed_allowance = frappe.db.get_value("Employee Grade", emp_doc.grade, ["lower_limit","fixed_allowance"])
+			d.arrear_ltc = flt(ltc)
+			d.arrear_communication_allowance = flt(d.communication_allowance)
 			# if d.employee in ("202010218","202010181"):
 			# 	start_date = datetime.strptime(str(get_first_day(str(d.ss_year)+"-"+str(d.ss_month)+"-01")).split(" ")[0],"%Y-%m-%d")
 			# 	end_date = datetime.strptime(str(get_last_day(str(d.ss_year)+"-"+str(d.ss_month)+"-01")).split(" ")[0],"%Y-%m-%d")
@@ -131,48 +133,8 @@ class SalaryArrearPayment(Document):
 			row = self.append('items', {})
 			d.contract_allowance = d.corporate_allowance = d.mpi = d.officiating_allowance = 0
 			d.basic_pay = flt(d.prev_basic_pay)
-			d.arrear_ltc = flt(ltc)
-			d.arrear_communication_allowance = flt(d.communication_allowance)
-			# if emp_doc.employment_type == "Contract":
-			# 	if emp_doc.grade in ("S1","S2","S3","O1","O2","O3","O4","O5","O6","O7","GS1","GS2","ESP"):
-			# 		d.basic_pay = flt(d.prev_basic_pay + d.prev_basic_pay * 0.05,0)
-			# 	else:
-			# 		d.basic_pay = flt(d.prev_basic_pay + d.prev_basic_pay * 0.02,0)
-			# 	d.basic_pay = math.ceil(d.basic_pay)
-			# 	if flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) > 0 and flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) <= 5:
-			# 		d.basic_pay = flt(str(d.basic_pay)[0:len(str(d.basic_pay))-1]+"5")
-			# 	elif flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) > 5 and flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) <= 9:
-			# 		value_to_add = 10 - flt(str(d.basic_pay)[len(str(d.basic_pay))-1])
-			# 		d.basic_pay = d.basic_pay + value_to_add
-			# 	if sal_struct.contract_allowance_method == "Percent":
-			# 		d.contract_allowance = flt(d.basic_pay*(sal_struct.contract_allowance*0.01),0)
-			# 	elif sal_struct.contract_allowance_method == "Lumpsum":
-			# 		d.contract_allowance = flt(sal_struct.contract_allowance)
-			# else:
-			# 	if emp_doc.grade in ("M3","M2","M1","E3","E2","E1"):
-			# 		d.basic_pay = flt(d.prev_basic_pay + d.prev_basic_pay * 0.02,0)
-			# 	else:
-			# 		d.basic_pay = flt(d.prev_basic_pay + d.prev_basic_pay * 0.05,0)
-			# 	d.basic_pay = math.ceil(d.basic_pay)
-			# 	if flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) > 0 and flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) <= 5:
-			# 		d.basic_pay = flt(str(d.basic_pay)[0:len(str(d.basic_pay))-1]+"5")
-			# 	elif flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) > 5 and flt(str(d.basic_pay)[len(str(d.basic_pay))-1]) <= 9:
-			# 		value_to_add = 10 - flt(str(d.basic_pay)[len(str(d.basic_pay))-1])
-			# 		d.basic_pay = d.basic_pay + value_to_add
-			# 	if sal_struct.ca_method == "Percent":
-			# 		d.corporate_allowance = flt(d.basic_pay*(sal_struct.ca*0.01),0)
-			# 	elif sal_struct.ca_method == "Lumpsum":
-			# 		d.corporate_allowance = flt(sal_struct.ca)
-			# if d.prev_officiating > 0:
-			# 	if sal_struct.officiating_allowance_method == "Percent":
-			# 		d.corporate_allowance = flt(d.basic_pay*(sal_struct.officiating_allowance*0.01),0)
-			# 	elif sal_struct.officiating_allowance_method == "Lumpsum":
-			# 		d.corporate_allowance = flt(sal_struct.officiating_allowance)
-			# if d.prev_mpi > 0:
-			# 	if sal_struct.mpi_method == "Percent":
-			# 		d.mpi = flt(d.basic_pay*(sal_struct.mpi*0.01),0)
-			# 	elif sal_struct.officiating_allowance_method == "Lumpsum":
-			# 		d.mpi = flt(sal_struct.mpi)
+			
+			#####
 			d.pf = d.employer_pf = d.arrear_basic_pay = d.arrear_corporate_allowance = d. arrear_contract_allowance = d.arrear_officiating_allowance = d.arrear_mpi = 0
 			d.deployment_allowance = d.fuel_allowance = d.factory_allowance = d.hra =0
 			if d.employee in ("NHDCL0601005","NHDCL2306006","NHDCL2110006","NHDCL8707003","NHDCL2207002"):
@@ -188,16 +150,15 @@ class SalaryArrearPayment(Document):
 				if d.employee =="NHDCL8707003":
 					d.contract_allowance = 23962
 
-				if d.employee =="NHDCL2207002":
+				if d.employee == "NHDCL2207002":
 					d.contract_allowance = 45000
 				d.arrear_contract_allowance = flt(d.contract_allowance-d.prev_contract)
-			# d.pf = flt(d.basic_pay * (d.pf_per * 0.01),0)
-			# d.employer_pf = flt(d.basic_pay * (d.employer_pf_per * 0.01),0)
-			# d.arrear_basic_pay = d.basic_pay - d.prev_basic_pay
-			# d.arrear_corporate_allowance = d.corporate_allowance - d.prev_corporate
-			# d.arrear_contract_allowance = d.contract_allowance - d.prev_contract
-			# d.arrear_officiating_allowance = d.officiating_allowance - d.prev_officiating
-			# d.arrear_mpi = d.mpi - d.prev_mpi
+			if d.employee in ("NHDCL23100171","NHDCL23100172","NHDCL23100173"):
+				d.arrear_ltc =0
+				if d.employee == "NHDCL23100173":
+					d.fixed_allowance=8360
+				else:
+					d.fixed_allowance=8965
 			
 			d.new_gross_pay = flt(d.fixed_allowance-d.communication_allowance+d.arrear_contract_allowance)
 
