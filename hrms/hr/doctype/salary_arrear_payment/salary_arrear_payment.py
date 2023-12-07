@@ -137,7 +137,7 @@ class SalaryArrearPayment(Document):
 			#####
 			d.pf = d.employer_pf = d.arrear_basic_pay = d.arrear_corporate_allowance = d. arrear_contract_allowance = d.arrear_officiating_allowance = d.arrear_mpi = 0
 			d.deployment_allowance = d.fuel_allowance = d.factory_allowance = d.hra =0
-			if d.employee in ("NHDCL0601005","NHDCL2306006","NHDCL2110006","NHDCL8707003","NHDCL2207002"):
+			if d.employee in ("NHDCL0601005","NHDCL2306006","NHDCL2110006","NHDCL8707003","NHDCL2207002","NHDCL1604038"):
 				if d.employee =="NHDCL0601005":
 					d.contract_allowance = 22082
 
@@ -152,6 +152,10 @@ class SalaryArrearPayment(Document):
 
 				if d.employee == "NHDCL2207002":
 					d.contract_allowance = 45000
+
+				if d.employee == "NHDCL1604038":
+					d.contract_allowance = 22082
+
 				d.arrear_contract_allowance = flt(d.contract_allowance-d.prev_contract)
 			if d.employee in ("NHDCL23100171","NHDCL23100172","NHDCL23100173"):
 				d.arrear_ltc =0
@@ -159,7 +163,11 @@ class SalaryArrearPayment(Document):
 					d.fixed_allowance=8360
 				else:
 					d.fixed_allowance=8965
-			
+			if  d.employee in ("NHDCL2304002","NHDCL2304005","NHDCL2302001","NHDCL2306007","NHDCL23080162","NHDCL2307009","NHDCL2307008","NHDCL2307010","NHDCL2306006"):
+				d.arrear_ltc =0
+
+			if d.employee in ("NHDCL1805112","NHDCL2104001","NHDCL1904032"):
+				d.fixed_allowance=0
 			d.new_gross_pay = flt(d.fixed_allowance-d.communication_allowance+d.arrear_contract_allowance)
 
 			if d.employee in ("dsaddad","adsada"):
