@@ -17,6 +17,7 @@ class SalaryArrearPayment(Document):
 		self.total_net_arrear_payable = 0
 		for a in self.items:
 			self.total_net_arrear_payable += a.net_payable_arrear
+
 	@frappe.whitelist()
 	# Populate Employee details 
 	def get_employees(self):
@@ -163,7 +164,7 @@ class SalaryArrearPayment(Document):
 					d.fixed_allowance=8360
 				else:
 					d.fixed_allowance=8965
-			if  d.employee in ("NHDCL2304002","NHDCL2304005","NHDCL2302001","NHDCL2306007","NHDCL23080162","NHDCL2307009","NHDCL2307008","NHDCL2307010","NHDCL2306006"):
+			if d.employee in ("NHDCL2304002","NHDCL2304005","NHDCL2302001","NHDCL2306007","NHDCL23080162","NHDCL2307009","NHDCL2307008","NHDCL2307010","NHDCL2306006"):
 				d.arrear_ltc =0
 
 			if d.employee in ("NHDCL1805112","NHDCL2104001","NHDCL1904032"):
@@ -184,11 +185,12 @@ class SalaryArrearPayment(Document):
 				d.arrear_employer_pf = 0
 				
 			d.health_contribution = flt((d.basic_pay+d.deployment_allowance+d.contract_allowance+d.hra+d.fuel_allowance+d.factory_allowance+d.fixed_allowance) * (d.health_con_per * 0.01),0)
-			d.new_gross_pay = flt(d.fixed_allowance+d.arrear_contract_allowance)
+			# d.new_gross_pay = flt(d.fixed_allowance+d.arrear_contract_allowance)
+			d.new_gross_pay = flt(d.fixed_allowance+d.arrear_contract_allowance+d.arrear_ltc)
 			d.arrear_hc = flt(d.new_gross_pay*(d.health_con_per*0.01),0)
 
-			d.new_gross_pay = flt(d.fixed_allowance+d.arrear_ltc+d.arrear_contract_allowance)
-			d.total_deduction = flt(d.arrear_hc+d.arrear_salary_tax+d.communication_allowance)
+			# d.new_gross_pay = flt(d.fixed_allowance+d.arrear_ltc+d.arrear_contract_allowance)
+			d.total_deduction = flt(d.arrear_hc+d.arrear_salary_tax+d.arrear_communication_allowance)
 			d.net_payable_arrear = d.new_gross_pay - d.total_deduction
 			# d.months_in_service = flt(self.get_months(from_date, to_date),2)
 			row.update(d)
@@ -213,7 +215,9 @@ class SalaryArrearPayment(Document):
 
 		# Default Accounts
 		default_bank_account = get_bank_account(self.branch)
+
 		default_payable_account = frappe.db.get_value("Company", self.company,"salary_payable_account")
+
 		company_cc              = frappe.db.get_value("Company", self.company,"company_cost_center")
 		default_gpf_account     = frappe.db.get_value("Company", self.company, "employer_contribution_to_pf")
 		default_business_activity = get_default_ba()
@@ -231,33 +235,36 @@ class SalaryArrearPayment(Document):
 		
 		# Salary Details
 		cc = {}
-		health_contribution = employee_pf = salary_tax = net_payable = 0
+		health_contribution = employee_pf = salary_tax = net_payable = ltc = communication_allowance = 0
 		for det in self.items:
 			health_contribution += det.arrear_hc
-			employee_pf += det.arrear_pf
+			# employee_pf += det.arrear_pf
 			salary_tax += det.arrear_salary_tax
 			net_payable += det.net_payable_arrear
+			communication_allowance += det.arrear_communication_allowance
 			cost_center = frappe.db.get_value("Branch", det.branch, "cost_center")
 			if cost_center not in cc:
 				cc.update({
         			cost_center: {
-               			"basic_pay": det.arrear_basic_pay,
-                  		"corporate_allowance": det.arrear_corporate_allowance,
+               			# "basic_pay": det.arrear_basic_pay,
+                  		# "corporate_allowance": det.arrear_corporate_allowance,
 						"contract_allowance": det.arrear_contract_allowance,
-						"officiating_allowance": det.arrear_officiating_allowance,
+						# "officiating_allowance": det.arrear_officiating_allowance,
 						"fixed_allowance": det.fixed_allowance,
-						"mpi": det.arrear_mpi,
-						"employer_pf": det.arrear_employer_pf
+						"ltc": det.arrear_ltc,
+						# "mpi": det.arrear_mpi,
+						# "employer_pf": det.arrear_employer_pf
                     }
            		})
 			else:
-				cc[cost_center]['basic_pay'] += det.arrear_basic_pay
-				cc[cost_center]['corporate_allowance'] += det.arrear_corporate_allowance
+				# cc[cost_center]['basic_pay'] += det.arrear_basic_pay
+				# cc[cost_center]['corporate_allowance'] += det.arrear_corporate_allowance
 				cc[cost_center]['contract_allowance'] += det.arrear_contract_allowance
-				cc[cost_center]['officiating_allowance'] += det.arrear_officiating_allowance
+				# cc[cost_center]['officiating_allowance'] += det.arrear_officiating_allowance
 				cc[cost_center]['fixed_allowance'] += det.fixed_allowance
-				cc[cost_center]['mpi'] += det.arrear_mpi
-				cc[cost_center]['employer_pf'] += det.arrear_employer_pf
+				cc[cost_center]['ltc'] += det.arrear_ltc
+				# cc[cost_center]['mpi'] += det.arrear_mpi
+				# cc[cost_center]['employer_pf'] += det.arrear_employer_pf
 
 		posting        = frappe._dict()
 		cc_wise_totals = frappe._dict()
@@ -275,41 +282,71 @@ class SalaryArrearPayment(Document):
 		payables_je.reference_name =  self.name
 		total_basic_pay = total_allowance = 0
 		total_debit = total_credit = 0
+		# frappe.throw(str(cc))
 		for rec in cc:
-			payables_je.append("accounts", {
-					"account": frappe.db.get_value("Salary Component", "Basic Pay", "gl_head"),
-					"reference_type": self.doctype,
-					"reference_name": self.name,
-					"cost_center": rec,
-					"business_activity": default_business_activity,
-					"debit_in_account_currency": flt(cc[rec]['basic_pay'],2),
-					"debit": flt(cc[rec]['basic_pay'],2),
-				})
-			total_basic_pay += flt(cc[rec]['basic_pay'],2)
-			total_debit += flt(cc[rec]['basic_pay'],2)
-			payables_je.append("accounts", {
-					"account": "Allowances - SMCL", #change Account here
-					"reference_type": self.doctype,
-					"reference_name": self.name,
-					"cost_center": rec,
-					"business_activity": default_business_activity,
-					"debit_in_account_currency": flt(cc[rec]['corporate_allowance'],2)+flt(cc[rec]['contract_allowance'],2)+flt(cc[rec]['officiating_allowance'],2)+flt(cc[rec]['mpi'])+flt(cc[rec]['fixed_allowance'],2),
-					"debit": flt(cc[rec]['corporate_allowance'],2)+flt(cc[rec]['contract_allowance'],2)+flt(cc[rec]['officiating_allowance'],2)+flt(cc[rec]['mpi'],2)+flt(cc[rec]['fixed_allowance'],2),
-				})
+			if flt(cc[rec]['ltc'],2) >0:
+				payables_je.append("accounts", {
+						"account": frappe.db.get_value("Salary Component", "LTC", "gl_head"),
+						"reference_type": self.doctype,
+						"reference_name": self.name,
+						"cost_center": rec,
+						"business_activity": default_business_activity,
+						"debit_in_account_currency": flt(cc[rec]['ltc'],2),
+						"debit": flt(cc[rec]['ltc'],2),
+					})
+			# total_basic_pay += flt(cc[rec]['basic_pay'],2)
+			total_debit += flt(cc[rec]['ltc'],2)
+			total_allowance += flt(cc[rec]['contract_allowance'],2)+flt(cc[rec]['fixed_allowance'],2)
+			if  flt(cc[rec]['contract_allowance'],2)>0:
+				payables_je.append("accounts", {
+						"account":  frappe.db.get_value("Salary Component","Contract Allowance", "gl_head"), 
+						"reference_type": self.doctype,
+						"reference_name": self.name,
+						"cost_center": rec,
+						"business_activity": default_business_activity,
+						"debit_in_account_currency": flt(cc[rec]['contract_allowance'],2),
+						"debit": flt(cc[rec]['contract_allowance'],2),
+					})
+			if flt(cc[rec]['fixed_allowance'],2) >0:
+				payables_je.append("accounts", {
+						"account": frappe.db.get_value("Salary Component", "Lumpsum Increment", "gl_head"),
+						"reference_type": self.doctype,
+						"reference_name": self.name,
+						"cost_center": rec,
+						"business_activity": default_business_activity,
+						"debit_in_account_currency": flt(cc[rec]['fixed_allowance'],2),
+						"debit": flt(cc[rec]['fixed_allowance'],2),
+					})
 			#Total Allowance
-			total_allowance += flt(cc[rec]['corporate_allowance'],2)+flt(cc[rec]['contract_allowance'],2)+flt(cc[rec]['officiating_allowance'],2)+flt(cc[rec]['mpi'],2)+flt(cc[rec]['fixed_allowance'],2)
-		
-		payables_je.append("accounts", {
-				"account": frappe.db.get_value("Salary Component", "Health Contribution", "gl_head"),
-				"reference_type": self.doctype,
-				"reference_name": self.name,
-				"cost_center": company_cc,
-				"business_activity": default_business_activity,
-				"credit_in_account_currency": flt(health_contribution,2),
-				"credit": flt(health_contribution,2),
-				"party_check": 0
-			})
+			# total_allowance += flt(cc[rec]['contract_allowance'],2)+flt(cc[rec]['fixed_allowance'],2)
+			total_debit += flt(cc[rec]['contract_allowance'],2)+flt(cc[rec]['fixed_allowance'],2)
+			# frappe.throw(str(total_debit))
+		if health_contribution > 0:
+			payables_je.append("accounts", {
+					"account": frappe.db.get_value("Salary Component", "Health Contribution", "gl_head"),
+					"reference_type": self.doctype,
+					"reference_name": self.name,
+					"cost_center": company_cc,
+					"business_activity": default_business_activity,
+					"credit_in_account_currency": flt(health_contribution,2),
+					"credit": flt(health_contribution,2),
+					"party_check": 0
+				})
 		total_credit += flt(health_contribution,2)
+		
+		if communication_allowance > 0:
+			payables_je.append("accounts", {
+					"account": frappe.db.get_value("Salary Component", "Communication Allowance", "gl_head"),
+					"reference_type": self.doctype,
+					"reference_name": self.name,
+					"cost_center": company_cc,
+					"business_activity": default_business_activity,
+					"credit_in_account_currency": flt(communication_allowance,2),
+					"credit": flt(communication_allowance,2),
+					"party_check": 0
+				})
+		total_credit += flt(communication_allowance,2)
+		
 		#PF
 
 		# payables_je.append("accounts", {
@@ -348,11 +385,14 @@ class SalaryArrearPayment(Document):
 				"party_check": 0
 			})
 		total_credit += flt(net_payable,2)
+		# frappe.throw(str(total_credit))
 		payables_je.flags.ignore_permissions = 1
-		payables_je.total_debit = total_debit
-		payables_je.total_credit = total_credit
+		# if total_credit != total_debit:
+		# 	frappe.throw(str(total_debit))
+		# payables_je.total_debit = total_debit
+		# payables_je.total_credit = total_credit
 		payables_je.insert()
-		payables_je.submit()
+		# payables_je.submit() ### uncomment this
 		#Payables JE End -----------------------------------------------------
 
 
@@ -389,6 +429,19 @@ class SalaryArrearPayment(Document):
 					"debit_in_account_currency": flt(salary_tax,2),
 					"debit": flt(salary_tax,2),
 				})
+		#Communication allowance
+		if communication_allowance > 0:
+			sthc_je.append("accounts", {
+					"account": frappe.db.get_value("Salary Component", "Communication Allowance", "gl_head"),
+					"reference_type": self.doctype,
+					"reference_name": self.name,
+					"cost_center": company_cc,
+					"business_activity": default_business_activity,
+					"debit_in_account_currency": flt(communication_allowance,2),
+					"debit": flt(communication_allowance,2),
+					"party_check": 0
+				})
+
 		#To Bank Account
 		sthc_je.append("accounts", {
 				"account": default_bank_account,
@@ -396,8 +449,8 @@ class SalaryArrearPayment(Document):
 				"reference_name": self.name,
 				"cost_center": company_cc,
 				"business_activity": default_business_activity,
-				"credit_in_account_currency": flt(salary_tax,2)+flt(health_contribution,2),
-				"credit": flt(salary_tax,2)+flt(health_contribution,2),
+				"credit_in_account_currency": flt(salary_tax,2)+flt(communication_allowance,2)+flt(health_contribution,2),
+				"credit": flt(salary_tax,2)+flt(communication_allowance,2)+flt(health_contribution,2),
 			})
 
 		sthc_je.flags.ignore_permissions = 1 
@@ -405,53 +458,60 @@ class SalaryArrearPayment(Document):
 		#Salary Tax and HC Bank Entry End -----------------------------------------------
 
 		#PF Bank Entry -----------------------------------------------
-		pf_je = frappe.new_doc("Journal Entry")
-		pf_je.voucher_type= "Bank Entry"
-		pf_je.naming_series = "Bank Payment Voucher"
-		pf_je.title = "Arrear PF contribution of SMCL staff for the month of "+self.from_month
-		pf_je.remark =  "Arrear PF contribution of SMCL staff for the month of "+self.from_month
-		pf_je.posting_date = nowdate()               
-		pf_je.company = self.company
-		pf_je.branch = self.branch
-		pf_je.reference_type = self.doctype
-		pf_je.reference_name =  self.name
-		#Employer PF Expense
-		total_employer_pf = 0
-		for p in cc:
-			pf_je.append("accounts", {
-					"account": default_gpf_account,
-					"reference_type": self.doctype,
-					"reference_name": self.name,
-					"cost_center": p,
-					"business_activity": default_business_activity,
-					"debit_in_account_currency": flt(cc[p]['employer_pf'],2),
-					"debit": flt(cc[p]['employer_pf'],2),
-				})
-			total_employer_pf += flt(cc[p]['employer_pf'],2)
-		#Employee PF
-		pf_je.append("accounts", {
-				"account": frappe.db.get_value("Salary Component", "PF", "gl_head"),
-				"reference_type": self.doctype,
-				"reference_name": self.name,
-				"cost_center": company_cc,
-				"business_activity": default_business_activity,
-				"debit_in_account_currency": flt(employee_pf,2),
-				"debit": flt(employee_pf,2),
-				"party_check": 0
-			})
-		#To Bank Account
-		pf_je.append("accounts", {
-				"account": default_bank_account,
-				"reference_type": self.doctype,
-				"reference_name": self.name,
-				"cost_center": company_cc,
-				"business_activity": default_business_activity,
-				"credit_in_account_currency": flt(employee_pf,2)+flt(total_employer_pf,2),
-				"credit": flt(employee_pf,2)+flt(total_employer_pf,2),
-			})
+		# pf_je = frappe.new_doc("Journal Entry")
+		# pf_je.voucher_type= "Bank Entry"
+		# pf_je.naming_series = "Bank Payment Voucher"
+		# pf_je.title = "Arrear PF contribution of SMCL staff for the month of "+self.from_month
+		# pf_je.remark =  "Arrear PF contribution of SMCL staff for the month of "+self.from_month
+		# pf_je.posting_date = nowdate()               
+		# pf_je.company = self.company
+		# pf_je.branch = self.branch
+		# pf_je.reference_type = self.doctype
+		# pf_je.reference_name =  self.name
 
-		pf_je.flags.ignore_permissions = 1 
-		pf_je.insert()
+
+		#Employer PF Expense
+
+		# total_employer_pf = 0
+		# for p in cc:
+		# 	pf_je.append("accounts", {
+		# 			"account": default_gpf_account,
+		# 			"reference_type": self.doctype,
+		# 			"reference_name": self.name,
+		# 			"cost_center": p,
+		# 			"business_activity": default_business_activity,
+		# 			"debit_in_account_currency": flt(cc[p]['employer_pf'],2),
+		# 			"debit": flt(cc[p]['employer_pf'],2),
+		# 		})
+		# 	total_employer_pf += flt(cc[p]['employer_pf'],2)
+		
+		#Employee PF
+		
+		# pf_je.append("accounts", {
+		# 		"account": frappe.db.get_value("Salary Component", "PF", "gl_head"),
+		# 		"reference_type": self.doctype,
+		# 		"reference_name": self.name,
+		# 		"cost_center": company_cc,
+		# 		"business_activity": default_business_activity,
+		# 		"debit_in_account_currency": flt(employee_pf,2),
+		# 		"debit": flt(employee_pf,2),
+		# 		"party_check": 0
+		# 	})
+		#To Bank Account
+
+		# pf_je.append("accounts", {
+		# 		"account": default_bank_account,
+		# 		"reference_type": self.doctype,
+		# 		"reference_name": self.name,
+		# 		"cost_center": company_cc,
+		# 		"business_activity": default_business_activity,
+		# 		"credit_in_account_currency": flt(employee_pf,2)+flt(total_employer_pf,2),
+		# 		"credit": flt(employee_pf,2)+flt(total_employer_pf,2),
+		# 	})
+
+		# pf_je.flags.ignore_permissions = 1 
+		# pf_je.insert()
+
 		#PF Bank Entry End -----------------------------------------------
 
 		#Payables to Bank Entry -----------------------------------------------
@@ -490,8 +550,10 @@ class SalaryArrearPayment(Document):
 		pb_je.flags.ignore_permissions = 1 
 		pb_je.insert()
 		#Salary Tax and HC Bank Entry End -----------------------------------------------
+
 		self.db_set("journal_entries_created", 1)
 		frappe.db.commit()
+
 	##### Ver3.0.190304 Ends
 
 @frappe.whitelist()
