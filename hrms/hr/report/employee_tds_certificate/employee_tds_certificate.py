@@ -11,12 +11,15 @@ def execute(filters=None):
 	validate_filters(filters)
 	columns = get_columns()
 	data = get_data(filters)
+	frappe.errprint(str(data))
 	return columns, data, filters
 
 def get_data( filters=None):
 	data = []
     #salary arrear
 	data += get_salary_arrer(filters)
+	frappe.errprint(str(data))
+    
 	# salary 
 	data += get_salary_data(filters)
 	#Leave Encashment 
@@ -147,6 +150,11 @@ def get_salary_arrer(filters):
     return frappe.db.sql("""
 SELECT 
     CONCAT(t5.month,'-', t5.fiscal_year) AS month_year, 
+      (
+        SELECT posting_date 
+        FROM `tabSalary Arrear Payment`  
+        WHERE company = 'State Mining Corporation Ltd'AND posting_date BETWEEN '{from_date}' AND '{to_date}' limit 1
+    ) AS posting_date,
     t4.arrear_basic_pay AS basic,
     t4.arrear_pf AS pf,
     ifnull(
@@ -163,12 +171,8 @@ SELECT
     ifnull(t4.arrear_salary_tax,0) AS tds,
     'Salary Arrear' AS type,
     tds_receipt_number AS receipt_number,
-    tds_receipt_date AS receipt_date,
-    (
-        SELECT apf.posting_date 
-        FROM `tabSalary Arrear Payment` AS apf 
-        WHERE apf.company = 'State Mining Corporation Ltd'AND apf.posting_date BETWEEN '{from_date}' AND '{to_date}'
-    ) AS posting_date
+    tds_receipt_date AS receipt_date
+  
     
 FROM 
     `tabSalary Arrear Payment Item` t4 
@@ -176,12 +180,6 @@ Right JOIN
     `tabTDS Receipt Update` t5 ON t5.purpose = 'Salary Arrear' 
 WHERE 
     t4.employee = '{employee}' and t5.docstatus = 1
-    
-
-    
-    
-    
-    
     
     """.format(employee = filters.employee,fiscal_year=filters.fiscal_year,from_date = getdate(str(filters.fiscal_year) + "-01-01"),
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")),as_dict=True)
