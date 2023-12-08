@@ -15,6 +15,8 @@ def execute(filters=None):
 
 def get_data( filters=None):
 	data = []
+    #salary arrear
+	data += get_salary_arrer(filters)
 	# salary 
 	data += get_salary_data(filters)
 	#Leave Encashment 
@@ -25,6 +27,7 @@ def get_data( filters=None):
 	data += get_pbva(filters)
 
 	return data
+
 def get_salary_data(filters):
 	data = []
 	for d in frappe.db.sql('''SELECT 
@@ -138,6 +141,51 @@ def get_pbva(filters):
 								AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
 				      """.format( employee = filters.employee, fiscal_year=filters.fiscal_year, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=1)
+ 
+def get_salary_arrer(filters):
+   
+    return frappe.db.sql("""
+SELECT 
+    CONCAT(t5.month,'-', t5.fiscal_year) AS month_year, 
+    t4.arrear_basic_pay AS basic,
+    t4.arrear_pf AS pf,
+    ifnull(
+        sum(t4.arrear_corporate_allowance+t4.arrear_contract_allowance+t4.arrear_officiating_allowance+t4.arrear_mpi+fixed_allowance ) + t4.arrear_basic_pay,0)
+        AS total,
+  
+	ifnull(
+     sum(t4.arrear_corporate_allowance+t4.arrear_contract_allowance+t4.arrear_officiating_allowance+t4.arrear_mpi+fixed_allowance),0)
+     AS others, 
+	0 AS gis, 
+	ifnull(t4.arrear_pf,0 ) AS totalPfGis, 
+	t4.arrear_hc AS health,
+	ifnull(sum(t4.arrear_corporate_allowance+t4.arrear_contract_allowance+t4.arrear_officiating_allowance+t4.arrear_mpi+fixed_allowance ) +(t4.arrear_basic_pay)-(t4.arrear_pf),0) AS taxable,
+    ifnull(t4.arrear_salary_tax,0) AS tds,
+    'Salary Arrear' AS type,
+    tds_receipt_number AS receipt_number,
+    tds_receipt_date AS receipt_date,
+    (
+        SELECT apf.posting_date 
+        FROM `tabSalary Arrear Payment` AS apf 
+        WHERE apf.company = 'State Mining Corporation Ltd'AND apf.posting_date BETWEEN '{from_date}' AND '{to_date}'
+    ) AS posting_date
+    
+FROM 
+    `tabSalary Arrear Payment Item` t4 
+Right JOIN 
+    `tabTDS Receipt Update` t5 ON t5.purpose = 'Salary Arrear' 
+WHERE 
+    t4.employee = '{employee}' and t5.docstatus = 1
+    
+
+    
+    
+    
+    
+    
+    """.format(employee = filters.employee,fiscal_year=filters.fiscal_year,from_date = getdate(str(filters.fiscal_year) + "-01-01"),
+					  to_date = getdate(str(filters.fiscal_year) + "-12-31")),as_dict=True)
+
 	
 def validate_filters(filters):
 	if not filters.fiscal_year:
@@ -145,6 +193,7 @@ def validate_filters(filters):
 	start, end = frappe.db.get_value("Fiscal Year", filters.fiscal_year, ["year_start_date", "year_end_date"])
 	filters.year_start = start
 	filters.year_end = end
+
 
 def get_columns():
 	return [
