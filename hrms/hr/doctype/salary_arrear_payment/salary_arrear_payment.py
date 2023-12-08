@@ -166,13 +166,13 @@ class SalaryArrearPayment(Document):
 			if d.employee in ("NHDCL2304002","NHDCL2304005","NHDCL2302001","NHDCL2306007","NHDCL23080162","NHDCL2307009","NHDCL2307008","NHDCL2307010","NHDCL2306006"):
 				d.arrear_ltc =0
 
-			if d.employee in ("NHDCL1805112","NHDCL2104001","NHDCL1904032","HDCL1805160"):
+			if d.employee in ("NHDCL1805112","NHDCL2104001","NHDCL1904032","NHDCL1805160"):
 				if  d.employee =="NHDCL1904032":
 					d.arrear_ltc= 520
 				d.fixed_allowance=0
 			if d.employee=="NHDCL1805142":
 				d.fixed_allowance=7220
-				
+
 			d.new_gross_pay = flt(d.fixed_allowance-d.communication_allowance+d.arrear_contract_allowance)
 
 			if d.employee in ("dsaddad","adsada"):
