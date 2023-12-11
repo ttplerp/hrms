@@ -27,7 +27,7 @@ class LeaveTravelConcession(Document):
 				cc_amount[cc] = a.amount
 				
 		self.post_journal_entry(cc_amount)
-	def validate_employee():
+	def validate_employee(self):
 		if self.employee:
 			employment_type = frappe.db.get_value("Employee",self.employee,"employment_status")
 			joining_date = frappe.db.get_value("Employee",self.employee,"date_of_joining")
