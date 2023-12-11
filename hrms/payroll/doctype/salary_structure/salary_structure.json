@@ -71,6 +71,9 @@
   "fa_method",
   "factory_allowance",
   "eligible_for_fixed_allowance",
+  "eligible_for_leave_travel_concession",
+  "ltc_method",
+  "ltc_allowance",
   "cb_12",
   "eligible_for_officiating_allowance",
   "officiating_allowance_method",
@@ -895,13 +898,32 @@
    "default": "0",
    "fieldname": "eligible_for_fixed_allowance",
    "fieldtype": "Check",
-   "label": "Eligible for Fixed Allowance"
+   "label": "Eligible for Lumpsum Increment"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_leave_travel_concession",
+   "fieldtype": "Check",
+   "label": "Eligible for Leave Travel Concession"
+  },
+  {
+   "depends_on": "eligible_for_leave_travel_concession",
+   "fieldname": "ltc_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Leave Travel Concession Payment Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eligible_for_leave_travel_concession",
+   "fieldname": "ltc_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Leave Travel Concession )"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-11-28 10:46:16.076972",
+ "modified": "2023-12-11 15:15:40.077875",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

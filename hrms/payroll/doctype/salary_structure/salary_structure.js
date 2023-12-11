@@ -288,6 +288,15 @@ frappe.ui.form.on('Salary Structure', {
 	mpi_method: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_leave_travel_concession: function(frm){
+		calculate_others(frm);
+	},
+	ltc_method: function(frm){
+		calculate_others(frm);
+	},
+	ltc_allowance: function(frm){
+		calculate_others(frm);
+	},
 	officiating_allowance_method: function(frm){
 		calculate_others(frm);
 	},
