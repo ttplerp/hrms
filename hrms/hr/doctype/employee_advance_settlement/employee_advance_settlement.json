@@ -20,6 +20,8 @@
   "advance_account",
   "column_break_9",
   "department",
+  "branch",
+  "cost_center",
   "debit_account",
   "amount_details_section",
   "advance_amount",
@@ -37,8 +39,6 @@
   "company",
   "business_activity",
   "column_break_21",
-  "cost_center",
-  "column_break_23",
   "currency",
   "section_break_ozlul",
   "approver",
@@ -211,10 +211,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "column_break_23",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "column_break_16",
    "fieldtype": "Column Break"
   },
@@ -344,12 +340,20 @@
    "fieldtype": "Dynamic Link",
    "label": "Reference Doctype",
    "options": "reference_type"
+  },
+  {
+   "fetch_from": "employee.branch",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-20 16:46:45.197032",
+ "modified": "2023-12-12 14:36:40.074164",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance Settlement",
