@@ -141,8 +141,10 @@
   "column_break_137",
   "imprest_advance_status_notification_template",
   "imprest_recoup_status_notification_template",
+  "enote_email_templates_section",
   "enote_approval_notification",
   "enote_copyto_notification",
+  "column_break_139",
   "enote_status_notification",
   "pms_section",
   "target_set_up_status_notification_template",
@@ -993,13 +995,22 @@
    "fieldtype": "Link",
    "label": "PMS Appeal Approval Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "enote_email_templates_section",
+   "fieldtype": "Section Break",
+   "label": "eNote Email Templates"
+  },
+  {
+   "fieldname": "column_break_139",
+   "fieldtype": "Column Break"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-11-06 12:13:50.439276",
+ "modified": "2023-12-13 14:40:08.453905",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
