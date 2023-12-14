@@ -26,6 +26,7 @@ def get_columns(data):
 		_("Employee") + ":Link/Employee:120", 
 		_("Employee Name") + "::140",
 		_("Branch") + ":Link/Branch:120", 
+		_("Advance Type") + "::140",
 		_("Advance Amount") + ":Currency:120", 
 		_("No Of Installments") + ":Data:80", 
 		_("Monthly Deduction") + ":Currency:120", 
@@ -44,7 +45,7 @@ def get_data(filters):
 		from (
 			select 
 				ea.employee, ea.employee_name, 
-				ea.branch, ea.paid_amount, ea.deduction_month, ea.monthly_deduction, ea.posting_date,
+				ea.branch, ea.advance_type, ea.paid_amount, ea.deduction_month, ea.monthly_deduction, ea.posting_date,
 				(select sum(sd.amount)
 				from `tabSalary Detail` sd
 				where sd.reference_number = ea.name
@@ -62,5 +63,6 @@ def get_conditions(filters):
 	if filters.get("from_date") and filters.get("to_date"):
 		conditions += " and ea.posting_date between %(from_date)s and %(to_date)s"
 	if filters.get("employee"): conditions += " and ea.employee = %(employee)s"
+	if filters.get("advance_type"): conditions += " and ea.advance_type = %(advance_type)s"
 
 	return conditions, filters

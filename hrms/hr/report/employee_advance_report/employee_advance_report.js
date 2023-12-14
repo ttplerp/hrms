@@ -11,6 +11,12 @@ frappe.query_reports["Employee Advance Report"] = {
 			"options": "Employee",
 		},
 		{
+			"fieldname": "advance_type",
+			"label": __("Advance Type"),
+			"fieldtype": "Select",
+			"options": "\nSalary Advance\nImprest Advance\nEmployee Loan",
+		},
+		{
 			"fieldname": "from_date",
 			"label": __("From Date"),
 			"fieldtype": "Date",
