@@ -34,7 +34,7 @@ def execute(filters=None):
 		
 		cid, joining_date, tpn_number, nationality = frappe.db.get_value("Employee", ss.employee, ["passport_number","date_of_joining", "tpn_number", "nationality"])
 						
-		row = [ss.employee, ss.employee_name, ss.employment_type, cid, joining_date, tpn_number, nationality,
+		row = [ss.payroll_entry, ss.employee, ss.employee_name, ss.employment_type, cid, joining_date, tpn_number, nationality,
 			ss.bank_name, ss.bank_code, ss.bank_branch, ss.bank_account_no, 
 			ss.cost_center, ss.branch, ss.department,
 						 ss.division, ss.unit, ss.employee_grade, ss.designation, 
@@ -57,6 +57,7 @@ def execute(filters=None):
 	
 def get_columns(salary_slips):
 	columns = [
+		_("Payroll Entry") + ":Link/Payroll Entry:120", 
 		_("Employee") + ":Link/Employee:120", 
 		_("Employee Name") + "::140", 
 		_("Employment Type") + ":Link/Employment Type:120",
