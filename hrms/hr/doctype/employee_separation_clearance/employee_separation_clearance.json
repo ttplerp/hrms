@@ -43,7 +43,7 @@
   "iad_clearance",
   "iad_remarks",
   "ict",
-  "ict_clearance",
+  "clearance",
   "ict_remarks",
   "sb_reference",
   "mail_sent",
@@ -115,7 +115,7 @@
    "fieldname": "reason_for_resignation",
    "fieldtype": "Select",
    "label": "Separation Type",
-   "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract",
+   "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract\ntest",
    "read_only": 1
   },
   {
@@ -141,6 +141,7 @@
    "label": "Clearance Section"
   },
   {
+   "description": "  ",
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -341,23 +342,24 @@
    "read_only": 1
   },
   {
-   "fieldname": "ict_clearance",
+   "fieldname": "ict_remarks",
    "fieldtype": "Data",
-   "label": "Clearance Acquired(ICT Division)",
+   "label": "ICT Division Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
    "read_only_depends_on": "eval:frappe.session.user != doc.ict"
   },
   {
-   "fieldname": "ict_remarks",
-   "fieldtype": "Data",
-   "label": "ICT Division Remarks",
+   "default": "0",
+   "fieldname": "clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired(ICT Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
    "read_only_depends_on": "eval:frappe.session.user != doc.ict"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-25 11:16:31.892369",
+ "modified": "2023-12-15 12:34:02.915653",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",

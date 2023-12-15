@@ -46,7 +46,7 @@ class EmployeeSeparationClearance(Document):
 			frappe.throw("Internal Audit Division has not granted clearance.")
 		if self.rtc_clearance == 0:
 			frappe.throw("Rental and Tenancy has not granted clearance.")
-		if self.ict_clearance == 0:
+		if self.clearance == 0:
 			frappe.throw("ICT Division has not granted clearance.")
 		if self.sws_clearance == 0:
 			frappe.throw("SWS Treasurer has not granted clearance.")
