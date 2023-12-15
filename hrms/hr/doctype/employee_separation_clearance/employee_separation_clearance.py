@@ -48,8 +48,8 @@ class EmployeeSeparationClearance(Document):
 			frappe.throw("Rental and Tenancy has not granted clearance.")
 		if self.clearance == 0:
 			frappe.throw("ICT Division has not granted clearance.")
-		if self.sws_clearance == 0:
-			frappe.throw("SWS Treasurer has not granted clearance.")
+		# if self.sws_clearance == 0:
+		# 	frappe.throw("SWS Treasurer has not granted clearance.")
 
 	def update_reference(self):
 		id = frappe.get_doc("Employee Separation",self.employee_separation_id)
@@ -83,8 +83,8 @@ class EmployeeSeparationClearance(Document):
 			receipients.append(self.rtc)
 		if self.ict:
 			receipients.append(self.ict)
-		if self.sws:
-			receipients.append(self.sws)
+		# if self.sws:
+		# 	receipients.append(self.sws)
 
 		return receipients
 
@@ -208,11 +208,11 @@ class EmployeeSeparationClearance(Document):
 			self.ict = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "ict"),"user_id")
 		
 		#--------------------------- SWS Treasurer-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		sws_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ict"))
-		if sws_officiate:
-			self.sws = frappe.db.get_value("Employee",sws_officiate[0].officiate,"user_id")
-		else:
-			self.sws = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "sws"),"user_id")
+		# sws_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ict"))
+		# if sws_officiate:
+		# 	self.sws = frappe.db.get_value("Employee",sws_officiate[0].officiate,"user_id")
+		# else:
+		# 	self.sws = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "sws"),"user_id")
 
 		self.db_set("approvers_set",1)
 
