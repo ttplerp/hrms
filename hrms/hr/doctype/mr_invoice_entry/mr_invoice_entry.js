@@ -7,11 +7,6 @@ frappe.ui.form.on('MR Invoice Entry', {
             frm.add_custom_button(__('Get MR Employee'), function(doc) {
 				frm.events.get_mr_employee(frm)
 			},__("Create"))
-            // if (!frm.doc.__islocal){
-            //     frm.add_custom_button(__('Create MR Invoice'), function(doc) {
-            //         frm.events.create_mr_invoice(frm)
-            //     },__("Create"))
-            // }
 		}
         if(frm.doc.docstatus == 1 && frm.doc.mr_invoice_created == 0){
             frm.add_custom_button(__('Create MR Invoice'), function(doc) {
@@ -24,7 +19,6 @@ frappe.ui.form.on('MR Invoice Entry', {
             },__("Create"))
 		}
         if(frm.doc.docstatus == 1 && frm.doc.mr_invoice_submit == 1){
-            console.log('helllo')
             frappe.call({
                 method: 'hrms.hr.doctype.mr_invoice_entry.mr_invoice_entry.mr_invoice_entry_has_bank_entries',
                 args: {
@@ -46,6 +40,13 @@ frappe.ui.form.on('MR Invoice Entry', {
                 }
             }
         })
+		frm.set_query("project", function() {
+			return {
+				"filters": {
+					"branch": frm.doc.branch
+				}
+			}
+		});
 	},
     create_mr_invoice:function(frm){
         frappe.call({

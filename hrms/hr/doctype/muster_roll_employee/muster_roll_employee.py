@@ -5,12 +5,12 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import flt, getdate, cint, today, add_years, date_diff, nowdate
-from frappe.utils.data import get_first_day, get_last_day, add_days
+from frappe.utils import flt, getdate, nowdate
+# from frappe.utils.data import get_first_day, get_last_day, add_days
 
 class MusterRollEmployee(Document):
     def validate(self):
-        #self.calculate_rates()
+        # self.calculate_rates()
         self.cal_rates()
         if len(self.musterroll) > 1:
             for a in range(len(self.musterroll)-1):
@@ -69,8 +69,9 @@ class MusterRollEmployee(Document):
             })
         else:
             # Fetching previous document from db
+            # if not self.date_of_transfer:
             prev_doc = frappe.get_doc(self.doctype,self.name)
-            self.date_of_transfer = self.date_of_transfer if self.date_of_transfer else today()
+            # self.date_of_transfer = self.date_of_transfer if self.date_of_transfer else today()
             
             if (getdate(self.joining_date) != prev_doc.joining_date) or \
                 (self.status == 'Left' and self.separation_date) or \
@@ -88,27 +89,26 @@ class MusterRollEmployee(Document):
                             elif prev_doc.separation_date:
                                 if (getdate(prev_doc.separation_date) == getdate(wh.to_date)):
                                     wh.to_date = self.separation_date
+                                                    
+                            # elif (self.cost_center != prev_doc.cost_center):
+                            #     if getdate(self.date_of_transfer) > getdate(today()):
+                            #         frappe.throw(_("Date of transfer cannot be a future date."),title="Invalid Date")      
+                            #     elif not wh.to_date:
+                            #         if getdate(self.date_of_transfer) < getdate(wh.from_date):
+                            #             frappe.throw(_("Row#{0} : Date of transfer({1}) cannot be beyond current effective entry.").format(wh.idx,self.date_of_transfer),title="Invalid Date")
+                                                    
+                            #         wh.to_date = wh.from_date if add_days(getdate(self.date_of_transfer),-1) < getdate(wh.from_date) else add_days(self.date_of_transfer,-1)
                                                 
-                        elif (self.cost_center != prev_doc.cost_center):
-                            if getdate(self.date_of_transfer) > getdate(today()):
-                                frappe.throw(_("Date of transfer cannot be a future date."),title="Invalid Date")      
-                            elif not wh.to_date:
-                                if getdate(self.date_of_transfer) < getdate(wh.from_date):
-                                    frappe.throw(_("Row#{0} : Date of transfer({1}) cannot be beyond current effective entry.").format(wh.idx,self.date_of_transfer),title="Invalid Date")
-                                                
-                                wh.to_date = wh.from_date if add_days(getdate(self.date_of_transfer),-1) < getdate(wh.from_date) else add_days(self.date_of_transfer,-1)
-                                            
-                    if (self.cost_center != prev_doc.cost_center):
-                        self.append("internal_work_history",{
-                            "branch": self.branch,
-                            "cost_center": self.cost_center,
-                            "business_activity": self.business_activity,
-                            "from_date": self.date_of_transfer,
-                            "owner": frappe.session.user,
-                            "creation": nowdate(),
-                            "modified_by": frappe.session.user,
-                            "modified": nowdate(),
-                            "reference_doctype": self.temp_doctype,
-                            "reference_docname": self.temp_docname
-                        })
+                        # if (self.cost_center != prev_doc.cost_center):
+                        #     self.append("internal_work_history",{
+                        #         "branch": self.branch,
+                        #         "cost_center": self.cost_center,
+                        #         "from_date": self.date_of_transfer,
+                        #         "owner": frappe.session.user,
+                        #         "creation": nowdate(),
+                        #         "modified_by": frappe.session.user,
+                        #         "modified": nowdate(),
+                        #         "reference_doctype": self.temp_doctype,
+                        #         "reference_docname": self.temp_docname
+                        #     })
 

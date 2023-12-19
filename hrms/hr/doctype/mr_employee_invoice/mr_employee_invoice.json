@@ -12,6 +12,7 @@
   "posting_date",
   "credit_account",
   "currency",
+  "project",
   "column_break_4",
   "mr_employee_name",
   "cost_center",
@@ -285,12 +286,19 @@
    "label": "MR Invoice Entry",
    "options": "MR Invoice Entry",
    "read_only": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-08 17:04:55.282002",
+ "modified": "2023-12-19 12:31:48.288855",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Employee Invoice",

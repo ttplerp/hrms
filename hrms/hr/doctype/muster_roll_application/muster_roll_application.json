@@ -24,6 +24,8 @@
   "approver_name",
   "section_break_12",
   "from_project",
+  "from_branch",
+  "from_unit",
   "column_break_14",
   "date_of_transfer",
   "column_break_16",
@@ -98,6 +100,7 @@
   {
    "fieldname": "from_project",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "From Project",
    "options": "Project"
   },
@@ -106,7 +109,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.from_project",
+   "depends_on": "eval:doc.from_branch ",
    "fieldname": "date_of_transfer",
    "fieldtype": "Date",
    "label": "Date of Transfer/Joining"
@@ -116,7 +119,7 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.from_project",
+   "depends_on": "eval:doc.from_branch",
    "fieldname": "get_employees",
    "fieldtype": "Button",
    "label": "Get Employees"
@@ -185,14 +188,27 @@
   {
    "fieldname": "section",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Section",
+   "options": "Department"
+  },
+  {
+   "fieldname": "from_branch",
+   "fieldtype": "Link",
+   "label": "From Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "from_unit",
+   "fieldtype": "Link",
+   "label": "From Unit",
    "options": "Department"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-08 16:02:18.392256",
+ "modified": "2023-12-07 16:05:14.644969",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Application",
@@ -302,5 +318,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

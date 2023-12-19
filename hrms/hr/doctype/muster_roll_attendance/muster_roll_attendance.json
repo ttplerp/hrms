@@ -91,7 +91,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-06-07 09:57:29.879656",
+ "modified": "2023-12-07 16:05:20.349475",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Attendance",
@@ -137,5 +137,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

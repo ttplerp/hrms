@@ -82,11 +82,13 @@ class MRInvoiceEntry(Document):
 					"party_name":mr_invoice.mr_employee_name,
 					"reference_type": mr_invoice.doctype,
 					"reference_name": mr_invoice.name,
+					"project": mr_invoice.project,
 				})
 		accounts.append({
 			"account": bank_account,
 			"credit_in_account_currency": flt(total_payable_amount,2),
-			"cost_center": self.cost_center
+			"cost_center": self.cost_center,
+			"project": self.project
 		})
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions=1
@@ -109,15 +111,33 @@ class MRInvoiceEntry(Document):
 
 	@frappe.whitelist()
 	def get_mr_employee(self):
-		if not self.branch or not self.month or not self.fiscal_year:
-			frappe.throw("Either Branch/Month/Fiscal Year is missing")
-		self.set("items",[])
-		for e in frappe.db.sql('''select 
-									name as mr_employee, person_name as mr_employee_name 
-									from `tabMuster Roll Employee` where status = 'Active'
-									and branch = {}
-									'''.format(frappe.db.escape(self.branch)), as_dict=True):
-			self.append("items",e)
+		if not all([self.branch, self.month, self.fiscal_year]):
+			missing_fields = []
+			if not self.branch:
+				missing_fields.append("Branch")
+			if not self.month:
+				missing_fields.append("Month")
+			if not self.fiscal_year:
+				missing_fields.append("Fiscal Year")
+			frappe.throw(", ".join(missing_fields) + " is/are missing")
+
+		self.set("items", [])
+		filters = {
+			"status": "Active",
+			"branch": self.branch,
+		}
+		if self.project:
+			filters["project"] = self.project
+
+		employees = frappe.get_all(
+			"Muster Roll Employee",
+			filters=filters,
+			fields=["name as mr_employee", "person_name as mr_employee_name"]
+		)
+		if employees:
+			self.extend("items", employees)
+		else:
+			frappe.throw("No data found for the specified criteria.")
 
 	@frappe.whitelist()
 	def create_mr_invoice(self):
@@ -134,7 +154,8 @@ class MRInvoiceEntry(Document):
 			"fiscal_year":self.fiscal_year,
 			"month":self.month,
 			"currency":self.currency,
-			"credit_account":self.credit_account
+			"credit_account":self.credit_account,
+			"project":self.project
 		})
 		failed = successful = 0
 		for item in self.items:

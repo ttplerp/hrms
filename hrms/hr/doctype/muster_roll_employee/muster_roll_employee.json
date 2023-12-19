@@ -113,7 +113,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "project.branch",
    "fieldname": "branch",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -259,7 +258,6 @@
   {
    "fieldname": "date_of_transfer",
    "fieldtype": "Date",
-   "hidden": 1,
    "label": "Date Of Transfer"
   },
   {
@@ -347,7 +345,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-08 17:15:52.388625",
+ "modified": "2023-12-19 11:57:37.818833",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

@@ -1,10 +1,6 @@
 // Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
-// cur_frm.add_fetch("branch", "cost_center", "cost_center")
-// cur_frm.add_fetch("project", "cost_center", "cost_center")
-// cur_frm.add_fetch("project", "branch", "branch")
-
 frappe.ui.form.on('Muster Roll Employee', {
 	refresh: function(frm) {
 		frm.set_query("unit", function() {
@@ -37,7 +33,7 @@ frappe.ui.form.on('Muster Roll Employee', {
 		if (!frm.doc.__islocal) {
 			frm.set_value("date_of_transfer", frappe.datetime.nowdate());
 			refresh_many("date_of_transfer");
-			validate_prev_doc(frm, __("Please select date of transfer to new cost center"));		
+			// validate_prev_doc(frm, __("Please select date of transfer to new cost center"));		
 		}
 	}
 });
@@ -53,28 +49,28 @@ frappe.ui.form.on("Muster Roll Employee", "refresh", function(frm) {
     });
 })
 
-function validate_prev_doc(frm, title){
-	return frappe.call({
-		method: "erpnext.custom_utils.get_prev_doc",
-		args: {doctype: frm.doctype, docname: frm.docname, col_list: "cost_center, branch"},
-		callback: function(r) {
-			if(frm.doc.cost_center && (frm.doc.cost_center !== r.message.cost_center)){
-				frappe.prompt({
-					fieldtype: "Date",
-					fieldname: "date_of_transfer",
-					reqd: 1,
-					description: __("*This information shall be recorded in employee internal work history.")},
-					function(data) {
-						frm.set_value("date_of_transfer" ,data.date_of_transfer);
-						refresh_many("date_of_transfer");
-					},
-					title, 
-					__("Update")
-				);
-			}
-		}
-	});
-}
+// function validate_prev_doc(frm, title){
+// 	return frappe.call({
+// 		method: "erpnext.custom_utils.get_prev_doc",
+// 		args: {doctype: frm.doctype, docname: frm.docname, col_list: "cost_center"},
+// 		callback: function(r) {
+// 			if(frm.doc.cost_center && (frm.doc.cost_center !== r.message.cost_center)){
+// 				frappe.prompt({
+// 					fieldtype: "Date",
+// 					fieldname: "date_of_transfer",
+// 					reqd: 1,
+// 					description: __("*This information shall be recorded in employee internal work history.")},
+// 					function(data) {
+// 						frm.set_value("date_of_transfer", data.date_of_transfer);
+// 						refresh_many("date_of_transfer");
+// 					},
+// 					title, 
+// 					__("Update")
+// 				);
+// 			}
+// 		}
+// 	});
+// }
 
 // frappe.ui.form.on('Musterroll', {
 // 	"rate_per_day": function(frm, cdt ,cdn) {

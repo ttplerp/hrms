@@ -40,7 +40,7 @@ class MREmployeeInvoice(AccountsController):
 			if cint(a.is_lumpsum) == 0:
 				total_daily_wage_amount += flt(a.daily_wage,2)
 			else:
-			 	total_daily_wage_amount = flt(a.daily_wage,2)
+				total_daily_wage_amount = flt(a.daily_wage,2)	 
 		for a in self.ot:
 			total_ot_amount += flt(a.amount,2)
 		for d in self.deduction:
@@ -108,7 +108,8 @@ class MREmployeeInvoice(AccountsController):
 					"party": self.mr_employee,
 					"cost_center": self.cost_center,
 					"voucher_type":self.doctype,
-					"voucher_no":self.name
+					"voucher_no":self.name,
+					"project":self.project
 			}, self.currency)
 		)
 		gl_entries.append(
@@ -122,7 +123,8 @@ class MREmployeeInvoice(AccountsController):
 					"party": self.mr_employee,
 					"cost_center": self.cost_center,
 					"voucher_type":self.doctype,
-					"voucher_no":self.name
+					"voucher_no":self.name,
+					"project":self.project
 			}, self.currency)
 		)
 	def make_party_gl_entry(self, gl_entries):
@@ -139,8 +141,10 @@ class MREmployeeInvoice(AccountsController):
 					"against_voucher_type": self.doctype,
 					"cost_center": self.cost_center,
 					"voucher_type":self.doctype,
-					"voucher_no":self.name
+					"voucher_no":self.name,
+					"project":self.project
 				}, self.currency))
+	
 	def deduction_gl_entries(self,gl_entries):
 		for d in self.deduction:
 			gl_entries.append(
@@ -154,7 +158,8 @@ class MREmployeeInvoice(AccountsController):
 					"party": self.mr_employee,
 					"cost_center": self.cost_center,
 					"voucher_type":self.doctype,
-					"voucher_no":self.name
+					"voucher_no":self.name,
+					"project":self.project
 				}, self.currency)
 			)
 	@frappe.whitelist()
