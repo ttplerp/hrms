@@ -145,6 +145,12 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_site_allowance: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_other_deduction: function(frm){
+		calculate_others(frm);
+	},
+	other_deduction: function(frm){
+		calculate_others(frm);
+	},
 	ca: function(frm){
 		calculate_others(frm);
 	},
@@ -327,6 +333,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_others(frm);
 	},
 	site_allowance_method: function(frm){
+		calculate_others(frm);
+	},
+	other_deduction_method: function(frm){
 		calculate_others(frm);
 	}
 })

@@ -294,7 +294,7 @@ class SalaryStructure(Document):
 						_("Percentage cannot exceed 200 for component <b>{0}</b>").format(m['name']), title="Invalid Data")
 
 				if ed == 'earnings':
-					if self.get(m['field_name']):
+					if self.get(m['field_name']) and m['field_name'] != 'eligible_for_other_deduction':
 						if self.get(m["field_method"]) == 'Percent':
 							if m['based_on'] == 'Pay Scale Lower Limit':
 								calc_amt = flt(payscale_lower_limit)*flt(self.get(m['field_value']))*0.01
@@ -326,6 +326,16 @@ class SalaryStructure(Document):
 						calc_amt = health_cont_amt
 						# frappe.msgprint(str(health_cont_amt))
 						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
+					elif m['field_name'] == "eligible_for_other_deduction":
+						if self.get(m["field_method"]) == 'Percent':
+							if m['based_on'] == 'Pay Scale Lower Limit':
+								calc_amt = flt(payscale_lower_limit)*flt(self.get(m['field_value']))*0.01
+							else:
+								calc_amt = flt(basic_pay)*flt(self.get(m['field_value']))*0.01
+						else:
+							calc_amt = flt(self.get(m['field_value']))
+						other_deduction_amt = flt(calc_amt)
+						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
 					else:
 						calc_amt = 0
 
@@ -348,6 +358,7 @@ class SalaryStructure(Document):
 			for c in calc_map:
 				found = 0
 				for ed_item in self.get(ed):
+					# frappe.msgprint(str(ed_item.salary_component)+" "+str(c['salary_component']))
 					if str(ed_item.salary_component) == str(c['salary_component']):
 						found = 1
 						if flt(ed_item.amount) != flt(c['amount']):
