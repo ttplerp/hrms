@@ -16,11 +16,13 @@
   "total_days_worked",
   "total_daily_wage_amount",
   "other_deduction",
+  "grand_total",
   "net_payable_amount",
   "column_break_8",
   "total_ot_hrs",
   "total_ot_amount",
-  "grand_total",
+  "tds_amount",
+  "total_advance",
   "section_break_15",
   "error_message"
  ],
@@ -140,12 +142,24 @@
    "fieldtype": "Data",
    "label": "Reference",
    "read_only": 1
+  },
+  {
+   "fieldname": "tds_amount",
+   "fieldtype": "Currency",
+   "label": "TDS Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_advance",
+   "fieldtype": "Currency",
+   "label": "Total Advance",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-10-16 15:35:12.797845",
+ "modified": "2023-12-20 10:14:19.458361",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Invoice Entry Item",

@@ -329,6 +329,61 @@ class MRInvoiceEntry(Document):
             as_dict=True,
         ):
             self.append("items", e)
+    
+    # @frappe.whitelist()
+    # def check_mr_employee(self, args=None):
+    #     flag = 0
+    #     for a in self.items:
+    #         if args.mr_employee == a.mr_employee:
+    #             flag = 1
+    #     if flag == 0:
+    #         frappe.throw("No MR employee")
+
+    # @frappe.whitelist()
+    # def get_tds_amount(self, args=None):
+    #     account = ""
+    #     amount = 0
+    #     if not args.mr_employee:
+    #         frappe.throw("No MR Employee Set")
+
+    #     if args:
+    #         query = frappe.db.sql("""select * from `tabTDS Account Item`""", as_dict=True)
+    #         for a in query:
+    #             if a.tds_percent == args.tds_percent:
+    #                 account = a.account
+           
+    #     return 300, account
+
+    @frappe.whitelist()
+    def get_advance(self):
+        self.set("advances", [])
+        for item in self.items:
+            res = self.get_advance_entries(item.mr_employee)
+            for d in res:
+                advance_row = {
+					"doctype": self.doctype + " Advance",
+					"reference_type": d.reference_type,
+					"reference_name": d.reference_name,
+					"party_type": "Muster Roll Employee",
+					"party": d.mr_employee,
+					"party_name": d.mr_employee_name,
+					"cost_center": d.cost_center,
+					"advance_amount": flt(d.advance_amount),
+					"advance_account": d.account,
+					# "allocated_amount": d.allocated_amount,
+				}
+                self.append("advances", advance_row)
+    
+    def get_advance_entries(self, mr_employee):
+        mr_emp_advance = frappe.db.sql("""
+											select
+									  			'MR Employee Advance' as reference_type, name as reference_name, advance_account as account, balance_amount as advance_amount, cost_center, mr_employee, mr_employee_name
+									  		from 
+												`tabMR Employee Advance` 
+									  		where
+									  			docstatus = 1 and balance_amount > 0 and mr_employee = '{}'
+										""".format(mr_employee), as_dict=True)
+        return mr_emp_advance
 
     @frappe.whitelist()
     def create_mr_invoice(self):
@@ -372,6 +427,7 @@ class MRInvoiceEntry(Document):
                 mr_invoice.get_ot()
                 mr_invoice.get_attendance()
                 mr_invoice.set("deductions", [])
+
                 for d in self.deductions:
                     if d.mr_employee == item.mr_employee:
                         mr_invoice.append(
@@ -382,6 +438,20 @@ class MRInvoiceEntry(Document):
                                 "remarks": d.remarks,
                             },
                         )
+                    
+                for adv in self.advances:
+                    if adv.party == item.mr_employee:
+                        mr_invoice.append(
+                            "advances",
+                            {   
+                                "reference_type": adv.reference_type,
+                                "reference_name": adv.reference_name,
+                                "account": adv.advance_account,
+                                "amount": adv.allocated_amount,
+                                "remarks": adv.remarks,
+                            },
+                        )
+
                 for a in self.arrears_and_allownace:
                     if a.mr_employee == item.mr_employee:
                         mr_invoice.append(
@@ -396,6 +466,8 @@ class MRInvoiceEntry(Document):
                 item.total_days_worked = mr_invoice.total_days_worked
                 item.total_daily_wage_amount = mr_invoice.total_daily_wage_amount
                 item.other_deduction = mr_invoice.other_deduction
+                item.tds_amount = mr_invoice.total_tds_amount
+                item.total_advance = mr_invoice.total_advance
                 item.net_payable_amount = mr_invoice.net_payable_amount
                 item.total_ot_hrs = mr_invoice.total_ot_hrs
                 item.total_ot_amount = mr_invoice.total_ot_amount

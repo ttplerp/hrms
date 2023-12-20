@@ -1,0 +1,141 @@
+{
+ "actions": [],
+ "creation": "2023-12-12 14:41:23.054605",
+ "default_view": "List",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "reference_type",
+  "reference_name",
+  "party_type",
+  "party",
+  "party_name",
+  "remarks",
+  "col_break1",
+  "cost_center",
+  "advance_account",
+  "advance_amount",
+  "allocated_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "reference_type",
+   "fieldtype": "Link",
+   "label": "Reference Type",
+   "no_copy": 1,
+   "oldfieldname": "journal_voucher",
+   "oldfieldtype": "Link",
+   "options": "DocType",
+   "print_width": "180px",
+   "read_only": 1,
+   "width": "180px"
+  },
+  {
+   "columns": 2,
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "in_list_view": 1,
+   "label": "Reference Name",
+   "no_copy": 1,
+   "options": "reference_type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "party_type",
+   "fieldtype": "Link",
+   "label": "Party Type",
+   "options": "Party Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "party",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "MR Employee",
+   "options": "Muster Roll Employee",
+   "read_only": 1
+  },
+  {
+   "columns": 3,
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks",
+   "no_copy": 1,
+   "oldfieldname": "remarks",
+   "oldfieldtype": "Small Text",
+   "print_width": "150px",
+   "width": "150px"
+  },
+  {
+   "fieldname": "col_break1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "advance_account",
+   "fieldtype": "Link",
+   "label": "Advance Account",
+   "options": "Account",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "advance_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Advance Amount",
+   "no_copy": 1,
+   "oldfieldname": "advance_amount",
+   "oldfieldtype": "Currency",
+   "options": "party_account_currency",
+   "print_width": "100px",
+   "read_only": 1,
+   "width": "100px"
+  },
+  {
+   "columns": 2,
+   "fieldname": "allocated_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Allocated Amount",
+   "no_copy": 1,
+   "oldfieldname": "allocated_amount",
+   "oldfieldtype": "Currency",
+   "options": "party_account_currency",
+   "print_width": "100px",
+   "reqd": 1,
+   "width": "100px"
+  },
+  {
+   "fieldname": "party_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "MR Employee Name",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-12-12 15:23:23.613376",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "MR Invoice Entry Advance",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_views": 1
+}

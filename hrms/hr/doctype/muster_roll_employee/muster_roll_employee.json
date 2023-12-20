@@ -51,6 +51,11 @@
   "column_break_26",
   "company",
   "date_of_transfer",
+  "tds_details_section",
+  "has_tds_deduction",
+  "column_break_mbbrj",
+  "tds_percent",
+  "tds_account",
   "sb_additional_info",
   "reference_doctype",
   "column_break_30",
@@ -366,11 +371,44 @@
    "fieldname": "performance_evaluation_section",
    "fieldtype": "Section Break",
    "label": "Performance Evaluation"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_tds_deduction",
+   "fieldtype": "Check",
+   "label": "Has TDS Deduction"
+  },
+  {
+   "default": "3",
+   "depends_on": "has_tds_deduction",
+   "fieldname": "tds_percent",
+   "fieldtype": "Select",
+   "label": "TDS Percent",
+   "mandatory_depends_on": "has_tds_deduction",
+   "options": "\n2\n3\n5"
+  },
+  {
+   "fieldname": "tds_details_section",
+   "fieldtype": "Section Break",
+   "label": "TDS Details"
+  },
+  {
+   "fieldname": "column_break_mbbrj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "has_tds_deduction",
+   "fieldname": "tds_account",
+   "fieldtype": "Link",
+   "label": "TDS Account",
+   "mandatory_depends_on": "has_tds_deduction",
+   "options": "Account",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-11-15 12:28:04.069626",
+ "modified": "2023-12-20 10:54:50.125269",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

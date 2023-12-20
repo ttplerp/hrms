@@ -30,18 +30,24 @@
   "get_ot",
   "ot",
   "total_ot_hrs",
+  "advance_details_section",
+  "advances",
   "deductions_details_section",
   "deductions",
   "section_break_y7dgi",
   "arrears_and_allowance",
   "amount_details_section",
+  "total_daily_wage_amount",
   "total_ot_amount",
   "total_arrears_and_allowance",
+  "column_break_10",
+  "other_deduction",
+  "total_advance",
+  "total_tds_amount",
+  "section_break_e28kc",
   "grand_total",
   "outstanding_amount",
-  "column_break_10",
-  "total_daily_wage_amount",
-  "other_deduction",
+  "column_break_r7qob",
   "net_payable_amount",
   "section_break_34",
   "remarks",
@@ -304,12 +310,41 @@
    "fieldtype": "Currency",
    "label": "Total Arrears and Allowance",
    "read_only": 1
+  },
+  {
+   "fieldname": "advance_details_section",
+   "fieldtype": "Section Break",
+   "label": "Advance Details"
+  },
+  {
+   "fieldname": "advances",
+   "fieldtype": "Table",
+   "options": "MR Employee Invoice Advance"
+  },
+  {
+   "fieldname": "total_advance",
+   "fieldtype": "Currency",
+   "label": "Total Advance",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_tds_amount",
+   "fieldtype": "Currency",
+   "label": "Total TDS Amount"
+  },
+  {
+   "fieldname": "section_break_e28kc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_r7qob",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-30 11:20:25.281463",
+ "modified": "2023-12-20 09:47:57.638033",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Employee Invoice",

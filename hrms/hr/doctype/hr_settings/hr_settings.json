@@ -51,6 +51,7 @@
   "exit_questionnaire_notification_template",
   "overtime_settings_tab",
   "overtime_limit_type",
+  "overtime_account",
   "column_break_39",
   "overtime_limit",
   "sb_approver",
@@ -965,13 +966,19 @@
    "fieldtype": "Data",
    "label": "Project GM Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "overtime_account",
+   "fieldtype": "Link",
+   "label": "Overtime Account",
+   "options": "Account"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-11-16 15:22:44.117983",
+ "modified": "2023-12-11 11:59:37.652902",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

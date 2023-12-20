@@ -31,6 +31,13 @@ frappe.ui.form.on('MR Invoice Entry', {
                     "is_group": 0
                 }
             };
+        },
+        frm.fields_dict.arrears_and_allownace.grid.get_field("account").get_query = function(doc) {
+            return {
+                filters: {
+                    "is_group": 0
+                }
+            };
         }
 	},
     create_mr_invoice:function(frm){
@@ -77,6 +84,49 @@ frappe.ui.form.on('MR Invoice Entry', {
 		frm.clear_table("items");
 		frm.clear_table("deductions");
         frm.refresh_fields()
-    }
+    },
+    get_advance: function(frm) {
+		frappe.call({
+			method: "get_advance",
+			doc: frm.doc,
+			callback: function(r) {
+				frm.refresh_field("advances")
+                frm.dirty()
+			}
+		})
+	}
 });
 
+// frappe.ui.form.on('MR Employee Deduction Entry', {
+//     mr_employee: (frm, cdt, cdn) => {
+//         var item = locals[cdt][cdn];
+//         if (item.is_tds_deduction == 1) {
+//             make_tds_details(frm, cdt, cdn)
+//         }
+//         frappe.call({
+//             method: "check_mr_employee",
+//             args: {"mr_employee": item.mr_employee},
+//             doc: frm.doc
+//         })
+       
+//     },
+//     tds_percent: (frm, cdt, cdn) => {
+//         make_tds_details(frm, cdt, cdn)
+//     }, 
+// });
+
+// var make_tds_details =  function(frm, cdt, cdn) {
+//     var item = locals[cdt][cdn];
+//     frappe.call({
+//         method: "get_tds_amount",
+//         doc: frm.doc,
+//         args: {"mr_employee": item.mr_employee, "tds_percent": item.tds_percent},
+//         callback: function(r) {
+//             console.log(r.message[0]);
+//             frappe.model.set_value(cdt, cdn, 'amount', r.message[0]);
+// 	        frm.refresh_field("amount", cdt, cdn)
+//             frappe.model.set_value(cdt, cdn, 'account', r.message[1]);
+// 	        frm.refresh_field("account", cdt, cdn)
+//         }
+//     })
+// }

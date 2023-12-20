@@ -20,6 +20,7 @@ class MusterRollEmployee(Document):
         self.populate_work_history()
         self.update_user_permissions()
         self.check_for_duplicate_entry()
+        self.get_tds_account()
     
     def check_for_duplicate_entry(self):
         if self.get("__islocal"):
@@ -53,6 +54,16 @@ class MusterRollEmployee(Document):
     def check_status(self):
         if self.status == "Left" and self.separation_date:
             self.docstatus = 1
+
+    @frappe.whitelist()
+    def get_tds_account(self):
+        account = ""
+        for a in frappe.db.sql("""select * from `tabTDS Account Item`""", as_dict=True):
+            if self.tds_percent == a.tds_percent:
+                self.tds_account = a.account
+                account = a.account
+        return account
+        # frappe.throw(self.tds_account)
 
     def populate_work_history(self):
         if not self.internal_work_history:

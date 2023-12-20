@@ -22,6 +22,9 @@
   "mr_employee",
   "section_break_8",
   "items",
+  "section_break_0i1a1",
+  "get_advance",
+  "advances",
   "section_break_10",
   "deductions",
   "section_break_12",
@@ -187,12 +190,27 @@
    "fieldtype": "Table",
    "label": "Arrears and Allownace",
    "options": "MR Employee Arrears Allowance Entry"
+  },
+  {
+   "fieldname": "section_break_0i1a1",
+   "fieldtype": "Section Break",
+   "label": "Advance Details"
+  },
+  {
+   "fieldname": "get_advance",
+   "fieldtype": "Button",
+   "label": "Get Advance"
+  },
+  {
+   "fieldname": "advances",
+   "fieldtype": "Table",
+   "options": "MR Invoice Entry Advance"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-30 12:08:32.303839",
+ "modified": "2023-12-12 14:42:05.476822",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Invoice Entry",

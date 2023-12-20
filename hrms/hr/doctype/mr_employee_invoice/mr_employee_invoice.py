@@ -27,7 +27,7 @@ class MREmployeeInvoice(AccountsController):
         self.set_status()
 
     def calculate_amount(self):
-        other_deductions = total_ot_amount = total_daily_wage_amount = total_arrears_and_allowance = 0
+        other_deductions = total_ot_amount = total_daily_wage_amount = total_arrears_and_allowance = total_advances = total_deductions = total_tds_amount = 0
         for a in self.attendance:
             if a.status == "Present":
                 total_daily_wage_amount += flt(a.daily_wage,2)
@@ -38,34 +38,64 @@ class MREmployeeInvoice(AccountsController):
                 total_daily_wage_amount += flt(a.daily_wage,2)
         for a in self.ot:
             total_ot_amount += flt(a.amount, 2)
+        for adv in self.advances:
+            total_advances += flt(adv.amount, 2)
         for d in self.deductions:
             other_deductions += flt(d.amount, 2)
         for arr in self.arrears_and_allowance:
             total_arrears_and_allowance += flt(arr.amount, 2)
+        
+        has_tds_deduction = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "has_tds_deduction")
+        if has_tds_deduction:
+            tds_percent = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "tds_percent")
+            if not tds_percent:
+                frappe.throw("Set TDS percent in Muster Roll Employee {}".format(self.mr_employee))
+            total_tds_amount = flt(tds_percent)/100 * total_daily_wage_amount
+
         self.other_deduction = flt(other_deductions, 2)
         self.total_ot_amount = flt(total_ot_amount, 2)
         self.total_daily_wage_amount = flt(total_daily_wage_amount, 2)
-        self.total_arrears_and_allowance = flt(total_arrears_and_allowance, 2)
+        self.total_tds_amount = flt(total_tds_amount, 0)
+        self.total_arrears_and_allowance = flt(total_arrears_and_allowance, 0)
+        self.total_advance = flt(total_advances, 0)
+        total_deductions = flt(self.other_deduction + self.total_advance + self.total_tds_amount)
         self.grand_total = flt(total_daily_wage_amount + total_ot_amount + total_arrears_and_allowance, 0)
         self.outstanding_amount = self.net_payable_amount = flt(
-            self.grand_total - self.other_deduction, 0
+            self.grand_total - total_deductions, 0
         )
     
     def on_submit(self):
+        self.update_advance_balance()
         self.make_gl_entries()
 
     def on_cancel(self):
         self.ignore_linked_doctypes = ("GL Entry", "Stock Ledger Entry", "Payment Ledger Entry")
+        self.update_advance_balance()
         self.make_gl_entries()
+
+    def update_advance_balance(self):
+        for advance in self.advances:
+            amount = 0.0
+            if flt(advance.amount) > 0:
+                balance_amount = frappe.db.get_value("MR Employee Advance", advance.reference_name, "balance_amount")
+                if flt(balance_amount) < flt(advance.amount) and self.docstatus < 2:
+                    frappe.throw(_("Advance#{0} : Allocated amount Nu. {1}/- cannot be more than Advance Balance Nu. {2}/-").format(advance.reference_name, "{:,.2f}".format(flt(advance.amount)),"{:,.2f}".format(flt(balance_amount))))
+                else:
+                    amount = -1*flt(advance.amount) if self.docstatus == 2 else flt(advance.amount)
+                    adv_doc = frappe.get_doc("MR Employee Advance", advance.reference_name)
+                    adv_doc.adjusted_amount = flt(adv_doc.adjusted_amount) + flt(amount)
+                    adv_doc.balance_amount    = flt(adv_doc.balance_amount) - flt(amount)
+                    adv_doc.save(ignore_permissions = True)
 
     def make_gl_entries(self):
        
         gl_entries = []
         self.make_party_gl_entry(gl_entries)
+        self.make_advance_gl_entries(gl_entries)
         self.make_deduction_gl_entries(gl_entries)
         self.make_expense_gl_entries(gl_entries)
         self.make_arrear_allowance_gl_entries(gl_entries)
-
+        self.make_tds_gl_entries(gl_entries)
         gl_entries = merge_similar_entries(gl_entries)
         make_gl_entries(gl_entries, update_outstanding="No", cancel=self.docstatus == 2)
 
@@ -85,6 +115,26 @@ class MREmployeeInvoice(AccountsController):
 					"voucher_type":self.doctype,
 					"voucher_no":self.name
                 }, self.currency)
+            )
+
+    def make_advance_gl_entries(self, gl_entries):
+        for d in self.advances:
+            gl_entries.append(
+                self.get_gl_dict(
+                    {
+                        "account": d.account,
+                        "credit": flt(d.amount, 2),
+                        "credit_in_account_currency": flt(d.amount, 2),
+                        "against_voucher": self.name,
+                        "against_voucher_type": self.doctype,
+                        "party_type": "Muster Roll Employee",
+                        "party": self.mr_employee,
+                        "cost_center": self.cost_center,
+                        "voucher_type": self.doctype,
+                        "voucher_no": self.name,
+                    },
+                    self.currency,
+                )
             )
 
     def make_deduction_gl_entries(self, gl_entries):
@@ -163,6 +213,24 @@ class MREmployeeInvoice(AccountsController):
                     },
                     self.currency,
                 )
+            )
+
+    def make_tds_gl_entries(self, gl_entries):
+        account = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "tds_account")
+        if flt(self.total_tds_amount) > 0:
+            gl_entries.append(
+                self.get_gl_dict({
+                    "account": account,
+                    "credit": flt(self.total_tds_amount, 2),
+                    "credit_in_account_currency": flt(self.total_tds_amount, 2),
+                    "against_voucher": self.name,
+                    "party_type": "Muster Roll Employee",
+                    "party": self.mr_employee,
+                    "against_voucher_type": self.doctype,
+					"cost_center": self.cost_center,
+					"voucher_type":self.doctype,
+					"voucher_no":self.name
+                }, self.currency)
             )
 
     def set_status(self, update=False, status=None, update_modified=True):

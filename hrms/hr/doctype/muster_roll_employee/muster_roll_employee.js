@@ -44,6 +44,17 @@ frappe.ui.form.on('Muster Roll Employee', {
 			refresh_many("date_of_transfer");
 			validate_prev_doc(frm, __("Please select date of transfer to new cost center"));		
 		}
+	},
+	
+	tds_percent: function (frm) {
+		frappe.call({
+			method: "get_tds_account",
+			doc: frm.doc,
+			callback: function(r) {
+				frm.set_value("tds_account", r.message);
+				frm.refresh_field("tds_account");
+			}
+		})
 	}
 });
 
