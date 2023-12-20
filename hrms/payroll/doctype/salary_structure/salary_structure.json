@@ -104,8 +104,6 @@
   "honorarium",
   "sb_other_benefits",
   "eligible_for_other_deduction",
-  "other_deduction_method",
-  "other_deduction",
   "eligible_for_gis",
   "eligible_for_pf",
   "eligible_for_health_contribution",
@@ -1006,25 +1004,12 @@
    "fieldname": "eligible_for_other_deduction",
    "fieldtype": "Check",
    "label": "Eligible for Other Deduction"
-  },
-  {
-   "depends_on": "eligible_for_other_deduction",
-   "fieldname": "other_deduction",
-   "fieldtype": "Currency",
-   "label": "Value(Other Deduction)"
-  },
-  {
-   "depends_on": "eligible_for_other_deduction",
-   "fieldname": "other_deduction_method",
-   "fieldtype": "Select",
-   "label": "Eligible for Other Deduction Method",
-   "options": "Percent\nLumpsum"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-12-19 11:15:41.593094",
+ "modified": "2023-12-20 15:14:12.548018",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

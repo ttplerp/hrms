@@ -335,9 +335,9 @@ frappe.ui.form.on('Salary Structure', {
 	site_allowance_method: function(frm){
 		calculate_others(frm);
 	},
-	other_deduction_method: function(frm){
-		calculate_others(frm);
-	}
+	// other_deduction_method: function(frm){
+	// 	calculate_others(frm);
+	// }
 })
 
 // dynamically display checkboxes based on Salary Component's status
