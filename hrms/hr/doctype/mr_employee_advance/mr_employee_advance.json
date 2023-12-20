@@ -16,6 +16,9 @@
   "posting_date",
   "advance_account",
   "company",
+  "settle_imprest_advance_account",
+  "imprest_party",
+  "party_name",
   "section_break_ymwec",
   "advance_amount",
   "column_break_jyiqf",
@@ -85,7 +88,9 @@
   {
    "fieldname": "advance_amount",
    "fieldtype": "Currency",
-   "label": "Advance Amount"
+   "in_list_view": 1,
+   "label": "Advance Amount",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_jyiqf",
@@ -145,12 +150,33 @@
    "label": "Company",
    "options": "Company",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "settle_imprest_advance_account",
+   "fieldtype": "Check",
+   "label": " Settle Imprest Advance Account"
+  },
+  {
+   "depends_on": "settle_imprest_advance_account",
+   "fieldname": "imprest_party",
+   "fieldtype": "Link",
+   "label": "Imprest Party",
+   "mandatory_depends_on": "settle_imprest_advance_account",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "imprest_party.employee_name",
+   "fieldname": "party_name",
+   "fieldtype": "Data",
+   "label": "Party Name",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-12 10:36:15.041176",
+ "modified": "2023-12-20 12:19:36.345403",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Employee Advance",

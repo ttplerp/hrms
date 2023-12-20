@@ -50,6 +50,11 @@ class MREmployeeAdvance(Document):
 				frappe.throw(_("Expense GL is not defined for this Branch '{0}'.").format(self.branch), title="Data Missing")
 		exp_gl_det = frappe.db.get_value(doctype="Account", filters=exp_gl, fieldname=["account_type","is_an_advance_account"], as_dict=True)
 
+		if self.settle_imprest_advance_account:
+			exp_gl = frappe.db.get_value("Company", self.company, "imprest_advance_account")
+			if not exp_gl:
+				frappe.throw(_("Imprest Advance Account is not defined for this Company '{0}'.").format(self.company), title="Data Missing")
+
 		# Posting Journal Entry
 		accounts = []
 		accounts.append({"account": adv_gl,
@@ -63,23 +68,36 @@ class MREmployeeAdvance(Document):
 			"reference_type": "MR Employee Advance",
 			"reference_name": self.name,
 		})
-		accounts.append({"account": exp_gl,
-			"credit_in_account_currency": flt(self.advance_amount),
-			"cost_center": self.cost_center,
-			"party_check": 0,
-			"account_type": exp_gl_det.account_type,
-			"is_advance": "Yes" if exp_gl_det.is_an_advance_account == 1 else "No",
-		})
+		if self.settle_imprest_advance_account:
+			accounts.append({"account": exp_gl,
+				"credit_in_account_currency": flt(self.advance_amount),
+				"cost_center": self.cost_center,
+				"party_check": 1,
+				"party_type": "Employee",
+				"party": self.imprest_party,
+				"account_type": exp_gl_det.account_type,
+				"is_advance": "Yes",
+			})
+		else:
+			accounts.append({"account": exp_gl,
+				"credit_in_account_currency": flt(self.advance_amount),
+				"cost_center": self.cost_center,
+				"party_check": 0,
+				"account_type": exp_gl_det.account_type,
+				# "is_advance": "Yes" if exp_gl_det.is_an_advance_account == 1 else "No",
+				"is_advance": "Yes",
+			})
 
 		je = frappe.new_doc("Journal Entry")
 		
 		je.update({
 				"doctype": "Journal Entry",
-				"voucher_type": "Bank Entry",
-				"naming_series": "Bank Payment Voucher",
+				"voucher_type": "Journal Entry" if self.settle_imprest_advance_account else "Bank Entry",
+				"naming_series": "Journal Voucher" if self.settle_imprest_advance_account else "Bank Payment Voucher",
+				"mode_of_payment": "Adjustment Entry" if self.settle_imprest_advance_account else "Online Payment",
 				"title": "Muster Roll Employee Advance - "+self.name,
 				"user_remark": "Muster Roll Employee Advance - "+self.name,
-				"posting_date": nowdate(),
+				"posting_date": self.posting_date,
 				"company": self.company,
 				"total_amount_in_words": money_in_words(self.advance_amount),
 				"accounts": accounts,
