@@ -1,0 +1,56 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-12-20 14:44:39.046515",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "branch",
+  "column_break_uimmw",
+  "supervisor",
+  "supervisor_name"
+ ],
+ "fields": [
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Branch",
+   "options": "Branch",
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_uimmw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "supervisor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "supervisor",
+   "options": "Employee",
+   "unique": 1
+  },
+  {
+   "fetch_from": "supervisor.employee_name",
+   "fieldname": "supervisor_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Supervisor Name",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-12-20 16:53:26.008571",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Supervisor Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
