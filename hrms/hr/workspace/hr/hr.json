@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"iFG9HrHjy3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":10}},{\"id\":\"m-3PhBra4q\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"p2Ez19MiQz\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":3}},{\"id\":\"j5x0uzt8n1\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"VS9k360xuP\",\"type\":\"card\",\"data\":{\"card_name\":\"Muster Roll Management\",\"col\":4}},{\"id\":\"GA0FvfSA3R\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"IS2rccOkpa\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}},{\"id\":\"xJXykSHUiW\",\"type\":\"card\",\"data\":{\"card_name\":\"PMS Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"iFG9HrHjy3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":10}},{\"id\":\"m-3PhBra4q\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"p2Ez19MiQz\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":3}},{\"id\":\"j5x0uzt8n1\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"VS9k360xuP\",\"type\":\"card\",\"data\":{\"card_name\":\"Muster Roll Management\",\"col\":4}},{\"id\":\"GA0FvfSA3R\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"IS2rccOkpa\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}}]",
  "creation": "2023-06-07 10:21:43.541768",
  "custom_blocks": [],
  "docstatus": 0,
@@ -12,24 +12,6 @@
  "is_hidden": 0,
  "label": "HR",
  "links": [
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Settings",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "HR Settings",
-   "link_count": 0,
-   "link_to": "HR Settings",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
   {
    "hidden": 0,
    "is_query_report": 0,
@@ -277,102 +259,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Muster Roll Management",
-   "link_count": 7,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Employee",
-   "link_count": 0,
-   "link_to": "Muster Roll Employee",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Application",
-   "link_count": 0,
-   "link_to": "Muster Roll Application",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Overtime Entry",
-   "link_count": 0,
-   "link_to": "Muster Roll Overtime Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "MR Employee Invoice",
-   "link_count": 0,
-   "link_to": "MR Employee Invoice",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "MR Invoice Entry",
-   "link_count": 0,
-   "link_to": "MR Invoice Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Attendance",
-   "link_count": 0,
-   "link_to": "Muster Roll Attendance",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bulk Upload Tool",
-   "link_count": 0,
-   "link_to": "Bulk Upload Tool",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "PMS Reports",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Nine Box Talent Matrix",
-   "link_count": 0,
-   "link_to": "nine_box_talent_matrix",
-   "link_type": "Page",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Key Reports",
    "link_count": 10,
    "onboard": 0,
@@ -477,9 +363,125 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Management",
+   "link_count": 8,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Employee",
+   "link_count": 0,
+   "link_to": "Muster Roll Employee",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Application",
+   "link_count": 0,
+   "link_to": "Muster Roll Application",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Overtime Entry",
+   "link_count": 0,
+   "link_to": "Muster Roll Overtime Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "MR Employee Invoice",
+   "link_count": 0,
+   "link_to": "MR Employee Invoice",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "MR Invoice Entry",
+   "link_count": 0,
+   "link_to": "MR Invoice Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Muster Roll Attendance",
+   "link_count": 0,
+   "link_to": "Muster Roll Attendance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Bulk Upload Tool",
+   "link_count": 0,
+   "link_to": "Bulk Upload Tool",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "MR Employee Advance",
+   "link_count": 0,
+   "link_to": "MR Employee Advance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Settings",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "HR Settings",
+   "link_count": 0,
+   "link_to": "HR Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Supervisor And Approver Mapper",
+   "link_count": 0,
+   "link_to": "Supervisor And Approver Mapper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2023-08-28 11:29:45.216343",
+ "modified": "2023-12-21 11:53:38.498676",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
