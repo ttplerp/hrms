@@ -17,6 +17,8 @@ class EmployeeAdvanceSettlement(AccountsController):
 		if self.advance_type != "Project Imprest":
 			self.check_for_duplicate_entry()
 			self.get_advance_details()
+		if self.advance_type == "Project Imprest":
+			self.validate_expense_branch()
 		self.calculate_amounts()
 		validate_workflow_states(self)
 		if self.workflow_state != "Approved":
@@ -36,6 +38,11 @@ class EmployeeAdvanceSettlement(AccountsController):
 		if self.advance_type == "Salary Advance":
 			self.remove_entries()
 			self.update_employee_advance(cancel=1)
+
+	def validate_expense_branch(self):
+		for item in self.items:
+			if self.expense_branch != item.branch:
+				frappe.throw("You cannot have branch <strong>{}</strong> in row #<strong>{}</strong>. Please set branch to <strong>{}</strong> or change expense branch.".format(item.branch, item.idx, self.expense_branch))
 	
 	def calculate_amounts(self):
 		if self.advance_type == "Project Imprest":

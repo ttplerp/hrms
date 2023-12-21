@@ -30,6 +30,14 @@ frappe.ui.form.on('Employee Advance Settlement', {
 				frappe.set_route("query-report", "General Ledger");
 			});
 		}
+		
+		frm.fields_dict.items.grid.get_field("account").get_query = function(doc) {
+            return {
+                filters: {
+                    "is_group": 0
+                }
+            };
+        }
 	},
 	tds_percent: function(frm){
 		frappe.call({
