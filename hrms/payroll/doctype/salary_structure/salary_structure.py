@@ -378,7 +378,7 @@ class SalaryStructure(Document):
 		# self.net_pay = flt(total_earning)-flt(total_deduction)
 
 		if flt(self.total_earning)-flt(self.total_deduction) < 0 and not self.get('__unsaved'):
-			frappe.throw(_("Total deduction cannot be more than total earning"), title="Invalid Data")
+			frappe.throw(_("Total deduction cannot be more than total earning. Salary Structure: {} for Employee {}".format(self.name, self.employee)), title="Invalid Data")
 		return del_list_all
 
 def roundoff(amount):
