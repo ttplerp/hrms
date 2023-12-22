@@ -23,6 +23,8 @@ def get_data( filters=None):
 	data += get_bonus(filters)
 	#PVBA
 	data += get_pbva(filters)
+	#Salary Arrear
+	data += get_salary_arrer(filters)
 
 	return data
 def get_salary_data(filters):
@@ -137,6 +139,72 @@ def get_pbva(filters):
 								AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
 				      """.format( employee = filters.employee, fiscal_year=filters.fiscal_year, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=1)
+
+def get_salary_arrer(filters):
+	data = []
+	month = frappe.db.sql("""
+		select from_month as month from `tabSalary Arrear Payment` where fiscal_year=2023 and docstatus=1
+	""",as_dict=True)
+	for d in month:
+		# frappe.msgprint(str(d.month))
+		if d.month=="Nov":
+			month_year="11-2023"
+			datas = frappe.db.sql("""
+					SELECT 
+					sa.posting_date as date,
+					sai.net_payable_arrear,
+					sai.arrear_salary_tax,
+					sai.arrear_hc,
+					r.tds_receipt_number, 
+					r.tds_receipt_date 
+				FROM `tabSalary Arrear Payment` sa
+				INNER JOIN 
+					`tabSalary Arrear Payment Item` sai ON sa.name = sai.parent
+				INNER JOIN
+					`tabTDS Receipt Update` r ON sa.fiscal_year = r.fiscal_year AND r.month=11 AND r.purpose="Salary Arrear"
+				WHERE sai.employee = '{employee}' 
+				AND sa.from_month = "Nov"
+				AND sa.docstatus = 1 
+				""".format(employee=filters.employee), as_dict=True)
+		else:
+			month_year="10-2023"
+			datas = frappe.db.sql("""
+						SELECT 
+						sa.posting_date as date,
+						sai.net_payable_arrear,
+						sai.arrear_salary_tax,
+						sai.arrear_hc,
+						r.tds_receipt_number, 
+						r.tds_receipt_date 
+					FROM `tabSalary Arrear Payment` sa
+					INNER JOIN 
+						`tabSalary Arrear Payment Item` sai ON sa.name = sai.parent
+					INNER JOIN
+						`tabTDS Receipt Update` r ON sa.fiscal_year = r.fiscal_year AND r.month=10 AND r.purpose="Salary Arrear"
+					WHERE sai.employee = '{employee}' 
+					AND sa.from_month ="Oct"
+					AND sa.docstatus = 1 
+					""".format(employee=filters.employee), as_dict=True)
+					
+		for a in datas:
+			data.append({
+				"month_year":month_year, 
+				"type":"Salary Arrear", 
+				"basic":0, 
+				"others":0, 
+				"total":a.net_payable_arrear, 
+				"pf":0,
+				"gis":0,
+				"totalPfGis":0, 
+				"taxable":a.net_payable_arrear, 
+				"tds":a.arrear_salary_tax, 
+				"health":a.arrear_hc,
+				"receipt_number":a.tds_receipt_number, 
+				"receipt_date":a.tds_receipt_date,
+				"posting_date":a.date
+				})
+	return data
+
 	
 def validate_filters(filters):
 	if not filters.fiscal_year:
