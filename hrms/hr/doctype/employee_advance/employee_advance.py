@@ -63,7 +63,7 @@ class EmployeeAdvance(Document):
         self.recovery_start_date = self.posting_date
             
     def validate_advance_amount(self):
-        if self.advance_type == "Salary Advance" and flt(self.advance_amount) > 100000.00:
+        if self.advance_type == "Salary Advance" and flt(self.advance_amount) > 200000.00:
             frappe.throw('You cannot apply for salary advance if the amount is greater than 100,000.00. You can apply for Employee Loan.')
     def on_cancel(self):
         self.ignore_linked_doctypes = "GL Entry"
