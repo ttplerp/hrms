@@ -1,6 +1,5 @@
 {
  "actions": [],
- "allow_rename": 1,
  "autoname": "ETR-.YYYY.-.#####",
  "creation": "2023-07-28 10:28:39.607493",
  "doctype": "DocType",
@@ -35,6 +34,7 @@
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Employee",
    "options": "Employee",
    "reqd": 1
@@ -53,6 +53,7 @@
    "fieldname": "employee_name",
    "fieldtype": "Data",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Employee Name",
    "read_only": 1
   },
@@ -74,6 +75,7 @@
    "fieldname": "branch",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
+   "in_list_view": 1,
    "label": "Branch",
    "options": "Branch",
    "read_only": 1
@@ -183,7 +185,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-11-14 12:59:13.452465",
+ "modified": "2023-12-25 10:53:50.940269",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer Request",
@@ -238,9 +240,21 @@
    "share": 1,
    "submit": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Approver",
+   "share": 1,
+   "write": 1
   }
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }
