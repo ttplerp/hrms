@@ -340,6 +340,7 @@
   {
    "fieldname": "muster_roll_type",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Muster Roll Type",
    "options": "Muster Roll Type"
   },
@@ -408,7 +409,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-12-20 10:54:50.125269",
+ "modified": "2023-12-26 10:25:44.601760",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
