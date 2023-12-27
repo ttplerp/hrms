@@ -185,7 +185,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-25 10:53:50.940269",
+ "modified": "2023-12-27 11:51:05.023708",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer Request",
@@ -256,5 +256,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
+ "title_field": "employee_name",
  "track_changes": 1
 }
