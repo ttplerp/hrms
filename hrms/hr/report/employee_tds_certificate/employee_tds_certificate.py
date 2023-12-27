@@ -153,8 +153,12 @@ def get_salary_arrer(filters):
 					SELECT 
 					sa.posting_date as date,
 					sai.net_payable_arrear,
+					sai.arrear_contract_allowance,
+					sai.new_gross_pay,
+					sai.arrear_communication_allowance,
 					sai.arrear_salary_tax,
 					sai.arrear_hc,
+					sai.arrear_ltc,
 					r.tds_receipt_number, 
 					r.tds_receipt_date 
 				FROM `tabSalary Arrear Payment` sa
@@ -172,8 +176,12 @@ def get_salary_arrer(filters):
 						SELECT 
 						sa.posting_date as date,
 						sai.net_payable_arrear,
+						sai.arrear_contract_allowance,
+						sai.new_gross_pay,
+						sai.arrear_communication_allowance,
 						sai.arrear_salary_tax,
 						sai.arrear_hc,
+						sai.arrear_ltc,
 						r.tds_receipt_number, 
 						r.tds_receipt_date 
 					FROM `tabSalary Arrear Payment` sa
@@ -187,16 +195,18 @@ def get_salary_arrer(filters):
 					""".format(employee=filters.employee), as_dict=True)
 					
 		for a in datas:
+			gross_pay = flt(a.new_gross_pay)-flt(a.arrear_communication_allowance)
+			taxible_income = flt(gross_pay)-flt(a.arrear_ltc)
 			data.append({
 				"month_year":month_year, 
 				"type":"Salary Arrear", 
 				"basic":0, 
-				"others":0, 
-				"total":a.net_payable_arrear, 
+				"others":gross_pay, 
+				"total":gross_pay,
 				"pf":0,
 				"gis":0,
 				"totalPfGis":0, 
-				"taxable":a.net_payable_arrear, 
+				"taxable":taxible_income, 
 				"tds":a.arrear_salary_tax, 
 				"health":a.arrear_hc,
 				"receipt_number":a.tds_receipt_number, 
