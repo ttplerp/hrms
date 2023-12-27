@@ -75,4 +75,25 @@ frappe.ui.form.on('Employee Advance Settlement', {
 	edit_posting_date: function(frm){
 		frm.set_df_property('posting_date','read_only', !frm.doc.edit_posting_date)
 	},
+
+	expense_branch: function(frm) {
+		set_branch_child(frm);
+		frappe.call({
+			method: "get_cost_center",
+			doc: frm.doc,
+			callback: function (r) {
+				frm.doc.items.forEach(e => {
+					e.cost_center = r.message;
+				})
+			}
+		})
+		frm.refresh_field('items')
+	}
 });
+
+var set_branch_child = function (frm) {
+	frm.doc.items.forEach(el => {
+		el.branch = frm.doc.expense_branch;
+	});
+	frm.refresh_field('items')
+}

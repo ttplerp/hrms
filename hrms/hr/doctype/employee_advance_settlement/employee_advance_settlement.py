@@ -81,6 +81,10 @@ class EmployeeAdvanceSettlement(AccountsController):
 	def get_tds_account(self):
 		if self.tds_percent:
 			return frappe.db.get_value("TDS Account Item", {"parent": self.company, "tds_percent": self.tds_percent}, "account")
+		
+	@frappe.whitelist()
+	def get_cost_center(self):
+		return frappe.db.get_value("Branch", self.expense_branch, "cost_center")
 
 	@frappe.whitelist()
 	def get_credit_account(self):
