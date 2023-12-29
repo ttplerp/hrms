@@ -258,7 +258,7 @@ def get_leave_ledger_entries(
 	from_date: str, to_date: str, employee: str, leave_type: str
 ) -> List[Dict]:
 	ledger = frappe.qb.DocType("Leave Ledger Entry")
-	trnsaction_type=["Leave Allocation","Merge CL To EL"]
+	trnsaction_type=["Leave Allocation","Merge CL To EL","Bulk Leave Encashment"]
 	records = (
 		frappe.qb.from_(ledger)
 		.select(

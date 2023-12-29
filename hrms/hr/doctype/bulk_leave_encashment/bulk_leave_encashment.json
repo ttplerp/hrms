@@ -1,0 +1,238 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-12-29 15:59:18.527778",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+    "leave_period",
+    "branch",
+    "cost_center",
+    "fiscal_year",
+    "column_break_4",
+    "encashment_date",
+    "leave_type",
+    "get_employees",
+    "encashment_details_section",
+    "items",
+    "section_break_11",
+    "total_encashment_amount",
+    "journal_entries_created",
+    "column_break_13",
+    "net_payable_amount",
+    "sb_approver",
+    "approver_name",
+    "column_break_15",
+    "approver",
+    "approver_designation",
+    "sb_remarks",
+    "remarks",
+    "sb_additional_information",
+    "company",
+    "column_break_12",
+    "business_activity",
+    "amended_from",
+    "workflow_state"
+   ],
+   "fields": [
+    {
+     "fieldname": "leave_period",
+     "fieldtype": "Link",
+     "label": "Leave Period",
+     "options": "Leave Period",
+     "reqd": 1
+    },
+    {
+     "fieldname": "branch",
+     "fieldtype": "Link",
+     "label": "Processing Branch",
+     "options": "Branch",
+     "reqd": 1
+    },
+    {
+     "default": "Today",
+     "fieldname": "encashment_date",
+     "fieldtype": "Date",
+     "in_list_view": 1,
+     "label": "Encashment Date",
+     "read_only": 1
+    },
+    {
+     "fieldname": "leave_type",
+     "fieldtype": "Link",
+     "in_list_view": 1,
+     "label": "Leave Type",
+     "options": "Leave Type",
+     "reqd": 1
+    },
+    {
+     "fieldname": "sb_approver",
+     "fieldtype": "Section Break",
+     "label": "APPROVER DETAILS"
+    },
+    {
+     "fieldname": "approver_name",
+     "fieldtype": "Data",
+     "label": "Approver Name",
+     "read_only": 1
+    },
+    {
+     "fieldname": "column_break_15",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "approver",
+     "fieldtype": "Link",
+     "label": "Approver Email ID",
+     "options": "User",
+     "read_only": 1
+    },
+    {
+     "fieldname": "approver_designation",
+     "fieldtype": "Data",
+     "hidden": 1,
+     "label": "Approver Designation",
+     "read_only": 1
+    },
+    {
+     "collapsible": 1,
+     "fieldname": "sb_remarks",
+     "fieldtype": "Section Break",
+     "label": "REMARKS"
+    },
+    {
+     "fieldname": "remarks",
+     "fieldtype": "Long Text"
+    },
+    {
+     "fieldname": "sb_additional_information",
+     "fieldtype": "Section Break",
+     "label": "ADDITIONAL INFORMATION"
+    },
+    {
+     "fetch_from": "employee.company",
+     "fieldname": "company",
+     "fieldtype": "Link",
+     "label": "Company",
+     "options": "Company",
+     "read_only": 1
+    },
+    {
+     "default": "Common",
+     "fieldname": "business_activity",
+     "fieldtype": "Link",
+     "label": "Business Activity",
+     "options": "Business Activity",
+     "read_only": 1
+    },
+    {
+     "fieldname": "column_break_12",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fetch_from": "branch.cost_center",
+     "fieldname": "cost_center",
+     "fieldtype": "Link",
+     "label": "Cost Center",
+     "options": "Cost Center",
+     "read_only": 1
+    },
+    {
+     "fieldname": "amended_from",
+     "fieldtype": "Link",
+     "label": "Amended From",
+     "no_copy": 1,
+     "options": "Bulk Leave Encashment",
+     "print_hide": 1,
+     "read_only": 1
+    },
+    {
+     "fieldname": "column_break_4",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "get_employees",
+     "fieldtype": "Button",
+     "label": "Get Employees"
+    },
+    {
+     "fieldname": "encashment_details_section",
+     "fieldtype": "Section Break",
+     "label": "Encashment Details"
+    },
+    {
+     "allow_bulk_edit": 1,
+     "fieldname": "items",
+     "fieldtype": "Table",
+     "options": "Bulk Leave Encashment Item"
+    },
+    {
+     "fieldname": "fiscal_year",
+     "fieldtype": "Link",
+     "label": "Fiscal Year",
+     "options": "Fiscal Year",
+     "reqd": 1
+    },
+    {
+     "fieldname": "section_break_11",
+     "fieldtype": "Section Break"
+    },
+    {
+     "fieldname": "total_encashment_amount",
+     "fieldtype": "Currency",
+     "label": "Total Encashment Amount",
+     "read_only": 1
+    },
+    {
+     "fieldname": "column_break_13",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "net_payable_amount",
+     "fieldtype": "Currency",
+     "label": "Net Payable Amount",
+     "read_only": 1
+    },
+    {
+     "fieldname": "journal_entries_created",
+     "fieldtype": "Link",
+     "label": "Journal Entries Created",
+     "options": "Journal Entry",
+     "read_only": 1
+    },
+    {
+     "fieldname": "workflow_state",
+     "fieldtype": "Link",
+     "label": "Workflow State",
+     "options": "Workflow State",
+     "read_only": 1
+    }
+   ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-12-29 15:59:18.527778",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Bulk Leave Encashment",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

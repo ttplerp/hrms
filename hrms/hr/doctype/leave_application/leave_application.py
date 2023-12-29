@@ -848,7 +848,7 @@ def get_leave_allocation_records(employee, date, leave_type=None):
 		frappe.qb.terms.Case().when(Ledger.is_carry_forward == "0", Ledger.leaves).else_(0)
 	)
 	sum_new_leaves = Sum(new_leaves_case).as_("new_leaves")
-	trnsaction_type=["Leave Allocation","Merge CL To EL"]
+	trnsaction_type=["Leave Allocation","Merge CL To EL","Bulk Leave Encashment"]
 	query = (
 		frappe.qb.from_(Ledger)
 		.select(
