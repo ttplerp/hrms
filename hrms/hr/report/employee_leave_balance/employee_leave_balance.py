@@ -130,13 +130,13 @@ def get_data(filters: Filters) -> List:
 				)
 				opening = get_opening_balance(employee.name, leave_type, filters, carry_forwarded_leaves)
 
-				row.leaves_allocated = new_allocation + adjusted_leaves
+				row.leaves_allocated = new_allocation + adjusted_leaves + carry_forwarded_leaves
 				row.leaves_expired = expired_leaves
 				row.opening_balance = opening
 				row.leaves_taken = leaves_taken
 
 				# not be shown on the basis of days left it create in user mind for carry_forward leave
-				row.closing_balance = new_allocation + opening - (row.leaves_expired + leaves_taken) + adjusted_leaves
+				row.closing_balance = new_allocation + opening - (row.leaves_expired + leaves_taken) + adjusted_leaves +carry_forwarded_leaves
 				row.indent = 1
 				data.append(row)
 
@@ -231,6 +231,7 @@ def get_allocated_and_expired_leaves(filters,
 	adjusted_leaves = 0
 
 	records = get_leave_ledger_entries(from_date, to_date, employee, leave_type)
+	# frappe.throw(str(records))
 	adjusted_entries = get_adjusted_leave_ledger_entries(filters.from_date, filters.to_date, employee, leave_type)
 	for record in records:
 		# new allocation records with `is_expired=1` are created when leave expires
@@ -257,6 +258,7 @@ def get_leave_ledger_entries(
 	from_date: str, to_date: str, employee: str, leave_type: str
 ) -> List[Dict]:
 	ledger = frappe.qb.DocType("Leave Ledger Entry")
+	trnsaction_type=["Leave Allocation","Merge CL To EL"]
 	records = (
 		frappe.qb.from_(ledger)
 		.select(
@@ -272,7 +274,7 @@ def get_leave_ledger_entries(
 		)
 		.where(
 			(ledger.docstatus == 1)
-			& (ledger.transaction_type == "Leave Allocation")
+			& (ledger.transaction_type.isin(trnsaction_type))
 			& (ledger.employee == employee)
 			& (ledger.leave_type == leave_type)
 			& (ledger.is_adjusted_leave == 0)

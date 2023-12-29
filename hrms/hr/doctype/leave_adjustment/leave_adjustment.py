@@ -177,7 +177,7 @@ class LeaveAdjustment(Document):
 				OR to_date between %(from_date)s AND %(to_date)s
 				OR (from_date < %(from_date)s AND to_date > %(to_date)s))
 		AND is_adjusted_leave = 0
-		AND transaction_type = 'Leave Allocation'
+		AND transaction_type in ('Leave Allocation', 'Merge CL To EL')
 		""", {
 			"from_date": from_date,
 			"to_date": to_date,
