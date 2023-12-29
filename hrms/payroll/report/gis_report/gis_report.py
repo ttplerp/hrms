@@ -52,6 +52,7 @@ def get_data(filters):
 							t1.company, t1.branch, t1.cost_center, t1.department, t1.division, t1.section,t1.fiscal_year, t1.month
 						from `tabSalary Slip` t1, `tabSalary Detail` t2, `tabEmployee` t3
 						where t1.docstatus = 1 %s
+					  	and t3.employee_group !='Temporary'
 						and t3.employee = t1.employee
 						and t2.parent = t1.name
 						and t2.salary_component in ('Basic Pay','GIS')
@@ -70,6 +71,7 @@ def get_conditions(filters):
 
 	if filters.get("fiscal_year"): conditions += " and t1.fiscal_year = %(fiscal_year)s"
 	if filters.get("company"): conditions += " and t1.company = %(company)s"
-	if filters.get("employee"): conditions += " and t1.employee = %(employee)s"
+	if filters.get("employee"): 
+		conditions += " and t1.employee = %(employee)s "
 	if filters.get("cost_center"): conditions += " and exists(select 1 from `tabCost Center` cc where t1.cost_center = cc.name and (cc.parent_cost_center = '{0}' or cc.name = '{0}'))".format(filters.cost_center)
 	return conditions, filters
