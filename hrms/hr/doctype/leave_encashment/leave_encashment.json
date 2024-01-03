@@ -340,8 +340,9 @@
   },
   {
    "fieldname": "expense_claim",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Expense Claim",
+   "options": "Expense Claim",
    "read_only": 1
   },
   {
@@ -361,7 +362,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-28 14:36:53.468915",
+ "modified": "2024-01-03 14:44:32.717093",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",

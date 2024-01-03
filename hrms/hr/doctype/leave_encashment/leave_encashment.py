@@ -54,6 +54,8 @@ class LeaveEncashment(Document):
 		company =frappe.get_value("Employee", self.employee, "company")
 		default_payable_account = frappe.get_cached_value("Company", company, "default_expense_claim_payable_account")
 		taxt_account_head = frappe.get_cached_value("Company", company, "salary_tax_account")
+		if not taxt_account_head:
+			frappe.throw("Please set <strong>Salary Tax Account</strong> in HR & Payroll Settings tab in Company.")
 
 		expense_claim 					= frappe.new_doc("Expense Claim")
 		expense_claim.flags.ignore_mandatory = True
