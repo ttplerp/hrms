@@ -16,10 +16,6 @@ def execute(filters=None):
 
 def get_data( filters=None):
 	data = []
-    #salary arrear
-	data += get_salary_arrer(filters)
-	frappe.errprint(str(data))
-    
 	# salary 
 	data += get_salary_data(filters)
 	#Leave Encashment 
@@ -28,6 +24,10 @@ def get_data( filters=None):
 	data += get_bonus(filters)
 	#PVBA
 	data += get_pbva(filters)
+	#salary arrear
+	data += get_salary_arrer(filters)
+	#bluk leave Encashment
+	data += get_bulk_leave_encashment(filters)
 
 	return data
 
@@ -184,6 +184,45 @@ WHERE
     """.format(employee = filters.employee,fiscal_year=filters.fiscal_year,from_date = getdate(str(filters.fiscal_year) + "-01-01"),
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")),as_dict=True)
 
+def get_bulk_leave_encashment(filters):
+	data = []
+	month_year="12-2023"
+	datas = frappe.db.sql("""
+			SELECT 
+			ble.encashment_date as date,
+			blei.payable_amount,
+			blei.encashment_amount,
+			blei.encashment_tax,
+			r.tds_receipt_number, 
+			r.tds_receipt_date 
+		FROM `tabBulk Leave Encashment` ble
+		INNER JOIN 
+			`tabBulk Leave Encashment Item` blei ON ble.name = blei.parent
+		INNER JOIN
+			`tabTDS Receipt Update` r ON ble.fiscal_year ='2023' AND r.purpose="Bulk Leave Encashment"
+		WHERE blei.employee = '{employee}' 
+		AND ble.leave_type = "Earned Leave"
+		AND ble.docstatus = 1 
+		""".format(employee=filters.employee), as_dict=True)
+				
+	for a in datas:
+		data.append({
+			"month_year":month_year, 
+			"type":"Bulk Leave Encashemnt", 
+			"basic":0, 
+			"others":a.encashment_amount, 
+			"total":a.encashment_amount,
+			"pf":0,
+			"gis":0,
+			"totalPfGis":0, 
+			"taxable":a.encashment_amount, 
+			"tds":a.encashment_tax, 
+			"health":0,
+			"receipt_number":a.tds_receipt_number, 
+			"receipt_date":a.tds_receipt_date,
+			"posting_date":a.date
+			})
+	return data
 	
 def validate_filters(filters):
 	if not filters.fiscal_year:
@@ -205,7 +244,7 @@ def get_columns():
 		  "fieldname": "type",
 		  "label": "Income Type",
 		  "fieldtype": "Data",
-		  "width": 100
+		  "width": 160
 		},
 		{
 		  "fieldname": "basic",
