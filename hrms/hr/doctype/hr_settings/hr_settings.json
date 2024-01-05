@@ -46,6 +46,8 @@
   "exit_questionnaire_web_form",
   "column_break_34",
   "exit_questionnaire_notification_template",
+  "sign_and_seal_section",
+  "seal",
   "overtime_settings_tab",
   "overtime_limit_type",
   "column_break_39",
@@ -136,7 +138,10 @@
   "bank_payment_settings_section",
   "bank_payment_approval_notification_template",
   "column_break_118",
-  "bank_payment_status_notification_template"
+  "bank_payment_status_notification_template",
+  "enote_status_notification",
+  "enote_approval_notification",
+  "enote_copyto_notification"
  ],
  "fields": [
   {
@@ -870,13 +875,41 @@
    "fieldtype": "Link",
    "label": "Employee Separation Clearance Status Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "enote_status_notification",
+   "fieldtype": "Link",
+   "label": "eNote Status Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "enote_approval_notification",
+   "fieldtype": "Link",
+   "label": "eNote Approval Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "enote_copyto_notification",
+   "fieldtype": "Link",
+   "label": "eNote CopyTo Notification ",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "sign_and_seal_section",
+   "fieldtype": "Section Break",
+   "label": "Sign and Seal"
+  },
+  {
+   "fieldname": "seal",
+   "fieldtype": "Attach Image",
+   "label": "Finance Focal Seal"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-03-01 17:32:54.444840",
+ "modified": "2024-01-05 12:57:05.424902",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
