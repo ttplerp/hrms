@@ -169,7 +169,7 @@ class LeaveEncashment(Document):
 			frappe.throw(_("Minimum '{}' days is Mandatory for Encashment").format(cint(min_encashable_days)),title="Leave Balance")
 		
 		self.encashable_days = encashable_days if encashable_days > 0 else 0
-		self.encashment_days = self.leave_balance
+		self.encashment_days = self.leave_balance if self.leave_balance < flt(encashable_days) else flt(encashable_days)
 		# per_day_encashment = frappe.db.get_value("Salary Structure", salary_structure, "leave_encashment_amount_per_day")
 		
 		# getting encashment amount from salary structure
