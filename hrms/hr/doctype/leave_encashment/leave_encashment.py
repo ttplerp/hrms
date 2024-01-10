@@ -163,12 +163,13 @@ class LeaveEncashment(Document):
 			)
 		employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
 		encashable_days = frappe.db.get_value("Employee Group", employee_group, "max_encashment_days")
+		min_encashable_days =frappe.db.get_value("Employee Group", employee_group, "encashment_min")
 
-		if self.leave_balance < frappe.db.get_value("Employee Group", employee_group, "encashment_min"):
-			frappe.throw(_("Minimum '{}' days is Mandatory for Encashment").format(cint(encashable_days)),title="Leave Balance")
+		if self.leave_balance < min_encashable_days:
+			frappe.throw(_("Minimum '{}' days is Mandatory for Encashment").format(cint(min_encashable_days)),title="Leave Balance")
 		
 		self.encashable_days = encashable_days if encashable_days > 0 else 0
-		self.encashment_days = encashable_days
+		self.encashment_days = self.leave_balance
 		# per_day_encashment = frappe.db.get_value("Salary Structure", salary_structure, "leave_encashment_amount_per_day")
 		
 		# getting encashment amount from salary structure
