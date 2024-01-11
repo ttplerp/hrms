@@ -41,6 +41,9 @@
   "eligible_for_communication_allowance",
   "communication_allowance_method",
   "communication_allowance",
+  "eligible_for_head_allowance",
+  "head_allowance_method",
+  "head_allowance",
   "eligible_for_fuel_allowances",
   "fuel_allowances_method",
   "fuel_allowances",
@@ -54,6 +57,9 @@
   "eligible_for_foreign_allowance",
   "fa_method",
   "fa",
+  "eligible_for_corporate_allowance",
+  "ca_method",
+  "ca",
   "eligible_for_conveyance_allowance",
   "con_method",
   "con",
@@ -64,6 +70,9 @@
   "deputation_method",
   "deputation",
   "cb_12",
+  "eligible_for_project_allowance",
+  "project_allowance_method",
+  "project_allowance",
   "eligible_for_officiating_allowance",
   "officiating_allowance_method",
   "officiating_allowance",
@@ -311,7 +320,7 @@
    "fieldname": "fuel_allowances_method",
    "fieldtype": "Select",
    "label": "Eligible for Fuel Allowances Payment Method",
-   "options": "Percent\nLumpsum",
+   "options": "\nPercent\nLumpsum",
    "print_hide": 1
   },
   {
@@ -786,28 +795,77 @@
    "fieldname": "difficulty_allowance",
    "fieldtype": "Data",
    "label": "Value (Difficulty Allowance)"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_corporate_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Corporate Allowance"
+  },
+  {
+   "default": "Percent",
+   "depends_on": "eligible_for_corporate_allowance",
+   "fieldname": "ca_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Corporate Allowance Payment Method",
+   "options": "Lumpsum\nPercent"
+  },
+  {
+   "depends_on": "eligible_for_corporate_allowance",
+   "fieldname": "ca",
+   "fieldtype": "Int",
+   "label": "Value(Corporate Allowance)"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_project_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Project Allowance"
+  },
+  {
+   "depends_on": "eligible_for_project_allowance",
+   "fieldname": "project_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Project Allowance)"
+  },
+  {
+   "default": "Percent",
+   "depends_on": "eligible_for_project_allowance",
+   "fieldname": "project_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Project Allowance Payment Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_head_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Head Allowance"
+  },
+  {
+   "default": "Lumpsum",
+   "depends_on": "eligible_for_head_allowance",
+   "fieldname": "head_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Head Allowance Payment Method",
+   "options": "\nPercent\nLumpsum"
+  },
+  {
+   "depends_on": "eligible_for_head_allowance",
+   "fieldname": "head_allowance",
+   "fieldtype": "Currency",
+   "label": "Value (Head Allowance)"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-07-27 10:11:37.003110",
+ "modified": "2024-01-11 12:54:03.322421",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
  "owner": "Administrator",
  "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "HR User",
-   "share": 1,
-   "write": 1
-  },
   {
    "create": 1,
    "delete": 1,

@@ -71,6 +71,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_communication_allowance: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_head_allowance: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_fuel_allowances: function(frm){
 		calculate_others(frm);
 	},
@@ -83,6 +86,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_foreign_allowance: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_corporate_allowance: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_conveyance_allowance: function(frm){
 		calculate_others(frm);
 	},
@@ -93,6 +99,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_others(frm);
 	},
 	eligible_for_deputation: function(frm){
+		calculate_others(frm);
+	},
+	eligible_for_project_allowance: function(frm){
 		calculate_others(frm);
 	},
 	eligible_for_officiating_allowance: function(frm){
@@ -146,9 +155,6 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_entertainment_allowance: function(frm){
 		calculate_others(frm);
 	},
-	eligible_for_project_allowance: function(frm){
-		calculate_others(frm);
-	},
 	eligible_for_special_allowance: function(frm){
 		calculate_others(frm);
 	},
@@ -178,6 +184,9 @@ frappe.ui.form.on('Salary Structure', {
 	mpi: function(frm){
 		calculate_others(frm);
 	},
+	pa: function(frm){
+		calculate_others(frm);
+	}, 
 	officiating_allowance: function(frm){
 		calculate_others(frm);
 	},
@@ -190,6 +199,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_totals(frm.doc);
 	},
 	*/
+	head_allowance: function(frm){
+		calculate_others(frm);
+	},
 	fuel_allowances: function(frm){
 		calculate_others(frm);
 	},
@@ -206,6 +218,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_others(frm);
 	},
 	fa: function(frm){
+		calculate_others(frm);
+	},
+	ca: function(frm){
 		calculate_others(frm);
 	},
 	con: function(frm){
@@ -270,10 +285,16 @@ frappe.ui.form.on('Salary Structure', {
 	mpi_method: function(frm){
 		calculate_others(frm);
 	},
+	pa_method: function(frm){
+		calculate_others(frm);
+	},
 	officiating_allowance_method: function(frm){
 		calculate_others(frm);
 	},
 	temporary_transfer_allowance_method: function(frm){
+		calculate_others(frm);
+	},
+	head_allowance_method: function(frm){
 		calculate_others(frm);
 	},
 	fuel_allowances_method: function(frm){
@@ -292,6 +313,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_others(frm);
 	},
 	fa_method: function(frm){
+		calculate_others(frm);
+	},
+	ca_method: function(frm){
 		calculate_others(frm);
 	},
 	con_method: function(frm){
