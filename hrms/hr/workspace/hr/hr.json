@@ -232,24 +232,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Overtime Transaction",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Overtime Application",
-   "link_count": 0,
-   "link_to": "Overtime Application",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Salary Reports",
    "link_count": 2,
    "onboard": 0,
@@ -336,9 +318,37 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Overtime Transaction",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Overtime Application",
+   "link_count": 0,
+   "link_to": "Overtime Application",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "OT Update Tool",
+   "link_count": 0,
+   "link_to": "OT Update Tools",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-12-20 14:26:57.927412",
+ "modified": "2023-05-30 10:35:43.643365",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
