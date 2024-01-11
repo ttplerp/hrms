@@ -27,6 +27,10 @@
   "advances",
   "section_break_10",
   "deductions",
+  "sb_deduction_from",
+  "deduct_from_party",
+  "party_type",
+  "party",
   "section_break_12",
   "arrears_and_allownace",
   "section_break_hr9eg",
@@ -205,12 +209,38 @@
    "fieldname": "advances",
    "fieldtype": "Table",
    "options": "MR Invoice Entry Advance"
+  },
+  {
+   "default": "0",
+   "fieldname": "deduct_from_party",
+   "fieldtype": "Check",
+   "label": "Deduct from Party"
+  },
+  {
+   "depends_on": "eval:doc.deduct_from_party == 1;",
+   "fieldname": "party_type",
+   "fieldtype": "Select",
+   "label": "Party Type",
+   "mandatory_depends_on": "eval:doc.deduct_from_party == 1;",
+   "options": "\nSupplier\nEmployee"
+  },
+  {
+   "depends_on": "eval:doc.deduct_from_party == 1;",
+   "fieldname": "party",
+   "fieldtype": "Dynamic Link",
+   "label": "Party",
+   "mandatory_depends_on": "eval:doc.deduct_from_party == 1;",
+   "options": "party_type"
+  },
+  {
+   "fieldname": "sb_deduction_from",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-12 14:42:05.476822",
+ "modified": "2024-01-11 14:53:13.846133",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Invoice Entry",
@@ -274,5 +304,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }
