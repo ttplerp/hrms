@@ -71,44 +71,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Allocation",
-   "link_count": 3,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Leave Allocation",
-   "link_count": 0,
-   "link_to": "Leave Allocation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Leave Policy Assignment",
-   "link_count": 0,
-   "link_to": "Leave Policy Assignment",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Leave Encashment",
-   "link_count": 0,
-   "link_to": "Leave Encashment",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Application",
    "link_count": 2,
    "onboard": 0,
@@ -171,10 +133,68 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Allocation",
+   "link_count": 5,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Leave Allocation",
+   "link_count": 0,
+   "link_to": "Leave Allocation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Leave Policy Assignment",
+   "link_count": 0,
+   "link_to": "Leave Policy Assignment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Leave Encashment",
+   "link_count": 0,
+   "link_to": "Leave Encashment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Merge CL To EL",
+   "link_count": 0,
+   "link_to": "Merge CL To EL",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Leave Adjustment",
+   "link_count": 0,
+   "link_to": "Leave Adjustment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-12-20 15:42:25.203993",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2024-01-11 12:14:53.592949",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Management",
  "owner": "Administrator",

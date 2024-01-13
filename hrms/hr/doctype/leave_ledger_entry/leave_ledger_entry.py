@@ -56,6 +56,8 @@ def create_leave_ledger_entry(ref_doc, args, submit=True):
 		is_carry_forward=0,
 		is_expired=0,
 		is_lwp=0,
+		is_adjusted_leave=0,
+		leave_adjustment_id=None
 	)
 	ledger.update(args)
 
