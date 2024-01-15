@@ -917,7 +917,7 @@ def get_remaining_leaves(allocation, employee, date, leave_type):
 	balance = 0
 	remaining_leaves = frappe.db.sql("""
 		select sum(ifnull(leaves,0)) from `tabLeave Ledger Entry` where from_date >= '{}'
-		and to_date <= '{}' and employee = '{}' and leave_type = '{}'
+		and to_date <= '{}' and employee = '{}' and leave_type = '{}' and docstatus = 1
 	""".format(str(from_date), str(to_date), employee, leave_type))
 	if remaining_leaves:
 		balance = flt(remaining_leaves[0][0])
