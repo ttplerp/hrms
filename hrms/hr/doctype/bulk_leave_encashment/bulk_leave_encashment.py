@@ -16,6 +16,7 @@ from datetime import *
 
 class BulkLeaveEncashment(Document):
 	def validate(self):
+		self.validate_items()
 		validate_workflow_states(self)
 		if not self.encashment_date:
 			self.encashment_date = getdate(nowdate())
@@ -33,6 +34,10 @@ class BulkLeaveEncashment(Document):
 		self.update_encashed_in_leave_allocation(cancel=1)
 		self.create_leave_ledger_entry(submit=False)
 		# notify_workflow_states(self)
+	
+	def validate_items(self):
+		if not self.get("items"):
+			frappe.throw(_("Get Employees before saving this document."), title="No Employees Found")
 	
 	def calculate_amount(self):
 		total_encashment_amount = net_payable = 0
