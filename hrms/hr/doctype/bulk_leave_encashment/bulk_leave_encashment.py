@@ -16,7 +16,7 @@ from datetime import *
 
 class BulkLeaveEncashment(Document):
 	def validate(self):
-		# validate_workflow_states(self)
+		validate_workflow_states(self)
 		if not self.encashment_date:
 			self.encashment_date = getdate(nowdate())
 		self.get_leave_details_for_encashment()

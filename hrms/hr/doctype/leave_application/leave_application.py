@@ -968,6 +968,9 @@ def get_leaves_for_period(
 
 		if inclusive_period and leave_entry.transaction_type == "Leave Encashment":
 			leave_days += leave_entry.leaves
+		
+		if inclusive_period and leave_entry.transaction_type == "Bulk Leave Encashment":
+			leave_days += leave_entry.leaves
 
 		elif (
 			inclusive_period
