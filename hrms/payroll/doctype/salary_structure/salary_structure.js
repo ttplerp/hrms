@@ -101,6 +101,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_deputation: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_special_incentives: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_project_allowance: function(frm){
 		calculate_others(frm);
 	},
@@ -214,6 +217,9 @@ frappe.ui.form.on('Salary Structure', {
 	deputation: function(frm){
 		calculate_others(frm);
 	},
+	si: function(frm){
+		calculate_others(frm);
+	},
 	underground: function(frm){
 		calculate_others(frm);
 	},
@@ -307,6 +313,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_others(frm);
 	},
 	deputation_method: function(frm){
+		calculate_others(frm);
+	},
+	si_method: function(frm){
 		calculate_others(frm);
 	},
 	underground_method: function(frm){

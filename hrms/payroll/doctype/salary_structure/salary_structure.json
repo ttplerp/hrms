@@ -69,6 +69,9 @@
   "eligible_for_deputation",
   "deputation_method",
   "deputation",
+  "eligible_for_special_incentives",
+  "si_method",
+  "si",
   "cb_12",
   "eligible_for_project_allowance",
   "project_allowance_method",
@@ -855,12 +858,32 @@
    "fieldname": "head_allowance",
    "fieldtype": "Currency",
    "label": "Value (Head Allowance)"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_special_incentives",
+   "fieldtype": "Check",
+   "label": "Eligible for Special Incentives"
+  },
+  {
+   "default": "Lumpsum",
+   "depends_on": "eligible_for_special_incentives",
+   "fieldname": "si_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Special Incentives Payment Method",
+   "options": "\nLumpsum\nPercent"
+  },
+  {
+   "depends_on": "eligible_for_special_incentives",
+   "fieldname": "si",
+   "fieldtype": "Currency",
+   "label": "Value(Special Incentives)"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2024-01-11 12:54:03.322421",
+ "modified": "2024-01-15 11:19:46.947785",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
