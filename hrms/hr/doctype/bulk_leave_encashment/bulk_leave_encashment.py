@@ -116,7 +116,7 @@ class BulkLeaveEncashment(Document):
 		query = """
 				select name as employee, employee_name, branch, designation, employment_type, grade,
 				employee_group, bank_name, bank_ac_no
-				from `tabEmployee` where status = 'Active'
+				from `tabEmployee` where status = 'Active' and employment_status = 'In Service'
 		"""
 		
 		entries = frappe.db.sql(query, as_dict=True)
