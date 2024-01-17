@@ -3,7 +3,7 @@
 
 import frappe
 from frappe import _
-from frappe.utils import getdate,flt,cint,today,add_to_date
+from frappe.utils import flt, cint, today, getdate, nowdate, add_to_date
 from frappe.model.document import Document
 from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
@@ -24,21 +24,14 @@ class OvertimeApplication(Document):
 		# if cint(frappe.db.get_value('Employee Grade',self.grade,'eligible_for_overtime')) == 0:
 		# 	frappe.msgprint(_("You are not eligible for overtime"), title="Not Eligible", indicator="red", raise_exception=1)
 
-	def calculate_totals(self):			
-		settings = frappe.get_single("HR Settings")
-		overtime_limit_type, overtime_limit = settings.overtime_limit_type, flt(settings.overtime_limit)
+	def calculate_totals(self):
 		total_amount = 0
 		total_hours = 0
-		hourly_rate = 0
 		for i in self.get("items"):
-			total_hours += flt(i.number_of_hours)
-			i.amount = flt(i.rate) * flt(i.number_of_hours)
+			total_hours += flt(i.number_of_hours) + flt(i.odd_hours)
 			total_amount += i.amount
-			hourly_rate = i.rate
-
 
 		self.actual_hours = flt(total_hours)
-		self.rate = flt(hourly_rate)
 		self.total_hours = flt(self.actual_hours)
 		self.total_amount = round(total_amount,0)
 
@@ -47,7 +40,7 @@ class OvertimeApplication(Document):
 
 	def on_submit(self):
 		notify_workflow_states(self)
-	
+
 	# @frappe.whitelist()
 	# def check_for_overtime_eligibility(self):
 	# 	if not frappe.db.get_value("Employee Grade", frappe.db.get_value("Employee", self.employee, "grade"), "eligible_for_overtime"):
@@ -55,7 +48,9 @@ class OvertimeApplication(Document):
 
 	# Dont allow duplicate dates
 	##
-	def validate_dates(self):				
+	def validate_dates(self):	
+		self.posting_date = nowdate() if not self.posting_date else self.posting_date
+					
 		for a in self.items:
 			if not a.from_date or not a.to_date:
 				frappe.throw(_("Row#{} : Date cannot be blank").format(a.idx), title="Invalid Date")

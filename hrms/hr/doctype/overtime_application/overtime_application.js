@@ -43,14 +43,16 @@ frappe.ui.form.on('Overtime Application', {
 
 frappe.ui.form.on("Overtime Application Item", {
 	"number_of_hours": function(frm, cdt, cdn) {
-		calculate_amount(frm, cdt, cdn)
+		// calculate_amount(frm, cdt, cdn)
 		calculate_time(frm, cdt, cdn);
 	},
-	"rate":function(frm, cdt, cdn){
-		calculate_amount(frm, cdt, cdn)
-	},
+	// "rate":function(frm, cdt, cdn){
+	// 	calculate_amount(frm, cdt, cdn)
+	// },
 	"from_date": function(frm, cdt, cdn) {
 		var child = locals[cdt][cdn]
+		/**
+		 * Commented by Dawa Tshering on 07/12/2023  
 		var hours = moment(child.to_date).diff(moment(child.from_date), "seconds") / 3600;
 		if(child.to_date && child.from_date) {
 			frappe.model.set_value(cdt, cdn, "number_of_hours", hours);
@@ -70,16 +72,67 @@ frappe.ui.form.on("Overtime Application Item", {
 				}
 			})
 		}
+		*/
+
+		// Added by Dawa Tshering on 07/12/2023
+		if (child.to_date) {
+			var hours = (moment(child.to_date).diff(moment(child.from_date), "seconds")) / 3600;
+			console.log(hours);
+			if (frm.doc.employee) {
+				frappe.call({
+					method: "erpnext.setup.doctype.employee.employee.get_overtime_rate",
+					args: {
+						employee: frm.doc.employee,
+						from_date: child.from_date,
+						to_date: child.to_date
+					},
+					callback: function(r) {
+						if (r.message) {
+							console.log("Rate "+String(r.message[1]))
+							frappe.model.set_value(cdt,cdn,"rate", r.message[0]);
+							frappe.model.set_value(cdt,cdn,"odd_hours_rate", r.message[1]);
+							frappe.model.set_value(cdt,cdn,"number_of_hours", r.message[2]);
+							frappe.model.set_value(cdt,cdn,"odd_hours", r.message[3]);
+							frappe.model.set_value(cdt,cdn,"amount", (flt(r.message[1]) * flt(r.message[3])) + (flt(r.message[0]) * flt(r.message[2])))
+						}
+					}
+				})
+			}
+		}
+		frm.refresh_fields();
 	},
 	
 	"to_date": function(frm, cdt, cdn) {
-        	var child = locals[cdt][cdn]
-        	var hours = moment(child.to_date).diff(moment(child.from_date), "seconds") / 3600;
-        	if(child.to_date && child.from_date) {
-				frappe.model.set_value(cdt, cdn, "number_of_hours", hours);
+		var child = locals[cdt][cdn]
+		// var hours = moment(child.to_date).diff(moment(child.from_date), "seconds") / 3600;
+		if(child.from_date) {
+			var hours = moment(child.to_date).diff(moment(child.from_date), "seconds") / 3600;
+			console.log("Hi "+String(hours));
+			if (hours > 0) {
+				if (frm.doc.employee) {
+					frappe.call({
+						method: "erpnext.setup.doctype.employee.employee.get_overtime_rate",
+						args: {
+							employee: frm.doc.employee,
+							from_date: child.from_date,
+							to_date: child.to_date,
+						},
+						callback: function(m) {
+							if(m.message) {
+								console.log("Rate "+String(m.message[1]))
+								frappe.model.set_value(cdt,cdn,"rate", m.message[0]);
+								frappe.model.set_value(cdt,cdn,"odd_hours_rate", m.message[1]);
+								frappe.model.set_value(cdt,cdn,"number_of_hours", m.message[2]);
+								frappe.model.set_value(cdt,cdn,"odd_hours", m.message[3]);
+								frappe.model.set_value(cdt,cdn,"amount", (flt(m.message[1]) * flt(m.message[3])) + (flt(m.message[0]) * flt(m.message[2])))
+							}
+						}
+					})
 				}
-        },
-
+			}	
+		}
+		frm.refresh_fields();
+    },
 
 	items_remove: function(frm, cdt, cdn) {
 		calculate_time(frm, cdt, cdn);
@@ -92,14 +145,20 @@ function calculate_amount(frm, cdt, cdn){
 		frappe.model.set_value(cdt, cdn, "amount", row.rate * row.number_of_hours);
 	}
 }
+
 function calculate_time(frm, cdt, cdn) {
 	let total_time = 0;
 	let total_amount = 0
 	frm.doc.items.forEach(function(d) {
-		if(d.number_of_hours && d.rate) {
+		if  (d.number_of_hours) {
 			total_time += d.number_of_hours
-			total_amount += d.amount
 		}	
+		if(d.odd_hours){
+			total_time += d.odd_hours
+		}
+		if (d.amount != null && d.amount != "" && d.amount != undefined){
+			total_amount += flt(d.amount);
+		}
 	})
 	frm.set_value("total_hours", total_time)
 	frm.set_value("total_amount", total_amount)
@@ -156,53 +215,53 @@ function enable_disable(frm){
 	}
 }
 
-frappe.ui.form.on("Overtime Application", "after_save", function(frm, cdt, cdn){
-	if(in_list(user_roles, "OT Supervisor") || in_list(user_roles, "OT Approver")){
-		if (frm.doc.workflow_state && frm.doc.workflow_state.indexOf("Rejected") >= 0){
-			frappe.prompt([
-				{
-					fieldtype: 'Small Text',
-					reqd: true,
-					fieldname: 'reason'
-				}],
-				function(args){
-					validated = true;
-					frappe.call({
-						method: 'frappe.core.doctype.communication.email.make',
-						args: {
-							doctype: frm.doctype,
-							name: frm.docname,
-							subject: format(__('Reason for {0}'), [frm.doc.workflow_state]),
-							content: args.reason,
-							send_mail: false,
-							send_me_a_copy: false,
-							communication_medium: 'Other',
-							sent_or_received: 'Sent'
-						},
-						callback: function(res){
-							if (res && !res.exc){
-								frappe.call({
-									method: 'frappe.client.set_value',
-									args: {
-										doctype: frm.doctype,
-										name: frm.docname,
-										fieldname: 'rejection_reason',
-										value: frm.doc.rejection_reason ?
-											[frm.doc.rejection_reason, '['+String(frappe.session.user)+' '+String(frappe.datetime.nowdate())+']'+' : '+String(args.reason)].join('\n') : frm.doc.workflow_state
-									},
-									callback: function(res){
-										if (res && !res.exc){
-											frm.reload_doc();
-										}
-									}
-								});
-							}
-						}
-					});
-				},
-				__('Reason for ') + __(frm.doc.workflow_state),
-				__('Save')
-			)
-		}
-	}
-});
+// frappe.ui.form.on("Overtime Application", "after_save", function(frm, cdt, cdn){
+// 	if(in_list(user_roles, "OT Supervisor") || in_list(user_roles, "OT Approver")){
+// 		if (frm.doc.workflow_state && frm.doc.workflow_state.indexOf("Rejected") >= 0){
+// 			frappe.prompt([
+// 				{
+// 					fieldtype: 'Small Text',
+// 					reqd: true,
+// 					fieldname: 'reason'
+// 				}],
+// 				function(args){
+// 					validated = true;
+// 					frappe.call({
+// 						method: 'frappe.core.doctype.communication.email.make',
+// 						args: {
+// 							doctype: frm.doctype,
+// 							name: frm.docname,
+// 							subject: format(__('Reason for {0}'), [frm.doc.workflow_state]),
+// 							content: args.reason,
+// 							send_mail: false,
+// 							send_me_a_copy: false,
+// 							communication_medium: 'Other',
+// 							sent_or_received: 'Sent'
+// 						},
+// 						callback: function(res){
+// 							if (res && !res.exc){
+// 								frappe.call({
+// 									method: 'frappe.client.set_value',
+// 									args: {
+// 										doctype: frm.doctype,
+// 										name: frm.docname,
+// 										fieldname: 'rejection_reason',
+// 										value: frm.doc.rejection_reason ?
+// 											[frm.doc.rejection_reason, '['+String(frappe.session.user)+' '+String(frappe.datetime.nowdate())+']'+' : '+String(args.reason)].join('\n') : frm.doc.workflow_state
+// 									},
+// 									callback: function(res){
+// 										if (res && !res.exc){
+// 											frm.reload_doc();
+// 										}
+// 									}
+// 								});
+// 							}
+// 						}
+// 					});
+// 				},
+// 				__('Reason for ') + __(frm.doc.workflow_state),
+// 				__('Save')
+// 			)
+// 		}
+// 	}
+// });
