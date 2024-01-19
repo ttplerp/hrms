@@ -9,9 +9,16 @@ class SupervisorAndApproverMapper(Document):
 		self.check_duplicate_branch()
 	
 	def check_duplicate_branch(self):
-		unique_items = set()
+		unique_supervisor_items = set()
+		unique_approver_items = set()
 		for a in self.supervisor_items:
-			if a.branch in unique_items:
+			if a.branch in unique_supervisor_items:
 				frappe.throw("Duplicate Branch <strong>{}</strong> found in supervisor list table.".format(a.branch))
 			else:
-				unique_items.add(a.branch)
+				unique_supervisor_items.add(a.branch)
+		
+		for a in self.approver_items:
+			if a.branch in unique_approver_items:
+				frappe.throw("Duplicate Branch <strong>{}</strong> found in approver list table.".format(a.branch))
+			else:
+				unique_approver_items.add(a.branch)
