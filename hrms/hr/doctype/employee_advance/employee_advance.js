@@ -249,6 +249,24 @@ frappe.ui.form.on('Employee Advance', {
 		}
 	},
 
+	recovery_start_date: function (frm) {
+		if (frm.doc.advance_type === "Salary Advance" || frm.doc.advance_type === "Employee Loan" ) { 
+			calculate_monthly_deduction(frm)
+		}
+		if (frm.doc.deduction_month) { 
+			frappe.call({
+				method: "hrms.hr.doctype.employee_advance.employee_advance.calculate_recovery_end_date",
+				args: {
+					"start_date": frm.doc.recovery_start_date,
+					"months": frm.doc.deduction_month
+				},callback: function(r) {
+					console.log(r.message)
+					frm.set_value("recovery_end_date", r.message);
+				}
+			});
+		}
+	},
+
 	// deduction_month: function(frm){
 	// 	frappe.call({
 	// 		method: "validate_deduction_month",
