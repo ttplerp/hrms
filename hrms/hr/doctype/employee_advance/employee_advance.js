@@ -226,13 +226,13 @@ frappe.ui.form.on('Employee Advance', {
 	// },
 	
 	advance_amount: function (frm) {
-		if (frm.doc.advance_type === "Salary Advance") { 
+		if (frm.doc.advance_type === "Salary Advance" || frm.doc.advance_type === "Employee Loan" ) { 
 			calculate_monthly_deduction(frm)
 		}
 	},
 
 	deduction_month: function (frm) {
-		if (frm.doc.advance_type === "Salary Advance") { 
+		if (frm.doc.advance_type === "Salary Advance" || frm.doc.advance_type === "Employee Loan" ) { 
 			calculate_monthly_deduction(frm)
 		}
 		if (frm.doc.deduction_month) { 
