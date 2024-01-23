@@ -77,7 +77,10 @@
   "benefits_status_notification_template",
   "sb_employee_transfer",
   "employee_transfer_approval_notification_template",
-  "employee_transfer_status_notification_template"
+  "employee_transfer_status_notification_template",
+  "enote_approval_notification",
+  "enote_copyto_notification",
+  "enote_status_notification"
  ],
  "fields": [
   {
@@ -498,13 +501,31 @@
    "fieldname": "include_holidays_in_total_working_days",
    "fieldtype": "Check",
    "label": "Include Holidays In Total Working Days"
+  },
+  {
+   "fieldname": "enote_approval_notification",
+   "fieldtype": "Link",
+   "label": "eNote Approval Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "enote_copyto_notification",
+   "fieldtype": "Link",
+   "label": "eNote CopyTo Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "enote_status_notification",
+   "fieldtype": "Link",
+   "label": "eNote Status Notification",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-03-03 14:48:51.173975",
+ "modified": "2023-10-23 14:13:55.819459",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
