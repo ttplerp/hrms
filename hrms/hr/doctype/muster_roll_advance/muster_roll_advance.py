@@ -5,11 +5,13 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import flt, money_in_words, now_datetime, nowdate
 from frappe import _
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 
-class MREmployeeAdvance(Document):
+class MusterRollAdvance(Document):
 	def validate(self):
 		self.set_status()
 		self.set_defaults()
+		validate_workflow_states(self)
 
 	def on_submit(self):
 		if flt(self.advance_amount <= 0):
@@ -33,6 +35,15 @@ class MREmployeeAdvance(Document):
 
 		if self.advance_amount <= 0:
 			frappe.throw("Advance amount must be greater than 0.")
+
+	
+	@frappe.whitelist()
+	def get_advance_account(self):
+		account_name = "foreign_worker_advance_account" if self.muster_roll_group == "Non-National" else "national_worker_advance_account"
+		account = frappe.db.get_value("Company", self.company, account_name)
+		if not account:
+			frappe.throw("Please set Advance Account in Company.")
+		return account
 
 
 	def post_journal_entry(self):
@@ -65,7 +76,7 @@ class MREmployeeAdvance(Document):
 			"party": self.mr_employee,
 			"account_type": adv_gl_det.account_type,
 			"is_advance": "Yes" if adv_gl_det.is_an_advance_account == 1 else None,
-			"reference_type": "MR Employee Advance",
+			"reference_type": "Muster Roll Advance",
 			"reference_name": self.name,
 		})
 		if self.settle_imprest_advance_account:
@@ -95,8 +106,8 @@ class MREmployeeAdvance(Document):
 				"voucher_type": "Journal Entry" if self.settle_imprest_advance_account else "Bank Entry",
 				"naming_series": "Journal Voucher" if self.settle_imprest_advance_account else "Bank Payment Voucher",
 				"mode_of_payment": "Adjustment Entry" if self.settle_imprest_advance_account else "Online Payment",
-				"title": "Muster Roll Employee Advance - "+self.name,
-				"user_remark": "Muster Roll Employee Advance - "+self.name,
+				"title": "Muster Roll Advance - "+self.name,
+				"user_remark": "Muster Roll Advance - "+self.name,
 				"posting_date": self.posting_date,
 				"company": self.company,
 				"total_amount_in_words": money_in_words(self.advance_amount),

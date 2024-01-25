@@ -7,7 +7,8 @@ from frappe import _
 from frappe.utils import (
     flt,
     money_in_words,
-    get_last_day
+    get_last_day,
+    getdate
 )
 from datetime import datetime
 
@@ -35,14 +36,8 @@ class MRInvoiceEntry(Document):
 
         month_start_date = "-".join([str(self.fiscal_year), month, "01"])
         month_end_date = get_last_day(month_start_date)
-        
-        # Convert date strings to datetime objects
-        if isinstance(self.posting_date, str):
-            self.posting_date = datetime.strptime(self.posting_date, "%Y-%m-%d").date()
-        month_start_date_obj = datetime.strptime(month_start_date, "%Y-%m-%d").date()
-        month_end_date_obj = datetime.strptime(str(month_end_date), "%Y-%m-%d").date()
-
-        if not (month_start_date_obj <= self.posting_date <= month_end_date_obj):
+    
+        if not (getdate(month_start_date) <= getdate(self.posting_date) <= getdate(month_end_date)):
             frappe.throw('Posting date must be between <strong>{}</strong> and <strong>{}</strong>.'.format(month_start_date, month_end_date), title="Reset Posting Date")
 
     def on_submit(self):

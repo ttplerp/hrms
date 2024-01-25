@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "MR-EAD.YYYY.MM.####",
+ "autoname": "MRAD.YYYY.MM.####",
  "creation": "2023-12-11 15:47:54.919435",
  "default_view": "List",
  "doctype": "DocType",
@@ -10,6 +10,7 @@
  "field_order": [
   "mr_employee",
   "mr_employee_name",
+  "muster_roll_group",
   "branch",
   "cost_center",
   "column_break_j3go5",
@@ -25,9 +26,16 @@
   "paid_amount",
   "adjusted_amount",
   "balance_amount",
+  "approver_details_section",
+  "approver",
+  "column_break_eop3t",
+  "approver_name",
+  "column_break_uim4z",
+  "approver_designation",
   "additional_information_section",
-  "journal_entry_html",
   "journal_entry",
+  "column_break_rd3hy",
+  "journal_entry_html",
   "journal_entry_status",
   "amended_from"
  ],
@@ -43,7 +51,7 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "MR Employee Advance",
+   "options": "Muster Roll Advance",
    "print_hide": 1,
    "read_only": 1
   },
@@ -107,7 +115,8 @@
    "allow_on_submit": 1,
    "fieldname": "adjusted_amount",
    "fieldtype": "Currency",
-   "label": "Advance Adjusted"
+   "label": "Advance Adjusted",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
@@ -130,13 +139,15 @@
    "fieldname": "journal_entry",
    "fieldtype": "Link",
    "label": "Journal Entry",
-   "options": "Journal Entry"
+   "options": "Journal Entry",
+   "read_only": 1
   },
   {
    "allow_on_submit": 1,
    "fieldname": "journal_entry_status",
    "fieldtype": "Data",
-   "label": "Journal Entry Status"
+   "label": "Journal Entry Status",
+   "read_only": 1
   },
   {
    "fieldname": "advance_account",
@@ -171,15 +182,59 @@
    "fieldtype": "Data",
    "label": "Party Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "approver_details_section",
+   "fieldtype": "Section Break",
+   "label": "Approver Details"
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "label": "Approver",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_eop3t",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approver_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approver_designation",
+   "fieldtype": "Link",
+   "label": "Approver Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_uim4z",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_rd3hy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "mr_employee.muster_roll_group",
+   "fieldname": "muster_roll_group",
+   "fieldtype": "Select",
+   "label": "Muster Roll Group",
+   "options": "\nNational\nNon-National"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-20 12:19:36.345403",
+ "modified": "2024-01-25 10:46:07.353014",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "MR Employee Advance",
+ "name": "Muster Roll Advance",
  "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [

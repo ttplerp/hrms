@@ -1,11 +1,21 @@
 // Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
 
-frappe.ui.form.on('MR Employee Advance', {
+frappe.ui.form.on('Muster Roll Advance', {
 	refresh: function(frm) {
 		refresh_html(frm);
 	},
 
+	mr_employee: function(frm) {
+		frappe.call({
+			method: "get_advance_account",
+			doc: frm.doc,
+			callback: function (r) {
+				frm.set_value('advance_account', r.message);
+				frm.refresh_fields();
+			}
+		})
+	},
 });
 
 var refresh_html = function(frm){
