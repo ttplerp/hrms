@@ -84,6 +84,9 @@
   "honorarium_method",
   "honorarium",
   "eligible_for_fixed_allowance",
+  "eligible_for_talent_retention_allowance",
+  "eligible_talent_retention_method",
+  "talent_retention_allowance",
   "sb_other_benefits",
   "eligible_for_gis",
   "eligible_for_pf",
@@ -843,12 +846,31 @@
    "fieldname": "eligible_for_fixed_allowance",
    "fieldtype": "Check",
    "label": "Eligible for Fixed Allowance"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_talent_retention_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Talent Retention Allowance"
+  },
+  {
+   "depends_on": "eligible_for_talent_retention_allowance",
+   "fieldname": "eligible_talent_retention_method",
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eligible_for_talent_retention_allowance",
+   "fieldname": "talent_retention_allowance",
+   "fieldtype": "Currency",
+   "label": "Value"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-11-23 10:48:41.212610",
+ "modified": "2024-01-26 12:33:27.231103",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
