@@ -44,6 +44,10 @@
   "bank_name",
   "bank_ac_no",
   "bank_account_type",
+  "contact_details_section",
+  "phone_no",
+  "column_break_ymchb",
+  "email",
   "section_break_16",
   "internal_work_history",
   "section_break_26",
@@ -405,11 +409,30 @@
    "mandatory_depends_on": "has_tds_deduction",
    "options": "Account",
    "read_only": 1
+  },
+  {
+   "fieldname": "contact_details_section",
+   "fieldtype": "Section Break",
+   "label": "Contact Details"
+  },
+  {
+   "fieldname": "phone_no",
+   "fieldtype": "Phone",
+   "label": "Phone No"
+  },
+  {
+   "fieldname": "column_break_ymchb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-12-26 10:25:44.601760",
+ "modified": "2024-01-30 12:12:08.752226",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
