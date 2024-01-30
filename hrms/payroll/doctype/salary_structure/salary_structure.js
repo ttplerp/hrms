@@ -113,6 +113,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_fixed_allowance: function(frm){
 		calculate_others(frm);
 	},
+	fixed_allowance: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_talent_retention_allowance: function(frm){
 		calculate_others(frm);
 	},

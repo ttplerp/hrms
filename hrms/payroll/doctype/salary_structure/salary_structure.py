@@ -148,6 +148,8 @@ class SalaryStructure(Document):
 	def validate_amount(self):
 		if flt(self.net_pay) < 0 and self.salary_slip_based_on_timesheet:
 			frappe.throw(_("Net pay cannot be negative"))
+		if not self.fixed_allowance:
+			self.fixed_allowance = frappe.db.get_value("Employee Grade",self.employee_grade, "fixed_allowance")
 
 	def validate_employee(self):
 		return
@@ -304,8 +306,10 @@ class SalaryStructure(Document):
 								calc_amt = flt(basic_pay)*flt(self.get(m['field_value']))*0.01
 						else:
 							calc_amt = flt(self.get(m['field_value']))
-						if m["field_name"] == "eligible_for_fixed_allowance":
-							calc_amt = frappe.db.get_value("Employee Grade", self.employee_grade, "fixed_allowance")
+						if not self.fixed_allowance:
+							if m["field_name"] == "eligible_for_fixed_allowance":
+								calc_amt = frappe.db.get_value("Employee Grade", self.employee_grade, "fixed_allowance")
+								self.fixed_allowance = frappe.db.get_value("Employee Grade",self.employee_grade, "fixed_allowance")
 						calc_amt = roundoff(calc_amt)
 						comm_allowance += flt(calc_amt) if m['name'] == 'Communication Allowance' else 0
 						total_earning += calc_amt

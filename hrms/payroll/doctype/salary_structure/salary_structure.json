@@ -84,6 +84,8 @@
   "honorarium_method",
   "honorarium",
   "eligible_for_fixed_allowance",
+  "fixed_allowance_method",
+  "fixed_allowance",
   "eligible_for_talent_retention_allowance",
   "eligible_talent_retention_method",
   "talent_retention_allowance",
@@ -865,12 +867,25 @@
    "fieldname": "talent_retention_allowance",
    "fieldtype": "Currency",
    "label": "Value"
+  },
+  {
+   "depends_on": "eligible_for_fixed_allowance",
+   "fieldname": "fixed_allowance_method",
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eligible_for_fixed_allowance",
+   "fieldname": "fixed_allowance",
+   "fieldtype": "Currency",
+   "label": "Value"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2024-01-26 12:33:27.231103",
+ "modified": "2024-01-30 10:13:41.532060",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
