@@ -357,7 +357,11 @@ class EmployeeAdvance(Document):
 		).run(as_dict=True)[0].return_amount or 0
 
 		if paid_amount != 0:
-			paid_amount = flt(paid_amount) / flt(self.exchange_rate)
+			if flt(self.exchange_rate) !=0:
+				paid_amount = flt(paid_amount) / flt(self.exchange_rate)
+			else:
+				paid_amount = flt(paid_amount)
+
 		if return_amount != 0:
 			return_amount = flt(return_amount) / flt(self.exchange_rate)
 
