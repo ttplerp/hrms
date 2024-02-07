@@ -28,6 +28,18 @@ frappe.query_reports["Employee TDS Certificate"] = {
 					frappe.query_report.set_filter_value("tpn", fy.tpn_number);
 					frappe.query_report.refresh();
 				});
+				frappe.call({
+					method: "frappe.client.get_single_value",
+					args: {
+						doctype: "HR Settings", 
+						field:"seal",
+					},
+					callback: function(r) {
+						console.log(r.message);
+						frappe.query_report.set_filter_value("seal", r.message);
+						frappe.query_report.refresh();
+					}
+				});
 			}
 		},
 		{
@@ -78,6 +90,13 @@ frappe.query_reports["Employee TDS Certificate"] = {
 			"label":"Approver Designation",
 			"fieldtype": "Data",
 			"read_only": 1
+		},
+		{
+			"fieldname":"seal",
+			"label":"Seal and Signature",
+			"fieldtype": "Data",
+			"read_only": 1,
+			"hidden": 1
 		}
 	]
 }

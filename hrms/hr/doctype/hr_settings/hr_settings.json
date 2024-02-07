@@ -47,6 +47,8 @@
   "exit_questionnaire_web_form",
   "column_break_34",
   "exit_questionnaire_notification_template",
+  "sign_and_seal_section",
+  "seal",
   "overtime_settings_tab",
   "overtime_limit_type",
   "column_break_39",
@@ -155,7 +157,8 @@
   "target_set_up_approval_notification_template",
   "review_approval_notification_template",
   "evaluation_approval_notification_template",
-  "pms_appeal_approval_notification_template"
+  "pms_appeal_approval_notification_template",
+  "housing_clearance_approver_notification"
  ],
  "fields": [
   {
@@ -1004,13 +1007,29 @@
   {
    "fieldname": "column_break_139",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "housing_clearance_approver_notification",
+   "fieldtype": "Link",
+   "label": "Housing Clearance Approver Notification",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "sign_and_seal_section",
+   "fieldtype": "Section Break",
+   "label": "Sign and Seal"
+  },
+  {
+   "fieldname": "seal",
+   "fieldtype": "Attach Image",
+   "label": "Finance Focal Seal"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-12-13 14:40:08.453905",
+ "modified": "2024-02-07 16:27:14.959027",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
