@@ -77,12 +77,12 @@ class MREmployeeInvoice(AccountsController):
         for advance in self.advances:
             amount = 0.0
             if flt(advance.amount) > 0:
-                balance_amount = frappe.db.get_value("MR Employee Advance", advance.reference_name, "balance_amount")
+                balance_amount = frappe.db.get_value("Muster Roll Advance", advance.reference_name, "balance_amount")
                 if flt(balance_amount) < flt(advance.amount) and self.docstatus < 2:
                     frappe.throw(_("Advance#{0} : Allocated amount Nu. {1}/- cannot be more than Advance Balance Nu. {2}/-").format(advance.reference_name, "{:,.2f}".format(flt(advance.amount)),"{:,.2f}".format(flt(balance_amount))))
                 else:
                     amount = -1*flt(advance.amount) if self.docstatus == 2 else flt(advance.amount)
-                    adv_doc = frappe.get_doc("MR Employee Advance", advance.reference_name)
+                    adv_doc = frappe.get_doc("Muster Roll Advance", advance.reference_name)
                     adv_doc.adjusted_amount = flt(adv_doc.adjusted_amount) + flt(amount)
                     adv_doc.balance_amount    = flt(adv_doc.balance_amount) - flt(amount)
                     adv_doc.save(ignore_permissions = True)
