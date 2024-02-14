@@ -404,9 +404,9 @@ class MRInvoiceEntry(Document):
     def get_advance_entries(self, mr_employee):
         mr_emp_advance = frappe.db.sql("""
 											select
-									  			'MR Employee Advance' as reference_type, name as reference_name, advance_account as account, balance_amount as advance_amount, cost_center, mr_employee, mr_employee_name
+									  			'Muster Roll Advance' as reference_type, name as reference_name, advance_account as account, balance_amount as advance_amount, cost_center, mr_employee, mr_employee_name
 									  		from 
-												`tabMR Employee Advance` 
+												`tabMuster Roll Advance` 
 									  		where
 									  			docstatus = 1 and balance_amount > 0 and mr_employee = '{}'
 										""".format(mr_employee), as_dict=True)
