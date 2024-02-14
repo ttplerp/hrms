@@ -34,7 +34,6 @@
   "approver_designation",
   "additional_information_section",
   "journal_entry",
-  "column_break_rd3hy",
   "journal_entry_html",
   "journal_entry_status",
   "amended_from"
@@ -137,9 +136,9 @@
   },
   {
    "fieldname": "journal_entry",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
+   "hidden": 1,
    "label": "Journal Entry",
-   "options": "Journal Entry",
    "read_only": 1
   },
   {
@@ -217,10 +216,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "column_break_rd3hy",
-   "fieldtype": "Column Break"
-  },
-  {
    "fetch_from": "mr_employee.muster_roll_group",
    "fieldname": "muster_roll_group",
    "fieldtype": "Select",
@@ -231,7 +226,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-01-25 10:46:07.353014",
+ "modified": "2024-02-14 10:06:58.516320",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Advance",
