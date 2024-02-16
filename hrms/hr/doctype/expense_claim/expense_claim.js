@@ -162,7 +162,7 @@ erpnext.expense_claim = {
 
 frappe.ui.form.on("Expense Claim", {
 	setup: function(frm) {
-		frm.add_fetch("company", "cost_center", "cost_center");
+		// frm.add_fetch("company", "cost_center", "cost_center");
 		frm.add_fetch("company", "default_expense_claim_payable_account", "payable_account");
 
 		frm.set_query("employee_advance", "advances", function() {

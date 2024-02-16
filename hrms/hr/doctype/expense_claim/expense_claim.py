@@ -117,6 +117,7 @@ class ExpenseClaim(AccountsController):
 		self.set_status(update=True)
 		self.update_claimed_amount_in_employee_advance()
 		self.set_travel_reference()
+		self.make_jv_entry()
 	def before_cancel(self):
 		for a in self.expenses:
 			if a.reference_type == 'Leave Encashment':
@@ -386,6 +387,55 @@ class ExpenseClaim(AccountsController):
 					where name = '{}'
 				""".format(item.reference))
 
+	def make_jv_entry(self):
+		from erpnext.accounts.doctype.journal_entry.journal_entry import get_default_bank_cash_account
+
+		# expense_claim = frappe.get_doc(dt, dn)
+		default_bank_cash_account = get_default_bank_cash_account(self.company, "Bank", cost_center=self.cost_center)
+		if not default_bank_cash_account:
+			default_bank_cash_account = get_default_bank_cash_account(self.company, "Cash", cost_center=self.cost_center)
+
+		payable_amount = get_outstanding_amount_for_claim(self.name)
+
+		je = frappe.new_doc("Journal Entry")
+		je.voucher_type = "Bank Entry"
+		je.branch = self.branch
+		je.company = self.company
+		je.remark = "Payment against Expense Claim: " + self.name
+
+		je.append(
+			"accounts",
+			{
+				"account": self.payable_account,
+				"debit_in_account_currency": payable_amount,
+				"reference_type": "Expense Claim",
+				"party_type": "Employee",
+				"party": self.employee,
+				"cost_center": self.cost_center,
+				"reference_name": self.name,
+			},
+		)
+
+		je.append(
+			"accounts",
+			{
+				"account": default_bank_cash_account.account,
+				"credit_in_account_currency": payable_amount,
+				"reference_type": "Expense Claim",
+				"reference_name": self.name,
+				"balance": default_bank_cash_account.balance,
+				"account_currency": default_bank_cash_account.account_currency,
+				"cost_center": self.cost_center,
+				"account_type": default_bank_cash_account.account_type,
+			},
+		)
+
+		""" below function from custom button disabled by Jai 14 Feb 2024, as per the workflow integration by Pema & DHQ """
+		# return je.as_dict()
+		je.insert()
+
+		frappe.msgprint("Journal Entry created. {}".format(frappe.get_desk_link("Journal Entry", je.name)))
+
 def update_reimbursed_amount(doc, amount):
 	doc.total_amount_reimbursed += amount
 	frappe.db.set_value(
@@ -587,3 +637,26 @@ def make_expense_claim_for_delivery_trip(source_name, target_doc=None):
 	)
 
 	return doc
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+
+	if user == "Administrator" or "System Manager" in user_roles: 
+		return
+
+	return """(
+		`tabExpense Claim`.owner = '{user}'
+		or
+		exists(select 1
+			from `tabEmployee` as e
+			where e.branch = `tabExpense Claim`.branch
+			and e.user_id = '{user}')
+		or
+		exists(select 1
+			from `tabEmployee` e, `tabAssign Branch` ab, `tabBranch Item` bi
+			where e.user_id = '{user}'
+			and ab.employee = e.name
+			and bi.parent = ab.name
+			and bi.branch = `tabExpense Claim`.branch)
+	)""".format(user=user)
