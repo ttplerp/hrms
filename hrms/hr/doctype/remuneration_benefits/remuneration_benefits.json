@@ -1,0 +1,62 @@
+{
+ "creation": "2024-01-26 16:32:43.398302",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "question",
+  "strongly_disagree",
+  "disagree",
+  "agree",
+  "strongly_agree"
+ ],
+ "fields": [
+  {
+   "fieldname": "question",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Question",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "strongly_disagree",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Strongly Disagree"
+  },
+  {
+   "default": "0",
+   "fieldname": "disagree",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Disagree"
+  },
+  {
+   "default": "0",
+   "fieldname": "agree",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Agree"
+  },
+  {
+   "default": "0",
+   "fieldname": "strongly_agree",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Strongly Agree"
+  }
+ ],
+ "istable": 1,
+ "modified": "2024-02-05 11:36:42.338209",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Remuneration Benefits",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

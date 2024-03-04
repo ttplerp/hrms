@@ -1,0 +1,31 @@
+{
+ "autoname": "hash",
+ "creation": "2024-01-26 16:17:10.447212",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "career_opportunity"
+ ],
+ "fields": [
+  {
+   "fieldname": "career_opportunity",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "in_filter": 1,
+   "in_list_view": 1,
+   "label": "Career Opportunity",
+   "no_copy": 1,
+   "options": "Career Opportunity"
+  }
+ ],
+ "istable": 1,
+ "modified": "2024-01-26 16:17:10.447212",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Career Opportunities",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

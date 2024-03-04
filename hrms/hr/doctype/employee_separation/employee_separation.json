@@ -26,6 +26,7 @@
   "employee_benefits_status",
   "section_break_19",
   "clearance_acquired",
+  "exit_interview",
   "sb_approver_details",
   "approver",
   "cb_approver_01",
@@ -264,11 +265,18 @@
    "label": "Serve Notice Period",
    "options": "\nYes\nNo",
    "reqd": 1
+  },
+  {
+   "fieldname": "exit_interview",
+   "fieldtype": "Link",
+   "label": "Exit Interview",
+   "options": "Exit Interview",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-15 16:56:58.654772",
+ "modified": "2024-02-15 19:05:01.170828",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",

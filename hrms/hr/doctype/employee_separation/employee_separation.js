@@ -21,19 +21,43 @@ frappe.ui.form.on('Employee Separation', {
 
 	},
 	refresh: function(frm) {
+		// if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed" && cur_frm.doc.clearance_acquired == 1){
+		// 	frm.add_custom_button("Create Employee Benefit", function(){
+		// 		frappe.model.open_mapped_doc({
+		// 			method: "hrms.hr.doctype.employee_separation.employee_separation.make_employee_benefit",
+		// 			frm: me.frm
+		// 		})
+		// 	});
+		// }
+		// if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed" && cur_frm.doc.clearance_acquired == 0){
+		// 	frm.add_custom_button("Create Employee Clearance", function(){
+		// 		frappe.model.open_mapped_doc({
+		// 			method: "hrms.hr.doctype.employee_separation.employee_separation.make_separation_clearance",
+		// 			frm: me.frm
+		// 		})
+		// 	});
+		// }
+		if (frm.doc.docstatus == 1 && frm.doc.exit_interview == null){
+			frm.add_custom_button(__('Exit Interview'), function(){
+			frappe.model.open_mapped_doc({
+					method: "hrms.hr.doctype.employee_separation.employee_separation.make_exit_interview",
+					frm: cur_frm
+				})
+			}, __("Create"));
+		}
 		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed" && cur_frm.doc.clearance_acquired == 1){
 			frm.add_custom_button("Create Employee Benefit", function(){
 				frappe.model.open_mapped_doc({
-					method: "hrms.hr.doctype.employee_separation.employee_separation.make_employee_benefit",
-					frm: me.frm
+					method: "erpnext.hr.doctype.employee_separation.employee_separation.make_employee_benefit",
+					frm: cur_frm
 				})
 			});
 		}
-		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed" && cur_frm.doc.clearance_acquired == 0){
+		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed" && cur_frm.doc.clearance_acquired == 0 && cur_frm.doc.exit_interview){
 			frm.add_custom_button("Create Employee Clearance", function(){
 				frappe.model.open_mapped_doc({
 					method: "hrms.hr.doctype.employee_separation.employee_separation.make_separation_clearance",
-					frm: me.frm
+					frm: cur_frm
 				})
 			});
 		}

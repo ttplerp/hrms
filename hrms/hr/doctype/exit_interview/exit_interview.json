@@ -1,38 +1,63 @@
 {
  "actions": [],
- "allow_rename": 1,
- "autoname": "naming_series:",
- "creation": "2021-12-05 13:56:36.241690",
+ "creation": "2024-01-26 12:56:24.268416",
  "doctype": "DocType",
  "editable_grid": 1,
- "email_append_to": 1,
  "engine": "InnoDB",
  "field_order": [
-  "naming_series",
+  "part_i_employee_details_section",
   "employee",
-  "employee_name",
-  "email",
-  "column_break_5",
-  "company",
-  "status",
-  "date",
-  "employee_details_section",
-  "department",
   "designation",
-  "reports_to",
-  "column_break_9",
-  "date_of_joining",
-  "relieving_date",
-  "exit_questionnaire_section",
-  "ref_doctype",
-  "questionnaire_email_sent",
-  "column_break_10",
-  "reference_document_name",
-  "interview_summary_section",
+  "joining_date",
+  "date_of_interview",
+  "method",
+  "how_long_have_you_worked_in_our_company",
+  "column_break_3",
+  "employee_name",
+  "department",
+  "date_of_separation",
   "interviewers",
-  "interview_summary",
-  "employee_status_section",
-  "employee_status",
+  "resignation_type",
+  "section_break_12",
+  "resaon_for_leaving",
+  "column_break_16",
+  "elaborate_reason_of_leaving",
+  "part_iii_job_satisfaction",
+  "part_iii",
+  "job_satisfaction",
+  "improvement_in_the_job",
+  "important_career_opportunities_to_you",
+  "elaborate_others_reason",
+  "reason_to_make_you_stay",
+  "lavel_of_job_satisfaction",
+  "perceived_problems_for_poor_fair",
+  "part_iv_management",
+  "part_iv",
+  "management",
+  "suggestions_or_improvements_to_management",
+  "part_v_remuneration_benefits",
+  "part_v",
+  "remuneration_benefits",
+  "improvements_benefits_offer",
+  "part_vi_the_company",
+  "part_vi",
+  "the_company",
+  "improvement_about_department_company",
+  "part_vii_supervisor",
+  "part_vii",
+  "supervisor",
+  "encouragement_by_supervisor_on_team",
+  "suggestions_improvements_to_your_supervisor",
+  "decision_to_leave",
+  "recommend_employer",
+  "changes_make_better",
+  "discuss_what_organization_has_not_addressed",
+  "advice_to_founders_ceo",
+  "advice_to_improve_exit_interview_process",
+  "additional_info_section",
+  "employee_separation",
+  "column_break_52",
+  "company",
   "amended_from"
  ],
  "fields": [
@@ -40,7 +65,6 @@
    "fieldname": "employee",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "Employee",
    "options": "Employee",
    "reqd": 1
@@ -49,156 +73,10 @@
    "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Employee Name",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.department",
-   "fieldname": "department",
-   "fieldtype": "Link",
-   "label": "Department",
-   "options": "Department",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.relieving_date",
-   "fieldname": "relieving_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Relieving Date",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_5",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "company",
-   "fieldtype": "Link",
-   "in_standard_filter": 1,
-   "label": "Company",
-   "options": "Company",
+   "read_only": 1,
    "reqd": 1
-  },
-  {
-   "fieldname": "date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Date",
-   "mandatory_depends_on": "eval:doc.status==='Scheduled';"
-  },
-  {
-   "fieldname": "exit_questionnaire_section",
-   "fieldtype": "Section Break",
-   "label": "Exit Questionnaire"
-  },
-  {
-   "fieldname": "ref_doctype",
-   "fieldtype": "Link",
-   "label": "Reference Document Type",
-   "options": "DocType"
-  },
-  {
-   "fieldname": "reference_document_name",
-   "fieldtype": "Dynamic Link",
-   "in_list_view": 1,
-   "label": "Reference Document Name",
-   "options": "ref_doctype"
-  },
-  {
-   "fieldname": "interview_summary_section",
-   "fieldtype": "Section Break",
-   "label": "Interview Details"
-  },
-  {
-   "fieldname": "column_break_10",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "interviewers",
-   "fieldtype": "Table MultiSelect",
-   "label": "Interviewers",
-   "mandatory_depends_on": "eval:doc.status==='Scheduled';",
-   "options": "Interviewer"
-  },
-  {
-   "fetch_from": "employee.date_of_joining",
-   "fieldname": "date_of_joining",
-   "fieldtype": "Date",
-   "label": "Date of Joining",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.reports_to",
-   "fieldname": "reports_to",
-   "fieldtype": "Link",
-   "in_standard_filter": 1,
-   "label": "Reports To",
-   "options": "Employee",
-   "read_only": 1
-  },
-  {
-   "fieldname": "employee_details_section",
-   "fieldtype": "Section Break",
-   "label": "Employee Details"
-  },
-  {
-   "fetch_from": "employee.designation",
-   "fieldname": "designation",
-   "fieldtype": "Link",
-   "label": "Designation",
-   "options": "Designation",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_9",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "label": "Naming Series",
-   "options": "HR-EXIT-INT-"
-  },
-  {
-   "default": "0",
-   "fieldname": "questionnaire_email_sent",
-   "fieldtype": "Check",
-   "in_standard_filter": 1,
-   "label": "Questionnaire Email Sent",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "email",
-   "fieldtype": "Data",
-   "label": "Email ID",
-   "options": "Email",
-   "read_only": 1
-  },
-  {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Status",
-   "options": "Pending\nScheduled\nCompleted\nCancelled",
-   "reqd": 1
-  },
-  {
-   "fieldname": "employee_status_section",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "employee_status",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Final Decision",
-   "mandatory_depends_on": "eval:doc.status==='Completed';",
-   "options": "\nEmployee Retained\nExit Confirmed"
   },
   {
    "fieldname": "amended_from",
@@ -210,19 +88,346 @@
    "read_only": 1
   },
   {
-   "fieldname": "interview_summary",
-   "fieldtype": "Text Editor",
-   "label": "Interview Summary"
+   "fieldname": "job_satisfaction",
+   "fieldtype": "Table",
+   "label": "Job Satisfaction",
+   "options": "Job Satisfaction",
+   "reqd": 1
+  },
+  {
+   "fieldname": "improvement_in_the_job",
+   "fieldtype": "Small Text",
+   "label": "What do you think can be improved about the job",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "label": "Designation",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Data",
+   "label": "Department",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.date_of_joining",
+   "fieldname": "joining_date",
+   "fieldtype": "Date",
+   "label": "Joining Date"
+  },
+  {
+   "fieldname": "date_of_interview",
+   "fieldtype": "Date",
+   "label": "Date of Interview",
+   "reqd": 1
+  },
+  {
+   "fieldname": "date_of_separation",
+   "fieldtype": "Date",
+   "label": "Date of Separation",
+   "reqd": 1
+  },
+  {
+   "fieldname": "interviewers",
+   "fieldtype": "Table MultiSelect",
+   "ignore_user_permissions": 1,
+   "label": "Interviewers",
+   "options": "Interviewer"
+  },
+  {
+   "fieldname": "method",
+   "fieldtype": "Select",
+   "label": "Method",
+   "options": "\nIn-Person\nVirtual",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_12",
+   "fieldtype": "Section Break",
+   "label": "Part II : Reasons for Leaving"
+  },
+  {
+   "fieldname": "how_long_have_you_worked_in_our_company",
+   "fieldtype": "Select",
+   "label": "How long have you worked in our company?",
+   "options": "\nLess than 6 months\n6 months - 1 year\n1-2 years\n2-4 years\n4-6 years\n6-10 years\nmore than 10 years",
+   "reqd": 1
+  },
+  {
+   "fieldname": "resignation_type",
+   "fieldtype": "Select",
+   "label": "Resignation Type",
+   "options": "\nVoluntary Resignation\nSuperannuation\nEarly Retirement",
+   "reqd": 1
+  },
+  {
+   "fieldname": "part_i_employee_details_section",
+   "fieldtype": "Section Break",
+   "label": "Part I : Employee Details"
+  },
+  {
+   "fieldname": "resaon_for_leaving",
+   "fieldtype": "Select",
+   "label": "Please indicate reason which applies to your situation",
+   "options": "\nHigher pay/ Better benefits\nCareer\tadvancement/job growth\nConflict with supervisor\nHealth reasons\nManagement issues\nCompany culture\nWork life balance\nJob Satisfaction\nFurther Education\nFamily/Personal reasons\nJob security\nWork flexibility",
+   "reqd": 1
+  },
+  {
+   "fieldname": "elaborate_reason_of_leaving",
+   "fieldtype": "Small Text",
+   "label": "Please elaborate why you choose the above reasons",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "bold": 1,
+   "collapsible": 1,
+   "fieldname": "part_iii_job_satisfaction",
+   "fieldtype": "Section Break",
+   "label": "Part III : Job Satisfaction",
+   "read_only": 1
+  },
+  {
+   "default": "Part III : Job Satisfaction",
+   "fieldname": "part_iii",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Part III",
+   "read_only": 1
+  },
+  {
+   "fieldname": "important_career_opportunities_to_you",
+   "fieldtype": "Table MultiSelect",
+   "label": "What type of career opportunities are important to you? (Select all that apply)",
+   "options": "Career Opportunities",
+   "reqd": 1
+  },
+  {
+   "fieldname": "elaborate_others_reason",
+   "fieldtype": "Small Text",
+   "label": "If you selected others, please elaborate",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reason_to_make_you_stay",
+   "fieldtype": "Small Text",
+   "label": "Pertaining to your role in the company, what could we have done differently to make you stay?",
+   "reqd": 1
+  },
+  {
+   "fieldname": "lavel_of_job_satisfaction",
+   "fieldtype": "Select",
+   "label": "Can you describe your level of job satisfaction?",
+   "options": "\nExcellent\nAbove Average\nFair\nPoor",
+   "reqd": 1
+  },
+  {
+   "fieldname": "perceived_problems_for_poor_fair",
+   "fieldtype": "Small Text",
+   "label": "If rated fair or poor, please outline what the perceived problems were",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "part_iv_management",
+   "fieldtype": "Section Break",
+   "label": "Part IV : Management"
+  },
+  {
+   "default": "Part IV : Management",
+   "fieldname": "part_iv",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Part IV",
+   "read_only": 1
+  },
+  {
+   "fieldname": "management",
+   "fieldtype": "Table",
+   "label": "Management",
+   "options": "Management",
+   "reqd": 1
+  },
+  {
+   "fieldname": "suggestions_or_improvements_to_management",
+   "fieldtype": "Small Text",
+   "label": "What are your suggestions or improvements to Management?",
+   "reqd": 1
+  },
+  {
+   "bold": 1,
+   "collapsible": 1,
+   "fieldname": "part_v_remuneration_benefits",
+   "fieldtype": "Section Break",
+   "label": "Part V: Remuneration & Benefits"
+  },
+  {
+   "default": "Part V: Remuneration & Benefits",
+   "fieldname": "part_v",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Part V",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remuneration_benefits",
+   "fieldtype": "Table",
+   "label": "Remuneration & Benefits",
+   "options": "Remuneration Benefits",
+   "reqd": 1
+  },
+  {
+   "fieldname": "improvements_benefits_offer",
+   "fieldtype": "Small Text",
+   "label": "What improvements, other benefits could the company offer?",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "part_vi_the_company",
+   "fieldtype": "Section Break",
+   "label": "Part VI : The Company"
+  },
+  {
+   "default": "Part VI : The Company",
+   "fieldname": "part_vi",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Part VI",
+   "read_only": 1
+  },
+  {
+   "fetch_if_empty": 1,
+   "fieldname": "the_company",
+   "fieldtype": "Table",
+   "label": "The Company",
+   "options": "The Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "improvement_about_department_company",
+   "fieldtype": "Small Text",
+   "label": "What do you think can be improved about the Department and Company?",
+   "reqd": 1
+  },
+  {
+   "bold": 1,
+   "collapsible": 1,
+   "fieldname": "part_vii_supervisor",
+   "fieldtype": "Section Break",
+   "label": "Part VII : Supervisor"
+  },
+  {
+   "default": "Part VII: Supervisor",
+   "fieldname": "part_vii",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Part VII",
+   "read_only": 1
+  },
+  {
+   "description": "Please rate your supervisor on the following factors.",
+   "fetch_if_empty": 1,
+   "fieldname": "supervisor",
+   "fieldtype": "Table",
+   "label": "Supervisor",
+   "options": "Supervisor",
+   "reqd": 1
+  },
+  {
+   "fieldname": "encouragement_by_supervisor_on_team",
+   "fieldtype": "Small Text",
+   "label": "What actions has your supervisor taken to encourage you to stay on your team?",
+   "options": "\nIndividual Conversation\nProposal to extend/Change the scope of task\nPromotion proposal\nChange in salary\nThere were no actions",
+   "reqd": 1
+  },
+  {
+   "fieldname": "suggestions_improvements_to_your_supervisor",
+   "fieldtype": "Small Text",
+   "label": "What are your suggestions or improvements to your supervisor?",
+   "reqd": 1
+  },
+  {
+   "fieldname": "decision_to_leave",
+   "fieldtype": "Select",
+   "label": "How long ago did you make the decision to leave? ",
+   "options": "\n1-3 months\n4-6 months\n7-12 months\nOver a year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "recommend_employer",
+   "fieldtype": "Select",
+   "label": "How likely is it that you will recommend us as an employer to your friends or family? ",
+   "options": "\nYes, without reservations.\nYes, with reservations.\nNo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "changes_make_better",
+   "fieldtype": "Small Text",
+   "label": "What could we change to make you rate us better? ",
+   "reqd": 1
+  },
+  {
+   "fieldname": "discuss_what_organization_has_not_addressed",
+   "fieldtype": "Small Text",
+   "label": "Is there anything else you would like to discuss as you depart the organization that has not been addressed?",
+   "reqd": 1
+  },
+  {
+   "fieldname": "advice_to_founders_ceo",
+   "fieldtype": "Small Text",
+   "label": "If you were speaking to the founders/CEO instead of me, what advice would you give them?",
+   "reqd": 1
+  },
+  {
+   "fieldname": "advice_to_improve_exit_interview_process",
+   "fieldtype": "Small Text",
+   "label": "What advice would you give us on how to improve the Exit Interview process?",
+   "reqd": 1
+  },
+  {
+   "fieldname": "additional_info_section",
+   "fieldtype": "Section Break",
+   "label": "Additional Info"
+  },
+  {
+   "fieldname": "employee_separation",
+   "fieldtype": "Link",
+   "label": "Employee Separation",
+   "options": "Employee Separation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_52",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
   }
  ],
- "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-12-07 23:39:22.645401",
+ "modified": "2024-02-15 18:55:39.430940",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Exit Interview",
- "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -235,12 +440,37 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],
- "sender_field": "email",
  "sort_field": "modified",
  "sort_order": "DESC",
- "title_field": "employee_name",
+ "states": [],
  "track_changes": 1
 }

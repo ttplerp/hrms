@@ -71,6 +71,26 @@ def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False)
 	return target_doc
 
 @frappe.whitelist()
+def make_exit_interview(source_name, target_doc=None):
+    doc = get_mapped_doc(
+        "Employee Separation",
+        source_name,
+        {
+            "Employee Separation": {
+                "doctype": "Exit Interview",
+                "field_map": {
+					"name":"employee_separation",
+                    "employee": "employee",
+					"reason_for_resignation": "resignation_type",
+					"expected_relieving_date": "date_of_separation"
+                },                
+            },
+        },
+        target_doc,
+    )
+    return doc
+
+@frappe.whitelist()
 def make_separation_clearance(source_name, target_doc=None, skip_item_mapping=False):
 	def update_item(source_doc, target_doc, source_parent):
 		# target.purpose = "Separation"

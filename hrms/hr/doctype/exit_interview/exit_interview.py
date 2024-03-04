@@ -1,146 +1,144 @@
-# Copyright (c) 2021, Frappe Technologies Pvt. Ltd. and contributors
+# -*- coding: utf-8 -*-
+# Copyright (c) 2024, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
 
+from __future__ import unicode_literals
 import frappe
-from frappe import _
+from frappe.model.naming import make_autoname
 from frappe.model.document import Document
-from frappe.utils import get_link_to_form
-
-from erpnext.setup.doctype.employee.employee import get_employee_email
-
+from frappe import _
 
 class ExitInterview(Document):
 	def validate(self):
-		self.validate_relieving_date()
-		self.validate_duplicate_interview()
-		self.set_employee_email()
-
-	def validate_relieving_date(self):
-		if not frappe.db.get_value("Employee", self.employee, "relieving_date"):
-			frappe.throw(
-				_("Please set the relieving date for employee {0}").format(
-					get_link_to_form("Employee", self.employee)
-				),
-				title=_("Relieving Date Missing"),
-			)
-
-	def validate_duplicate_interview(self):
-		doc = frappe.db.exists(
-			"Exit Interview", {"employee": self.employee, "name": ("!=", self.name), "docstatus": ("!=", 2)}
-		)
-		if doc:
-			frappe.throw(
-				_("Exit Interview {0} already exists for Employee: {1}").format(
-					get_link_to_form("Exit Interview", doc), frappe.bold(self.employee)
-				),
-				frappe.DuplicateEntryError,
-			)
-
-	def set_employee_email(self):
-		employee = frappe.get_doc("Employee", self.employee)
-		self.email = get_employee_email(employee)
+		self.validate_checkbox_answers()
 
 	def on_submit(self):
-		if self.status != "Completed":
-			frappe.throw(_("Only Completed documents can be submitted"))
+		if not self.employee_separation:
+			frappe.throw(_("Exit interview must be created from employee separation."))
 
-		self.update_interview_date_in_employee()
+		frappe.db.set_value("Employee Separation", self.employee_separation, "exit_interview", self.name)
 
-	def on_cancel(self):
-		self.update_interview_date_in_employee()
-		self.db_set("status", "Cancelled")
-
-	def update_interview_date_in_employee(self):
-		if self.docstatus == 1:
-			frappe.db.set_value("Employee", self.employee, "held_on", self.date)
-		elif self.docstatus == 2:
-			frappe.db.set_value("Employee", self.employee, "held_on", None)
-
-
-@frappe.whitelist()
-def send_exit_questionnaire(interviews):
-	interviews = get_interviews(interviews)
-	validate_questionnaire_settings()
-
-	email_success = []
-	email_failure = []
-
-	for exit_interview in interviews:
-		interview = frappe.get_doc("Exit Interview", exit_interview.get("name"))
-		if interview.get("questionnaire_email_sent"):
-			continue
-
-		employee = frappe.get_doc("Employee", interview.employee)
-		email = get_employee_email(employee)
-
-		context = interview.as_dict()
-		context.update(employee.as_dict())
-		template_name = frappe.db.get_single_value(
-			"HR Settings", "exit_questionnaire_notification_template"
-		)
-		template = frappe.get_doc("Email Template", template_name)
-
-		if email:
-			frappe.sendmail(
-				recipients=email,
-				subject=template.subject,
-				message=frappe.render_template(template.response, context),
-				reference_doctype=interview.doctype,
-				reference_name=interview.name,
-			)
-			interview.db_set("questionnaire_email_sent", 1)
-			interview.notify_update()
-			email_success.append(email)
-		else:
-			email_failure.append(get_link_to_form("Employee", employee.name))
-
-	show_email_summary(email_success, email_failure)
+	def validate_checkbox_answers(self):
+		for js in self.job_satisfaction:
+			if js.strongly_agree == 0 and js.agree == 0 and js.disagree == 0 and js.strongly_disagree == 0:
+				frappe.throw("Please select an answer for Question: {}, in Part III: Job Satisfaction".format(js.question))
+		for m in self.management:
+			if m.strongly_agree == 0 and m.agree == 0 and m.disagree == 0 and m.strongly_disagree == 0:
+				frappe.throw("Please select an answer for Question: {}, in Part IV: Management".format(m.question))
+		for r in self.remuneration_benefits:
+			if r.strongly_agree == 0 and r.agree == 0 and r.disagree == 0 and r.strongly_disagree == 0:
+				frappe.throw("Please select an answer for Question: {}, in Part V: Remuneration & Benefits".format(r.question))
+		for c in self.the_company:
+			if c.strongly_agree == 0 and c.agree == 0 and c.disagree == 0 and c.strongly_disagree == 0:
+				frappe.throw("Please select an answer for Question: {}, in Part VI : The Company".format(c.question))
+		for s in self.supervisor:
+			if s.strongly_agree == 0 and s.agree == 0 and s.disagree == 0 and s.strongly_disagree == 0:
+				frappe.throw("Please select an answer for Question: {}, in Part VII : Supervisor".format(s.question))
+	def autoname(self):
+		name = "HR-EXIT-INT-"
+		self.name = make_autoname(str(name)+".YYYY.-.####")
+	@frappe.whitelist()
+	def get_questions(self):
+		job_satisfaction = frappe.db.sql("""
+			SELECT 
+				eiq.question,
+				"0" as strongly_disagree,
+				"0" as disagree,
+				"0" as agree,
+				"0" as strongly_agree
+			FROM 
+				`tabExit Interview Question` eiq 
+			WHERE
+				eiq.type = '{}' 
+			ORDER BY eiq.idx
+			""".format(self.part_iii), as_dict=True)
+		management = frappe.db.sql("""
+			SELECT 
+				eiq.question,
+				"0" as strongly_disagree,
+				"0" as disagree,
+				"0" as agree,
+				"0" as strongly_agree
+			FROM 
+				`tabExit Interview Question` eiq 
+			WHERE
+				eiq.type = '{}' 
+			ORDER BY eiq.idx
+			""".format(self.part_iv), as_dict=True)
 
 
-def get_interviews(interviews):
-	import json
+		remuneration = frappe.db.sql("""
+			SELECT 
+				eiq.question,
+				"0" as strongly_disagree,
+				"0" as disagree,
+				"0" as agree,
+				"0" as strongly_agree
+			FROM 
+				`tabExit Interview Question` eiq 
+			WHERE
+				eiq.type = '{}' 
+			ORDER BY eiq.idx
+			""".format(self.part_v), as_dict=True)
 
-	if isinstance(interviews, str):
-		interviews = json.loads(interviews)
+		company = frappe.db.sql("""
+			SELECT 
+				eiq.name as table_name,
+				eiq.question,
+				"0" as strongly_disagree,
+				"0" as disagree,
+				"0" as agree,
+				"0" as strongly_agree
+			FROM 
+				`tabExit Interview Question` eiq 
+			WHERE
+				eiq.type = '{}' 
+			ORDER BY eiq.idx
+			""".format(self.part_vi), as_dict=True)
 
-	if not len(interviews):
-		frappe.throw(_("Atleast one interview has to be selected."))
+		supervisor = frappe.db.sql("""
+			SELECT 
+				eiq.question,
+				"0" as strongly_disagree,
+				"0" as disagree,
+				"0" as agree,
+				"0" as strongly_agree
+			FROM 
+				`tabExit Interview Question` eiq 
+			WHERE
+				eiq.type = '{}' 
+			ORDER BY eiq.idx
+			""".format(self.part_vii), as_dict=True)
+		
+		self.set('job_satisfaction', [])
+		# frappe.throw(str(data))
+		if job_satisfaction:
+			for js in job_satisfaction:
+				row = self.append('job_satisfaction', {})
+				row.update(js)
 
-	return interviews
+		self.set('management', [])
+		if management:
+			for m in management:
+				row = self.append('management', {})
+				row.update(m)
+		
+		self.set('remuneration_benefits', [])
+		if remuneration:
+			for r in remuneration:
+				row = self.append('remuneration_benefits', {})
+				row.update(r)
 
+		self.set('the_company', [])
+		if company:
+			for c in company:
+				row = self.append('the_company', {})
+				row.update(c)
+		
+		self.set('supervisor', [])
+		if supervisor:
+			for s in supervisor:
+				row = self.append('supervisor', {})
+				row.update(s)
 
-def validate_questionnaire_settings():
-	settings = frappe.db.get_value(
-		"HR Settings",
-		"HR Settings",
-		["exit_questionnaire_web_form", "exit_questionnaire_notification_template"],
-		as_dict=True,
-	)
-
-	if (
-		not settings.exit_questionnaire_web_form or not settings.exit_questionnaire_notification_template
-	):
-		frappe.throw(
-			_("Please set {0} and {1} in {2}.").format(
-				frappe.bold("Exit Questionnaire Web Form"),
-				frappe.bold("Notification Template"),
-				get_link_to_form("HR Settings", "HR Settings"),
-			),
-			title=_("Settings Missing"),
-		)
-
-
-def show_email_summary(email_success, email_failure):
-	message = ""
-	if email_success:
-		message += _("{0}: {1}").format(frappe.bold("Sent Successfully"), ", ".join(email_success))
-	if message and email_failure:
-		message += "<br><br>"
-	if email_failure:
-		message += _("{0} due to missing email information for employee(s): {1}").format(
-			frappe.bold("Sending Failed"), ", ".join(email_failure)
-		)
-
-	frappe.msgprint(
-		message, title=_("Exit Questionnaire"), indicator="blue", is_minimizable=True, wide=True
-	)
+	

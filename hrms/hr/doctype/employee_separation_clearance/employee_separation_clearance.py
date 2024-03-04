@@ -134,7 +134,9 @@ class EmployeeSeparationClearance(Document):
 		},1)
 		if msg != "Failed":
 			self.db_set("mail_sent",1)
-		return str(msg)
+			return ("")
+		else:
+			return (str(msg))
 
 	def notify_employee(self):
 		employee = frappe.get_doc("Employee", self.employee)
