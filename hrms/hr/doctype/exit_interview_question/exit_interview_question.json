@@ -1,4 +1,6 @@
 {
+ "actions": [],
+ "allow_import": 1,
  "creation": "2024-01-26 12:51:40.360626",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -35,7 +37,8 @@
    "fieldtype": "Column Break"
   }
  ],
- "modified": "2024-01-26 14:23:56.663604",
+ "links": [],
+ "modified": "2024-03-05 14:36:09.273281",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Exit Interview Question",
@@ -56,5 +59,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

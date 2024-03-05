@@ -350,7 +350,7 @@
   },
   {
    "fieldname": "encouragement_by_supervisor_on_team",
-   "fieldtype": "Small Text",
+   "fieldtype": "Select",
    "label": "What actions has your supervisor taken to encourage you to stay on your team?",
    "options": "\nIndividual Conversation\nProposal to extend/Change the scope of task\nPromotion proposal\nChange in salary\nThere were no actions",
    "reqd": 1
@@ -424,7 +424,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-15 18:55:39.430940",
+ "modified": "2024-03-05 15:22:04.383259",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Exit Interview",
