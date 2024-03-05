@@ -65,27 +65,43 @@ class MREmployeeInvoice(AccountsController):
         )
     
     def on_submit(self):
-        self.update_advance_balance()
+        self.update_advance_balance(cancel=self.docstatus==2)
         self.make_gl_entries()
 
     def on_cancel(self):
         self.ignore_linked_doctypes = ("GL Entry", "Stock Ledger Entry", "Payment Ledger Entry")
-        self.update_advance_balance()
+        self.update_advance_balance(cancel=self.docstatus==2)
         self.make_gl_entries()
 
-    def update_advance_balance(self):
+    def update_advance_balance(self, cancel=False):
+        muster_roll_group = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "muster_roll_group")
         for advance in self.advances:
-            amount = 0.0
-            if flt(advance.amount) > 0:
-                balance_amount = frappe.db.get_value("Muster Roll Advance", advance.reference_name, "balance_amount")
-                if flt(balance_amount) < flt(advance.amount) and self.docstatus < 2:
-                    frappe.throw(_("Advance#{0} : Allocated amount Nu. {1}/- cannot be more than Advance Balance Nu. {2}/-").format(advance.reference_name, "{:,.2f}".format(flt(advance.amount)),"{:,.2f}".format(flt(balance_amount))))
-                else:
-                    amount = -1*flt(advance.amount) if self.docstatus == 2 else flt(advance.amount)
-                    adv_doc = frappe.get_doc("Muster Roll Advance", advance.reference_name)
-                    adv_doc.adjusted_amount = flt(adv_doc.adjusted_amount) + flt(amount)
-                    adv_doc.balance_amount    = flt(adv_doc.balance_amount) - flt(amount)
-                    adv_doc.save(ignore_permissions = True)
+            if muster_roll_group == "National":
+                amount = 0.0
+                if flt(advance.amount) > 0:
+                    balance_amount = frappe.db.get_value("Muster Roll Advance", advance.reference_name, "balance_amount")
+                    if flt(balance_amount) < flt(advance.amount) and self.docstatus < 2:
+                        frappe.throw(_("Advance#{0} : Allocated amount Nu. {1}/- cannot be more than Advance Balance Nu. {2}/-").format(advance.reference_name, "{:,.2f}".format(flt(advance.amount)),"{:,.2f}".format(flt(balance_amount))))
+                    else:
+                        amount = -1*flt(advance.amount) if self.docstatus == 2 else flt(advance.amount)
+                        adv_doc = frappe.get_doc("Muster Roll Advance", advance.reference_name)
+                        if cancel:
+                            adv_doc.adjusted_amount = flt(adv_doc.adjusted_amount) - flt(amount)
+                            adv_doc.balance_amount    = flt(adv_doc.balance_amount) + flt(amount)
+                        else:
+                            adv_doc.adjusted_amount = flt(adv_doc.adjusted_amount) + flt(amount)
+                            adv_doc.balance_amount    = flt(adv_doc.balance_amount) - flt(amount)
+                        adv_doc.save(ignore_permissions = True)
+            else:
+                if flt(advance.amount) > 0:
+                    query = frappe.db.sql("""select balance_amount, adjusted_amount from `tabMuster Roll Advance Item` where parent='{}' and mr_employee='{}'""".format(advance.reference_name, self.mr_employee), as_dict=True)
+                    if cancel:
+                        adjusted_amount = flt(query[0].adjusted_amount) - advance.amount
+                        balance_amount = flt(query[0].balance_amount) + advance.amount
+                    else:
+                        adjusted_amount = flt(query[0].adjusted_amount) + advance.amount
+                        balance_amount = flt(query[0].balance_amount) - advance.amount
+                    frappe.db.sql("update `tabMuster Roll Advance Item` set adjusted_amount='{}', balance_amount='{}' where parent='{}' and mr_employee='{}'".format(adjusted_amount, balance_amount, advance.reference_name, self.mr_employee))
 
     def make_gl_entries(self):
        

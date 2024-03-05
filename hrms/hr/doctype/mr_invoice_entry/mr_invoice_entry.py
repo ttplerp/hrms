@@ -402,15 +402,27 @@ class MRInvoiceEntry(Document):
                 self.append("advances", advance_row)
     
     def get_advance_entries(self, mr_employee):
-        mr_emp_advance = frappe.db.sql("""
-											select
-									  			'Muster Roll Advance' as reference_type, name as reference_name, advance_account as account, balance_amount as advance_amount, cost_center, mr_employee, mr_employee_name
-									  		from 
-												`tabMuster Roll Advance` 
-									  		where
-									  			docstatus = 1 and balance_amount > 0 and mr_employee = '{}'
-										""".format(mr_employee), as_dict=True)
-        return mr_emp_advance
+        national_mr_emp_advance = frappe.db.sql("""
+                                        select
+                                            'Muster Roll Advance' as reference_type, name as reference_name, advance_account as account, balance_amount as advance_amount, cost_center, mr_employee, mr_employee_name
+                                            from 
+                                                `tabMuster Roll Advance` 
+                                            where
+                                                docstatus = 1 and balance_amount > 0 and mr_employee = '{}'
+                                        """.format(mr_employee), as_dict=True)
+        non_national_mr_emp_advance = frappe.db.sql("""
+                                    select
+                                            'Muster Roll Advance' as reference_type, adv.name as reference_name, adv.advance_account as account, adv_item.balance_amount as advance_amount, adv.cost_center, adv_item.mr_employee, adv_item.mr_employee_name
+                                            from 
+                                                `tabMuster Roll Advance` adv, `tabMuster Roll Advance Item` adv_item  
+                                            where
+                                                adv_item.parent = adv.name and adv.journal_entry_status = "Paid"
+                                                and adv.docstatus = 1 and adv_item.balance_amount > 0 and adv_item.mr_employee = '{}'
+                                        """.format(mr_employee), as_dict=True)
+        
+        total_advance = national_mr_emp_advance + non_national_mr_emp_advance
+        
+        return total_advance
 
     @frappe.whitelist()
     def create_mr_invoice(self):

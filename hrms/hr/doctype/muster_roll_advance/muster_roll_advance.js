@@ -4,9 +4,27 @@
 frappe.ui.form.on('Muster Roll Advance', {
 	refresh: function(frm) {
 		refresh_html(frm);
+
+		frm.set_query("mr_employee", function(doc){
+            return {
+                filters:{
+                    branch:frm.doc.branch,
+                    muster_roll_group:frm.doc.muster_roll_group,
+                }
+            }
+        }),
+
+		frm.fields_dict.items.grid.get_field("mr_employee").get_query = function(doc) {
+            return {
+                filters: {
+                    "branch": frm.doc.branch,
+					"muster_roll_group": frm.doc.muster_roll_group,
+                }
+            };
+        }
 	},
 
-	mr_employee: function(frm) {
+	muster_roll_group: function(frm) {
 		frappe.call({
 			method: "get_advance_account",
 			doc: frm.doc,
@@ -16,6 +34,17 @@ frappe.ui.form.on('Muster Roll Advance', {
 			}
 		})
 	},
+
+	get_mr_employee: function(frm) {
+		frappe.call({
+            method:"get_mr_employee",
+            doc:frm.doc,
+            callback:function(r){
+                frm.refresh_field("items")
+                frm.dirty()
+            }
+        })
+	}
 });
 
 var refresh_html = function(frm){

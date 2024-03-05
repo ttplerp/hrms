@@ -8,24 +8,29 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "mr_employee",
-  "mr_employee_name",
   "muster_roll_group",
+  "company",
   "branch",
-  "cost_center",
-  "column_break_j3go5",
+  "column_break_wffst",
   "posting_date",
   "advance_account",
-  "company",
+  "cost_center",
   "settle_imprest_advance_account",
   "imprest_party",
   "party_name",
+  "section_break_3u87b",
+  "mr_employee",
+  "column_break_j3go5",
+  "mr_employee_name",
   "section_break_ymwec",
   "advance_amount",
   "column_break_jyiqf",
   "paid_amount",
   "adjusted_amount",
   "balance_amount",
+  "section_break_hu2ng",
+  "get_mr_employee",
+  "items",
   "approver_details_section",
   "approver",
   "column_break_eop3t",
@@ -58,6 +63,7 @@
    "fieldname": "mr_employee",
    "fieldtype": "Link",
    "label": "MR Employee",
+   "mandatory_depends_on": "eval: doc.muster_roll_group =='National';",
    "options": "Muster Roll Employee"
   },
   {
@@ -72,22 +78,23 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "mr_employee.branch",
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
    "options": "Branch",
-   "read_only": 1
+   "reqd": 1
   },
   {
-   "fetch_from": "mr_employee.cost_center",
+   "fetch_from": "branch.cost_center",
    "fieldname": "cost_center",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Cost Center",
    "options": "Cost Center",
    "read_only": 1
   },
   {
+   "depends_on": "eval: doc.muster_roll_group =='National'",
    "fieldname": "section_break_ymwec",
    "fieldtype": "Section Break",
    "label": "Payment Details"
@@ -95,9 +102,8 @@
   {
    "fieldname": "advance_amount",
    "fieldtype": "Currency",
-   "in_list_view": 1,
    "label": "Advance Amount",
-   "reqd": 1
+   "mandatory_depends_on": "eval: doc.muster_roll_group =='National'"
   },
   {
    "fieldname": "column_break_jyiqf",
@@ -159,7 +165,8 @@
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company",
-   "read_only": 1
+   "read_only": 1,
+   "reqd": 1
   },
   {
    "default": "0",
@@ -216,17 +223,45 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "mr_employee.muster_roll_group",
    "fieldname": "muster_roll_group",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Muster Roll Group",
-   "options": "\nNational\nNon-National"
+   "options": "\nNational\nNon-National",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_wffst",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.muster_roll_group =='National'",
+   "fieldname": "section_break_3u87b",
+   "fieldtype": "Section Break",
+   "label": "MR Employee Details(National)"
+  },
+  {
+   "depends_on": "eval: doc.muster_roll_group =='Non-National'",
+   "fieldname": "section_break_hu2ng",
+   "fieldtype": "Section Break",
+   "label": "MR Employee Details(Non-National)"
+  },
+  {
+   "fieldname": "get_mr_employee",
+   "fieldtype": "Button",
+   "label": "Get MR Employee"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Muster Roll Advance Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-02-14 10:06:58.516320",
+ "modified": "2024-03-05 10:53:40.618484",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Advance",

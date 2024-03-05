@@ -11,11 +11,16 @@ class MusterRollAdvance(Document):
 	def validate(self):
 		self.set_status()
 		self.set_defaults()
+		self.validate_duplicate_mr_employee()
 		validate_workflow_states(self)
 
 	def on_submit(self):
-		if flt(self.advance_amount <= 0):
-			frappe.throw(_("Please input valid advance amount"), title="Invalid Amount")
+		if self.muster_roll_group == "National":
+			if flt(self.advance_amount <= 0):
+				frappe.throw(_("Please input valid advance amount"), title="Invalid Amount")
+
+		# elif self.muster_roll_group == "Non-National":
+		# 	pass
 		self.post_journal_entry()
 
 	def set_status(self):
@@ -26,6 +31,9 @@ class MusterRollAdvance(Document):
 		}[str(self.docstatus or 0)]
 
 	def set_defaults(self):
+		if self.muster_roll_group == "Non-National":
+			return
+		
 		if self.docstatus < 2:
 			self.journal_entry = None
 			self.journal_entry_status = None
@@ -36,7 +44,17 @@ class MusterRollAdvance(Document):
 		if self.advance_amount <= 0:
 			frappe.throw("Advance amount must be greater than 0.")
 
-	
+	def validate_duplicate_mr_employee(self):
+		if self.muster_roll_group == "National":
+			return
+		else:
+			mr_items = set()
+			for a in self.items:
+				if a.mr_employee in mr_items:
+					frappe.throw("Duplicate MR Employee <strong>{}</strong> found in MR Employee list table.".format(a.mr_employee))
+				else:
+					mr_items.add(a.mr_employee)
+
 	@frappe.whitelist()
 	def get_advance_account(self):
 		account_name = "foreign_worker_advance_account" if self.muster_roll_group == "Non-National" else "national_worker_advance_account"
@@ -44,7 +62,23 @@ class MusterRollAdvance(Document):
 		if not account:
 			frappe.throw("Please set Advance Account in Company.")
 		return account
+	
+	@frappe.whitelist()
+	def get_mr_employee(self):
+		self.set("items", [])
+		mr_cond = ''
+		
+		if self.muster_roll_group:
+			mr_cond += " and muster_roll_group = '{}'".format(self.muster_roll_group)
 
+		for e in frappe.db.sql(
+			"""select 
+					name as mr_employee, person_name as mr_employee_name, branch, cost_center 
+					from `tabMuster Roll Employee` where status = 'Active' and branch = {} {}
+			""".format(frappe.db.escape(self.branch), mr_cond),
+			as_dict=True,
+		):
+			self.append("items", e)
 
 	def post_journal_entry(self):
 		if self.advance_account:
@@ -68,20 +102,39 @@ class MusterRollAdvance(Document):
 
 		# Posting Journal Entry
 		accounts = []
-		accounts.append({"account": adv_gl,
-			"debit_in_account_currency": flt(self.advance_amount),
-			"cost_center": self.cost_center,
-			"party_check": 1,
-			"party_type": "Muster Roll Employee",
-			"party": self.mr_employee,
-			"account_type": adv_gl_det.account_type,
-			"is_advance": "Yes" if adv_gl_det.is_an_advance_account == 1 else None,
-			"reference_type": "Muster Roll Advance",
-			"reference_name": self.name,
-		})
+		if self.muster_roll_group == "National":
+			accounts.append({"account": adv_gl,
+				"debit_in_account_currency": flt(self.advance_amount),
+				"cost_center": self.cost_center,
+				"party_check": 1,
+				"party_type": "Muster Roll Employee",
+				"party": self.mr_employee,
+				"account_type": adv_gl_det.account_type,
+				"is_advance": "Yes" if adv_gl_det.is_an_advance_account == 1 else None,
+				"reference_type": "Muster Roll Advance",
+				"reference_name": self.name,
+			})
+		else:
+			for a in self.items:
+				accounts.append({"account": adv_gl,
+					"debit_in_account_currency": flt(a.amount),
+					"cost_center": a.cost_center,
+					"party_check": 1,
+					"party_type": "Muster Roll Employee",
+					"party": a.mr_employee,
+					"account_type": adv_gl_det.account_type,
+					"is_advance": "Yes" if adv_gl_det.is_an_advance_account == 1 else None,
+					"reference_type": "Muster Roll Advance",
+					"reference_name": self.name,
+				})
+
+		total_advance_amt = 0
+		if self.items:
+			for a in self.items:
+				total_advance_amt += flt(a.amount)		 
 		if self.settle_imprest_advance_account:
 			accounts.append({"account": exp_gl,
-				"credit_in_account_currency": flt(self.advance_amount),
+				"credit_in_account_currency": flt(self.advance_amount) if self.muster_roll_group == "National" else total_advance_amt,
 				"cost_center": self.cost_center,
 				"party_check": 1,
 				"party_type": "Employee",
@@ -91,14 +144,14 @@ class MusterRollAdvance(Document):
 			})
 		else:
 			accounts.append({"account": exp_gl,
-				"credit_in_account_currency": flt(self.advance_amount),
+				"credit_in_account_currency": flt(self.advance_amount) if self.muster_roll_group == "National" else total_advance_amt,
 				"cost_center": self.cost_center,
 				"party_check": 0,
 				"account_type": exp_gl_det.account_type,
 				# "is_advance": "Yes" if exp_gl_det.is_an_advance_account == 1 else "No",
 				"is_advance": "Yes",
 			})
-
+			
 		je = frappe.new_doc("Journal Entry")
 		
 		je.update({
@@ -115,7 +168,7 @@ class MusterRollAdvance(Document):
 				"branch": self.branch
 		})
 
-		if self.advance_amount:
+		if self.advance_amount or self.items:
 			je.save(ignore_permissions = True)
 			self.db_set("journal_entry", je.name)
 			self.db_set("journal_entry_status", "Forwarded to accounts for processing payment on {0}".format(now_datetime().strftime('%Y-%m-%d %H:%M:%S')))
