@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:id_card",
  "creation": "2022-11-29 22:18:01.153560",
@@ -19,6 +20,7 @@
   "status",
   "gender",
   "qualification",
+  "team_lead",
   "section_break_8",
   "project",
   "unit",
@@ -436,11 +438,18 @@
    "fieldname": "email",
    "fieldtype": "Data",
    "label": "Email"
+  },
+  {
+   "depends_on": "eval:doc.muster_roll_group=='Non-National';",
+   "fieldname": "team_lead",
+   "fieldtype": "Link",
+   "label": "Team Lead",
+   "options": "Team Lead"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-03-05 12:04:33.097498",
+ "modified": "2024-03-05 16:00:15.523067",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

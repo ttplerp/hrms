@@ -9,6 +9,7 @@
  "engine": "InnoDB",
  "field_order": [
   "muster_roll_group",
+  "team_lead",
   "company",
   "branch",
   "column_break_wffst",
@@ -256,12 +257,19 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "options": "Muster Roll Advance Item"
+  },
+  {
+   "depends_on": "eval:doc.muster_roll_group=='Non-National';",
+   "fieldname": "team_lead",
+   "fieldtype": "Link",
+   "label": "Team Lead",
+   "options": "Team Lead"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-05 10:53:40.618484",
+ "modified": "2024-03-05 15:25:16.620151",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Advance",

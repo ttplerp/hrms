@@ -344,6 +344,8 @@ class MRInvoiceEntry(Document):
             mr_cond += " and muster_roll_type = '{}'".format(self.muster_roll_type)
         if self.muster_roll_group:
             mr_cond += " and muster_roll_group = '{}'".format(self.muster_roll_group)
+        if self.team_lead:
+            mr_cond += " and team_lead = '{}'".format(self.team_lead)
 
         for e in frappe.db.sql(
             """select 
