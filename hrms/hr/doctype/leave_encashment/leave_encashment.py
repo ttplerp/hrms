@@ -111,6 +111,7 @@ class LeaveEncashment(Document):
 				is_carry_forward=0
 			)
 			create_leave_ledger_entry(self, args, submit)
+			
 	def check_duplicate_entry(self):
 		count = frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) \
 					if frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) else 0
