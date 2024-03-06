@@ -254,7 +254,6 @@
    "reqd": 1
   },
   {
-   "depends_on": "eval:doc.advance_type != \"Travel Advance\"",
    "fieldname": "section_break_26",
    "fieldtype": "Section Break",
    "label": " Reference"
@@ -285,7 +284,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Advance Type",
-   "options": "\nSalary Advance\nImprest Advance\nEmployee Loan",
+   "options": "\nSalary Advance\nImprest Advance\nTravel Advance\nEmployee Loan",
    "reqd": 1
   },
   {
@@ -365,7 +364,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.advance_type != \"Travel Advance\"",
    "fieldname": "approver_details_section",
    "fieldtype": "Section Break",
    "label": "APPROVER DETAILS"
@@ -499,7 +497,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-01-22 11:53:55.932538",
+ "modified": "2024-03-06 14:07:59.385939",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

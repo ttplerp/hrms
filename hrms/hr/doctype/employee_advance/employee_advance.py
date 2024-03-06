@@ -32,22 +32,21 @@ class EmployeeAdvance(Document):
         )
 
     def validate(self):
-        if self.advance_type == "Travel Advance" and not self.reference:
-            frappe.msgprint(
-                _("Travel Advance should route through Travel Request"),
-                title="Travel Reference Missing",
-                indicator="red",
-                raise_exception=1,
-            )
-        if self.advance_type != "Travel Advance":
-            validate_workflow_states(self)
+        # if self.advance_type == "Travel Advance" and not self.reference:
+        #     frappe.msgprint(
+        #         _("Travel Advance should route through Travel Request"),
+        #         title="Travel Reference Missing",
+        #         indicator="red",
+        #         raise_exception=1,
+        #     )
+        validate_workflow_states(self)
         validate_active_employee(self.employee)
         self.validate_employment_status()
         self.set_status()
         self.validate_advance_amount()
         self.update_defaults()
         self.update_pending_amount()
-        self.update_reference()
+        # self.update_reference()
         self.check_duplicate_advance()
         self.select_advance_account()
         if self.advance_type in ("Salary Advance", "Employee Loan"):
@@ -65,13 +64,13 @@ class EmployeeAdvance(Document):
     def on_cancel(self):
         self.ignore_linked_doctypes = "GL Entry"
         self.set_status(update=True)
-        self.update_travel_request()
-        self.update_reference(cancel=1)
+        # self.update_travel_request()
+        # self.update_reference(cancel=1)
         self.update_salary_structure(True)
 
     def on_submit(self):
-        if self.advance_type == "Travel Advance":
-            self.update_travel_request()
+        # if self.advance_type == "Travel Advance":
+        #     self.update_travel_request()
         if self.advance_type in ("Salary Advance", "Employee Loan"):
             self.update_salary_structure()
         self.make_bank_entry()
@@ -107,33 +106,33 @@ class EmployeeAdvance(Document):
     def update_pending_amount(self):
         self.pending_amount = self.advance_amount
 
-    def update_reference(self, cancel=0):
-        if self.advance_type == "Travel Advance" and cancel == 0:
-            if (
-                not frappe.db.get_value(
-                    "Travel Request", self.reference, "employee_advance_reference"
-                )
-                and self.status == "Paid"
-            ):
-                frappe.db.sql(
-                    """ 
-					UPDATE `tabTravel Request`
-					SET employee_advance_reference = '{0}'
-					WHERE name = '{1}'
-				""".format(
-                        self.name, self.reference
-                    )
-                )
-        if cancel == 1 and self.advance_type == "Travel Advance":
-            frappe.db.sql(
-                """ 
-					UPDATE `tabTravel Request`
-					SET employee_advance_reference = NULL
-					WHERE name = '{}'
-				""".format(
-                    self.reference
-                )
-            )
+    # def update_reference(self, cancel=0):
+    #     if self.advance_type == "Travel Advance" and cancel == 0:
+    #         if (
+    #             not frappe.db.get_value(
+    #                 "Travel Request", self.reference, "employee_advance_reference"
+    #             )
+    #             and self.status == "Paid"
+    #         ):
+    #             frappe.db.sql(
+    #                 """ 
+	# 				UPDATE `tabTravel Request`
+	# 				SET employee_advance_reference = '{0}'
+	# 				WHERE name = '{1}'
+	# 			""".format(
+    #                     self.name, self.reference
+    #                 )
+    #             )
+    #     if cancel == 1 and self.advance_type == "Travel Advance":
+    #         frappe.db.sql(
+    #             """ 
+	# 				UPDATE `tabTravel Request`
+	# 				SET employee_advance_reference = NULL
+	# 				WHERE name = '{}'
+	# 			""".format(
+    #                 self.reference
+    #             )
+    #         )
 
     @frappe.whitelist()
     def validate_employment_status(self):
@@ -401,25 +400,25 @@ class EmployeeAdvance(Document):
         #     flt(self.advance_amount) / flt(self.deduction_month)
         # )
 
-    def update_travel_request(self):
-        if self.reference_type == "Travel Request":
-            doc = frappe.get_doc(self.reference_type, self.reference)
-            if self.docstatus == 2:
-                advance_amount = doc.advance_amount - flt(self.advance_amount)
-                frappe.db.sql(
-                    """
-					UPDATE `tabTravel Request` 
-					SET need_advance = 0,
-					advance_amount = {}
-					WHERE name = '{}'
-				""".format(
-                        advance_amount, self.reference
-                    )
-                )
-                if advance_amount != 0:
-                    frappe.throw(
-                        "Advance Amount in Travel Request doesn't match with Advance Amount in Employee Advance"
-                    )
+    # def update_travel_request(self):
+    #     if self.reference_type == "Travel Request":
+    #         doc = frappe.get_doc(self.reference_type, self.reference)
+    #         if self.docstatus == 2:
+    #             advance_amount = doc.advance_amount - flt(self.advance_amount)
+    #             frappe.db.sql(
+    #                 """
+	# 				UPDATE `tabTravel Request` 
+	# 				SET need_advance = 0,
+	# 				advance_amount = {}
+	# 				WHERE name = '{}'
+	# 			""".format(
+    #                     advance_amount, self.reference
+    #                 )
+    #             )
+    #             if advance_amount != 0:
+    #                 frappe.throw(
+    #                     "Advance Amount in Travel Request doesn't match with Advance Amount in Employee Advance"
+    #                 )
             # doc.save(ignore_permissions=True)
 
     def set_status(self, update=False):
@@ -455,12 +454,12 @@ class EmployeeAdvance(Document):
 
         if update:
             self.db_set("status", status)
-            if self.status == "Paid" and self.reference_type == "Travel Request":
-                self.update_reference()
+            # if self.status == "Paid" and self.reference_type == "Travel Request":
+            #     self.update_reference()
         else:
             self.status = status
-            if self.status == "Paid" and self.reference_type == "Travel Request":
-                self.update_reference()
+            # if self.status == "Paid" and self.reference_type == "Travel Request":
+            #     self.update_reference()
 
     def set_total_advance_paid(self):
         gle = frappe.qb.DocType("GL Entry")
@@ -511,10 +510,10 @@ class EmployeeAdvance(Document):
         self.set_status(update=True)
 
         # to update advance amount in Travel Request if the amount changed in Employee Advance
-        if self.reference and self.advance_type == "Travel Advance":
-            tr_doc = frappe.get_doc("Travel Request", self.reference)
-            tr_doc.advance_amount = flt(paid_amount)
-            tr_doc.save(ignore_permissions=True)
+        # if self.reference and self.advance_type == "Travel Advance":
+        #     tr_doc = frappe.get_doc("Travel Request", self.reference)
+        #     tr_doc.advance_amount = flt(paid_amount)
+        #     tr_doc.save(ignore_permissions=True)
 
     def update_claimed_amount(self, cancel=0):
         claimed_amount = (

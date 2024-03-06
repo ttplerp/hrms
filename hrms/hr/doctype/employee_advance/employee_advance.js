@@ -191,10 +191,10 @@ frappe.ui.form.on('Employee Advance', {
 				method:"validate_employment_status",
 				doc: frm.doc
 			})
-			frappe.run_serially([
-				() => frm.trigger('get_accumulated_advance_amount_from_employee_advance'),
-				frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
-			]);
+			// frappe.run_serially([
+			// 	() => frm.trigger('get_accumulated_advance_amount_from_employee_advance'),
+			// 	frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
+			// ]);
 
 		}
 		frappe.call({
