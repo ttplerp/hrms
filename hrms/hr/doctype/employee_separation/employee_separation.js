@@ -48,7 +48,7 @@ frappe.ui.form.on('Employee Separation', {
 		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed" && cur_frm.doc.clearance_acquired == 1){
 			frm.add_custom_button("Create Employee Benefit", function(){
 				frappe.model.open_mapped_doc({
-					method: "erpnext.hr.doctype.employee_separation.employee_separation.make_employee_benefit",
+					method: "hrms.hr.doctype.employee_separation.employee_separation.make_employee_benefit",
 					frm: cur_frm
 				})
 			});
