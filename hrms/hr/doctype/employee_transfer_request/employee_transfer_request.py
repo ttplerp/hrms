@@ -38,14 +38,20 @@ class EmployeeTransferRequest(Document):
 
 	@frappe.whitelist()
 	def validate_requested_by(self):
+		department = ''
 		if self.get("__islocal"):
-			is_dept_head = 0
-			current_logged_in_emp, division = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, ["name","division"])
-			div_head = frappe.db.get_value("Department", division, "approver")
-			if not div_head:
-				frappe.throw("Division Approver not set for division {} in Department Tree".format(division))
-			if current_logged_in_emp != div_head:
-				frappe.throw("Only Division Head {} of department {} can request for Employee Transfer".format(div_head, division))
+			if frappe.db.exists("Employee", {"user_id":frappe.session.user}):
+				current_logged_in_emp, department = frappe.db.get_value("Employee", {"user_id":frappe.session.user}, ["name","department"])
+			else:
+				frappe.throw("Logged in User not an employee")
+			
+			dept_approver = frappe.db.sql(""" 
+									  select d.name, da.approver, da.approver_name 
+									  from `tabDepartment` d, `tabDepartment Approver` da
+									  where da.parent=d.name and d.name='{}' and da.approver_user_id ='{}'
+									  """.format(department, frappe.session.user), as_dict=True)
+			if not dept_approver:
+				frappe.throw('Only assigned department approver can request this transaction for department {}. Please enroll user {} in Department Approver list.'.format(frappe.bold(department), frappe.bold(frappe.session.user)))			
 
 @frappe.whitelist()
 def make_employee_transfer(source_name, target_doc=None):
