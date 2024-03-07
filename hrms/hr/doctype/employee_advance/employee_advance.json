@@ -79,7 +79,6 @@
   {
    "fieldname": "employee",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Employee",
    "options": "Employee",
@@ -163,6 +162,7 @@
   {
    "fieldname": "status",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Status",
    "no_copy": 1,
    "options": "Draft\nPaid\nUnpaid\nClaimed\nReturned\nPartly Claimed and Returned\nCancelled",
@@ -497,7 +497,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-06 14:07:59.385939",
+ "modified": "2024-03-07 11:46:36.338584",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
