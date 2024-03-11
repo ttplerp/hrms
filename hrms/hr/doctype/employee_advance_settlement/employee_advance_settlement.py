@@ -21,8 +21,6 @@ class EmployeeAdvanceSettlement(AccountsController):
 			self.validate_expense_branch()
 		self.calculate_amounts()
 		validate_workflow_states(self)
-		if self.workflow_state != "Approved":
-			notify_workflow_states(self)
 	
 	def on_submit(self):
 		self.validate_settlement_amounts()
@@ -31,7 +29,6 @@ class EmployeeAdvanceSettlement(AccountsController):
 			self.post_amount_to_salary_detail()
 			self.update_salary_structure()
 			self.update_employee_advance()
-		notify_workflow_states(self)
 	def on_cancel(self):
 		self.ignore_linked_doctypes = ("GL Entry","Payment Ledger Entry")
 		self.make_gl_entry()
