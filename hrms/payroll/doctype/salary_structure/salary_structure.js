@@ -332,6 +332,33 @@ frappe.ui.form.on('Salary Structure', {
 	},
 	eligible_for_tswf:function(frm){
 		calculate_others(frm);
+	},
+	eligible_for_one_off_five_indexation_mvc:function(frm){
+		calculate_others(frm);
+	},
+	one_off_five_indexation_method_mvc:function(frm){
+		calculate_others(frm);
+	},
+	one_off_five_indexation_mvc:function(frm){
+		calculate_others(frm);
+	},
+	eligible_for_one_off_fixed_payment_mvc:function(frm){
+		calculate_others(frm);
+	},
+	one_off_fixed_payment_method_mvc:function(frm){
+		calculate_others(frm);
+	},
+	one_off_fixed_payment_mvc:function(frm){
+		calculate_others(frm);
+	},
+	eligible_for_lump_sum_pay_mvc:function(frm){
+		calculate_others(frm);
+	},
+	lump_sum_pay_method_mvc:function(frm){
+		calculate_others(frm);
+	},
+	lump_sum_pay_mvc:function(frm){
+		calculate_others(frm);
 	}
 })
 

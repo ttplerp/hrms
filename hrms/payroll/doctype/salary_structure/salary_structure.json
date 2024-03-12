@@ -50,6 +50,15 @@
   "eligible_for_shift",
   "shift_method",
   "shift",
+  "eligible_for_one_off_five_indexation_mvc",
+  "one_off_five_indexation_method_mvc",
+  "one_off_five_indexation_mvc",
+  "eligible_for_one_off_fixed_payment_mvc",
+  "one_off_fixed_payment_method_mvc",
+  "one_off_fixed_payment_mvc",
+  "eligible_for_lump_sum_pay_mvc",
+  "lump_sum_pay_method_mvc",
+  "lump_sum_pay_mvc",
   "cb_10",
   "eligible_for_difficulty",
   "difficulty_method",
@@ -819,6 +828,7 @@
    "print_hide": 1
   },
   {
+   "depends_on": "eligible_for_one_off_five_indexation",
    "fieldname": "cb_10",
    "fieldtype": "Column Break"
   },
@@ -837,12 +847,69 @@
    "label": "Cost Center",
    "options": "Cost Center",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_one_off_five_indexation_mvc",
+   "fieldtype": "Check",
+   "label": "Eligible for One-off 5% Indexation (MVC)"
+  },
+  {
+   "depends_on": "eligible_for_one_off_five_indexation_mvc",
+   "fieldname": "one_off_five_indexation_method_mvc",
+   "fieldtype": "Select",
+   "label": "Eligible for One-off 5% Indexation Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eval: doc.eligible_for_one_off_five_indexation_mvc == 1",
+   "fieldname": "one_off_five_indexation_mvc",
+   "fieldtype": "Int",
+   "label": "Value(One-off 5% Indexation)"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_one_off_fixed_payment_mvc",
+   "fieldtype": "Check",
+   "label": "Eligible for One-off Fixed Payment (MVC)"
+  },
+  {
+   "depends_on": "eligible_for_one_off_fixed_payment_mvc",
+   "fieldname": "one_off_fixed_payment_method_mvc",
+   "fieldtype": "Select",
+   "label": "Eligible for One-off Fixed Payment (MVC) Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eval: doc.eligible_for_one_off_fixed_payment_mvc == 1",
+   "fieldname": "one_off_fixed_payment_mvc",
+   "fieldtype": "Int",
+   "label": "Value(One-off Fixed Payment)"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_lump_sum_pay_mvc",
+   "fieldtype": "Check",
+   "label": "Eligible for Lump Sum Pay (MVC)"
+  },
+  {
+   "depends_on": "eligible_for_lump_sum_pay_mvc",
+   "fieldname": "lump_sum_pay_method_mvc",
+   "fieldtype": "Select",
+   "label": "Eligible for Lump Sum Pay Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eval: doc.eligible_for_lump_sum_pay_mvc == 1",
+   "fieldname": "lump_sum_pay_mvc",
+   "fieldtype": "Int",
+   "label": "Value(Lump Sum Pay)"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2022-09-25 20:12:39.009052",
+ "modified": "2024-03-12 17:02:40.457434",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
