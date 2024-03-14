@@ -23,19 +23,22 @@
   "sb_official",
   "reason_for_resignation",
   "sb_remarks",
-  "director",
-  "director_clearance",
-  "director_remarks",
+  "supervisor",
+  "supervisor_clearance",
+  "supervisor_remarks",
   "gmod",
   "gmod_clearance",
   "gmod_remarks",
+  "store",
+  "store_clearance",
+  "store_remarks",
   "column_break_29",
   "hrad",
   "hrad_clearance",
   "hrad_remarks",
-  "gmpd",
-  "gmpd_clearance",
-  "gmpd_remarks",
+  "gmafd",
+  "gmafd_clearance",
+  "gmafd_remarks",
   "workflow_state",
   "sb_reference",
   "mail_sent",
@@ -194,27 +197,9 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "director",
-   "fieldtype": "Link",
-   "label": "Director, SLD",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "director_clearance",
-   "fieldtype": "Check",
-   "label": "Clearance Acquired (Director, SLD)"
-  },
-  {
-   "fieldname": "director_remarks",
-   "fieldtype": "Small Text",
-   "label": "Director's Remarks"
-  },
-  {
    "fieldname": "gmod",
    "fieldtype": "Link",
-   "label": "GM, Operation Division",
+   "label": "Department Head",
    "options": "User",
    "read_only": 1
   },
@@ -222,12 +207,12 @@
    "default": "0",
    "fieldname": "gmod_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (GM, Operation Division)"
+   "label": "Clearance Acquired (Department Head)"
   },
   {
    "fieldname": "gmod_remarks",
    "fieldtype": "Small Text",
-   "label": "GM, Operation Division"
+   "label": "Department Head Remarks"
   },
   {
    "fieldname": "hrad",
@@ -248,27 +233,62 @@
    "label": "GM, HRAD Remarks"
   },
   {
-   "fieldname": "gmpd",
+   "fieldname": "supervisor",
    "fieldtype": "Link",
-   "label": "GM, Project Division",
+   "label": "Supervisor",
    "options": "User",
    "read_only": 1
   },
   {
-   "fieldname": "gmpd_remarks",
+   "default": "0",
+   "fieldname": "supervisor_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired (Supervisor)"
+  },
+  {
+   "fieldname": "supervisor_remarks",
    "fieldtype": "Small Text",
-   "label": "GM, Project Division Remarks"
+   "label": "Supervisor Remarks"
+  },
+  {
+   "fieldname": "store",
+   "fieldtype": "Link",
+   "label": "Store CHO",
+   "options": "User"
   },
   {
    "default": "0",
-   "fieldname": "gmpd_clearance",
+   "fieldname": "store_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (GM, Project Division)"
+   "label": "Clearance Acquired (Store)"
+  },
+  {
+   "fieldname": "store_remarks",
+   "fieldtype": "Small Text",
+   "label": "Store Remarks"
+  },
+  {
+   "fieldname": "gmafd",
+   "fieldtype": "Link",
+   "label": "GM, AFD",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "gmafd_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired (GM, AFD)"
+  },
+  {
+   "fieldname": "gmafd_remarks",
+   "fieldtype": "Small Text",
+   "label": "GM, AFD Remarks"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-01 17:24:10.300751",
+ "modified": "2024-03-13 15:56:57.057708",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",

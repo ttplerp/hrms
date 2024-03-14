@@ -39,14 +39,16 @@ class EmployeeSeparationClearance(Document):
 			frappe.throw("Document No. missing. Please contact HR.")
 
 	def check_signatures(self):
-		if self.director_clearance == 0:
-			frappe.throw("Director (SLD) has not granted clearance.")
+		if self.supervisor_clearance == 0:
+			frappe.throw("Supervisor has not granted clearance.")
 		if self.hrad_clearance == 0:
-			frappe.throw("General Manager (HRAD) has not granted clearance.")
+			frappe.throw("HRAD has not granted clearance.")
 		if self.gmod_clearance == 0:
-			frappe.throw("General Manager (Operation Division) has not granted clearance.")
-		if self.gmpd_clearance == 0:
-			frappe.throw("General Manager (Project Division) has not granted clearance.")
+			frappe.throw("Head Of Department has not granted clearance.")
+		if self.gmafd_clearance == 0:
+			frappe.throw("GM AFD has not granted clearance.")
+		if self.store_clearance == 0:
+			frappe.throw("Store CHO has not granted clearance.")
 
 	def update_reference(self):
 		id = frappe.get_doc("Employee Separation",self.employee_separation_id)
@@ -66,22 +68,23 @@ class EmployeeSeparationClearance(Document):
 	
 	@frappe.whitelist()
 	def check_logged_in_user_role(self):
+		department = frappe.db.get_value("Employee",self.employee,"department")
 		#return values initialization-----------------
-		display = 1
-		director = 1
+		supervisor = 1
 		hrad = 1
 		gmod = 1
-		gmpd = 1
+		gmafd = 1
+		store = 1
 
-		#----------------------------Director, SLD------------------------------------------------------------------------------------------------------------------------------------------------------------|
-		director_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "dsld"))
-		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "dsld"),"user_id"):
-			director = 0
-		if director_officiate and frappe.session.user == frappe.db.get_value("Employee",director_officiate[0].officiate,"user_id"):
-			director = 0
-		#----------------------------GM, Operation Division -----------------------------------------------------------------------------------------------------------------------------------------------------|
-		gmod_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "gm_operation_division"))
-		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "gm_operation_division"),"user_id"):
+		#----------------------------Supervisor------------------------------------------------------------------------------------------------------------------------------------------------------------|
+		supervisor_officiate = get_officiating_employee(frappe.db.get_value("Employee",self.employee,"reports_to"))
+		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_value("Employee",self.employee,"reports_to"),"user_id"):
+			supervisor = 0
+		if supervisor_officiate and frappe.session.user == frappe.db.get_value("Employee",supervisor_officiate[0].officiate,"user_id"):
+			supervisor = 0
+		#----------------------------GM, Department Head -----------------------------------------------------------------------------------------------------------------------------------------------------|
+		gmod_officiate = get_officiating_employee(frappe.db.get_value("Department",department,"approver"))
+		if frappe.session.user == frappe.db.get_value("Employee", frappe.db.get_value("Department", department,"approver"), "user_id"):
 			gmod = 0
 		if gmod_officiate and frappe.session.user == frappe.db.get_value("Employee",gmod_officiate[0].officiate,"user_id"):
 			gmod = 0
@@ -91,26 +94,32 @@ class EmployeeSeparationClearance(Document):
 			hrad = 0
 		if hrad_officiate and frappe.session.user == frappe.db.get_value("Employee",hrad_officiate[0].officiate,"user_id"):
 			hrad = 0
-		#----------------------------GM, Project Division -----------------------------------------------------------------------------------------------------------------------------------------------------|
-		gmpd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "gm_project_division"))
-		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "gm_project_division"),"user_id"):
-			gmpd = 0
-		if gmpd_officiate and frappe.session.user == frappe.db.get_value("Employee",gmpd_officiate[0].officiate,"user_id"):
-			gmpd = 0
-		return director, hrad, gmpd, gmod
+		#----------------------------GM,AFD -----------------------------------------------------------------------------------------------------------------------------------------------------|
+		gmafd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "gm_afd"))
+		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "gm_afd"),"user_id"):
+			gmafd = 0
+		if gmafd_officiate and frappe.session.user == frappe.db.get_value("Employee",gmafd_officiate[0].officiate,"user_id"):
+			gmafd = 0
+		#----------------------------Store -----------------------------------------------------------------------------------------------------------------------------------------------------|
+		store_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "store"))
+		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "store"),"user_id"):
+			store = 0
+		if store_officiate and frappe.session.user == frappe.db.get_value("Employee",store_officiate[0].officiate,"user_id"):
+			store = 0
+		return supervisor, hrad, gmafd, gmod, store
 
 	def get_receipients(self):
 		receipients = []
-		if self.director:
-			receipients.append(self.director)
+		if self.supervisor:
+			receipients.append(self.supervisor)
 		if self.hrad:
 			receipients.append(self.hrad)
 		if self.gmod:
 			receipients.append(self.gmod)
-		if self.gmpd:
-			receipients.append(self.gmpd)
-		# if self.hr:
-		# 	receipients.append(self.hr)
+		if self.gmafd:
+			receipients.append(self.gmafd)
+		if self.store:
+			receipients.append(self.store)
 
 		return receipients
 
@@ -189,31 +198,39 @@ class EmployeeSeparationClearance(Document):
 
 	@frappe.whitelist()
 	def set_approvers(self):
-		#----------------------------Director, SLD-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-		director_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "dsld"))
-		if director_officiate:
-			self.director = frappe.db.get_value("Employee",director_officiate[0].officiate,"user_id")
+		department = frappe.db.get_value("Employee",self.employee,"department")
+		frappe.db.get_value("Employee", frappe.db.get_value("Department", "Finance & Accounts - TTPL","approver"), "user_id")
+		#----------------------------Supervisor-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+		supervisor_officiate = get_officiating_employee(frappe.db.get_value("Employee",self.employee,"reports_to"))
+		if supervisor_officiate:
+			self.supervisor = frappe.db.get_value("Employee",supervisor_officiate[0].officiate,"user_id")
 		else:
-			self.director = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "dsld"),"user_id")
-		#--------------------------- GM, HRAD-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		gmod_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "dsld"))
+			self.supervisor = frappe.db.get_value("Employee",frappe.db.get_value("Employee",self.employee,"reports_to"),"user_id")
+		#--------------------------- Department Head-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		gmod_officiate = get_officiating_employee(frappe.db.get_value("Department",department,"approver"))
 		if gmod_officiate:
 			self.gmod = frappe.db.get_value("Employee",gmod_officiate[0].officiate,"user_id")
 		else:
-			self.gmod = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "gm_operation_division"),"user_id")
-		#--------------------------- GM, Operation Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
+			self.gmod = frappe.db.get_value("Employee", frappe.db.get_value("Department", department,"approver"), "user_id")
+		#--------------------------- GM, HRAD-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		hrad_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "gm_hrad"))
 		if hrad_officiate:
 			self.hrad = frappe.db.get_value("Employee",hrad_officiate[0].officiate,"user_id")
 		else:
 			self.hrad = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "gm_hrad"),"user_id")
-		#--------------------------- GM, Project Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		gmpd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "gm_project_division"))
-		if gmpd_officiate:
-			self.gmpd = frappe.db.get_value("Employee",gmpd_officiate[0].officiate,"user_id")
+		#--------------------------- GM, AFD-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		gmafd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "gm_afd"))
+		if gmafd_officiate:
+			self.gmafd = frappe.db.get_value("Employee",gmafd_officiate[0].officiate,"user_id")
 		else:
-			self.gmpd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "gm_project_division"),"user_id")
-
+			self.gmafd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "gm_afd"),"user_id")
+		#--------------------------- Store-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		store_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "store"))
+		if store_officiate:
+			self.store = frappe.db.get_value("Employee",hrad_officiate[0].officiate,"user_id")
+		else:
+			self.store = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "store"),"user_id")
+		
 		self.db_set("approvers_set",1)
 
 # Following code added by SHIV on 2020/09/21

@@ -8,7 +8,7 @@ frappe.ui.form.on('Employee Separation Clearance', {
 			doc:frm.doc,
 			callback: function(r){
 				console.log(r.message)
-				toggle_remarks_display(frm, r.message[0], r.message[1], r.message[2], r.message[3])
+				toggle_remarks_display(frm, r.message[0], r.message[1], r.message[2], r.message[3], r.message[4])
 			}
 		})
 		if(frm.doc.mail_sent == 0 && frm.doc.approvers_set == 1){
@@ -44,16 +44,19 @@ frappe.ui.form.on('Employee Separation Clearance', {
 		}
 	},
 });
-
-var toggle_remarks_display = function(frm, director, hrad, gmpd, gmod){
-	frm.set_df_property("director_remarks","read_only",director);
-	frm.set_df_property("director_clearance","read_only",director);
+var toggle_remarks_display = function(frm, supervisor, hrad, gmafd, gmod, store){
+	console.log("store")
+	console.log(store)
+	frm.set_df_property("supervisor_remarks","read_only",supervisor);
+	frm.set_df_property("supervisor_clearance","read_only",supervisor);
 	frm.set_df_property("hrad_remarks","read_only",hrad);
 	frm.set_df_property("hrad_clearance","read_only",hrad);
 	frm.set_df_property("gmod_remarks","read_only",gmod);
 	frm.set_df_property("gmod_clearance","read_only",gmod);
-	frm.set_df_property("gmpd_remarks","read_only",gmpd);
-	frm.set_df_property("gmpd_clearance","read_only",gmpd);
+	frm.set_df_property("gmafd_remarks","read_only",gmafd);
+	frm.set_df_property("gmafd_clearance","read_only",gmafd);
+	frm.set_df_property("store_remarks","read_only",store);
+	frm.set_df_property("store_clearance","read_only",store);
 
 	frm.set_df_property("document_no","read_only",frappe.user.has_role(["HR User"]) != true);
 }
