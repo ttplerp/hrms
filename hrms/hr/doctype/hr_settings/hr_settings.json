@@ -59,11 +59,9 @@
   "hrgm_name",
   "hr_approver_name",
   "separation_clearance_approver_section",
-  "store",
   "gm_hrad",
   "gm_afd",
   "column_break_53",
-  "approver_name_store",
   "approver_name_gm_hrad",
   "approver_name_gm_afd",
   "tb_notifications",
@@ -808,6 +806,7 @@
   {
    "fieldname": "gm_hrad",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "GM, HRAD,CHO",
    "options": "Employee",
    "reqd": 1
@@ -859,26 +858,12 @@
    "label": "Finance Focal Seal"
   },
   {
-   "fieldname": "store",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Store, CHO",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
    "fieldname": "gm_afd",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "GM,AFD,CHO",
    "options": "Employee",
    "reqd": 1
-  },
-  {
-   "fetch_from": "store.employee_name",
-   "fieldname": "approver_name_store",
-   "fieldtype": "Data",
-   "label": "Approver Name (Store, CHO)",
-   "read_only": 1
   },
   {
    "fetch_from": "gm_afd.employee_name",
@@ -892,7 +877,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-03-13 15:37:35.383641",
+ "modified": "2024-03-21 12:34:42.250198",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

@@ -69,6 +69,7 @@ class EmployeeSeparationClearance(Document):
 	@frappe.whitelist()
 	def check_logged_in_user_role(self):
 		department = frappe.db.get_value("Employee",self.employee,"department")
+		cost_center =frappe.db.get_value("Employee",self.employee,"cost_center")
 		#return values initialization-----------------
 		supervisor = 1
 		hrad = 1
@@ -101,8 +102,8 @@ class EmployeeSeparationClearance(Document):
 		if gmafd_officiate and frappe.session.user == frappe.db.get_value("Employee",gmafd_officiate[0].officiate,"user_id"):
 			gmafd = 0
 		#----------------------------Store -----------------------------------------------------------------------------------------------------------------------------------------------------|
-		store_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "store"))
-		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "store"),"user_id"):
+		store_officiate = get_officiating_employee(frappe.db.get_value("Cost Center",cost_center,"approver"))
+		if frappe.session.user == frappe.db.get_value("Employee",frappe.db.get_value("Cost Center",cost_center,"approver"),"user_id"):
 			store = 0
 		if store_officiate and frappe.session.user == frappe.db.get_value("Employee",store_officiate[0].officiate,"user_id"):
 			store = 0
@@ -199,7 +200,7 @@ class EmployeeSeparationClearance(Document):
 	@frappe.whitelist()
 	def set_approvers(self):
 		department = frappe.db.get_value("Employee",self.employee,"department")
-		frappe.db.get_value("Employee", frappe.db.get_value("Department", "Finance & Accounts - TTPL","approver"), "user_id")
+		cost_center =frappe.db.get_value("Employee",self.employee,"cost_center")
 		#----------------------------Supervisor-----------------------------------------------------------------------------------------------------------------------------------------------------------|
 		supervisor_officiate = get_officiating_employee(frappe.db.get_value("Employee",self.employee,"reports_to"))
 		if supervisor_officiate:
@@ -208,13 +209,13 @@ class EmployeeSeparationClearance(Document):
 			self.supervisor = frappe.db.get_value("Employee",frappe.db.get_value("Employee",self.employee,"reports_to"),"user_id")
 		#--------------------------- Department Head-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		gmod_officiate = get_officiating_employee(frappe.db.get_value("Department",department,"approver"))
-		if gmod_officiate:
+		if gmod_officiate: 
 			self.gmod = frappe.db.get_value("Employee",gmod_officiate[0].officiate,"user_id")
 		else:
 			self.gmod = frappe.db.get_value("Employee", frappe.db.get_value("Department", department,"approver"), "user_id")
 		#--------------------------- GM, HRAD-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		hrad_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "gm_hrad"))
-		if hrad_officiate:
+		if hrad_officiate: 
 			self.hrad = frappe.db.get_value("Employee",hrad_officiate[0].officiate,"user_id")
 		else:
 			self.hrad = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "gm_hrad"),"user_id")
@@ -225,19 +226,19 @@ class EmployeeSeparationClearance(Document):
 		else:
 			self.gmafd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "gm_afd"),"user_id")
 		#--------------------------- Store-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		store_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "store"))
+		store_officiate = get_officiating_employee(frappe.db.get_value("Cost Center",cost_center,"approver"))
 		if store_officiate:
 			self.store = frappe.db.get_value("Employee",hrad_officiate[0].officiate,"user_id")
 		else:
-			self.store = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "store"),"user_id")
+			self.store = frappe.db.get_value("Employee",frappe.db.get_value("Cost Center", cost_center,"approver"),"user_id")
 		
 		self.db_set("approvers_set",1)
 
-# Following code added by SHIV on 2020/09/21
+# Following code added by Rinzin on 2024/02/01
+		
 def get_permission_query_conditions(user):
 	if not user: user = frappe.session.user
 	user_roles = frappe.get_roles(user)
-
 	if user == "Administrator":
 		return
 	if "HR User" in user_roles or "HR Manager" in user_roles:
@@ -251,12 +252,14 @@ def get_permission_query_conditions(user):
 				where `tabEmployee`.name = `tabEmployee Separation Clearance`.employee
 				and `tabEmployee`.user_id = '{user}')
 		or
-		(`tabEmployee Separation Clearance`.director = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		(`tabEmployee Separation Clearance`.supervisor = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
 		(`tabEmployee Separation Clearance`.hrad = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
-		(`tabEmployee Separation Clearance`.gmpd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
-		or
 		(`tabEmployee Separation Clearance`.gmod = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		or
+		(`tabEmployee Separation Clearance`.gmafd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		or
+		(`tabEmployee Separation Clearance`.store = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 
 	)""".format(user=user)
