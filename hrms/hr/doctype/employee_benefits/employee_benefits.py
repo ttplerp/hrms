@@ -222,7 +222,7 @@ class EmployeeBenefits(Document):
 			})
 
 		# Credit Account
-		payable_account = frappe.db.get_value("Company", self.company, "salary_payable_account")
+		payable_account = frappe.db.get_value("Company", self.company, "employee_payable_account")
 
 		if flt(total_amount):
 			je.append("accounts", {
