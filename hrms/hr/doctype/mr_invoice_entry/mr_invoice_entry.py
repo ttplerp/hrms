@@ -16,6 +16,7 @@ from datetime import datetime
 class MRInvoiceEntry(Document):
     def validate(self):
         self.validate_posting_date()
+        self.set_status()
 
     def validate_posting_date(self):
         months = [
@@ -40,7 +41,11 @@ class MRInvoiceEntry(Document):
         if not (getdate(month_start_date) <= getdate(self.posting_date) <= getdate(month_end_date)):
             frappe.throw('Posting date must be between <strong>{}</strong> and <strong>{}</strong>.'.format(month_start_date, month_end_date), title="Reset Posting Date")
 
+    def set_status(self):
+        self.status = "Draft"
+
     def on_submit(self):
+        self.db_set("status", "Submitted")
         self.submit_mr_invoice()
 
     def on_cancel(self):
@@ -291,6 +296,7 @@ class MRInvoiceEntry(Document):
 			"accounts":accounts
 		})
         je.insert()
+        self.db_set("status", "Unpaid")
         frappe.msgprint(_('Journal Entry {0} posted to accounts').format(frappe.get_desk_link("Journal Entry", je.name)))
 
     def submit_mr_invoice(self):

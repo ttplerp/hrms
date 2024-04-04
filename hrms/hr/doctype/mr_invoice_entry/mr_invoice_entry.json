@@ -21,6 +21,7 @@
   "individual",
   "mr_employee",
   "team_lead",
+  "status",
   "section_break_8",
   "items",
   "section_break_0i1a1",
@@ -244,12 +245,18 @@
    "fieldtype": "Link",
    "label": "Team Lead",
    "options": "Team Lead"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "options": "\nDraft\nPaid\nUnpaid\nSubmitted\nCancelled"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-05 15:43:03.768817",
+ "modified": "2024-03-18 09:50:34.965771",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Invoice Entry",
