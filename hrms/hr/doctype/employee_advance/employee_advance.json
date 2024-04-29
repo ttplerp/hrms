@@ -434,7 +434,7 @@
   },
   {
    "fieldname": "je_reference",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "JE Reference",
    "options": "Journal Entry",
    "read_only": 1
@@ -497,7 +497,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-11 14:15:33.134236",
+ "modified": "2024-04-29 09:57:48.324349",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
