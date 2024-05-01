@@ -43,12 +43,17 @@ class LeaveAllocation(Document):
 		set_employee_name(self)
 		self.set_total_leaves_allocated()
 		self.validate_leave_days_and_dates()
+		self.validate_leave_policy()
 
 	def validate_leave_days_and_dates(self):
 		# all validations that should run on save as well as on update after submit
 		self.validate_back_dated_allocation()
 		self.validate_total_leaves_allocated()
 		self.validate_leave_allocation_days()
+
+	def validate_leave_policy(self):
+		if not self.leave_policy_assignment or not self.leave_policy:
+			frappe.throw("Leave allocation must be routed through"+ ': <a href="/app/Form/Leave Policy Assignment/">{0}</a>'.format('Leave Policy Assignmnet'), title='Leave Allocation Error')
 
 	def validate_leave_allocation_days(self):
 		company = frappe.db.get_value("Employee", self.employee, "company")
