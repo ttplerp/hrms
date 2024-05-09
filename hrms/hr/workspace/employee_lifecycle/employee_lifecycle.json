@@ -335,7 +335,7 @@
    "type": "Link"
   }
  ],
- "modified": "2023-02-12 23:14:17.624397",
+ "modified": "2024-05-01 14:28:43.684256",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Lifecycle",
@@ -360,7 +360,7 @@
   }
  ],
  "roles": [],
- "sequence_id": 6.0,
+ "sequence_id": 7.0,
  "shortcuts": [
   {
    "color": "Grey",

@@ -125,7 +125,7 @@
    "fieldname": "marital_status",
    "fieldtype": "Select",
    "label": "Marital Status",
-   "options": "\nSingle\nMarried\nDivorce\nDivorced\nWidowed\nsingle"
+   "options": "\nSingle\nMarried\nDivorce\nDivorced\nWidowed\nsingle\nmarried\ndivorce"
   },
   {
    "fieldname": "blood_group",
@@ -282,7 +282,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-01-03 14:36:07.896924",
+ "modified": "2024-04-30 10:04:43.011959",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Desuup",

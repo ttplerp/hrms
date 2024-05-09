@@ -94,7 +94,7 @@ def get_data(filters: Filters) -> List:
 	active_employees = frappe.get_list(
 		"Employee",
 		filters=conditions,
-		fields=["name", "employee_name", "department", "user_id", "leave_approver"],
+		fields=["name", "employee_name", "department", "user_id", "reports_to"],
 	)
 
 	data = []
