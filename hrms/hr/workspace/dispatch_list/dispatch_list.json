@@ -32,7 +32,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Dispatch",
-   "link_count": 2,
+   "link_count": 3,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -55,9 +55,19 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Dispatch Format",
+   "link_count": 0,
+   "link_to": "Dispatch Format",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2023-02-12 23:14:17.594015",
+ "modified": "2024-05-01 14:28:43.639265",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dispatch List",
@@ -66,7 +76,7 @@
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 5.0,
+ "sequence_id": 6.0,
  "shortcuts": [],
  "title": "Dispatch List"
 }

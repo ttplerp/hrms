@@ -86,6 +86,9 @@
   "eligible_for_scarcity",
   "scarcity_method",
   "scarcity",
+  "eligible_for_house_rent_allowance",
+  "house_rent_allowance_method",
+  "house_rent_allowance",
   "eligible_for_cash_handling",
   "cash_handling_method",
   "cash_handling",
@@ -904,12 +907,34 @@
    "fieldname": "lump_sum_pay_mvc",
    "fieldtype": "Int",
    "label": "Value(Lump Sum Pay)"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_house_rent_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for House Rent Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_house_rent_allowance",
+   "fieldname": "house_rent_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for House Rent Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_house_rent_allowance==1",
+   "fieldname": "house_rent_allowance",
+   "fieldtype": "Int",
+   "label": "Value House Rent",
+   "print_hide": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2024-03-12 17:02:40.457434",
+ "modified": "2024-04-26 11:38:55.973437",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

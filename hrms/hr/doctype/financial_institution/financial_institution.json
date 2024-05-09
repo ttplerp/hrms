@@ -42,22 +42,26 @@
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.loan_payment_in_bob_account",
    "fieldname": "bank_account_type",
    "fieldtype": "Link",
    "label": "Bank Account Type",
    "options": "Bank Account Type"
   },
   {
+   "depends_on": "eval:doc.loan_payment_in_bob_account",
    "fieldname": "account_holder_name",
    "fieldtype": "Data",
    "label": "Account Holder Name"
   },
   {
+   "depends_on": "eval:doc.loan_payment_in_bob_account",
    "fieldname": "account_no",
    "fieldtype": "Data",
    "label": "Account No"
   },
   {
+   "depends_on": "eval:doc.loan_payment_in_bob_account",
    "fieldname": "bank_branch",
    "fieldtype": "Link",
    "label": "Bank Branch",
@@ -69,6 +73,7 @@
    "label": "BRANCHES"
   },
   {
+   "allow_bulk_edit": 1,
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Financial Institution Item",
@@ -98,7 +103,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-12-22 12:08:52.137150",
+ "modified": "2024-05-07 12:24:20.094724",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution",
@@ -148,6 +153,7 @@
    "share": 1
   }
  ],
+ "search_fields": "bank_name",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
