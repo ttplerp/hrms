@@ -17,7 +17,9 @@ class EmployeeSeparation(EmployeeBoardingController):
 
 	def on_submit(self):
 		super(EmployeeSeparation, self).on_submit()
-		# notify_workflow_states(self)
+		if self.reason_for_resignation=="Demise":
+			self.exit_interview =1
+		# notify_workflow_states(self)exit_interview
 
 	# def on_update_after_submit(self):
 	# 	self.create_task_and_notify_user()

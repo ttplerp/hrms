@@ -37,7 +37,7 @@ frappe.ui.form.on('Employee Separation', {
 		// 		})
 		// 	});
 		// }
-		if (frm.doc.docstatus == 1 && frm.doc.exit_interview == null){
+		if (frm.doc.docstatus == 1 && frm.doc.exit_interview == null && frm.doc.reason_for_resignation !="Demise"){
 			frm.add_custom_button(__('Exit Interview'), function(){
 			frappe.model.open_mapped_doc({
 					method: "hrms.hr.doctype.employee_separation.employee_separation.make_exit_interview",
