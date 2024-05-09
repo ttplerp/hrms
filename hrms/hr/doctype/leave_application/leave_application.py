@@ -784,11 +784,11 @@ def get_leave_details(employee, date):
 
 	# is used in set query
 	lwp = frappe.get_list("Leave Type", filters={"is_lwp": 1}, pluck="name")
-	leave_approver = get_leave_approver(employee)
+	# leave_approver = get_leave_approver(employee)
 	return {
 		"leave_allocation": leave_allocation,
-		"leave_approver": get_leave_approver(employee),
-		"leave_approver_name": frappe.db.get_value("Employee",{"user_id": leave_approver},"employee_name"),
+		# "leave_approver": get_leave_approver(employee),
+		# "leave_approver_name": frappe.db.get_value("Employee",{"user_id": leave_approver},"employee_name"),
 		"lwps": lwp,
 	}
 
@@ -1237,20 +1237,20 @@ def get_approved_leaves_for_period(employee, leave_type, from_date, to_date):
 	return leave_days
 
 
-@frappe.whitelist()
-def get_leave_approver(employee):
-	leave_approver, department = frappe.db.get_value(
-		"Employee", employee, ["leave_approver", "department"]
-	)
+# @frappe.whitelist()
+# def get_leave_approver(employee):
+# 	leave_approver, department = frappe.db.get_value(
+# 		"Employee", employee, ["leave_approver", "department"]
+# 	)
 
-	if not leave_approver and department:
-		leave_approver = frappe.db.get_value(
-			"Department Approver",
-			{"parent": department, "parentfield": "leave_approvers", "idx": 1},
-			"approver",
-		)
+# 	if not leave_approver and department:
+# 		leave_approver = frappe.db.get_value(
+# 			"Department Approver",
+# 			{"parent": department, "parentfield": "leave_approvers", "idx": 1},
+# 			"approver",
+# 		)
 
-	return leave_approver
+# 	return leave_approver
 
 def get_permission_query_conditions(user):
 	if not user: user = frappe.session.user
