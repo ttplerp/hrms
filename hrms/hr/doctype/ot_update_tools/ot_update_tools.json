@@ -1,0 +1,201 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2023-02-27 19:19:09.966285",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "posting_date",
+  "project",
+  "branch",
+  "cb1",
+  "unit",
+  "recorded_by",
+  "approver",
+  "overtime_type",
+  "cb2",
+  "company",
+  "abbr",
+  "naming_series",
+  "memo",
+  "sb1",
+  "ot_details",
+  "sb2",
+  "total_amount",
+  "timestamp",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Unit",
+   "options": "Unit"
+  },
+  {
+   "default": "User",
+   "fieldname": "recorded_by",
+   "fieldtype": "Link",
+   "label": "Recorded By",
+   "options": "User"
+  },
+  {
+   "default": "Now",
+   "fieldname": "timestamp",
+   "fieldtype": "Datetime",
+   "label": "Entry Timestamp",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fetch_from": "company.abbr",
+   "fieldname": "abbr",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Abbr",
+   "read_only": 1
+  },
+  {
+   "default": "abbr.-OT-.DD./MM./-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "abbr.-OT-.DD./MM./-"
+  },
+  {
+   "fieldname": "sb1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "ot_details",
+   "fieldtype": "Table",
+   "label": "Overtime Entry detail",
+   "options": "OT tools items"
+  },
+  {
+   "fieldname": "sb2",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount "
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "OT Update Tools",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "memo",
+   "fieldtype": "Small Text",
+   "label": "Memo"
+  },
+  {
+   "default": "Overtime (Normal Rate)",
+   "fieldname": "overtime_type",
+   "fieldtype": "Select",
+   "label": "Overtime Type",
+   "options": "\nOvertime (Normal Rate)\nSunday Overtime (Half Day)\nSunday Overtime (Full Day)"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "label": "OT Approver",
+   "options": "User"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-05-14 22:54:56.379638",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "OT Update Tools",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
+}

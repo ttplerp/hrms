@@ -510,7 +510,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 
 		#Getting Approved OTs
 		ot_details = frappe.db.sql("""select  * from `tabOvertime Application` where docstatus = 1 and employee = '{0}' 
-			and processed = 0 and workflow_state = 'Recorded' and posting_date <= '{1}'""".format(source.employee, end_date), as_dict =1)
+			and processed = 0 and posting_date <= '{1}'""".format(source.employee, end_date), as_dict =1)
 		# frappe.throw(str(ot_details))
 		total_overtime_amount = 0.0
 		for d in ot_details:

@@ -9,14 +9,14 @@ from erpnext.custom_workflow import validate_workflow_states, notify_workflow_st
 
 class OvertimeApplication(Document):
 	def validate(self):
-		validate_workflow_states(self)
+		# validate_workflow_states(self)
 		self.validate_dates()
 		#self.calculate_totals()
 		self.validate_eligible_creteria()
 		self.calculate_item_amount()
 		self.calculate_total_amount()
-		if self.workflow_state != "Approved":
-			notify_workflow_states(self)
+		# if self.workflow_state != "Approved":
+		# 	notify_workflow_states(self)
 		self.processed = 0
 		#self.check_user_creation()
 
@@ -35,11 +35,13 @@ class OvertimeApplication(Document):
 		for item in self.items:
 			#frappe.msgprint("gg:{}".format(str(item)))
 			if item.overtime_type not in ("Sunday Overtime (Half Day)","Sunday Overtime (Full Day)"):
-				if item.ot_rate and item.number_of_hours:
-						item.ot_amount = flt(item.ot_rate) * flt(item.number_of_hours)
+				#if item.ot_rate and item.number_of_hours:
+				if item.ot_rate and item.approved_ot_hrs:
+						item.ot_amount = flt(item.ot_rate) * flt(item.approved_ot_hrs)
 			else:
 				if item.ot_rate:
-					item.ot_amount = flt(item.ot_rate)
+					#item.ot_amount = flt(item.ot_rate)
+					item.ot_amount = flt(item.ot_rate) * flt(item.approved_ot_hrs)
 
 	def calculate_total_amount(self):
 		total = 0
@@ -84,27 +86,28 @@ class OvertimeApplication(Document):
 	##
 	def validate_dates(self):				
 		for a in self.items:
-			if a.ot_rate <= 0:
-				frappe.throw(_("Row#{} : OT Rate cannot be 0").format(a.idx), title="0 OT Rate")
-			if not a.from_date or not a.to_date:
-				frappe.throw(_("Row#{} : Date cannot be blank").format(a.idx), title="Invalid Date")
-			elif getdate(a.to_date) > getdate(today()) or getdate(a.to_date) > getdate(today()):
-				frappe.throw(_("Row#{} : Future dates are not accepted").format(a.idx))
+			if a.overtime_type in ("Overtime (Normal Rate)"):
+				if a.ot_rate <= 0:
+					frappe.throw(_("Row#{} : OT Rate cannot be 0").format(a.idx), title="0 OT Rate")
+				if not a.from_date or not a.to_date:
+					frappe.throw(_("Row#{} : Date cannot be blank").format(a.idx), title="Invalid Date")
+				elif getdate(a.to_date) > getdate(today()) or getdate(a.to_date) > getdate(today()):
+					frappe.throw(_("Row#{} : Future dates are not accepted").format(a.idx))
 
-			for b in self.items:
-				if (a.from_date == b.from_date and a.idx != b.idx) or (a.to_date == b.to_date and a.idx != b.idx):
-					frappe.throw(_("Duplicate Dates in rows {}, {}").format(str(a.idx),str(b.idx)))
-				elif (a.from_date >= b.from_date and a.from_date <= b.to_date) and a.idx != b.idx:
-					frappe.throw(_("Row#{}: From Date/Time is overlapping with Row#{}").format(a.idx, b.idx))
-				elif (a.to_date >= b.from_date and a.to_date <= b.to_date) and a.idx != b.idx:
-					frappe.throw(_("Row#{}: To Date/Time is overlapping with Row#{}").format(a.idx, b.idx))
+				for b in self.items:
+					if (a.from_date == b.from_date and a.idx != b.idx) or (a.to_date == b.to_date and a.idx != b.idx):
+						frappe.throw(_("Duplicate Dates in rows {}, {}").format(str(a.idx),str(b.idx)))
+					elif (a.from_date >= b.from_date and a.from_date <= b.to_date) and a.idx != b.idx:
+						frappe.throw(_("Row#{}: From Date/Time is overlapping with Row#{}").format(a.idx, b.idx))
+					elif (a.to_date >= b.from_date and a.to_date <= b.to_date) and a.idx != b.idx:
+						frappe.throw(_("Row#{}: To Date/Time is overlapping with Row#{}").format(a.idx, b.idx))
 
-			# check if the dates are already claimed
-			for i in frappe.db.sql(""" select oa.name from `tabOvertime Application` oa, `tabOvertime Application Item` oai 
+				# check if the dates are already claimed
+				for i in frappe.db.sql(""" select oa.name from `tabOvertime Application` oa, `tabOvertime Application Item` oai 
 						where oa.employee = %(employee)s and oai.parent = oa.name and oa.name != %(name)s and oa.docstatus < 2
 						and %(from_date)s <= oai.to_date and %(to_date)s >= oai.from_date
 					""", {"employee": self.employee, "name": self.name, "from_date": a.from_date, "to_date": a.to_date}, as_dict=True):
-				frappe.throw(_("Row#{}: Dates are overlapping with another request {}").format(a.idx, frappe.get_desk_link("Overtime Application", i.name)))
+					frappe.throw(_("Row#{}: Dates are overlapping with another request {}").format(a.idx, frappe.get_desk_link("Overtime Application", i.name)))
 
 # @frappe.whitelist()
 # def check_for_grade(employee, grade, employee_group):
