@@ -23,16 +23,18 @@ class OTUpdateTools(Document):
 			for b in self.get("ot_details"):
 				if a.employee == b.employee:
 					duplicate += 1
-		
-			for c in frappe.db.sql("""
-							select t.name
-							from `tabOT Update Tools` t
-							inner join `tabOT tools items` i on t.name=i.parent
-							where i.employee ='{}'
-							and t.posting_date='{}'
-							and t.docstatus!=2
-						""".format(a.employee, self.posting_date), as_dict=True):
-				frappe.throw("Employee <b>{}, {}</b> OT for date <b>{}</b> is already recorded with <b>{} </b>".format(a.employee, a.employee_name, self.posting_date,c.name))
+
+			if self.name:
+				for c in frappe.db.sql("""
+								select t.name
+								from `tabOT Update Tools` t
+								inner join `tabOT tools items` i on t.name=i.parent
+								where i.employee ='{}'
+								and t.posting_date='{}'
+								and t.docstatus!=2
+								and t.name != '{}'
+							""".format(a.employee, self.posting_date, self.name), as_dict=True):
+					frappe.throw("Employee <b>{}, {}</b> OT for date <b>{}</b> is already recorded with <b>{} </b>".format(a.employee, a.employee_name, self.posting_date,c.name))
 			
 			if duplicate > 1:
 				frappe.throw("Duplicate entry for Employee <b>{}, {}</b>. Please check".format(a.employee, a.employee_name)) 
