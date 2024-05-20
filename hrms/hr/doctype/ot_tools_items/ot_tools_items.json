@@ -7,6 +7,7 @@
  "field_order": [
   "employee",
   "employee_name",
+  "designation",
   "branch",
   "department",
   "column_break_3",
@@ -137,19 +138,27 @@
    "fetch_from": "employee.sunday_overtime_full_day",
    "fieldname": "ot_rate_full_day",
    "fieldtype": "Currency",
-   "label": "OT Rate Full day"
+   "label": "OT Rate Full day",
+   "read_only": 1
   },
   {
    "fetch_from": "employee.sunday_overtime_half_day",
    "fieldname": "ot_rate_half_day",
    "fieldtype": "Currency",
-   "label": "OT Rate Half day"
+   "label": "OT Rate Half day",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "label": "Designation"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-05-10 10:43:26.845648",
+ "modified": "2024-05-15 18:43:01.870533",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "OT tools items",

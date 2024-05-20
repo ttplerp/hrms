@@ -22,6 +22,7 @@
   "sb1",
   "ot_details",
   "sb2",
+  "temporary_staff_details",
   "total_amount",
   "timestamp",
   "amended_from"
@@ -89,9 +90,10 @@
    "fieldtype": "Section Break"
   },
   {
+   "bold": 1,
    "fieldname": "ot_details",
    "fieldtype": "Table",
-   "label": "Overtime Entry detail",
+   "label": "Employee Details",
    "options": "OT tools items"
   },
   {
@@ -141,12 +143,19 @@
    "fieldname": "posting_date",
    "fieldtype": "Date",
    "label": "Posting Date"
+  },
+  {
+   "bold": 1,
+   "fieldname": "temporary_staff_details",
+   "fieldtype": "Table",
+   "label": "Temporary Staff Details",
+   "options": "Temporary staff items"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-05-14 23:26:10.689299",
+ "modified": "2024-05-17 21:42:18.719823",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "OT Update Tools",
@@ -195,6 +204,5 @@
  "sort_order": "DESC",
  "states": [],
  "track_changes": 1,
- "track_seen": 1,
- "track_views": 1
+ "track_seen": 1
 }
