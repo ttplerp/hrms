@@ -1,0 +1,166 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2024-05-16 10:05:10.001002",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "full_name",
+  "contact_no",
+  "cid_no",
+  "designation",
+  "cb0",
+  "company",
+  "deployed_branch",
+  "hire_type",
+  "cb2",
+  "memo",
+  "section_break_7",
+  "normal_ot_rate",
+  "sunday_half_day",
+  "sunday_full_day",
+  "status",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "TM-ST-.##"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "contact_no",
+   "fieldtype": "Data",
+   "label": "Contact No",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cid_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "CID No",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Select",
+   "label": "Designation",
+   "options": "1. HV Driver\n2. LV Driver\n3. Excavator Operator\n4. Supporting Staff\n5. Labour",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb0",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "deployed_branch",
+   "fieldtype": "Link",
+   "label": "Deployed Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "hire_type",
+   "fieldtype": "Select",
+   "label": "Hire Type",
+   "options": "1.Driver/Operator\n2.Temporary Staff\n3.Labour",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "memo",
+   "fieldtype": "Small Text",
+   "label": "Memo"
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "normal_ot_rate",
+   "fieldtype": "Currency",
+   "label": "Normal OT Rate",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sunday_half_day",
+   "fieldtype": "Currency",
+   "label": "Sunday Half day"
+  },
+  {
+   "fieldname": "sunday_full_day",
+   "fieldtype": "Currency",
+   "label": "Sunday Full Day"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Active\nDisable"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "TES_Temporary Staffs",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-05-20 12:20:02.469771",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "TES_Temporary Staffs",
+ "name_case": "UPPER CASE",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "full_name, designation",
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "ASC",
+ "states": [],
+ "title_field": "full_name",
+ "track_changes": 1
+}

@@ -1,0 +1,118 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2024-05-16 10:22:50.662130",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "name_code",
+  "full_name",
+  "designation",
+  "ot_type",
+  "temp_ot_amount",
+  "remarks",
+  "column_break_4",
+  "rates",
+  "half_day",
+  "full_day",
+  "ot_hours",
+  "approved_ot_hours"
+ ],
+ "fields": [
+  {
+   "fieldname": "name_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "TMP Staff Code",
+   "options": "TES_Temporary Staffs",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "name_code.full_name",
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "name_code.designation",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ot_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "OT Type",
+   "options": "\nOvertime (Normal Rate)\nSunday Overtime (Half Day)\nSunday Overtime (Full Day)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "temp_ot_amount",
+   "fieldtype": "Currency",
+   "label": "OT Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "name_code.normal_ot_rate",
+   "fieldname": "rates",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Normal Rates",
+   "read_only": 1
+  },
+  {
+   "fieldname": "half_day",
+   "fieldtype": "Currency",
+   "label": "Half Day Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "full_day",
+   "fieldtype": "Currency",
+   "label": "Full Day Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ot_hours",
+   "fieldtype": "Float",
+   "label": "OT Applied (Hrs)",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "approved_ot_hours",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Approved OT Hours",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-05-20 12:19:46.583417",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Temporary staff items",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
