@@ -25,7 +25,8 @@
   "temporary_staff_details",
   "total_amount",
   "timestamp",
-  "amended_from"
+  "amended_from",
+  "workflow_state"
  ],
  "fields": [
   {
@@ -150,12 +151,19 @@
    "fieldtype": "Table",
    "label": "Temporary Staff Details",
    "options": "Temporary staff items"
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Workflow State",
+   "options": "Workflow State"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-05-17 21:42:18.719823",
+ "modified": "2024-05-20 12:50:07.725890",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "OT Update Tools",
