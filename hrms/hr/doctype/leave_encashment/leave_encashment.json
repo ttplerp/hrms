@@ -170,7 +170,6 @@
    "fetch_from": "employee.employee_group",
    "fieldname": "employee_group",
    "fieldtype": "Link",
-   "hidden": 1,
    "label": "Employee Group",
    "options": "Employee Group",
    "read_only": 1
@@ -356,7 +355,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-05-21 15:02:09.479982",
+ "modified": "2024-05-21 15:08:12.827807",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",
