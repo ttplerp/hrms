@@ -112,6 +112,7 @@
    "read_only": 1
   },
   {
+   "fetch_from": "employee_group.max_encashment_days",
    "fieldname": "encashable_days",
    "fieldtype": "Float",
    "label": "Maximum No.of Days Entitled For Encashment",
@@ -355,7 +356,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-19 16:14:10.402364",
+ "modified": "2024-05-21 15:02:09.479982",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",
