@@ -10,6 +10,7 @@ class OTUpdateTools(Document):
 	def validate(self):
 		self.calculate_total_amount()
 		self.validate_duplicate()
+		self.send_notification()
 
 	def on_submit(self):
 		self.post_overtime_entries()
@@ -104,6 +105,27 @@ class OTUpdateTools(Document):
 				row.temp_ot_amount = flt(row.rates * row.approved_ot_hours, 2)
 			temp_total_amount += flt(row.temp_ot_amount,2)
 		self.total_amount = flt(total_amount,2) + flt(temp_total_amount,2)
+	
+	def get_args(self):
+		parent_doc = frappe.get_doc(self.doctype, self.name)
+		args = parent_doc.as_dict()
+		return args
+	
+	def send_notification(self):
+		args = self.get_args()
+		recipient=[]
+		recipient.append(self.approver)
+		if self.workflow_state == "Waiting Supervisor Approval":
+			'''
+			for user in frappe.get_all('Has Role', filters={'role': role_name}, fields=['parent']):
+				recipient.append(user['parent'])
+			'''
+			template = "OT Update Tools"
+			email_template = frappe.get_doc("Email Template", template)
+			message = frappe.render_template(email_template.response, args)
+			recipients = recipient
+			subject = email_template.subject
+			frappe.sendmail(recipients=recipients,subject=subject, message=message, attachments=None)
 
 	def post_overtime_entries(self):
 		for d in self.get("ot_details"):
