@@ -35,7 +35,7 @@ class OvertimeApplication(Document):
 		for item in self.items:
 			#frappe.msgprint("gg:{}".format(str(item)))
 			if item.overtime_type in ("Sunday Overtime (Half Day)","Sunday Overtime (Full Day)"):
-				if self.ot_rate:
+				if item.ot_rate:
 					item.ot_amount = flt(item.ot_rate)
 			else:
 				#if item.ot_rate and item.number_of_hours:
