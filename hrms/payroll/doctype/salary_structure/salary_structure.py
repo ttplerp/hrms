@@ -183,7 +183,7 @@ class SalaryStructure(Document):
 	def clean_deductions(self):
 		deductions = []
 		for a in self.deductions:
-			if a.salary_component not in ("Salary Tax", "Health Contribution", "GIS", "SWS", "PF"):
+			if a.salary_component not in ("Salary Tax", "Health Contribution", "Group Insurance Scheme", "SWS", "PF"):
 				deductions.append(a)
 		self.deductions = deductions
 
@@ -313,7 +313,7 @@ class SalaryStructure(Document):
 						sws_amt = flt(settings.get('sws_contribution'))
 						calc_amt = roundoff(sws_amt)
 						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
-					elif self.get(m['field_name']) and m['name'] == 'GIS':
+					elif self.get(m['field_name']) and m['name'] == 'Group Insurance Scheme':
 						gis_amt = flt(settings.get("gis"))
 						calc_amt = roundoff(gis_amt)
 						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
@@ -511,7 +511,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 					target.employer_pf = employer_pf_amount
 					# ----- end of code by phuntsho -----
 					d['amount'] = calc_amt
-				if d['salary_component'] == 'GIS':
+				if d['salary_component'] == 'Group Insurance Scheme':
 					gis_amt = flt(settings.get("gis"))
 					calc_amt = roundoff(gis_amt)
 					d['amount'] = calc_amt
