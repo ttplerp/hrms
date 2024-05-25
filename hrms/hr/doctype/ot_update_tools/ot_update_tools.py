@@ -17,6 +17,10 @@ class OTUpdateTools(Document):
 		pass
 		#self.post_overtime_entries()
 	
+	def on_cancel(self):
+		frappe.db.sql("Update `tabOT Update Tools` set workflow_state='Cancelled' where name='{}'".format(self.name))
+		frappe.db.commit()
+	
 	def validate_duplicate(self):
 		for a in self.get("ot_details"):
 			duplicate = 0
