@@ -14,7 +14,7 @@ class OTUpdateTools(Document):
 			self.send_notification()
 
 	def on_submit(self):
-		frappe.msgprint("OT Update Tool submitted successfully and Waiting for HR Action")
+		pass
 		#self.post_overtime_entries()
 	
 	def validate_duplicate(self):
