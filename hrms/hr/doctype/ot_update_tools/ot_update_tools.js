@@ -2,6 +2,15 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('OT Update Tools', {
+	onload: function(frm){
+			if(frm.doc.workflow_state == "Pending HR Action"){
+				if(frm.doc.docstatus == 1){
+					frm.page.set_primary_action(__('Post OT Entries'), () => {
+						post_ot_entries(frm);
+					});
+				} 	
+			}
+	},
 	refresh: function(frm){
 	// Write Your Code here
 		frm.fields_dict['ot_details'].grid.get_field('employee').get_query = function(doc, cdt, cdn) {
@@ -19,6 +28,13 @@ frappe.ui.form.on('OT Update Tools', {
 					['deployed_branch', '=', frm.doc.branch]
 				]
 			}
+		}
+		if(frm.doc.workflow_state == "Pending HR Action"){
+			if(frm.doc.docstatus == 1){
+				frm.page.set_primary_action(__('Post OT Entries'), () => {
+					post_ot_entries(frm);
+				});
+			} 	
 		}
 	},
 	memo: function(frm){
@@ -69,6 +85,20 @@ frappe.ui.form.on('OT tools items', {
 		calculate_time(frm, cdt, cdn);
 	}
 })
+
+var post_ot_entries = function(frm){
+	frappe.call({
+		method: "post_overtime_entries",
+		doc: frm.doc,
+		callback: function(r){
+			cur_frm.refresh();
+		},
+		freeze: true,
+		freeze_message: "Posting Entries to Overtime Application.... Please Wait",
+	});
+	window.location.reload();
+	frappe.throw("OT Update Tool is successfully posted ")
+}
 
 function get_rate_base_on_overtime_type(frm, cdt, cdn){
 	var i = locals[cdt][cdn]

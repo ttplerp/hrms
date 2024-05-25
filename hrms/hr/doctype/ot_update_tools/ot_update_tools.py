@@ -10,10 +10,12 @@ class OTUpdateTools(Document):
 	def validate(self):
 		self.calculate_total_amount()
 		self.validate_duplicate()
-		self.send_notification()
+		if self.workflow_state!="Draft":
+			self.send_notification()
 
 	def on_submit(self):
-		self.post_overtime_entries()
+		frappe.msgprint("OT Update Tool submitted successfully and Waiting for HR Action")
+		#self.post_overtime_entries()
 	
 	def validate_duplicate(self):
 		for a in self.get("ot_details"):
@@ -126,7 +128,8 @@ class OTUpdateTools(Document):
 			recipients = recipient
 			subject = email_template.subject
 			frappe.sendmail(recipients=recipients,subject=subject, message=message, attachments=None)
-
+		
+	@frappe.whitelist()
 	def post_overtime_entries(self):
 		for d in self.get("ot_details"):
 			doc = frappe.new_doc("Overtime Application")
@@ -153,6 +156,9 @@ class OTUpdateTools(Document):
 			})
 			doc.save()
 			doc.submit()
+		
+		frappe.db.sql("Update `tabOT Update Tools` set workflow_state='Recorded' where name='{}'".format(self.name))
+		frappe.db.commit()
 
 @frappe.whitelist()
 def get_rate(employee, overtime_type):
