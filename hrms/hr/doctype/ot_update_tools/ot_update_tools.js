@@ -3,13 +3,7 @@
 
 frappe.ui.form.on('OT Update Tools', {
 	onload: function(frm){
-			if(frm.doc.workflow_state == "Pending HR Action" && frappe.user_roles.includes(["System Manager","HR Manager"])){
-				if(frm.doc.docstatus == 1){
-					frm.page.set_primary_action(__('Post OT Entries'), () => {
-						post_ot_entries(frm);
-					});
-				} 	
-			}
+		// Your Code here
 	},
 	refresh: function(frm){
 	// Write Your Code here
@@ -29,7 +23,7 @@ frappe.ui.form.on('OT Update Tools', {
 				]
 			}
 		}
-		if(frm.doc.workflow_state == "Pending HR Action" && frappe.user_roles.includes(["System Manager","HR Manager"])){
+		if(frm.doc.workflow_state == "Pending HR Action" && frappe.user_roles.includes("HR Manager")){
 			if(frm.doc.docstatus == 1){
 				frm.page.set_primary_action(__('Post OT Entries'), () => {
 					post_ot_entries(frm);
