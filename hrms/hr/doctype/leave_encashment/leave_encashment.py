@@ -92,25 +92,25 @@ class LeaveEncashment(Document):
 			.format("<a href='/app/Form/Expense Claim/{0}'>{0}</a>")
 			.format(expense_claim.name))
 
-	def create_leave_ledger_entry(self, submit=True):
-		args = frappe._dict(
-			leaves=self.encashable_days * -1,
-			from_date=self.encashment_date,
-			to_date=self.encashment_date,
-			is_carry_forward=0
-		)
-		create_leave_ledger_entry(self, args, submit)
+	# def create_leave_ledger_entry(self, submit=True):
+	# 	args = frappe._dict(
+	# 		leaves=self.encashable_days * -1,
+	# 		from_date=self.encashment_date,
+	# 		to_date=self.encashment_date,
+	# 		is_carry_forward=0
+	# 	)
+	# 	create_leave_ledger_entry(self, args, submit)
 
 		# create reverse entry for expired leaves
-		to_date = self.get_leave_allocation().get('to_date')
-		if to_date < getdate(nowdate()):
-			args = frappe._dict(
-				leaves=self.encashable_days,
-				from_date=to_date,
-				to_date=to_date,
-				is_carry_forward=0
-			)
-			create_leave_ledger_entry(self, args, submit)
+		# to_date = self.get_leave_allocation().get('to_date')
+		# if to_date < getdate(nowdate()):
+		# 	args = frappe._dict(
+		# 		leaves=self.encashable_days,
+		# 		from_date=to_date,
+		# 		to_date=to_date,
+		# 		is_carry_forward=0
+		# 	)
+		# 	create_leave_ledger_entry(self, args, submit)
 	def check_duplicate_entry(self):
 		count = frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) \
 					if frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) else 0
