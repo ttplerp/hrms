@@ -214,28 +214,6 @@ class LeaveEncashment(Document):
 
 		return leave_allocation[0] if leave_allocation else None
 
-	def create_leave_ledger_entry(self, submit=True):
-		args = frappe._dict(
-			leaves=self.encashable_days * -1,
-			from_date=self.encashment_date,
-			to_date=self.encashment_date,
-			is_carry_forward=0,
-		)
-		create_leave_ledger_entry(self, args, submit)
-
-		# create reverse entry for expired leaves
-		leave_allocation = self.get_leave_allocation()
-		if not leave_allocation:
-			return
-
-		to_date = leave_allocation.get("to_date")
-		if to_date < getdate(nowdate()):
-			args = frappe._dict(
-				leaves=self.encashable_days, from_date=to_date, to_date=to_date, is_carry_forward=0
-			)
-			create_leave_ledger_entry(self, args, submit)
-
-
 def create_leave_encashment(leave_allocation):
 	"""Creates leave encashment for the given allocations"""
 	for allocation in leave_allocation:
