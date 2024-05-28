@@ -136,6 +136,9 @@ class OTUpdateTools(Document):
 	@frappe.whitelist()
 	def post_overtime_entries(self):
 		for d in self.get("ot_details"):
+			if frappe.db.exists("Overtime Application", {"employee":d.employee, "ot_update_tool":self.name,"docstatus":1}):
+				frappe.throw("OT of Employee {} for {} is already recored in Overtime Application ".format(d.employee, self.posting_date))
+
 			doc = frappe.new_doc("Overtime Application")
 			doc.employee = d.employee
 			doc.company = self.company
