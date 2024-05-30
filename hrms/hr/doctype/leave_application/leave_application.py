@@ -89,7 +89,8 @@ class LeaveApplication(Document):
 			if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
 				self.notify_leave_approver()
 
-		share_doc_with_approver(self, self.leave_approver)
+		# Commented by Dawa Tshering on 09/05/2024
+		# share_doc_with_approver(self, self.leave_approver)
 
 	def on_submit(self):
 		#Added by Kinley 2022/11/16
