@@ -106,7 +106,7 @@ class OvertimeApplication(Document):
 						where oa.employee = %(employee)s and oai.parent = oa.name and oa.name != %(name)s and oa.docstatus < 2
 						and %(from_date)s <= oai.to_date and %(to_date)s >= oai.from_date
 					""", {"employee": self.employee, "name": self.name, "from_date": a.from_date, "to_date": a.to_date}, as_dict=True):
-					frappe.throw(_("Row#{}: Dates are overlapping with another request {}").format(a.idx, frappe.get_desk_link("Overtime Application", i.name)))
+					frappe.throw(_("Row#{}: for Employee <b> {}, {} </b> Dates are overlapping with another request {}").format(a.idx,self.employee, self.employee_name, frappe.get_desk_link("Overtime Application", i.name)))
 
 # @frappe.whitelist()
 # def check_for_grade(employee, grade, employee_group):
