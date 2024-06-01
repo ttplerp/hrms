@@ -90,7 +90,7 @@ var post_ot_entries = function(frm){
 		freeze: true,
 		freeze_message: "Posting Entries to Overtime Application.... Please Wait",
 	});
-	window.location.reload();
+	//window.location.reload();
 	//frappe.throw("OT Update Tool is successfully posted ")
 }
 
