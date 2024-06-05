@@ -17,6 +17,7 @@ class MRInvoiceEntry(Document):
     def validate(self):
         self.validate_posting_date()
         self.set_status()
+        self.validate_advance_amt()
 
     def validate_posting_date(self):
         months = [
@@ -40,6 +41,16 @@ class MRInvoiceEntry(Document):
     
         if not (getdate(month_start_date) <= getdate(self.posting_date) <= getdate(month_end_date)):
             frappe.throw('Posting date must be between <strong>{}</strong> and <strong>{}</strong>.'.format(month_start_date, month_end_date), title="Reset Posting Date")
+
+
+    def validate_advance_amt(self):
+        for a in self.advances:
+            if flt(a.allocated_amount) > flt(a.advance_amount):
+                frappe.throw("Allocated amount {} cannot be more the Advance amount {} in Row # {}".format(
+                    frappe.bold(a.allocated_amount),
+                    frappe.bold(a.advance_amount),
+                    frappe.bold(a.idx),
+                ))
 
     def set_status(self):
         self.status = "Draft"
@@ -357,7 +368,7 @@ class MRInvoiceEntry(Document):
             """select 
 					name as mr_employee, person_name as mr_employee_name 
 					from `tabMuster Roll Employee` where status = 'Active'
-					and branch = {0} {1} {2}
+					and branch = {0} {1} {2} order by person_name
 			""".format(
                 frappe.db.escape(self.branch), cond, mr_cond
             ),

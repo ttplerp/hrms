@@ -83,24 +83,23 @@ class MREmployeeInvoice(AccountsController):
                     if flt(balance_amount) < flt(advance.amount) and self.docstatus < 2:
                         frappe.throw(_("Advance#{0} : Allocated amount Nu. {1}/- cannot be more than Advance Balance Nu. {2}/-").format(advance.reference_name, "{:,.2f}".format(flt(advance.amount)),"{:,.2f}".format(flt(balance_amount))))
                     else:
-                        amount = -1*flt(advance.amount) if self.docstatus == 2 else flt(advance.amount)
                         adv_doc = frappe.get_doc("Muster Roll Advance", advance.reference_name)
                         if cancel:
-                            adv_doc.adjusted_amount = flt(adv_doc.adjusted_amount) - flt(amount)
-                            adv_doc.balance_amount    = flt(adv_doc.balance_amount) + flt(amount)
+                            adv_doc.adjusted_amount = flt(adv_doc.adjusted_amount) - flt(advance.amount)
+                            adv_doc.balance_amount = flt(adv_doc.balance_amount) + flt(advance.amount)
                         else:
-                            adv_doc.adjusted_amount = flt(adv_doc.adjusted_amount) + flt(amount)
-                            adv_doc.balance_amount    = flt(adv_doc.balance_amount) - flt(amount)
+                            adv_doc.adjusted_amount = flt(adv_doc.adjusted_amount) + flt(advance.amount)
+                            adv_doc.balance_amount = flt(adv_doc.balance_amount) - flt(advance.amount)
                         adv_doc.save(ignore_permissions = True)
             else:
                 if flt(advance.amount) > 0:
                     query = frappe.db.sql("""select balance_amount, adjusted_amount from `tabMuster Roll Advance Item` where parent='{}' and mr_employee='{}'""".format(advance.reference_name, self.mr_employee), as_dict=True)
                     if cancel:
-                        adjusted_amount = flt(query[0].adjusted_amount) - advance.amount
-                        balance_amount = flt(query[0].balance_amount) + advance.amount
+                        adjusted_amount = flt(query[0].adjusted_amount) - flt(advance.amount)
+                        balance_amount = flt(query[0].balance_amount) + flt(advance.amount)
                     else:
-                        adjusted_amount = flt(query[0].adjusted_amount) + advance.amount
-                        balance_amount = flt(query[0].balance_amount) - advance.amount
+                        adjusted_amount = flt(query[0].adjusted_amount) + flt(advance.amount)
+                        balance_amount = flt(query[0].balance_amount) - flt(advance.amount)
                     frappe.db.sql("update `tabMuster Roll Advance Item` set adjusted_amount='{}', balance_amount='{}' where parent='{}' and mr_employee='{}'".format(adjusted_amount, balance_amount, advance.reference_name, self.mr_employee))
 
     def make_gl_entries(self):
