@@ -109,6 +109,7 @@
   {
    "fieldname": "company",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Company",
    "options": "Company",
    "reqd": 1
@@ -300,7 +301,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-05-16 09:47:21.346845",
+ "modified": "2024-06-06 17:32:28.026497",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Desuup",
