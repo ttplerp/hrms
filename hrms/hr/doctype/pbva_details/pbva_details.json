@@ -17,6 +17,7 @@
   "date_of_joining",
   "relieving_date",
   "cost_center",
+  "pms",
   "data_12",
   "amount",
   "tax_amount",
@@ -143,12 +144,17 @@
    "label": "Cost Center",
    "options": "Cost Center",
    "read_only": 1
+  },
+  {
+   "fieldname": "pms",
+   "fieldtype": "Percent",
+   "label": "PMS Percentage"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-01 13:50:43.801783",
+ "modified": "2024-06-06 16:00:07.151778",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PBVA Details",
