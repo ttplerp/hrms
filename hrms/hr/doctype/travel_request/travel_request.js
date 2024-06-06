@@ -85,13 +85,19 @@ frappe.ui.form.on("Travel Itinerary", {
 		update_total(frm,cdt, cdn);
 	},
 	"dsa": function(frm, cdt, cdn){
-		update_total_claim(cdt, cdn)
+		if(frm.doc.currency != "BTN") {
+			update_total_claim(cdt, cdn)
+		}
 	},
 	"dsa_percent": function(frm, cdt, cdn){
-		update_total_claim(cdt, cdn)
+		if(frm.doc.currency != "BTN") {
+			update_total_claim(cdt, cdn)
+		}
 	},
 	"currency": function(frm, cdt,cdn){
-		update_total_claim(cdt, cdn);
+		if(frm.doc.currency != "BTN") {
+			update_total_claim(cdt, cdn)
+		}
 	},
 	"no_days_actual":function(frm, cdt,cdn){
 		update_amount(frm,cdt, cdn);

@@ -27,8 +27,8 @@ class TravelRequest(AccountsController):
 		self.update_amount()
 		self.update_total_amount()
 		self.validate_advance_amount()
-		if self.workflow_state != "Approved":
-			notify_workflow_states(self)
+		# if self.workflow_state != "Approved":
+		# 	notify_workflow_states(self)
 	def on_update(self):
 		self.validate_travel_dates(update=True)
 		self.check_leave_applications()
@@ -39,10 +39,10 @@ class TravelRequest(AccountsController):
 		self.check_date()
 		self.make_employee_advance()
 		self.post_expense_claim()
-		notify_workflow_states(self)
+		# notify_workflow_states(self)
 
-	def on_cancel(self):
-		notify_workflow_states(self)
+	# def on_cancel(self):
+		# notify_workflow_states(self)
 
 	def validate_advance_amount(self):
 		if flt(self.advance_amount) > flt(self.total_travel_amount) * flt(0.9):
@@ -74,22 +74,24 @@ class TravelRequest(AccountsController):
 		for t in las:
 			frappe.throw("The dates in your current travel request have been used in leave application {}".format(frappe.get_desk_link("Leave Application", t.name)))
 
-	def check_advance(self):
+	def check_advance_and_report(self):
 		if self.need_advance == 1:
-			
 			if (self.employee_advance_reference and not frappe.db.exists("Employee Advance", self.employee_advance_reference)) or not self.employee_advance_reference:
 				self.db_set("employee_advance_reference",None)
 				frappe.db.commit()
-				# frappe.throw("Cannot Apply whithout claiming travel advance")
 			else:
 				if frappe.db.get_value("Employee Advance",self.employee_advance_reference,"status") != "Paid":
 					frappe.throw("Cannot Apply whithout claiming travel advance")
-
+		if not self.attach_report:
+			frappe.throw("Tour Report is mandatory")
 	def update_total_amount(self):
 		total = base_total = 0
 		for item in self.get("itinerary"):
 			total = flt(total)+flt(item.total_claim)
 			base_total = flt(base_total)+(flt(item.actual_amount) if item.actual_amount else item.amount)
+			base_total = flt(base_total)+(flt(item.mileage_amount) if item.mileage_amount else 0)
+		total += flt(self.miscellaneous_amount,2)
+		base_total += flt(self.miscellaneous_amount,2)
 		self.total_travel_amount = total
 		self.base_total_travel_amount = base_total
 		self.balance_amount = flt(self.total_travel_amount) - flt(self.advance_amount)
@@ -168,7 +170,7 @@ class TravelRequest(AccountsController):
 				frappe.db.set_value("Travel Itinerary", item.name, "no_days", item.no_days)
 		if self.itinerary:
 			# check if the travel dates are already used in other travel authorization
-			tas = frappe.db.sql("""select t3.idx, t1.name, t2.date, t2.till_date
+			tas = frappe.db.sql("""select t3.idx, t1.name, t2.from_date, t2.to_date
 					from 
 						`tabTravel Request` t1, 
 						`tabTravel Itinerary` t2,
@@ -191,7 +193,10 @@ class TravelRequest(AccountsController):
 	
 	def update_amount(self):
 		for item in self.get("itinerary"):
-			item.no_days_actual = date_diff(item.to_date, item.from_date)+1
+			if not item.to_date:
+				item.no_days_actual = date_diff(item.from_date, item.from_date)+1
+			else:
+				item.no_days_actual = date_diff(item.to_date, item.from_date)+1
 			item.amount = flt(item.no_days_actual) * (flt(item.dsa) * (flt(item.dsa_percent)/100))
 			item.mileage_amount = flt(item.mileage_rate) * flt(item.distance)
 			item.mileage_amount = flt(item.mileage_amount) if self.travel_type == 'Domestic' else 0
@@ -222,16 +227,19 @@ class TravelRequest(AccountsController):
 		return doc
 	def post_expense_claim(self):
 		default_payable_account = frappe.get_cached_value(
-					"Company", self.company, "employee_payable_account")
+					"Company", self.company, "default_expense_claim_payable_account")
+		if not default_payable_account:
+			frappe.throw("Plese set default expense claim payable account in Company")
 		default_cost_center = frappe.get_cached_value("Company", self.company, "cost_center")
 
 		expense_claim 					= frappe.new_doc("Expense Claim")
+		expense_claim.flags.ignore_mandatory = True
 		expense_claim.company 			= self.company
 		expense_claim.employee 			= self.employee
 		expense_claim.payable_account 	= default_payable_account
 		expense_claim.cost_center 		= self.cost_center or default_cost_center
 		expense_claim.is_paid 			= 0
-		expense_claim.expense_approver	= frappe.db.get_value('Employee',self.employee,'expense_approver')
+		# expense_claim.expense_approver	= frappe.db.get_value('Employee',self.employee,'expense_approver')
 		expense_claim.branch			= self.branch
 		if self.travel_type == "Domestic":
 			if self.purpose_of_travel == "Meeting & Seminars":
@@ -318,3 +326,22 @@ def get_exchange_rate(from_currency, to_currency, posting_date):
 		return ex_rate[0][0]
 
 
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+
+	if user == "Administrator":
+		return
+	if "HR User" in user_roles or "HR Manager" in user_roles:
+		return
+
+	return """(
+		`tabTravel Request`.owner = '{user}'
+		or
+		exists(select 1
+				from `tabEmployee`
+				where `tabEmployee`.name = `tabTravel Request`.employee
+				and `tabEmployee`.user_id = '{user}')
+		or
+		(`tabTravel Request`.supervisor = '{user}' and `tabTravel Request`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
+	)""".format(user=user)

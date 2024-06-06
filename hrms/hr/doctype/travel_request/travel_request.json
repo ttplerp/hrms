@@ -39,6 +39,10 @@
   "estimated_amount",
   "advance_amount",
   "advance_amount_nu",
+  "miscellaneous_amount_details_section",
+  "miscellaneous_amount",
+  "column_break_36",
+  "remarks_for_miscellaneous_amount_claim",
   "costing_details",
   "total_travel_amount",
   "base_total_travel_amount",
@@ -55,9 +59,9 @@
   "posting_date",
   "end_date_auth",
   "dimension_col_break",
-  "supervisor_name",
-  "supervisor",
-  "supervisor_designation",
+  "approver",
+  "approver_name",
+  "approver_designation",
   "travel_claim_details_section",
   "supervisor_name_details",
   "supervisor_email",
@@ -382,26 +386,6 @@
    "label": "Travel Authorization Details"
   },
   {
-   "fieldname": "supervisor_name",
-   "fieldtype": "Data",
-   "label": "Approver Name",
-   "read_only": 1
-  },
-  {
-   "fieldname": "supervisor",
-   "fieldtype": "Link",
-   "label": "Approver Email ID",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "fieldname": "supervisor_designation",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Supervisor Designation",
-   "read_only": 1
-  },
-  {
    "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
@@ -539,11 +523,50 @@
    "label": "Balance Amount(Company Currency)",
    "options": "Company:company:default_currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "approver_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approver",
+   "fieldtype": "Link",
+   "label": "Approver",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approver_designation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Approver Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "miscellaneous_amount_details_section",
+   "fieldtype": "Section Break",
+   "label": "Miscellaneous Amount Details"
+  },
+  {
+   "fieldname": "miscellaneous_amount",
+   "fieldtype": "Currency",
+   "label": "Miscellaneous Amount"
+  },
+  {
+   "fieldname": "column_break_36",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks_for_miscellaneous_amount_claim",
+   "fieldtype": "Small Text",
+   "label": "Remarks For Miscellaneous Amount Claim"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-22 12:50:00.183290",
+ "modified": "2024-05-09 22:35:53.695135",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",
