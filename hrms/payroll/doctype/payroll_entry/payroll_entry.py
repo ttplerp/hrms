@@ -584,8 +584,7 @@ class PayrollEntry(Document):
 		cc = frappe.db.sql("""
 			select
 				(case
-					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 and 'DSP' = '{dsp_or_dhq}' then c.company_cost_center
-					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 and 'DHQ' = '{dsp_or_dhq}' then c.dhq_default_cost_center
+					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 then c.company_cost_center
 					else t1.cost_center
 				end)                       as cost_center,
 				(case
@@ -649,7 +648,7 @@ class PayrollEntry(Document):
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Employee' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then t1.employee else 'Other' end)
 			order by t1.cost_center, t1.business_activity, sc.type, sc.name
-		""".format(self.fiscal_year, self.month, self.name, default_business_activity, dsp_or_dhq=cost_center_for),as_dict=1)
+		""".format(self.fiscal_year, self.month, self.name, default_business_activity),as_dict=1)
 
 		posting        = frappe._dict()
 		cc_wise_totals = frappe._dict()
