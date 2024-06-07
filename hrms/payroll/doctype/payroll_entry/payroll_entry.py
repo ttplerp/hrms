@@ -562,13 +562,7 @@ class PayrollEntry(Document):
 		default_bank_account    = frappe.db.get_value("Branch", self.processing_branch,"expense_bank_account")
 		# default_bank_account = get_bank_account(self.processing_branch)
 		default_payable_account = company.get("salary_payable_account")
-		# company_cc              = company.get("company_cost_center")
-		company_cc              = frappe.db.get_value("Branch", self.processing_branch, "cost_center")
-		cost_center_for         = frappe.db.get_value("Branch", self.processing_branch, "cost_center_for")
-		if cost_center_for == 'DSP' and not company.get("company_cost_center"):
-			frappe.throw(_("Please set <b>Default Cost Center</b> for DSP in Company"))
-		if cost_center_for == 'DHQ' and not company.get("dhq_default_cost_center"):
-			frappe.throw(_("Please set <b>DHQ Default Cost Center</b> for DHQ in Company"))
+		company_cc              = company.get("company_cost_center")
 		default_gpf_account     = company.get("employer_contribution_to_pf")
 		default_business_activity = get_default_ba()
 		salary_component_pf     = "PF"
