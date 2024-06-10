@@ -596,7 +596,7 @@ class PayrollEntry(Document):
 					when sc.type = 'Earning' then 0
 					else ifnull(sc.is_remittable,0)
 				end)                       as is_remittable,
-				sc.gl_head                 as gl_head,
+				sca.account                 as gl_head,
 				sum(ifnull(sd.amount,0))   as amount,
 				(case
 					when ifnull(sc.make_party_entry,0) = 1 then 'Payable'
@@ -614,13 +614,16 @@ class PayrollEntry(Document):
 				`tabSalary Slip` t1,
 				`tabSalary Detail` sd,
 				`tabSalary Component` sc,
+				`tabSalary Component Account` sca,
 				`tabCompany` c
 			where t1.fiscal_year = '{0}'
 			  and t1.month       = '{1}'
 			  and t1.docstatus   = 1
 			  and sd.parent      = t1.name
 			  and sc.name        = sd.salary_component
+			  and sca.parent = sc.name
 			  and c.name         = t1.company
+			  and sca.company	 = t1.company
 			  and t1.payroll_entry = '{2}'
 			  and sd.amount > 0 
 			  and exists(select 1
@@ -639,7 +642,8 @@ class PayrollEntry(Document):
 				(case when sc.type = 'Earning' then sc.type else ifnull(sc.clubbed_component,sc.name) end),
 				sc.type,
 				(case when sc.type = 'Earning' then 0 else ifnull(sc.is_remittable,0) end),
-				sc.gl_head,
+				sca.account,
+				sca.company,
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Payable' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Employee' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then t1.employee else 'Other' end)
@@ -752,6 +756,8 @@ class PayrollEntry(Document):
 				"salary_component": "Net Pay"
 			})
 
+		# if frappe.session.user == "Administrator":
+		# 	frappe.throw("posting: "+str(posting))
 		# Final Posting to accounts
 		if posting:
 			jv_name, v_title = None, ""
@@ -769,7 +775,7 @@ class PayrollEntry(Document):
 					v_title = "SALARY "+str(self.fiscal_year)+str(self.month)+" - "+str(v_title)
 				else:
 					v_title = "SALARY "+str(self.fiscal_year)+str(self.month)
-     
+	 
 				doc = frappe.get_doc({
 						"doctype": "Journal Entry",
 						"voucher_type": v_voucher_type,
@@ -782,7 +788,7 @@ class PayrollEntry(Document):
 						"company": self.company,
 						"accounts": sorted(posting[i], key=lambda item: item['cost_center']),
 						"branch": self.processing_branch,
-						"reference_type": self.doctype,
+						"reference_doctype": self.doctype,
 						"reference_name": self.name,
 					})
 				doc.flags.ignore_permissions = 1 
@@ -985,7 +991,7 @@ def create_salary_slips_for_employees(employees, args, title=None, publish_progr
 				})
 			else:
 				ped.db_set("status", "Success")
-    
+	
 			if publish_progress:
 				show_progress = 0
 				if count <= refresh_interval:

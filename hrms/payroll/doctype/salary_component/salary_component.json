@@ -13,7 +13,6 @@
   "salary_component_abbr",
   "description",
   "gl_head",
-  "enabled",
   "col_break",
   "type",
   "payment_method",
@@ -22,6 +21,9 @@
   "default",
   "is_loan_component",
   "is_pf_deductible",
+  "accounts_details_section",
+  "items",
+  "enabled",
   "sb_posting_settings",
   "make_party_entry",
   "colume_break_5",
@@ -198,12 +200,23 @@
    "fieldtype": "Data",
    "label": "Abbreviation",
    "read_only": 1
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Salary Component Accounts",
+   "options": "Salary Component Account"
+  },
+  {
+   "fieldname": "accounts_details_section",
+   "fieldtype": "Section Break",
+   "label": "Accounts Details"
   }
  ],
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-03-12 15:00:43.636998",
+ "modified": "2024-06-07 16:00:00.057277",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",
