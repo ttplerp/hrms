@@ -45,9 +45,9 @@ def get_data(filters):
 			t2.mpi_amount, t2.deduction_amount, t2.net_mpi_amount 
 			from `tabMPI Transaction` t1, `tabMPI Item` t2 
 			where t2.parent = t1.name and t1.docstatus = 1"""
-
-	if filters.get("fy"):
-		query += " and t1.fiscal_year = \'"+ str(filters.fy) + "\'"
+	
+	if filters.get("fiscal_year"):
+		query += " and t1.fiscal_year = \'"+ str(filters.fiscal_year) + "\'"
 	return frappe.db.sql(query)
 
 def get_columns():
