@@ -158,8 +158,7 @@ class MusterRollApplication(Document):
 		for a in self.items:
 			if a.approver_status == 'Approved':
 				try:
-					doc = frappe.new_doc("Muster Roll Employee")
-					doc.update({
+					common_update = {
 						"joining_date": a.joining_date,
 						"reference_doctype": self.doctype,
 						"reference_docname": self.name,
@@ -181,9 +180,18 @@ class MusterRollApplication(Document):
 						"rate_per_day": a.rate_per_day,
 						"rate_per_hour": a.rate_per_hour,
 						"company": self.company,
-						"id_card": a.citizenship_id,
 						"bank_account_type": a.bank_account_type,
-					})
+					}
+
+					if a.is_existing == 1:
+						doc = frappe.get_doc("Muster Roll Employee", a.existing_cid)
+						frappe.db.sql("update `tabMuster Roll Employee` set docstatus=0 where name=%s", a.existing_cid)
+						common_update["id_card"] = a.existing_cid
+					else:
+						doc = frappe.new_doc("Muster Roll Employee")
+						common_update["id_card"] = a.citizenship_id
+
+					doc.update(common_update)
 
 					if self.project:
 						doc.project = self.project
@@ -191,9 +199,12 @@ class MusterRollApplication(Document):
 					doc.flags.ignore_permissions = 1
 					doc.save()
 				except Exception as e:
-					frappe.throw(_(
-						f'<span style="color: red;">Muster Roll Application Row#{a.idx}: For Employee <b>{a.existing_cid}({a.person_name})</b></span>'),
-						title="Validation Error")
+					frappe.throw(
+						_(
+							f'<span style="color: red;">Muster Roll Application Row#{a.idx}: For Employee <b>{a.existing_cid}({a.person_name})</b></span>'
+						),
+						title="Validation Error"
+					)
 
 @frappe.whitelist()
 def get_mr_approvers(employee):
