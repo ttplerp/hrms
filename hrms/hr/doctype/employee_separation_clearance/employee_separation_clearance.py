@@ -51,9 +51,7 @@ class EmployeeSeparationClearance(Document):
 			frappe.throw("Store CHO has not granted clearance.")
 
 	def update_reference(self):
-		id = frappe.get_doc("Employee Separation",self.employee_separation_id)
-		id.clearance_acquired = 1 if self.docstatus == 1 else 0
-		id.save()
+		frappe.db.set_value("Employee Separation",self.employee_separation_id,"clearance_acquired", "1")
 
 	def check_reference(self):
 		if not self.employee_separation_id:
