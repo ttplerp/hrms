@@ -156,6 +156,7 @@ frappe.ui.form.on('Payroll Entry', {
 	},
 
 	add_bank_entry_button: function(frm) {
+		/*
 		frappe.call({
 			method: 'hrms.payroll.doctype.payroll_entry.payroll_entry.payroll_entry_has_bank_entries',
 			args: {
@@ -170,7 +171,12 @@ frappe.ui.form.on('Payroll Entry', {
 					}).addClass("btn-primary");
 				}
 			}
-		});
+		}); */
+		if(!frm.doc.accounting_entry){
+			frm.add_custom_button("Make Accounting Entries", function() {
+				make_accounting_entry(frm);
+			}).addClass("btn-primary");
+		}
 	},
 
 	setup: function (frm) {

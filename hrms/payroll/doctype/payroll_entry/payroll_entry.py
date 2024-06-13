@@ -532,9 +532,13 @@ class PayrollEntry(Document):
 			remittance      deductions    bank             bank entry (bank payment voucher)
 			---------------------------------------------------------------------------------
 		"""
+		'''
 		if frappe.db.exists("Journal Entry", {"reference_type": self.doctype, "reference_name": self.name}):
 			frappe.msgprint(_("Accounting Entries already posted"))
 			return
+		'''
+		if self.accounting_entry:
+			frappe.throw(_("Accounting Entries already posted"))
 
 		company = frappe.db.get("Company", self.company)
 		default_bank_account    = frappe.db.get_value("Branch", self.processing_branch,"expense_bank_account")
@@ -777,10 +781,13 @@ class PayrollEntry(Document):
 					jv_name = doc.name
 
 			if jv_name:
-				self.update_salary_slip_status(jv_name = jv_name)		
+				self.update_salary_slip_status(jv_name = jv_name)
+				frappe.db.sql("update `tabPayroll Entry` set accounting_entry=1 where name='{}'".format(self.name))
+				frappe.db.commit()		
 			frappe.msgprint(_("Salary posting to accounts is successful."),title="Posting Successful")
 		else:
 			frappe.throw(_("No data found"),title="Posting failed")
+		
 	##### Ver3.0.190304 Ends
 
 
