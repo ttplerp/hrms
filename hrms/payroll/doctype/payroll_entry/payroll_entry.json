@@ -58,7 +58,8 @@
   "section_break0",
   "column_break0",
   "posting_date",
-  "payroll_frequency"
+  "payroll_frequency",
+  "accounting_entry"
  ],
  "fields": [
   {
@@ -372,12 +373,19 @@
    "fieldtype": "Link",
    "label": "Unit",
    "options": "Department"
+  },
+  {
+   "default": "0",
+   "fieldname": "accounting_entry",
+   "fieldtype": "Check",
+   "label": "Accounting Entry",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-14 17:25:58.418041",
+ "modified": "2024-06-07 10:53:13.790561",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",
