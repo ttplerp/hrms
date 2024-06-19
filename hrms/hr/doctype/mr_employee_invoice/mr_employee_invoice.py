@@ -50,8 +50,8 @@ class MREmployeeInvoice(AccountsController):
         self.total_daily_wage_amount = flt(total_daily_wage_amount, 2)
         self.total_arrears_and_allowance = flt(total_arrears_and_allowance, 0)
         self.total_advance = flt(total_advances, 0)
-        total_deductions = flt(self.other_deduction + self.total_advance + self.total_tds_amount)
-        self.grand_total = flt(total_daily_wage_amount + total_ot_amount + total_arrears_and_allowance, 0)
+        total_deductions = flt(flt(self.other_deduction) + flt(self.total_advance) + flt(self.total_tds_amount))
+        self.grand_total = flt(flt(total_daily_wage_amount) + flt(total_ot_amount) + flt(total_arrears_and_allowance), 0)
 
         has_tds_deduction = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "has_tds_deduction")
         if has_tds_deduction:
