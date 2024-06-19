@@ -134,7 +134,6 @@ def get_data(filters: Filters) -> List:
 				row.leaves_expired = expired_leaves
 				row.opening_balance = opening
 				row.leaves_taken = leaves_taken
-
 				# not be shown on the basis of days left it create in user mind for carry_forward leave
 				row.closing_balance = new_allocation + opening - (row.leaves_expired + leaves_taken) + adjusted_leaves +carry_forwarded_leaves
 				row.indent = 1
@@ -238,7 +237,7 @@ def get_allocated_and_expired_leaves(filters,
 		# these new records should not be considered, else it leads to negative leave balance
 		if record.is_expired:
 			continue
-		if record.to_date < getdate(to_date) and record.leaves > 0:
+		if record.to_date > getdate(to_date) and record.leaves > 0:
 			# leave allocations ending before to_date, reduce leaves taken within that period
 			# since they are already used, they won't expire
 			expired_leaves += record.leaves
