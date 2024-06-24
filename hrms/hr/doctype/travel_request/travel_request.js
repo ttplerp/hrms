@@ -5,7 +5,7 @@ cur_frm.add_fetch("employee", "grade", "grade")
 
 frappe.ui.form.on('Travel Request', {
 	refresh: function(frm){
-		if (frm.doc.docstatus === 0 && frm.doc.workflow_state == 'Verified By Supervisor' && !frm.doc.__islocal && cint(frm.doc.need_advance) == 1) {
+		if (frm.doc.docstatus === 0 && !frm.doc.__islocal && cint(frm.doc.need_advance) == 1) {
 			cur_frm.add_custom_button('Request Advance', function() {
 				return frappe.call({
 					method: "make_advance_payment",

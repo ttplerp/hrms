@@ -38,11 +38,13 @@ class IncrementEntry(Document):
 		self.remove_salary_increments()
 
 	def get_emp_list(self, process_type=None):
+		
 		self.set_month_dates()
 
 		cond = self.get_filter_condition()
 		cond += self.get_joining_relieving_condition()
 		data = []
+		
 		emp_list = frappe.db.sql("""
 			select t1.name as employee, t1.employee_name, t1.grade, t1.department, t1.designation
 			from `tabEmployee` t1
@@ -61,8 +63,11 @@ class IncrementEntry(Document):
 			{}
 			order by t1.branch, t1.name
 		""".format(self.month_name, self.fiscal_year, self.month_name, cond), as_dict=True)
+		
 		if emp_list:
+			
 			for a in emp_list:
+				# frappe.throw('hi')
 				new_basic, increment, old_basic = self.get_employee_payscale(a.employee)
 				data.append({"employee":a.employee,"employee_name":a.employee_name,"grade":a.grade,"department":a.department,"designation":a.designation,"current_basic_pay":old_basic,"increment":increment,"new_basic_pay":new_basic})
 		return data

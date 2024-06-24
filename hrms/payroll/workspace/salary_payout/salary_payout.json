@@ -1,20 +1,51 @@
 {
  "charts": [],
- "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Slip\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Payroll Entry\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Register\",\"col\":3}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Transactions &amp; Reports</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Assignment\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Payroll\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Incentives\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Loans\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Payroll Reports\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Deduction Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"FaIxrW-hT3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"bkOygCmcbW\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Slip\",\"col\":3}},{\"id\":\"CH5a_xX62o\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Payroll Entry\",\"col\":3}},{\"id\":\"UuwC1_aEru\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Register\",\"col\":3}},{\"id\":\"FzgnEu5zOg\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"eQpLoEBKsn\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Transactions &amp; Reports</b></span>\",\"col\":12}},{\"id\":\"WweHcKzpHr\",\"type\":\"card\",\"data\":{\"card_name\":\"Masters\",\"col\":4}},{\"id\":\"agG-DrO1m-\",\"type\":\"card\",\"data\":{\"card_name\":\"Payroll\",\"col\":4}},{\"id\":\"HUpoD6M8oi\",\"type\":\"card\",\"data\":{\"card_name\":\"Payroll Reports\",\"col\":4}}]",
  "creation": "2022-08-20 16:43:32.769568",
+ "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
  "icon": "income",
  "idx": 0,
+ "is_hidden": 0,
  "label": "Salary Payout",
  "links": [
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Payroll",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payroll Entry",
+   "link_count": 0,
+   "link_to": "Payroll Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Slip",
+   "link_count": 0,
+   "link_to": "Salary Slip",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Masters",
-   "link_count": 4,
+   "link_count": 3,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -51,178 +82,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Payroll Period",
-   "link_count": 0,
-   "link_to": "Payroll Period",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Assignment",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Structure Assignment",
-   "link_count": 0,
-   "link_to": "Salary Structure Assignment",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Payroll",
-   "link_count": 2,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Payroll Entry",
-   "link_count": 0,
-   "link_to": "Payroll Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Slip",
-   "link_count": 0,
-   "link_to": "Salary Slip",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Deduction Reports",
-   "link_count": 3,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Provident Fund Deductions",
-   "link_count": 0,
-   "link_to": "Provident Fund Deductions",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Professional Tax Deductions",
-   "link_count": 0,
-   "link_to": "Professional Tax Deductions",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Income Tax Deductions",
-   "link_count": 0,
-   "link_to": "Income Tax Deductions",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Incentives",
-   "link_count": 3,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Additional Salary",
-   "link_count": 0,
-   "link_to": "Additional Salary",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Incentive",
-   "link_count": 0,
-   "link_to": "Employee Incentive",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Retention Bonus",
-   "link_count": 0,
-   "link_to": "Retention Bonus",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Loans",
-   "link_count": 3,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Loan Type",
-   "link_count": 0,
-   "link_to": "Loan Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Loan Application",
-   "link_count": 0,
-   "link_to": "Loan Application",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Loan",
-   "link_count": 0,
-   "link_to": "Loan",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Payroll Reports",
-   "link_count": 14,
+   "link_count": 8,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -232,46 +94,6 @@
    "label": "Salary Register",
    "link_count": 0,
    "link_to": "Salary Register",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bank Remittance",
-   "link_count": 0,
-   "link_to": "Bank Remittance",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Payments Based On Payment Mode",
-   "link_count": 0,
-   "link_to": "Salary Payments Based On Payment Mode",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Payments via ECS",
-   "link_count": 0,
-   "link_to": "Salary Payments via ECS",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Income Tax Computation",
-   "link_count": 0,
-   "link_to": "Income Tax Computation",
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
@@ -339,38 +161,19 @@
   {
    "hidden": 0,
    "is_query_report": 1,
-   "label": "LTC, PBVA, &amp; Bonus report",
-   "link_count": 0,
-   "link_to": "LTC Process Report",
-   "link_type": "Report",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
    "label": "Employee Salary Structure",
    "link_count": 0,
    "link_to": "Employee Salary Structure",
    "link_type": "Report",
    "onboard": 1,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Salary Saving Scheme Report",
-   "link_count": 0,
-   "link_to": "Salary Saving Scheme Report",
-   "link_type": "Report",
-   "onboard": 1,
-   "type": "Link"
   }
  ],
- "modified": "2023-06-07 11:26:44.688369",
- "modified_by": "Administrator",
+ "modified": "2024-06-13 17:17:46.795800",
+ "modified_by": "tshering.lham@thimphutechpark.bt",
  "module": "Payroll",
  "name": "Salary Payout",
+ "number_cards": [],
  "owner": "Administrator",
  "parent_page": "Payroll",
  "public": 1,

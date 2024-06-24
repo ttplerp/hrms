@@ -7,10 +7,14 @@
  "engine": "InnoDB",
  "field_order": [
   "start_time",
+  "grace_period",
+  "second_half_time",
+  "hours_before_lo",
+  "column_break_4_column",
+  "first_half_time",
   "end_time",
   "column_break_3",
   "holiday_list",
-  "no_of_working_hrs",
   "enable_auto_attendance",
   "auto_attendance_settings_section",
   "determine_check_in_and_check_out",
@@ -160,15 +164,38 @@
    "label": "Last Sync of Checkin"
   },
   {
-   "fieldname": "no_of_working_hrs",
-   "fieldtype": "Float",
+   "fieldname": "grace_period",
+   "fieldtype": "Time",
+   "hidden": 1,
+   "label": "Grace Period"
+  },
+  {
+   "fieldname": "hours_before_lo",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Hours before Lunch OUT"
+  },
+  {
+   "fieldname": "column_break_4_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "first_half_time",
+   "fieldtype": "Time",
+   "hidden": 1,
    "in_list_view": 1,
-   "label": "No Of Working Hrs",
-   "reqd": 1
+   "label": "First Half End Time"
+  },
+  {
+   "fieldname": "second_half_time",
+   "fieldtype": "Time",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Second Half Start Time"
   }
  ],
  "links": [],
- "modified": "2022-11-26 13:48:11.647957",
+ "modified": "2024-06-20 14:42:30.922828",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Shift Type",

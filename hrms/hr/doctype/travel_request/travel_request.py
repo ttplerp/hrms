@@ -27,6 +27,7 @@ class TravelRequest(AccountsController):
 		self.update_amount()
 		self.update_total_amount()
 		self.validate_advance_amount()
+		self.set_total_days()
 		if self.workflow_state == "Verified By Supervisor":
 			self.notify_supervisor()
 		if self.workflow_state == "Waiting Supervisor Approval":
@@ -45,11 +46,20 @@ class TravelRequest(AccountsController):
 	def on_submit(self):
 		self.check_date()
 		self.make_employee_advance()
-		self.post_expense_claim()
+		# self.post_expense_claim()
 		notify_workflow_states(self)
 
 	def on_cancel(self):
 		notify_workflow_states(self)
+
+	def set_total_days(self):
+		count = 0
+		for row in self.get("itinerary"):
+			count += row.no_days_actual
+		if cint(count) <= 3:
+			self.total_days = "Less than 3 days"
+		else:
+			self.total_days = "More than 3 days"
 
 	def validate_advance_amount(self):
 		if flt(self.advance_amount) > flt(self.total_travel_amount) * flt(0.9):
@@ -350,7 +360,7 @@ class TravelRequest(AccountsController):
 	
 	def notify_supervisor(self):
 		division = frappe.db.get_value("Employee",self.employee,"division")
-		supervisor = frappe.db.get_value("Employee", frappe.db.get_value("Department",division,"approver"),"user_id")
+		supervisor = frappe.db.get_value("Employee", frappe.db.get_value("Employee",self.employee,"reports_to"),"user_id")
 		if not supervisor:
 			frappe.throw("Set employee Supervisor for employee {}".format(self.employee))
 		parent_doc = frappe.get_doc(self.doctype, self.name)

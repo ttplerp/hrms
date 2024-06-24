@@ -1,0 +1,329 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-06-10 11:38:17.050231",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+    "mark_attendance",
+    "employee",
+    "employee_name",
+    "col_break_1",
+    "start_time",
+    "end_time",
+    "sb_dates",
+    "1",
+    "2",
+    "3",
+    "4",
+    "cb_01",
+    "5",
+    "6",
+    "7",
+    "8",
+    "cb_02",
+    "9",
+    "10",
+    "11",
+    "12",
+    "cb_03",
+    "13",
+    "14",
+    "15",
+    "16",
+    "cb_04",
+    "17",
+    "18",
+    "19",
+    "20",
+    "cb_05",
+    "21",
+    "22",
+    "23",
+    "24",
+    "cb_06",
+    "25",
+    "26",
+    "27",
+    "28",
+    "cb_07",
+    "29",
+    "30",
+    "31"
+   ],
+   "fields": [
+    {
+     "fieldname": "employee",
+     "fieldtype": "Link",
+     "in_list_view": 1,
+     "label": "Employee",
+     "options": "Employee"
+    },
+    {
+     "fetch_from": "shift_type.start_time",
+     "fieldname": "start_time",
+     "fieldtype": "Time",
+     "in_list_view": 1,
+     "label": "Start Time",
+     "read_only": 1
+    },
+    {
+     "fetch_from": "shift_type.end_time",
+     "fieldname": "end_time",
+     "fieldtype": "Time",
+     "in_list_view": 1,
+     "label": "End Time",
+     "read_only": 1
+    },
+    {
+     "fieldname": "col_break_1",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "employee_name",
+     "fieldtype": "Data",
+     "in_list_view": 1,
+     "label": "Employee Name",
+     "read_only": 1
+    },
+    {
+     "default": "0",
+     "fieldname": "mark_attendance",
+     "fieldtype": "Check",
+     "hidden": 1,
+     "label": "Mark Attendance"
+    },
+    {
+     "fieldname": "sb_dates",
+     "fieldtype": "Section Break",
+     "label": "Dates"
+    },
+    {
+     "default": "0",
+     "fieldname": "1",
+     "fieldtype": "Check",
+     "label": "1"
+    },
+    {
+     "default": "0",
+     "fieldname": "2",
+     "fieldtype": "Check",
+     "label": "2"
+    },
+    {
+     "default": "0",
+     "fieldname": "3",
+     "fieldtype": "Check",
+     "label": "3"
+    },
+    {
+     "default": "0",
+     "fieldname": "4",
+     "fieldtype": "Check",
+     "label": "4"
+    },
+    {
+     "fieldname": "cb_01",
+     "fieldtype": "Column Break"
+    },
+    {
+     "default": "0",
+     "fieldname": "5",
+     "fieldtype": "Check",
+     "label": "5"
+    },
+    {
+     "default": "0",
+     "fieldname": "6",
+     "fieldtype": "Check",
+     "label": "6"
+    },
+    {
+     "default": "0",
+     "fieldname": "7",
+     "fieldtype": "Check",
+     "label": "7"
+    },
+    {
+     "default": "0",
+     "fieldname": "8",
+     "fieldtype": "Check",
+     "label": "8"
+    },
+    {
+     "default": "0",
+     "fieldname": "9",
+     "fieldtype": "Check",
+     "label": "9"
+    },
+    {
+     "default": "0",
+     "fieldname": "10",
+     "fieldtype": "Check",
+     "label": "10"
+    },
+    {
+     "default": "0",
+     "fieldname": "11",
+     "fieldtype": "Check",
+     "label": "11"
+    },
+    {
+     "default": "0",
+     "fieldname": "12",
+     "fieldtype": "Check",
+     "label": "12"
+    },
+    {
+     "default": "0",
+     "fieldname": "13",
+     "fieldtype": "Check",
+     "label": "13"
+    },
+    {
+     "default": "0",
+     "fieldname": "14",
+     "fieldtype": "Check",
+     "label": "14"
+    },
+    {
+     "default": "0",
+     "fieldname": "15",
+     "fieldtype": "Check",
+     "label": "15"
+    },
+    {
+     "default": "0",
+     "fieldname": "16",
+     "fieldtype": "Check",
+     "label": "16"
+    },
+    {
+     "default": "0",
+     "fieldname": "17",
+     "fieldtype": "Check",
+     "label": "17"
+    },
+    {
+     "default": "0",
+     "fieldname": "18",
+     "fieldtype": "Check",
+     "label": "18"
+    },
+    {
+     "default": "0",
+     "fieldname": "19",
+     "fieldtype": "Check",
+     "label": "19"
+    },
+    {
+     "default": "0",
+     "fieldname": "20",
+     "fieldtype": "Check",
+     "label": "20"
+    },
+    {
+     "default": "0",
+     "fieldname": "21",
+     "fieldtype": "Check",
+     "label": "21"
+    },
+    {
+     "default": "0",
+     "fieldname": "22",
+     "fieldtype": "Check",
+     "label": "22"
+    },
+    {
+     "default": "0",
+     "fieldname": "23",
+     "fieldtype": "Check",
+     "label": "23"
+    },
+    {
+     "default": "0",
+     "fieldname": "25",
+     "fieldtype": "Check",
+     "label": "25"
+    },
+    {
+     "default": "0",
+     "fieldname": "26",
+     "fieldtype": "Check",
+     "label": "26"
+    },
+    {
+     "default": "0",
+     "fieldname": "27",
+     "fieldtype": "Check",
+     "label": "27"
+    },
+    {
+     "default": "0",
+     "fieldname": "28",
+     "fieldtype": "Check",
+     "label": "28"
+    },
+    {
+     "default": "0",
+     "fieldname": "29",
+     "fieldtype": "Check",
+     "label": "29"
+    },
+    {
+     "default": "0",
+     "fieldname": "30",
+     "fieldtype": "Check",
+     "label": "30"
+    },
+    {
+     "default": "0",
+     "fieldname": "31",
+     "fieldtype": "Check",
+     "label": "31"
+    },
+    {
+     "fieldname": "cb_02",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "cb_03",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "cb_04",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "cb_05",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "cb_06",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "cb_07",
+     "fieldtype": "Column Break"
+    },
+    {
+     "default": "0",
+     "fieldname": "24",
+     "fieldtype": "Check",
+     "label": "24"
+    }
+   ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-06-10 11:38:17.050231",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Shift Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

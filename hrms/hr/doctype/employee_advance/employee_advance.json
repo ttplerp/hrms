@@ -189,10 +189,10 @@
   {
    "fieldname": "advance_account",
    "fieldtype": "Link",
+   "hidden": 1,
    "ignore_user_permissions": 1,
    "label": "Advance Account",
-   "options": "Account",
-   "reqd": 1
+   "options": "Account"
   },
   {
    "fieldname": "mode_of_payment",
@@ -247,8 +247,7 @@
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
-   "options": "Branch",
-   "reqd": 1
+   "options": "Branch"
   },
   {
    "depends_on": "eval:doc.advance_type != \"Travel Advance\"",
@@ -377,7 +376,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval:doc.advance_type != \"Travel Advance\"",
    "fieldname": "approver_details_section",
    "fieldtype": "Section Break",
    "label": "APPROVER DETAILS"
@@ -478,7 +476,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-02 14:52:56.504586",
+ "modified": "2024-06-14 13:08:26.499106",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

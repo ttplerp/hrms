@@ -13,6 +13,7 @@ frappe.ui.form.on('Increment Entry', {
 			return {
 				"filters": {
 					"company": frm.doc.company,
+					
 				}
 			};
 		});
@@ -45,7 +46,7 @@ frappe.ui.form.on('Increment Entry', {
 	},
 
 	get_employee_details: function (frm) {
-		console.log('here')
+		// console.log('here')
 		return frappe.call({
 			method: 'fill_employee_details',
 			doc: frm.doc,

@@ -32,7 +32,7 @@ class LeaveEncashment(Document):
 			frappe.throw(_("You can only submit Leave Encashment for a valid encashment amount"))
 
 	def on_submit(self):
-		self.post_expense_claim()
+		# self.post_expense_claim()
 		self.create_leave_ledger_entry()
 		notify_workflow_states(self)
 

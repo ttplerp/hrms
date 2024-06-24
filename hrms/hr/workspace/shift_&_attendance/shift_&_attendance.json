@@ -5,21 +5,24 @@
    "label": "Attendance Count"
   }
  ],
- "content": "[{\"type\":\"chart\",\"data\":{\"chart_name\":\"Attendance Count\",\"col\":12}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Checkin\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Shift Request\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 18px;\\\"><b>Masters &amp; Reports</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Shifts\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Attendance\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Time\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"1bE0Y52iGq\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Attendance Count\",\"col\":12}},{\"id\":\"tK5-qJO6MB\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"W6-JvL1HrO\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"DSsYEE311z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Checkin\",\"col\":3}},{\"id\":\"snPkXViCOm\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Attendance\",\"col\":3}},{\"id\":\"edALn7IA9-\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Shift Request\",\"col\":3}},{\"id\":\"lqOMmkwzLl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"IHvPolORoj\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"VJ86RM8lWl\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 18px;\\\"><b>Masters &amp; Reports</b></span>\",\"col\":12}},{\"id\":\"dln7yg1H8w\",\"type\":\"card\",\"data\":{\"card_name\":\"Shifts\",\"col\":4}},{\"id\":\"3__Jo6jA6D\",\"type\":\"card\",\"data\":{\"card_name\":\"Attendance\",\"col\":4}},{\"id\":\"W0DkwB_UoP\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2022-08-20 15:50:06.598086",
+ "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
  "icon": "milestone",
  "idx": 0,
+ "is_hidden": 0,
  "label": "Shift & Attendance",
  "links": [
   {
    "hidden": 0,
    "is_query_report": 0,
    "label": "Shifts",
-   "link_count": 3,
+   "link_count": 2,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -36,19 +39,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Shift Assignment",
+   "label": "Assign Shift",
    "link_count": 0,
-   "link_to": "Shift Assignment",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Shift Request",
-   "link_count": 0,
-   "link_to": "Shift Request",
+   "link_to": "Assign Shift",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -57,7 +50,8 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Attendance",
-   "link_count": 5,
+   "link_count": 4,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -69,16 +63,6 @@
    "link_to": "Attendance",
    "link_type": "DocType",
    "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Attendance Request",
-   "link_count": 0,
-   "link_to": "Attendance Request",
-   "link_type": "DocType",
-   "onboard": 0,
    "type": "Link"
   },
   {
@@ -114,36 +98,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Time",
-   "link_count": 2,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Timesheet",
-   "link_count": 0,
-   "link_to": "Timesheet",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Activity Type",
-   "link_count": 0,
-   "link_to": "Activity Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Reports",
-   "link_count": 4,
+   "link_count": 2,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -166,32 +123,13 @@
    "link_type": "Report",
    "onboard": 1,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Project Profitability",
-   "link_count": 0,
-   "link_to": "Project Profitability",
-   "link_type": "Report",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employees working on a holiday",
-   "link_count": 0,
-   "link_to": "Employees working on a holiday",
-   "link_type": "Report",
-   "onboard": 1,
-   "type": "Link"
   }
  ],
- "modified": "2023-06-07 11:26:44.006585",
- "modified_by": "Administrator",
+ "modified": "2024-06-13 17:11:17.065071",
+ "modified_by": "tshering.lham@thimphutechpark.bt",
  "module": "HR",
  "name": "Shift & Attendance",
+ "number_cards": [],
  "owner": "Administrator",
  "parent_page": "HR",
  "public": 1,

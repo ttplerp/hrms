@@ -323,6 +323,7 @@
    "fieldname": "encashment_days",
    "fieldtype": "Int",
    "label": "Days Entitled For Encashment",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -355,7 +356,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-19 16:14:10.402364",
+ "modified": "2024-06-10 14:54:51.396976",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",

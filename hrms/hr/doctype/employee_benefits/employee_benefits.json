@@ -147,7 +147,7 @@
    "depends_on": "eval:doc.purpose == \"Separation\"",
    "fieldname": "reason_for_resignation",
    "fieldtype": "Select",
-   "label": "Reason for Seperation",
+   "label": "Reason for Separation",
    "options": "\nVoluntary Resignation\nSuperannuation Age\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDeath\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract"
   },
   {
@@ -309,7 +309,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-02 15:49:06.553785",
+ "modified": "2024-06-10 10:02:42.427766",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Benefits",

@@ -173,6 +173,7 @@ class PayrollEntry(Document):
 				"fiscal_year": self.fiscal_year,
 				"month": self.month
 			})
+			# frappe.throw(str(args))
 			if len(emp_list) > 300:
 				frappe.enqueue(create_salary_slips_for_employees, timeout=600, employees=emp_list, args=args)
 			else:
@@ -699,7 +700,6 @@ def create_salary_slips_for_employees(employees, args, title=None, publish_progr
 	successful = 0
 	failed = 0
 	payroll_entry = frappe.get_doc("Payroll Entry", args.payroll_entry)
-
 	payroll_entry.set('employees_failed', [])
 	refresh_interval = 25
 	total_count = len(set(employees))
@@ -710,7 +710,6 @@ def create_salary_slips_for_employees(employees, args, title=None, publish_progr
 				"doctype": "Salary Slip",
 				"employee": emp.employee
 			})
-
 			try:
 				ss = frappe.get_doc(args)
 				ss.insert()
@@ -722,6 +721,7 @@ def create_salary_slips_for_employees(employees, args, title=None, publish_progr
 
 			ped = frappe.get_doc("Payroll Employee Detail", emp.name)
 			ped.db_set("salary_slip", ss.name)
+			
 			if error:
 				ped.db_set("status", "Failed")
 				ped.db_set("error", error)

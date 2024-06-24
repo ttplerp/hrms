@@ -51,7 +51,7 @@ class EmployeeAdvance(Document):
 			self.update_travel_request()
 		if self.advance_type =="Salary Advance":
 			self.update_salary_structure()
-		self.make_bank_entry()
+		# self.make_bank_entry()
 		notify_workflow_states(self)
 
 	def select_advance_account(self):
@@ -229,7 +229,9 @@ class EmployeeAdvance(Document):
 			self.recovery_start_date = add_months(str(ss.salary_month),1)
 
 		self.max_no_of_installment = month_diff(self.recovery_end_date,self.recovery_start_date)
-
+		deduction_master = frappe.db.get_value("Employee Group",self.employee_group,"no_of_installment_for_salary")
+		if cint(deduction_master) < cint(self.deduction_month):
+			frappe.throw("No of Installment should be between 1 to "+deduction_master)
 		if flt(self.deduction_month) > flt(self.max_no_of_installment):
 			frappe.throw("<b>No.of Installment</b> can not exced  <b>{}</b>".format(self.max_no_of_installment))
 		else:
@@ -642,5 +644,5 @@ def get_permission_query_conditions(user):
 				where `tabEmployee`.name = `tabEmployee Advance`.employee
 				and `tabEmployee`.user_id = '{user}')
 		or
-		(`tabEmployee Advance`.advance_approver = '{user}' and `tabEmployee Advance`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
+		(`tabEmployee Advance`.advance_approver_name = '{user}' and `tabEmployee Advance`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
 	)""".format(user=user)

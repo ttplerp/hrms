@@ -417,7 +417,8 @@ def get_month_details(year, month):
 
 def get_officiating_employee(employee):
 	if not employee:
-		frappe.throw("Employee is Mandatory")
+		pass
+		# frappe.throw("Employee is Mandatory")
 	#return frappe.db.sql("select officiate from `tabOfficiating Employee` where docstatus = 1 and revoked != 1 and %(today)s between from_date and to_date and employee = %(employee)s order by creation desc limit 1", {"today": nowdate(), "employee": employee}, as_dict=True)
 	qry = "select officiate from `tabOfficiating Employee` where docstatus = 1 and revoked != 1 and %(today)s between from_date and to_date and employee = %(employee)s order by creation desc limit 1"
 	officiate = frappe.db.sql(qry, {"today": nowdate(), "employee": employee}, as_dict=True)

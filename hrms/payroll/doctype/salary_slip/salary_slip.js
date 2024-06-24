@@ -47,15 +47,32 @@ frappe.ui.form.on("Salary Slip", {
 		frm.fields_dict['earnings'].grid.set_column_disp("section_break_5", false);
 		frm.fields_dict['deductions'].grid.set_column_disp("section_break_5", false);
 		*/
+		//remove button
+		// if(frm.doc.docstatus == 1){
+		// 	frm.add_custom_button("Create Last Pay Certificate", function(){
+		// 		frappe.model.open_mapped_doc({
+		// 			method: "hrms.payroll.doctype.salary_slip.salary_slip.make_last_pay_certificate",
+		// 			frm: me.frm
+		// 		})
+		// 	});
+		// }
 
-		if(frm.doc.docstatus == 1){
-			frm.add_custom_button("Create Last Pay Certificate", function(){
-				frappe.model.open_mapped_doc({
-					method: "hrms.payroll.doctype.salary_slip.salary_slip.make_last_pay_certificate",
-					frm: me.frm
-				})
-			});
-		}
+
+		if (frm.doc.docstatus == 1) {			 
+			var createLastPayCertificate = function() {
+			  frappe.model.open_mapped_doc({
+				method: "hrms.payroll.doctype.salary_slip.salary_slip.make_last_pay_certificate",
+				frm: me.frm
+			  });
+			};		  
+			 
+			frm.doc.add_event("custom_event_name", createLastPayCertificate);	  
+			 
+			if (frm.get_field("create_last_pay_certificate_button")) {
+			  frm.remove_custom_button("create_last_pay_certificate_button");
+			}
+		  }
+		  
 	},
 	
 	employee: function(frm){

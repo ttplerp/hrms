@@ -36,6 +36,9 @@
   "spd",
   "spd_clearance",
   "spd_remarks",
+  "pd",
+  "pd_clearance",
+  "pd_remarks",
   "icthr",
   "icthr_clearance",
   "icthr_remarks",
@@ -249,7 +252,7 @@
   {
    "fieldname": "spd",
    "fieldtype": "Link",
-   "label": "Store & Procurement Division",
+   "label": "Store Division",
    "options": "User",
    "read_only": 1
   },
@@ -257,14 +260,14 @@
    "default": "0",
    "fieldname": "spd_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (Store & Procurement Division)",
+   "label": "Clearance Acquired (Store Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.spd",
    "read_only_depends_on": "eval:frappe.session.user != doc.spd"
   },
   {
    "fieldname": "spd_remarks",
    "fieldtype": "Small Text",
-   "label": "Store & Procurement Division Remarks",
+   "label": "Store Division Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.spd",
    "read_only_depends_on": "eval:frappe.session.user != doc.spd"
   },
@@ -279,6 +282,7 @@
    "default": "0",
    "fieldname": "icthr_clearance",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Clearance Acquired (HR Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
    "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
@@ -286,6 +290,7 @@
   {
    "fieldname": "icthr_remarks",
    "fieldtype": "Small Text",
+   "hidden": 1,
    "label": "HR Division Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
    "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
@@ -306,13 +311,6 @@
    "read_only_depends_on": "eval:frappe.session.user != doc.iad"
   },
   {
-   "fieldname": "iad_remarks",
-   "fieldtype": "Small Text",
-   "label": "Internal Audit Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
-   "read_only_depends_on": "eval:frappe.session.user != doc.iad"
-  },
-  {
    "fieldname": "rtc",
    "fieldtype": "Link",
    "label": "Rental & Tenancy",
@@ -323,6 +321,7 @@
    "default": "0",
    "fieldname": "rtc_clearance",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Clearance Acquired(Rental & Tenancy)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.rtc",
    "read_only_depends_on": "eval:frappe.session.user != doc.rtc"
@@ -352,14 +351,41 @@
    "default": "0",
    "fieldname": "clearance",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Clearance Acquired(ICT Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
    "read_only_depends_on": "eval:frappe.session.user != doc.ict"
+  },
+  {
+   "fieldname": "iad_remarks",
+   "fieldtype": "Small Text",
+   "label": "Internal Audit Division Remarks",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
+   "read_only_depends_on": "eval:frappe.session.user != doc.iad"
+  },
+  {
+   "fieldname": "pd",
+   "fieldtype": "Link",
+   "label": "Procurement Division",
+   "options": "User"
+  },
+  {
+   "default": "0",
+   "fieldname": "pd_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired (Procurement Division)"
+  },
+  {
+   "fieldname": "pd_remarks",
+   "fieldtype": "Small Text",
+   "label": "Procurement Division Remarks",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.pd",
+   "read_only_depends_on": "eval:frappe.session.user != doc.pd"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-15 12:34:02.915653",
+ "modified": "2024-06-17 16:33:45.507663",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",

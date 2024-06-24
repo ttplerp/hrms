@@ -31,8 +31,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "GL Account",
-   "options": "Account",
-   "reqd": 1
+   "options": "Account"
   },
   {
    "default": "0",
@@ -43,7 +42,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-08 10:17:28.169622",
+ "modified": "2024-06-05 10:48:47.960993",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Benefit Type",

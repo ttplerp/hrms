@@ -77,6 +77,7 @@ class LeaveApplication(Document):
 		self.validate_salary_processed_days()
 		self.validate_attendance()
 		self.set_half_day_date()
+		self.check_leaves_days()
 		if frappe.db.get_value("Leave Type", self.leave_type, "is_optional_leave"):
 			self.validate_optional_leave()
 		self.validate_applicable_after()
@@ -122,7 +123,11 @@ class LeaveApplication(Document):
 		# if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
 		# 	self.notify_employee()
 		self.cancel_attendance()
-
+	def check_leaves_days(self):
+		if self.leave_type =="Casual Leave":
+			if self.total_leave_days >= 6:
+				frappe.throw("Can not Apply for Casual Leave if Total leave days is more than 5")
+	
 	def validate_applicable_after(self):
 		if self.leave_type:
 			leave_type = frappe.get_doc("Leave Type", self.leave_type)

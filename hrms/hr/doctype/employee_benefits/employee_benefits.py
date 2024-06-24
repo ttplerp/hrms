@@ -31,7 +31,7 @@ class EmployeeBenefits(Document):
 	def on_submit(self):
 		if self.purpose == "Separation":
 			self.update_employee()
-		self.post_journal()
+		# self.post_journal()
 		self.check_leave_encashment()
 		self.update_reference()
 

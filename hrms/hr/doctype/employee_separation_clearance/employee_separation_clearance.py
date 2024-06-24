@@ -39,15 +39,11 @@ class EmployeeSeparationClearance(Document):
 		if self.afd_clearance == 0:
 			frappe.throw("Accounts & Finance Division has not granted clearance.")
 		if self.spd_clearance == 0:
-			frappe.throw("Store & Procurement Division has not granted clearance.")
-		if self.icthr_clearance == 0:
-			frappe.throw("HR Division has not granted clearance.")
+			frappe.throw("Store Division has not granted clearance.")
+		if self.pd_clearance == 0:
+			frappe.throw("Procurement Division has not granted clearance.")	
 		if self.iad_clearance == 0:
 			frappe.throw("Internal Audit Division has not granted clearance.")
-		if self.rtc_clearance == 0:
-			frappe.throw("Rental and Tenancy has not granted clearance.")
-		if self.clearance == 0:
-			frappe.throw("ICT Division has not granted clearance.")
 		# if self.sws_clearance == 0:
 		# 	frappe.throw("SWS Treasurer has not granted clearance.")
 
@@ -75,14 +71,10 @@ class EmployeeSeparationClearance(Document):
 			receipients.append(self.afd)
 		if self.spd:
 			receipients.append(self.spd)
-		if self.icthr:
-			receipients.append(self.icthr)
+		if self.pd:
+			receipients.append(self.pd)	
 		if self.iad:
 			receipients.append(self.iad)
-		if self.rtc:
-			receipients.append(self.rtc)
-		if self.ict:
-			receipients.append(self.ict)
 		# if self.sws:
 		# 	receipients.append(self.sws)
 
@@ -173,18 +165,19 @@ class EmployeeSeparationClearance(Document):
 			self.afd = frappe.db.get_value("Employee",afd_officiate[0].officiate,"user_id")
 		else:
 			self.afd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "afd"),"user_id")
-		#--------------------------- Store & Procurement Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		#--------------------------- Store Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		spd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "spd"))
 		if spd_officiate:
 			self.spd = frappe.db.get_value("Employee",spd_officiate[0].officiate,"user_id")
 		else:
 			self.spd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "spd"),"user_id")
-		#--------------------------- ICT & HR Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		icthr_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "icthr"))
-		if icthr_officiate:
-			self.icthr = frappe.db.get_value("Employee",icthr_officiate[0].officiate,"user_id")
+
+		#---------------------------Procurement Division-----------------------------------------------------------------------------------
+		pd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "pd"))
+		if pd_officiate:
+			self.pd = frappe.db.get_value("Employee",pd_officiate[0].officiate,"user_id")
 		else:
-			self.icthr = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "icthr"),"user_id")
+			self.pd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "pd"),"user_id")	
 
 		#--------------------------- Internal Audit Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		iad_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "iad"))
@@ -193,19 +186,7 @@ class EmployeeSeparationClearance(Document):
 		else:
 			self.iad = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "iad"),"user_id")
 		
-		#--------------------------- Rental and Tenancy-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		rtc_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "rtc"))
-		if rtc_officiate:
-			self.rtc = frappe.db.get_value("Employee",rtc_officiate[0].officiate,"user_id")
-		else:
-			self.rtc = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "rtc"),"user_id")
 		
-		#--------------------------- ICT Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		ict_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ict"))
-		if ict_officiate:
-			self.ict = frappe.db.get_value("Employee",ict_officiate[0].officiate,"user_id")
-		else:
-			self.ict = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "ict"),"user_id")
 		
 		#--------------------------- SWS Treasurer-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		# sws_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ict"))
@@ -240,12 +221,10 @@ def get_permission_query_conditions(user):
 		or
 		(`tabEmployee Separation Clearance`.spd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
-		(`tabEmployee Separation Clearance`.icthr = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		(`tabEmployee Separation Clearance`.pd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		
 		or
 		(`tabEmployee Separation Clearance`.iad = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
-		or
-		(`tabEmployee Separation Clearance`.rtc = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
-		or
-		(`tabEmployee Separation Clearance`.ict = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		
 
 	)""".format(user=user)

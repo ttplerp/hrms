@@ -20,7 +20,6 @@
    "label": "Expense Claim Type",
    "oldfieldname": "expense_type",
    "oldfieldtype": "Data",
-   "reqd": 1,
    "unique": 1
   },
   {
@@ -47,7 +46,7 @@
  "icon": "fa fa-flag",
  "idx": 1,
  "links": [],
- "modified": "2023-03-06 17:27:42.929713",
+ "modified": "2024-05-30 10:26:08.160296",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Type",

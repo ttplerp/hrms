@@ -25,13 +25,12 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": " Account",
-   "options": "Account",
-   "reqd": 1
+   "options": "Account"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-05-08 10:16:47.161820",
+ "modified": "2024-06-05 11:00:56.054757",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Employee Deduction Type",

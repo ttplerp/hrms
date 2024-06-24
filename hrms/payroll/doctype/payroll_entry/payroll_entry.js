@@ -12,6 +12,7 @@ frappe.ui.form.on('Payroll Entry', {
 			return {
 				"filters": {
 					"company": frm.doc.company,
+					"is_department": 1,
 				}
 			};
 		});
@@ -144,9 +145,9 @@ frappe.ui.form.on('Payroll Entry', {
 				if (r.message && !r.message.submitted) {
 					//following line is replaced with subsequent by SHIV on 2020/10/21
 					//frm.add_custom_button("Make Bank Entry", function() {
-					frm.add_custom_button("Make Accounting Entries", function() {
-						make_accounting_entry(frm);
-					}).addClass("btn-primary");
+					// frm.add_custom_button("Make Accounting Entries", function() {
+					// 	make_accounting_entry(frm);
+					// }).addClass("btn-primary");
 				}
 			}
 		});

@@ -27,6 +27,10 @@
   "column_break_18",
   "late_entry",
   "early_exit",
+  "reason_section",
+  "reason_for_late_entry",
+  "column_break_5gqcy",
+  "reason_for_early_exit",
   "amended_from"
  ],
  "fields": [
@@ -78,6 +82,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "default": "Present",
    "fieldname": "status",
    "fieldtype": "Select",
@@ -86,7 +91,8 @@
    "no_copy": 1,
    "oldfieldname": "status",
    "oldfieldtype": "Select",
-   "options": "\nPresent\nAbsent\nOn Leave\nHalf Day\nWork From Home",
+   "options": "\nPresent\nAbsent\nOn Leave\nHalf Day\nTour",
+   "read_only": 1,
    "reqd": 1,
    "search_index": 1
   },
@@ -172,10 +178,12 @@
    "label": "Late Entry"
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "early_exit",
    "fieldtype": "Check",
-   "label": "Early Exit"
+   "label": "Early Exit",
+   "read_only": 1
   },
   {
    "fieldname": "details_section",
@@ -199,16 +207,38 @@
   {
    "fieldname": "column_break_18",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reason_section",
+   "fieldtype": "Section Break",
+   "label": "Reason"
+  },
+  {
+   "fieldname": "reason_for_late_entry",
+   "fieldtype": "Text",
+   "label": "Reason For Late Entry"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "reason_for_early_exit",
+   "fieldtype": "Text",
+   "label": "Reason For Early Exit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_5gqcy",
+   "fieldtype": "Column Break"
   }
  ],
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-18 17:26:09.703215",
+ "modified": "2024-06-20 15:12:58.498836",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -256,5 +286,6 @@
  "search_fields": "employee,employee_name,attendance_date,status",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name"
 }

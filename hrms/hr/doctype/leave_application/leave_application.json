@@ -149,7 +149,8 @@
   {
    "fieldname": "description",
    "fieldtype": "Small Text",
-   "label": "Reason"
+   "label": "Reason",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_7",
@@ -254,8 +255,7 @@
    "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch",
-   "options": "Branch",
-   "reqd": 1
+   "options": "Branch"
   },
   {
    "fetch_from": "employee.designation",
@@ -294,7 +294,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2023-10-19 10:01:05.175432",
+ "modified": "2024-06-14 11:50:33.042717",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",

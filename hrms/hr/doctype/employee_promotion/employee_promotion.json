@@ -159,8 +159,7 @@
    "fieldname": "new_increment_value",
    "fieldtype": "Currency",
    "label": "New Increment Value",
-   "precision": "2",
-   "read_only": 1
+   "precision": "2"
   },
   {
    "fieldname": "column_break_13",
@@ -187,8 +186,7 @@
   {
    "fieldname": "current_basic_pay",
    "fieldtype": "Currency",
-   "label": "Current Basic Pay",
-   "read_only": 1
+   "label": "Current Basic Pay"
   },
   {
    "fieldname": "new_basic_pay",
@@ -226,7 +224,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-28 14:29:58.243077",
+ "modified": "2024-06-14 15:24:06.289879",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Promotion",

@@ -31,6 +31,7 @@
   "description",
   "travel_itinerary",
   "itinerary",
+  "total_days",
   "travel_advance_details_section",
   "currency",
   "exchange_rate",
@@ -580,12 +581,20 @@
    "fieldname": "attach_report",
    "fieldtype": "Attach",
    "ignore_user_permissions": 1,
-   "label": "Attach Report"
+   "label": "Attach Report",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_days",
+   "fieldtype": "Select",
+   "label": "Total Days",
+   "options": "\nLess than 3 days\nMore than 3 days",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-15 11:41:52.001019",
+ "modified": "2024-05-31 15:18:11.636943",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",

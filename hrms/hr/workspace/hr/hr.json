@@ -1,13 +1,15 @@
 {
  "charts": [],
- "content": "[{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"HR Dashboard\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Dashboard\",\"col\":3}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"MR Management\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Appointment Details \",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"jchXgxxERF\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"id\":\"fBCKVkdvUe\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"HR Dashboard\",\"col\":3}},{\"id\":\"s_uMxqAw52\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Dashboard\",\"col\":3}},{\"id\":\"gGLhgNcm31\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"zc2gdiU_wM\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"8xZdKvdWGU\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":4}},{\"id\":\"Iym8x4Rtrt\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"aMTeUYgYU4\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"TVYarxJ5-Q\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}},{\"id\":\"oUUHZY7qEH\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2020-03-02 15:48:58.322521",
+ "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
  "icon": "hr",
  "idx": 0,
+ "is_hidden": 0,
  "label": "HR",
  "links": [
   {
@@ -860,47 +862,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Settings",
-   "link_count": 3,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "HR Settings",
-   "link_count": 0,
-   "link_to": "HR Settings",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Daily Work Summary Group",
-   "link_count": 0,
-   "link_to": "Daily Work Summary Group",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Team Updates",
-   "link_count": 0,
-   "link_to": "team-updates",
-   "link_type": "Page",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Setup",
    "link_count": 5,
    "onboard": 0,
@@ -1025,7 +986,8 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Employee",
-   "link_count": 5,
+   "link_count": 4,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -1072,9 +1034,19 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Officiating Employee",
+   "label": "Settings",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "HR Settings",
    "link_count": 0,
-   "link_to": "Officiating Employee",
+   "link_to": "HR Settings",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -1083,7 +1055,8 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Reports",
-   "link_count": 2,
+   "link_count": 1,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -1096,148 +1069,13 @@
    "link_type": "Report",
    "onboard": 1,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee TDS Certificate",
-   "link_count": 0,
-   "link_to": "Employee TDS Certificate",
-   "link_type": "Report",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Appointment Details ",
-   "link_count": 2,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Appointment Letter",
-   "link_count": 0,
-   "link_to": "Appointment Letter",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Job Applicant",
-   "link_count": 0,
-   "link_to": "Job Applicant",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "MR Management",
-   "link_count": 9,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Employee",
-   "link_count": 0,
-   "link_to": "Muster Roll Employee",
-   "link_type": "DocType",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Application",
-   "link_count": 0,
-   "link_to": "Muster Roll Application",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Overtime Entry",
-   "link_count": 0,
-   "link_to": "Muster Roll Overtime Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Bulk Upload Tool",
-   "link_count": 0,
-   "link_to": "Bulk Upload Tool",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "MR Employee Invoice",
-   "link_count": 0,
-   "link_to": "MR Employee Invoice",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "MR Invoice Entry",
-   "link_count": 0,
-   "link_to": "MR Invoice Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Muster Roll Attendance",
-   "link_count": 0,
-   "link_to": "Muster Roll Attendance",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "MR Attendance Report",
-   "link_count": 0,
-   "link_to": "Muster Roll Monthly Attendance Sheet",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "MR Overtime Register",
-   "link_count": 0,
-   "link_to": "MR Monthly Overtime Register",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
   }
  ],
- "modified": "2023-08-17 15:33:43.235121",
- "modified_by": "Administrator",
+ "modified": "2024-06-12 12:05:30.625184",
+ "modified_by": "tshering.lham@thimphutechpark.bt",
  "module": "HR",
  "name": "HR",
+ "number_cards": [],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,

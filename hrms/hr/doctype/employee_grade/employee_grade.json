@@ -170,7 +170,7 @@
   {
    "fieldname": "fixed_allowance",
    "fieldtype": "Currency",
-   "label": "Lumpsum Increment"
+   "label": "Fixed Allowance"
   },
   {
    "fieldname": "column_break_26",
@@ -184,7 +184,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-12-06 16:29:25.183330",
+ "modified": "2024-05-27 12:52:30.836851",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Grade",

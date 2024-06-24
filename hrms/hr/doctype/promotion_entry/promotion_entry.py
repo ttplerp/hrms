@@ -68,21 +68,7 @@ class PromotionEntry(Document):
 			pe_date = self.fiscal_year+"-01-01"
 		elif self.month_name == "July":
 			pe_date = self.fiscal_year+"-07-01"
-		# query =	"""
-		# 	select t1.name as employee, t1.employee_name, t1.department, t1.designation, t1.grade as employee_grade
-		# 	from `tabEmployee` t1
-		# 	where t1.status = 'Active' and
-		# 	employment_type not in ('Contract','Probation')
-		# 	and exists(select 1
-		# 			from `tabEmployee Internal Work History` as t3
-		# 			where t3.parent = t1.name
-		# 			and ifnull(TIMESTAMPDIFF(YEAR, ifnull(t3.from_date, t1.date_of_joining), CURDATE()),0) >= (select next_promotion_years from `tabEmployee Grade` g where g.name = t1.grade and t3.grade = t1.grade)
-		# 	)
-		# 	and t1.promotion_due_date = '{}'
-		# 	and t1.promotion_cycle = '{}'
-		# 	{}
-		# 	order by t1.branch, t1.name
-		# """.format(pe_date, self.month_name, cond)
+		
 		query = """select t1.name as employee, t1.employee_name, t1.department, t1.designation, t1.grade as employee_grade 
 					from `tabEmployee` t1 
 					where t1.status = 'Active' 

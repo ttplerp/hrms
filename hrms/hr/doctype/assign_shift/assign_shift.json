@@ -1,0 +1,169 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-06-10 11:59:22.631778",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+    "supervisor",
+    "full_name",
+    "department",
+    "designation",
+    "shift_type",
+    "get_employees",
+    "col_break_1",
+    "branch",
+    "cost_center",
+    "fiscal_year",
+    "month",
+    "from_date",
+    "to_date",
+    "employee_shift_details_section",
+    "apply_to_all",
+    "shift_details",
+    "amended_from"
+   ],
+   "fields": [
+    {
+     "fieldname": "supervisor",
+     "fieldtype": "Link",
+     "in_list_view": 1,
+     "label": "Supervisor",
+     "options": "Employee",
+     "reqd": 1
+    },
+    {
+     "fieldname": "col_break_1",
+     "fieldtype": "Column Break"
+    },
+    {
+     "fieldname": "from_date",
+     "fieldtype": "Date",
+     "hidden": 1,
+     "label": "From Date"
+    },
+    {
+     "fieldname": "to_date",
+     "fieldtype": "Date",
+     "hidden": 1,
+     "label": "To Date"
+    },
+    {
+     "fieldname": "get_employees",
+     "fieldtype": "Button",
+     "label": "Get Employees"
+    },
+    {
+     "fieldname": "employee_shift_details_section",
+     "fieldtype": "Section Break",
+     "label": "Employee Shift Details"
+    },
+    {
+     "allow_bulk_edit": 1,
+     "allow_in_quick_entry": 1,
+     "fieldname": "shift_details",
+     "fieldtype": "Table",
+     "label": "Shift Details",
+     "options": "Shift Details"
+    },
+    {
+     "fetch_from": "supervisor.employee_name",
+     "fieldname": "full_name",
+     "fieldtype": "Data",
+     "label": "Name",
+     "read_only": 1
+    },
+    {
+     "fetch_from": "supervisor.department",
+     "fieldname": "department",
+     "fieldtype": "Data",
+     "label": "Department",
+     "read_only": 1
+    },
+    {
+     "fetch_from": "supervisor.branch",
+     "fieldname": "branch",
+     "fieldtype": "Data",
+     "label": "Branch",
+     "read_only": 1
+    },
+    {
+     "fetch_from": "supervisor.cost_center",
+     "fieldname": "cost_center",
+     "fieldtype": "Data",
+     "label": "Cost Center",
+     "read_only": 1
+    },
+    {
+     "fetch_from": "supervisor.designation",
+     "fieldname": "designation",
+     "fieldtype": "Data",
+     "label": "Designation",
+     "read_only": 1
+    },
+    {
+     "fieldname": "amended_from",
+     "fieldtype": "Link",
+     "label": "Amended From",
+     "no_copy": 1,
+     "options": "Assign Shift",
+     "print_hide": 1,
+     "read_only": 1
+    },
+    {
+     "default": "0",
+     "fieldname": "apply_to_all",
+     "fieldtype": "Check",
+     "hidden": 1,
+     "label": "Apply to all"
+    },
+    {
+     "fieldname": "shift_type",
+     "fieldtype": "Link",
+     "label": "Shift Type",
+     "options": "Shift Type",
+     "reqd": 1
+    },
+    {
+     "fieldname": "fiscal_year",
+     "fieldtype": "Link",
+     "label": "Fiscal Year",
+     "options": "Fiscal Year",
+     "reqd": 1
+    },
+    {
+     "fieldname": "month",
+     "fieldtype": "Select",
+     "label": "Month",
+     "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
+     "reqd": 1
+    }
+   ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-06-10 11:59:22.631778",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Assign Shift",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

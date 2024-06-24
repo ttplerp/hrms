@@ -13,6 +13,7 @@ frappe.ui.form.on('Promotion Entry', {
 			return {
 				"filters": {
 					"company": frm.doc.company,
+					"is_department": 1
 				}
 			};
 		});

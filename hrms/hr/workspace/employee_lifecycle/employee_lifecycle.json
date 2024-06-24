@@ -1,129 +1,17 @@
 {
  "charts": [],
- "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Separation\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Grievance\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Lists</b></span>\",\"col\":12}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"New Hires (This Month)\",\"col\":4}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Exits (This Month)\",\"col\":4}},{\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Trainings (This Week)\",\"col\":4}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Masters &amp; Reports</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Onboarding\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Journey\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Grievance\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Training\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Exit\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Daily Work Summary\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"44BPz9WdGY\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"VzWLVI1RGn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Separation\",\"col\":3}},{\"id\":\"79T0gZ_nhr\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee Grievance\",\"col\":3}},{\"id\":\"ezq-lMq57L\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"4otDcZkgis\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Rql-8I9hGh\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Lists</b></span>\",\"col\":12}},{\"id\":\"fZP1iXnTno\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"New Hires (This Month)\",\"col\":4}},{\"id\":\"FOF5r9sHJa\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Exits (This Month)\",\"col\":4}},{\"id\":\"eCgtKZiSFj\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Trainings (This Week)\",\"col\":4}},{\"id\":\"iaP2U4AK-L\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"0fhHaW8qBQ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Masters &amp; Reports</b></span>\",\"col\":12}},{\"id\":\"jjiWL5SaDc\",\"type\":\"card\",\"data\":{\"card_name\":\"Journey\",\"col\":4}},{\"id\":\"J1gXCdyYS8\",\"type\":\"card\",\"data\":{\"card_name\":\"Exit\",\"col\":4}},{\"id\":\"K1cnrIWmps\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2022-08-20 14:06:34.309347",
+ "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
  "icon": "assign",
  "idx": 0,
+ "is_hidden": 0,
  "label": "Employee Lifecycle",
  "links": [
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Onboarding",
-   "link_count": 3,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Onboarding Template",
-   "link_count": 0,
-   "link_to": "Employee Onboarding Template",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Onboarding",
-   "link_count": 0,
-   "link_to": "Employee Onboarding",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Skill Map",
-   "link_count": 0,
-   "link_to": "Employee Skill Map",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Grievance",
-   "link_count": 2,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Grievance Type",
-   "link_count": 0,
-   "link_to": "Grievance Type",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Grievance",
-   "link_count": 0,
-   "link_to": "Employee Grievance",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Training",
-   "link_count": 4,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Training Program",
-   "link_count": 0,
-   "link_to": "Training Program",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Training Event",
-   "link_count": 0,
-   "link_to": "Training Event",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Training Feedback",
-   "link_count": 0,
-   "link_to": "Training Feedback",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Training Result",
-   "link_count": 0,
-   "link_to": "Training Result",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
   {
    "hidden": 0,
    "is_query_report": 0,
@@ -213,74 +101,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Exit",
-   "link_count": 6,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Separation Template",
-   "link_count": 0,
-   "link_to": "Employee Separation Template",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Separation",
-   "link_count": 0,
-   "link_to": "Employee Separation",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Full and Final Settlement",
-   "link_count": 0,
-   "link_to": "Full and Final Statement",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Exit Interview",
-   "link_count": 0,
-   "link_to": "Exit Interview",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Separation Clearance",
-   "link_count": 0,
-   "link_to": "Employee Separation Clearance",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Benefits",
-   "link_count": 0,
-   "link_to": "Employee Benefits",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Journey",
    "link_count": 5,
    "onboard": 0,
@@ -335,12 +155,62 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Exit",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Separation",
+   "link_count": 0,
+   "link_to": "Employee Separation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Full and Final Settlement",
+   "link_count": 0,
+   "link_to": "Full and Final Statement",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Separation Clearance",
+   "link_count": 0,
+   "link_to": "Employee Separation Clearance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Benefits",
+   "link_count": 0,
+   "link_to": "Employee Benefits",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2023-06-23 14:56:27.853855",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2024-06-13 16:49:28.654945",
+ "modified_by": "tshering.lham@thimphutechpark.bt",
  "module": "HR",
  "name": "Employee Lifecycle",
+ "number_cards": [],
  "owner": "Administrator",
  "parent_page": "HR",
  "public": 1,

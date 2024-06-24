@@ -56,24 +56,26 @@
   "sb_approver",
   "hrgm",
   "hr_approver",
+  "mcm_approver",
+  "afd_manager",
+  "finance_approver",
   "cb_01",
   "hrgm_name",
   "hr_approver_name",
+  "mcm_approver_name",
+  "afd_manager_name",
+  "finance_approver_name",
   "separation_clearance_approver_section",
   "afd",
   "spd",
-  "icthr",
+  "pd",
   "iad",
-  "rtc",
-  "ict",
   "sws",
   "column_break_60",
   "approver_name_afd",
   "approver_name_spd",
-  "approver_name_icthr",
+  "approver_name_pd",
   "approver_name_iad",
-  "approver_name_rtc",
-  "approver_name_ict",
   "approver_name_sws",
   "tb_notifications",
   "sb_encashment_settings",
@@ -790,36 +792,20 @@
   {
    "fieldname": "spd",
    "fieldtype": "Link",
-   "label": "Store & Procurement Division",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fieldname": "icthr",
-   "fieldtype": "Link",
-   "label": "HR Division",
-   "options": "Employee",
-   "reqd": 1
+   "label": "Store Division",
+   "options": "Employee"
   },
   {
    "fieldname": "iad",
    "fieldtype": "Link",
    "label": "Internal Audit Division",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fetch_from": "spd.employee_name",
    "fieldname": "approver_name_spd",
    "fieldtype": "Data",
-   "label": "Approver Name (Store & Procurement Division)",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "icthr.employee_name",
-   "fieldname": "approver_name_icthr",
-   "fieldtype": "Data",
-   "label": "Approver Name (HR Division)",
+   "label": "Approver Name (Store Division)",
    "read_only": 1
   },
   {
@@ -833,8 +819,7 @@
    "fieldname": "afd",
    "fieldtype": "Link",
    "label": "Accounts & Finance Division",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fetch_from": "afd.employee_name",
@@ -877,19 +862,6 @@
    "options": "Email Template"
   },
   {
-   "fieldname": "rtc",
-   "fieldtype": "Link",
-   "label": "Rental & Tenancy",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fetch_from": "rtc.employee_name",
-   "fieldname": "approver_name_rtc",
-   "fieldtype": "Data",
-   "label": "Approver Name (Rental & Tenancy)"
-  },
-  {
    "fieldname": "travel_request_supervisor_notification_template",
    "fieldtype": "Link",
    "label": "Travel Request Supervisor Notification Template",
@@ -914,25 +886,10 @@
    "options": "Email Template"
   },
   {
-   "fieldname": "ict",
-   "fieldtype": "Link",
-   "label": "ICT Division",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
    "fieldname": "sws",
    "fieldtype": "Link",
    "label": "SWS Treasurer",
-   "options": "Employee",
-   "reqd": 1
-  },
-  {
-   "fetch_from": "ict.employee_name",
-   "fieldname": "approver_name_ict",
-   "fieldtype": "Data",
-   "label": "Approver Name(ICT Division)",
-   "read_only": 1
+   "options": "Employee"
   },
   {
    "fetch_from": "sws.employee_name",
@@ -1023,13 +980,64 @@
    "fieldname": "seal",
    "fieldtype": "Attach Image",
    "label": "Finance Focal Seal"
+  },
+  {
+   "fetch_from": "mcm_approver.employee_name",
+   "fieldname": "mcm_approver_name",
+   "fieldtype": "Data",
+   "label": "MCM Approver Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "afd_manager.employee_name",
+   "fieldname": "afd_manager_name",
+   "fieldtype": "Data",
+   "label": "AFD Manager Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "mcm_approver",
+   "fieldtype": "Link",
+   "label": "MCM Approver",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "afd_manager",
+   "fieldtype": "Link",
+   "label": "AFD Manager",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "finance_approver",
+   "fieldtype": "Link",
+   "label": "Finance Approver",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "finance_approver.employee_name",
+   "fieldname": "finance_approver_name",
+   "fieldtype": "Data",
+   "label": "Finance Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "pd",
+   "fieldtype": "Link",
+   "label": "Procurement Division",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "pd.employee_name",
+   "fieldname": "approver_name_pd",
+   "fieldtype": "Data",
+   "label": "Approver Name (Procurement Division)"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-07 16:27:14.959027",
+ "modified": "2024-06-17 16:25:22.465550",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

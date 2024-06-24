@@ -41,6 +41,7 @@ class SalaryStructure(Document):
 
 	# Ver 2.0, following method introduced by SHIV on 2018/02/2017
 	def validate_salary_component(self):
+		
 		dup = {}
 		for parentfield in ['earnings', 'deductions']:
 			parenttype = 'Earning' if parentfield == 'earnings' else 'Deduction'
@@ -48,6 +49,7 @@ class SalaryStructure(Document):
 				# Restricting users from entering earning component under deductions table and vice versa.
 				component_type, is_loan_component = frappe.db.get_value("Salary Component", i.salary_component, ["type", "is_loan_component"])
 				if parenttype != component_type:
+					# frappe.throw('here')
 					frappe.throw(_('Salary Component <b>`{1}`</b> of type <b>`{2}`</b> cannot be added under <b>`{3}`</b> table. <br/> <b><u>Reference# : </u></b> <a href="#Form/Salary Structure/{0}">{0}</a>').format(
 						self.name, i.salary_component, component_type, parentfield.title()), title="Invalid Salary Component")
 				# Checking duplicate entries
@@ -368,9 +370,9 @@ class SalaryStructure(Document):
 		self.total_earning   = sum([self.get_active_amount(rec) for rec in self.get("earnings")])
 		self.total_deduction = sum([self.get_active_amount(rec) for rec in self.get("deductions")])
 		self.net_pay = flt(self.total_earning) - flt(self.total_deduction)
-		# self.total_earning = flt(total_earning)
-		# self.total_deduction = flt(total_deduction)
-		# self.net_pay = flt(total_earning)-flt(total_deduction)
+		self.total_earning = flt(total_earning)
+		self.total_deduction = flt(total_deduction)
+		self.net_pay = flt(total_earning)-flt(total_deduction)
 
 		if flt(self.total_earning)-flt(self.total_deduction) < 0 and not self.get('__unsaved'):
 			frappe.throw(_("Total deduction cannot be more than total earning"), title="Invalid Data")
