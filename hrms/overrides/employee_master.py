@@ -11,11 +11,16 @@ from erpnext.setup.doctype.employee.employee import Employee
 
 class EmployeeMaster(Employee):
 	def autoname(self):
-		# naming done with combination with joining year, month and 4 digits series
-		abbr ="NHDCL"
-		year_month = str(self.date_of_joining)[2:4] + str(self.date_of_joining)[5:7]
+		# naming done with combination with joining year and 4 digits series
+		abbr ="BBS"
+		year_month = str(self.date_of_joining)[0:4]
 		name = make_autoname('EMP.####')[3:]
 		self.employee = self.name = abbr + year_month + name
+
+
+	
+
+		
 
 def validate_onboarding_process(doc, method=None):
 	"""Validates Employee Creation for linked Employee Onboarding"""
@@ -105,3 +110,6 @@ def get_retirement_date(date_of_birth=None):
 		except ValueError:
 			# invalid date
 			return
+
+
+			

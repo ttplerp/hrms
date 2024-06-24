@@ -108,6 +108,7 @@ permission_query_conditions = {
 	"Leave Encashment": "hrms.hr.doctype.leave_encashment.leave_encashment.get_permission_query_conditions",
 	"Travel Request": "hrms.hr.doctype.travel_request.travel_request.get_permission_query_conditions",
 	"Expense Claim": "hrms.hr.doctype.expense_claim.expense_claim.get_permission_query_conditions",
+	"Employee Complaints": "hrms.hr.doctype.employee_complaints.employee_complaints.get_permission_query_conditions",
 }
 #
 # has_permission = {
@@ -137,6 +138,9 @@ doc_events = {
 	"User": {
 		"validate": "erpnext.setup.doctype.employee.employee.validate_employee_role",
 		"on_update": "erpnext.setup.doctype.employee.employee.update_user_permissions",
+		# login logout
+		"on_login": "your_app.api.log_user_login",
+        "on_logout": "your_app.api.log_user_logout"
 	},
 	"Company": {
 		"validate": "hrms.overrides.company.validate_default_accounts",
@@ -179,7 +183,10 @@ doc_events = {
 scheduler_events = {
 	"all": [
 		"hrms.hr.doctype.interview.interview.send_interview_reminder",
+		"hrms.hr.doctype.active_employees.active_employees.fetch_employee_activities",
+		
 	],
+
 	"hourly": [
 		"hrms.hr.doctype.daily_work_summary_group.daily_work_summary_group.trigger_emails",
 		"hrms.hr.doctype.shift_type.shift_type.process_auto_attendance_for_all_shifts",
