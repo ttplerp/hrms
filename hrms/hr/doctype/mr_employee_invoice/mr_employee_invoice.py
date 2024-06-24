@@ -50,8 +50,6 @@ class MREmployeeInvoice(AccountsController):
         self.total_daily_wage_amount = flt(total_daily_wage_amount, 2)
         self.total_arrears_and_allowance = flt(total_arrears_and_allowance, 0)
         self.total_advance = flt(total_advances, 0)
-        total_deductions = flt(flt(self.other_deduction) + flt(self.total_advance) + flt(self.total_tds_amount))
-        self.grand_total = flt(flt(total_daily_wage_amount) + flt(total_ot_amount) + flt(total_arrears_and_allowance), 0)
 
         has_tds_deduction = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "has_tds_deduction")
         if has_tds_deduction:
@@ -60,6 +58,9 @@ class MREmployeeInvoice(AccountsController):
                 frappe.throw("Set TDS percent in Muster Roll Employee {}".format(self.mr_employee))
             total_tds_amount = flt(tds_percent)/100 * flt(self.grand_total)
         self.total_tds_amount = flt(total_tds_amount, 0)
+
+        total_deductions = flt(flt(self.other_deduction) + flt(self.total_advance) + flt(self.total_tds_amount))
+        self.grand_total = flt(flt(total_daily_wage_amount) + flt(total_ot_amount) + flt(total_arrears_and_allowance), 0)
 
         self.outstanding_amount = self.net_payable_amount = flt(
             self.grand_total - total_deductions, 0
