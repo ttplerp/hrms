@@ -168,7 +168,7 @@
    "fieldname": "resignation_type",
    "fieldtype": "Select",
    "label": "Resignation Type",
-   "options": "\nVoluntary Resignation\nSuperannuation\nEarly Retirement",
+   "options": "\nVoluntary Resignation\nSuperannuation\nEarly Retirement\nContract Expired",
    "reqd": 1
   },
   {
@@ -424,7 +424,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-24 12:51:29.717816",
+ "modified": "2024-06-24 16:33:37.419478",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Exit Interview",
