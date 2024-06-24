@@ -180,7 +180,7 @@
    "fieldname": "resaon_for_leaving",
    "fieldtype": "Select",
    "label": "Please indicate reason which applies to your situation",
-   "options": "\nHigher pay/ Better benefits\nCareer\tadvancement/job growth\nConflict with supervisor\nHealth reasons\nManagement issues\nCompany culture\nWork life balance\nJob Satisfaction\nFurther Education\nFamily/Personal reasons\nJob security\nWork flexibility",
+   "options": "\nHigher pay/ Better benefits\nCareer\tadvancement/job growth\nConflict with supervisor\nHealth reasons\nManagement issues\nCompany culture\nWork life balance\nJob Satisfaction\nFurther Education\nFamily/Personal reasons\nJob security\nWork flexibility\nOthers",
    "reqd": 1
   },
   {
@@ -424,7 +424,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-05 15:22:04.383259",
+ "modified": "2024-06-24 12:51:29.717816",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Exit Interview",
