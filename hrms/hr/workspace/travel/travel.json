@@ -15,7 +15,7 @@
  "icon": "expenses",
  "idx": 0,
  "is_hidden": 0,
- "label": "Travel and Claims",
+ "label": "Travel",
  "links": [
   {
    "hidden": 0,
@@ -114,10 +114,10 @@
    "type": "Link"
   }
  ],
- "modified": "2024-06-16 12:07:39.613589",
+ "modified": "2024-06-26 10:26:52.245040",
  "modified_by": "tshering.lham@thimphutechpark.bt",
  "module": "HR",
- "name": "Travel and Claims",
+ "name": "Travel",
  "number_cards": [],
  "owner": "Administrator",
  "parent_page": "HR",
@@ -145,5 +145,5 @@
    "type": "DocType"
   }
  ],
- "title": "Travel and Claims"
+ "title": "Travel"
 }

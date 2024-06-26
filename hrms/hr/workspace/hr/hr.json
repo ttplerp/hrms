@@ -778,90 +778,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Key Reports",
-   "link_count": 7,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "dependencies": "Attendance",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Monthly Attendance Sheet",
-   "link_count": 0,
-   "link_to": "Monthly Attendance Sheet",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Staffing Plan",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Recruitment Analytics",
-   "link_count": 0,
-   "link_to": "Recruitment Analytics",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Analytics",
-   "link_count": 0,
-   "link_to": "Employee Analytics",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Leave Balance",
-   "link_count": 0,
-   "link_to": "Employee Leave Balance",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Leave Balance Summary",
-   "link_count": 0,
-   "link_to": "Employee Leave Balance Summary",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee Advance",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Advance Summary",
-   "link_count": 0,
-   "link_to": "Employee Advance Summary",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Exits",
-   "link_count": 0,
-   "link_to": "Employee Exits",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Setup",
    "link_count": 5,
    "onboard": 0,
@@ -1069,9 +985,83 @@
    "link_type": "Report",
    "onboard": 1,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Key Reports",
+   "link_count": 6,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "Attendance",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Monthly Attendance Sheet",
+   "link_count": 0,
+   "link_to": "Monthly Attendance Sheet",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Analytics",
+   "link_count": 0,
+   "link_to": "Employee Analytics",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Leave Balance",
+   "link_count": 0,
+   "link_to": "Employee Leave Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Leave Balance Summary",
+   "link_count": 0,
+   "link_to": "Employee Leave Balance Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee Advance",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Advance Summary",
+   "link_count": 0,
+   "link_to": "Employee Advance Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Exits",
+   "link_count": 0,
+   "link_to": "Employee Exits",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-06-12 12:05:30.625184",
+ "modified": "2024-06-26 09:56:58.467637",
  "modified_by": "tshering.lham@thimphutechpark.bt",
  "module": "HR",
  "name": "HR",

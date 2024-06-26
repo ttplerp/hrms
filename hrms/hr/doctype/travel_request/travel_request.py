@@ -7,9 +7,10 @@ from frappe.model.document import Document
 from hrms.hr.utils import validate_active_employee
 import frappe
 from frappe import _
+from datetime import timedelta
 from frappe.utils.data import add_days
 from frappe.query_builder.functions import Sum
-from frappe.utils import date_diff, flt, cint, nowdate
+from frappe.utils import date_diff, flt, cint, nowdate, getdate
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 from erpnext.accounts.general_ledger import make_gl_entries
 from erpnext.controllers.accounts_controller import AccountsController
@@ -46,6 +47,8 @@ class TravelRequest(AccountsController):
 	def on_submit(self):
 		self.check_date()
 		self.make_employee_advance()
+		self.create_attendance()
+
 		# self.post_expense_claim()
 		notify_workflow_states(self)
 
@@ -67,6 +70,30 @@ class TravelRequest(AccountsController):
 		elif flt(self.advance_amount) <= 0 and self.need_advance == 1:
 			frappe.throw("Advance amount cannot be: {}".format(self.advance_amount))
 
+	def create_attendance(self):
+		d = getdate(self.itinerary[0].from_date)
+		if self.itinerary[len(self.itinerary) - 1].halt and self.itinerary[len(self.itinerary) - 1].to_date:
+			e = getdate(self.itinerary[len(self.itinerary) - 1].to_date)
+		else:
+			e = getdate(self.itinerary[len(self.itinerary) - 1].from_date)
+		days = date_diff(e, d) + 1
+		for a in (d + timedelta(n) for n in range(days)):
+			al = frappe.db.sql("select name from tabAttendance where docstatus = 1 and employee = %s and attendance_date = %s", (self.employee, a), as_dict=True)
+			if al:
+				doc = frappe.get_doc("Attendance", al[0].name)
+				doc.flags.ignore_permissions = 1
+				doc.cancel()
+			#create attendance
+			attendance = frappe.new_doc("Attendance")
+			attendance.flags.ignore_permissions = 1
+			attendance.employee = self.employee
+			attendance.employee_name = self.employee_name 
+			attendance.attendance_date = a
+			attendance.status = "Tour"
+			attendance.branch = self.branch
+			attendance.company = frappe.db.get_value("Employee", self.employee, "company")
+			attendance.reference_name = self.name
+			attendance.submit()
 	def set_dsa_percent(self):
 		for item in self.get("itinerary"):
 			if len(self.itinerary) == 1 or item.idx == len(self.itinerary) or cint(item.return_same_day) == 1:
