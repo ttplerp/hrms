@@ -581,8 +581,7 @@
    "fieldname": "attach_report",
    "fieldtype": "Attach",
    "ignore_user_permissions": 1,
-   "label": "Attach Report",
-   "reqd": 1
+   "label": "Attach Report"
   },
   {
    "fieldname": "total_days",
@@ -594,7 +593,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-05-31 15:18:11.636943",
+ "modified": "2024-06-26 15:35:03.352493",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",
