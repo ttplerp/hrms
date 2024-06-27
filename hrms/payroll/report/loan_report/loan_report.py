@@ -51,6 +51,7 @@ def get_data(filters):
 		and t3.employee = t1.employee
 		and t2.parent = t1.name
 		and t2.parentfield = 'deductions'
+		and case when t2.institution_name = 'RICBL' then t2.reference_type like '%loan%' else 1 = 1 end
 		and exists
 			(select 1
 				from `tabSalary Component` sc
