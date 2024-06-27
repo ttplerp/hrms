@@ -58,7 +58,7 @@ def get_data(filters):
 				where sc.name = t2.salary_component
 			)
 		and t2.reference_type != 'NULL'
-	""".foramt(conditions))
+	""".format(conditions))
 	return data
 
 def get_conditions(filters):
