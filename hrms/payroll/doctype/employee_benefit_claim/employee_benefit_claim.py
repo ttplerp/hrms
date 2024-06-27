@@ -101,12 +101,12 @@ class EmployeeBenefitClaim(Document):
 
 			self.total_amount 			+= flt(e.amount,2)
 			self.total_deducted_amount 	+= flt(e.tax_amount,2)
-
-		# for d in self.deduction_details:
-		# 	d.amount = flt(d.amount,2)
-		# 	if flt(d.amount) < 0:
-		# 		frappe.throw(_("Row#{}: Invalid <b>Amount</b> for <b>{}</b>").format(d.idx, d.deduction_type), title="Deduction Details")
-		# 	self.total_deducted_amount += flt(d.amount)
+		for d in self.deduction_details:
+			d.amount = flt(d.amount,2)
+			if flt(d.amount) < 0:
+				frappe.throw(_("Row#{}: Invalid <b>Amount</b> for <b>{}</b>").format(d.idx, d.deduction_type), title="Deduction Details")
+			self.total_deducted_amount += flt(d.amount)
+		self.net_amount = self.total_amount - self.total_deducted_amount
 
 		# if flt(self.total_deducted_amount,2) > flt(self.total_amount):
 		# 	frappe.throw(_("<b>Total Deduction Amount</b> cannot be more than Total Benefits"))
@@ -164,27 +164,27 @@ class EmployeeBenefitClaim(Document):
 				})
 
 		# # Deductions
-		# for b in self.deduction_details:
-		# 	if not flt(b.amount):
-		# 		continue
+		for b in self.deduction_details:
+			if not flt(b.amount):
+				continue
 
-		# 	account_type = frappe.db.get_value("Account", b.deduction_account, "account_type")
-		# 	party_type, party = None, None
-		# 	if account_type in ('Payable', 'Receivable'):
-		# 		party_type = "Employee"
-		# 		party = self.employee
+			account_type = frappe.db.get_value("Account", b.deduction_account, "account_type")
+			party_type, party = None, None
+			if account_type in ('Payable', 'Receivable'):
+				party_type = "Employee"
+				party = self.employee
 
-		# 	je.append("accounts", {
-		# 		"account": b.deduction_account,
-		# 		"credit_in_account_currency": flt(b.amount,2),
-		# 		"credit": flt(b.amount,2),
-		# 		"party_type": party_type,
-		# 		"party": party,
-		# 		"cost_center": emp.cost_center,
-		# 		"business_activity": emp.business_activity,
-		# 		"reference_type": "Employee Benefit Claim",
-		# 		"reference_name": self.name,
-		# 	})
+			je.append("accounts", {
+				"account": b.deduction_account,
+				"credit_in_account_currency": flt(b.amount,2),
+				"credit": flt(b.amount,2),
+				"party_type": party_type,
+				"party": party,
+				"cost_center": emp.cost_center,
+				"business_activity": emp.business_activity,
+				"reference_type": "Employee Benefit Claim",
+				"reference_name": self.name,
+			})
 
 		# Credit Account
 		je.append("accounts", {

@@ -30,9 +30,12 @@
   "deduction_details_section",
   "deduction_details",
   "section_break_21",
+  "total_amount",
   "journal",
   "column_break_23",
-  "total_amount",
+  "total_deducted_amount",
+  "column_break_24",
+  "net_amount",
   "section_break_25",
   "company",
   "section_break_27",
@@ -343,11 +346,28 @@
    "fieldname": "deduction_details",
    "fieldtype": "Table",
    "options": "Deduction Details"
+  },
+  {
+   "fieldname": "total_deducted_amount",
+   "fieldtype": "Currency",
+   "label": "Total Deducted Amount",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_24",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "net_amount",
+   "fieldtype": "Currency",
+   "label": "Total Payable Amount",
+   "precision": "2"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-30 10:37:57.240294",
+ "modified": "2024-06-27 12:51:58.945556",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Employee Benefit Claim",
