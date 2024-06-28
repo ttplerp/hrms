@@ -495,8 +495,8 @@ class PayrollEntry(Document):
 					when sc.type = 'Earning' then 0
 					else ifnull(sc.is_remittable,0)
 				end)                       as is_remittable,
-				sc.gl_head                 as gl_head,
-				sum(ifnull(sd.amount,0))   as amount,
+				sca.account                 as gl_head,
+				sum(ifnull(t1.employer_pf,0))   as amount,
 				(case
 					when ifnull(sc.make_party_entry,0) = 1 then 'Payable'
 					else 'Other'
@@ -513,12 +513,15 @@ class PayrollEntry(Document):
 				`tabSalary Slip` t1,
 				`tabSalary Detail` sd,
 				`tabSalary Component` sc,
+				`tabSalary Component Account` sca,
 				`tabCompany` c
 			where t1.fiscal_year = '{0}'
 			  and t1.month       = '{1}'
 			  and t1.docstatus   = 1
 			  and sd.parent      = t1.name
 			  and sd.salary_component = '{2}'
+			  and sca.parent = sc.name
+			  and sca.company = t1.company
 			  and sc.name        = sd.salary_component
 			  and c.name         = t1.company
 			  and t1.payroll_entry = '{3}'
@@ -528,10 +531,12 @@ class PayrollEntry(Document):
 						and ped.employee = t1.employee)
 			group by 
 				t1.cost_center,
+				t1.company,
 				(case when sc.type = 'Earning' then sc.type else ifnull(sc.clubbed_component,sc.name) end),
 				sc.type,
 				(case when sc.type = 'Earning' then 0 else ifnull(sc.is_remittable,0) end),
-				sc.gl_head,
+				sca.account,
+				sca.company,
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Payable' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then 'Employee' else 'Other' end),
 				(case when ifnull(sc.make_party_entry,0) = 1 then t1.employee else 'Other' end)
@@ -579,6 +584,7 @@ class PayrollEntry(Document):
 		# Salary Details
 		cc = frappe.db.sql("""
 			select
+				sc.name as sc_name,
 				(case
 					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 then c.company_cost_center
 					else t1.cost_center
@@ -653,12 +659,9 @@ class PayrollEntry(Document):
 		posting        = frappe._dict()
 		cc_wise_totals = frappe._dict()
 		tot_payable_amt= 0
+		# frappe.throw(str(cc))
 		for rec in cc:
 			# To Payables
-			# below added by Jai
-			if not rec.gl_head:
-				frappe.throw("missing gl head for: {}".format(rec.salary_component))
-
 			tot_payable_amt += (-1*flt(rec.amount) if rec.component_type == 'Deduction' else flt(rec.amount))
 			posting.setdefault("to_payables",[]).append({
 				"account"        : rec.gl_head,
@@ -681,10 +684,11 @@ class PayrollEntry(Document):
 				remit_gl_list   = [rec.gl_head,default_gpf_account] if rec.salary_component == salary_component_pf else [rec.gl_head]
 
 				for r in remit_gl_list:
-					remit_amount += flt(rec.amount)
+					# remit_amount += flt(rec.amount)
 					if r == default_gpf_account:
 						for i in self.get_cc_wise_entries(salary_component_pf):
-							  posting.setdefault(rec.salary_component,[]).append({
+							remit_amount += flt(i.amount)
+							posting.setdefault(rec.salary_component,[]).append({
 								"account"       : r,
 								"debit_in_account_currency" : flt(i.amount),
 								"cost_center"   : i.cost_center,
@@ -698,6 +702,7 @@ class PayrollEntry(Document):
 								"salary_component": rec.salary_component
 							})
 					else:
+						remit_amount += flt(rec.amount)
 						posting.setdefault(rec.salary_component,[]).append({
 							"account"       : r,
 							"debit_in_account_currency" : flt(rec.amount),
@@ -755,9 +760,8 @@ class PayrollEntry(Document):
 				"reference_name": self.name,
 				"salary_component": "Net Pay"
 			})
-
 		# if frappe.session.user == "Administrator":
-		# 	frappe.throw("posting: "+str(posting))
+		# 	frappe.throw(str(posting))
 		# Final Posting to accounts
 		if posting:
 			jv_name, v_title = None, ""
@@ -775,7 +779,7 @@ class PayrollEntry(Document):
 					v_title = "SALARY "+str(self.fiscal_year)+str(self.month)+" - "+str(v_title)
 				else:
 					v_title = "SALARY "+str(self.fiscal_year)+str(self.month)
-	 
+     
 				doc = frappe.get_doc({
 						"doctype": "Journal Entry",
 						"voucher_type": v_voucher_type,
