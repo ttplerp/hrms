@@ -57,7 +57,7 @@ def mark_employee_attendance(employee_list, status, date, leave_type=None, compa
 		attendance = frappe.get_doc(
 			dict(
 				doctype="Attendance",
-				employee=employee.get("employee"),
+				employee=str(employee.get("employee")).strip(),
 				employee_name=employee.get("employee_name"),
 				attendance_date=getdate(date),
 				status=status,
