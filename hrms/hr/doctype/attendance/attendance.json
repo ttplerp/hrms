@@ -27,6 +27,7 @@
   "column_break_18",
   "late_entry",
   "early_exit",
+  "reference_name",
   "amended_from"
  ],
  "fields": [
@@ -86,7 +87,7 @@
    "no_copy": 1,
    "oldfieldname": "status",
    "oldfieldtype": "Select",
-   "options": "\nPresent\nAbsent\nOn Leave\nHalf Day\nWork From Home",
+   "options": "\nPresent\nAbsent\nOn Leave\nHalf Day\nTour\nWork From Home",
    "reqd": 1,
    "search_index": 1
   },
@@ -199,16 +200,23 @@
   {
    "fieldname": "column_break_18",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Data",
+   "label": "Reference Name",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-18 17:26:09.703215",
+ "modified": "2024-07-05 14:58:41.294228",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -256,5 +264,6 @@
  "search_fields": "employee,employee_name,attendance_date,status",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name"
 }

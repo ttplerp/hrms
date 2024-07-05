@@ -8,6 +8,9 @@ frappe.listview_settings['Attendance'] = {
 		} else if (doc.status == "Half Day") {
 			return [__(doc.status), "orange", "status,=," + doc.status];
 		}
+		else if (doc.status == "Tour") {
+			return [__(doc.status), "blue", "status,=," + doc.status];
+		}
 	},
 
 	onload: function(list_view) {
