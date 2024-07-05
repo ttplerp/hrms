@@ -19,7 +19,7 @@ from datetime import datetime
 
 class TravelRequest(AccountsController):
 	def validate(self):
-		# validate_workflow_states(self)
+		validate_workflow_states(self)
 		validate_active_employee(self.employee)
 		self.validate_travel_dates()
 		self.check_leave_applications()
@@ -28,8 +28,8 @@ class TravelRequest(AccountsController):
 		self.update_amount()
 		self.update_total_amount()
 		self.validate_advance_amount()
-		# if self.workflow_state != "Approved":
-		# 	notify_workflow_states(self)
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
 	def on_update(self):
 		self.validate_travel_dates(update=True)
 		self.check_leave_applications()
@@ -41,10 +41,10 @@ class TravelRequest(AccountsController):
 		self.make_employee_advance()
 		self.post_expense_claim()
 		self.create_attendance()
-		# notify_workflow_states(self)
+		notify_workflow_states(self)
 
-	# def on_cancel(self):
-	# 	notify_workflow_states(self)
+	def on_cancel(self):
+		notify_workflow_states(self)
 
 	def validate_advance_amount(self):
 		if flt(self.advance_amount) > flt(self.total_travel_amount) * flt(0.9):
