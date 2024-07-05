@@ -11,6 +11,9 @@ frappe.listview_settings['Attendance'] = {
 		else if (doc.status == "Tour") {
 			return [__(doc.status), "blue", "status,=," + doc.status];
 		}
+		else if (doc.status == "Training") {
+			return [__(doc.status), "blue", "status,=," + doc.status];
+		}
 	},
 
 	onload: function(list_view) {

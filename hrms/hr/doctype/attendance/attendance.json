@@ -87,7 +87,7 @@
    "no_copy": 1,
    "oldfieldname": "status",
    "oldfieldtype": "Select",
-   "options": "\nPresent\nAbsent\nOn Leave\nHalf Day\nTour\nWork From Home",
+   "options": "\nPresent\nAbsent\nOn Leave\nHalf Day\nTour\nTraining\nWork From Home",
    "reqd": 1,
    "search_index": 1
   },
@@ -212,7 +212,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-05 14:58:41.294228",
+ "modified": "2024-07-05 16:03:38.164688",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",

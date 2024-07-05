@@ -73,16 +73,28 @@ class TravelRequest(AccountsController):
 				doc.flags.ignore_permissions = 1
 				doc.cancel()
 			#create attendance
-			attendance = frappe.new_doc("Attendance")
-			attendance.flags.ignore_permissions = 1
-			attendance.employee = self.employee
-			attendance.employee_name = self.employee_name 
-			attendance.attendance_date = a
-			attendance.status = "Tour"
-			attendance.branch = self.branch
-			attendance.company = frappe.db.get_value("Employee", self.employee, "company")
-			attendance.reference_name = self.name
-			attendance.submit()
+			if self.purpose_of_travel=="Training":
+				attendance = frappe.new_doc("Attendance")
+				attendance.flags.ignore_permissions = 1
+				attendance.employee = self.employee
+				attendance.employee_name = self.employee_name 
+				attendance.attendance_date = a
+				attendance.status = "Training"
+				attendance.branch = self.branch
+				attendance.company = frappe.db.get_value("Employee", self.employee, "company")
+				attendance.reference_name = self.name
+				attendance.submit()
+			else:
+				attendance = frappe.new_doc("Attendance")
+				attendance.flags.ignore_permissions = 1
+				attendance.employee = self.employee
+				attendance.employee_name = self.employee_name 
+				attendance.attendance_date = a
+				attendance.status = "Tour"
+				attendance.branch = self.branch
+				attendance.company = frappe.db.get_value("Employee", self.employee, "company")
+				attendance.reference_name = self.name
+				attendance.submit()
 
 	def check_leave_applications(self):
 		las = frappe.db.sql("""select t1.name from `tabLeave Application` t1 
