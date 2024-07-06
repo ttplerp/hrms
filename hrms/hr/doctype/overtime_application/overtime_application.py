@@ -19,6 +19,18 @@ class OvertimeApplication(Document):
 		# 	notify_workflow_states(self)
 		self.processed = 0
 		#self.check_user_creation()
+		self.validate_duplicate_ot_update_tool()
+	
+	def validate_duplicate_ot_update_tool(self):
+		dtl = frappe.db.sql("""
+							select name, ot_update_tool, employee from `tabOvertime Application` 
+							where ot_update_tool = '{}'
+							and employee='{}'
+							and name!='{}'
+							and docstatus!=2
+				""".format(self.ot_update_tool, self.employee, self.name), as_dict=True)
+		if dtl:
+			frappe.throw("{} already recorded in Overtime Application".format(dtl[0].ot_update_tool))
 
 	def check_user_creation(self):
 		user_id = frappe.db.get_value("Employee", self.employee, "user_id")
