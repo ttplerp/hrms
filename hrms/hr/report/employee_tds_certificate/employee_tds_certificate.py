@@ -198,14 +198,14 @@ def get_bulk_leave_encashment(filters):
 		INNER JOIN 
 			`tabBulk Leave Encashment Item` blei ON ble.name = blei.parent
 		INNER JOIN
-			`tabTDS Receipt Update` r ON ble.fiscal_year ='2023' AND r.purpose="Bulk Leave Encashment"
+			`tabTDS Receipt Update` r ON ble.fiscal_year ='{fiscal_year}' AND r.purpose="Bulk Leave Encashment"
 		WHERE blei.employee = '{employee}' 
 		AND ble.leave_type = "Earned Leave"
 		AND ble.docstatus = 1 
 		AND ble.fiscal_year='{fiscal_year}'
-
+		limit 1
 		""".format(employee=filters.employee, fiscal_year=filters.fiscal_year), as_dict=True)
-				
+	
 	for a in datas:
 		data.append({
 			"month_year":month_year, 
