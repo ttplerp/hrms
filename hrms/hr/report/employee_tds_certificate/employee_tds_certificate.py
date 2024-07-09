@@ -25,7 +25,7 @@ def get_data( filters=None):
 	#PVBA
 	data += get_pbva(filters)
 	#salary arrear
-	data += get_salary_arrer(filters)
+	# data += get_salary_arrer(filters)
 	#bluk leave Encashment
 	data += get_bulk_leave_encashment(filters)
 
@@ -116,6 +116,7 @@ def get_bonus(filters):
 					WHERE b.docstatus = 1
 					AND r.purpose = 'Bonus'
 					AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
+					AND b.fiscal_year ='{fiscal_year}'
 					AND bd.employee = '{employee}'
 					AND bd.amount > 0
 				""".format( fiscal_year = filters.fiscal_year, employee= filters.employee, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
@@ -146,43 +147,41 @@ def get_pbva(filters):
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=1)
  
 def get_salary_arrer(filters):
-   
-    return frappe.db.sql("""
-SELECT 
-    CONCAT(t5.month,'-', t5.fiscal_year) AS month_year, 
-      (
-        SELECT posting_date 
-        FROM `tabSalary Arrear Payment`  
-        WHERE company = 'State Mining Corporation Ltd'AND posting_date BETWEEN '{from_date}' AND '{to_date}' limit 1
-    ) AS posting_date,
-    t4.arrear_basic_pay AS basic,
-    t4.arrear_pf AS pf,
-    ifnull(
-        sum(t4.arrear_corporate_allowance+t4.arrear_contract_allowance+t4.arrear_officiating_allowance+t4.arrear_mpi+fixed_allowance ) + t4.arrear_basic_pay,0)
-        AS total,
-  
-	ifnull(
-     sum(t4.arrear_corporate_allowance+t4.arrear_contract_allowance+t4.arrear_officiating_allowance+t4.arrear_mpi+fixed_allowance),0)
-     AS others, 
-	0 AS gis, 
-	ifnull(t4.arrear_pf,0 ) AS totalPfGis, 
-	t4.arrear_hc AS health,
-	ifnull(sum(t4.arrear_corporate_allowance+t4.arrear_contract_allowance+t4.arrear_officiating_allowance+t4.arrear_mpi+fixed_allowance ) +(t4.arrear_basic_pay)-(t4.arrear_pf),0) AS taxable,
-    ifnull(t4.arrear_salary_tax,0) AS tds,
-    'Salary Arrear' AS type,
-    tds_receipt_number AS receipt_number,
-    tds_receipt_date AS receipt_date
-  
-    
-FROM 
-    `tabSalary Arrear Payment Item` t4 
-Right JOIN 
-    `tabTDS Receipt Update` t5 ON t5.purpose = 'Salary Arrear' 
-WHERE 
-    t4.employee = '{employee}' and t5.docstatus = 1
-    
-    """.format(employee = filters.employee,fiscal_year=filters.fiscal_year,from_date = getdate(str(filters.fiscal_year) + "-01-01"),
-					  to_date = getdate(str(filters.fiscal_year) + "-12-31")),as_dict=True)
+	return frappe.db.sql("""
+				SELECT 
+					CONCAT(t5.month,'-', t5.fiscal_year) AS month_year, 
+					(
+						SELECT posting_date 
+						FROM `tabSalary Arrear Payment`  
+						WHERE company = 'State Mining Corporation Ltd'AND posting_date BETWEEN '{from_date}' AND '{to_date}' limit 1
+					) AS posting_date,
+					t4.arrear_basic_pay AS basic,
+					t4.arrear_pf AS pf,
+					ifnull(
+						sum(t4.arrear_corporate_allowance+t4.arrear_contract_allowance+t4.arrear_officiating_allowance+t4.arrear_mpi+fixed_allowance ) + t4.arrear_basic_pay,0)
+						AS total,
+					ifnull(
+					sum(t4.arrear_corporate_allowance+t4.arrear_contract_allowance+t4.arrear_officiating_allowance+t4.arrear_mpi+fixed_allowance),0)
+					AS others, 
+					0 AS gis, 
+					ifnull(t4.arrear_pf,0 ) AS totalPfGis, 
+					t4.arrear_hc AS health,
+					ifnull(sum(t4.arrear_corporate_allowance+t4.arrear_contract_allowance+t4.arrear_officiating_allowance+t4.arrear_mpi+fixed_allowance ) +(t4.arrear_basic_pay)-(t4.arrear_pf),0) AS taxable,
+					ifnull(t4.arrear_salary_tax,0) AS tds,
+					'Salary Arrear' AS type,
+					tds_receipt_number AS receipt_number,
+					tds_receipt_date AS receipt_date
+				FROM 
+					`tabSalary Arrear Payment Item` t4 
+				Right JOIN 
+					`tabTDS Receipt Update` t5 ON t5.purpose = 'Salary Arrear' 
+				WHERE 
+					t4.employee = '{employee}' and t5.docstatus = 1
+					AND  t5.from_date >='{from_date}'
+					AND t5.to_date <='{to_date}'
+
+					""".format(employee = filters.employee,fiscal_year=filters.fiscal_year,from_date = getdate(str(filters.fiscal_year) + "-01-01"),
+					to_date = getdate(str(filters.fiscal_year) + "-12-31")),as_dict=True)
 
 def get_bulk_leave_encashment(filters):
 	data = []
@@ -203,7 +202,9 @@ def get_bulk_leave_encashment(filters):
 		WHERE blei.employee = '{employee}' 
 		AND ble.leave_type = "Earned Leave"
 		AND ble.docstatus = 1 
-		""".format(employee=filters.employee), as_dict=True)
+		AND ble.fiscal_year='{fiscal_year}'
+
+		""".format(employee=filters.employee, fiscal_year=filters.fiscal_year), as_dict=True)
 				
 	for a in datas:
 		data.append({
