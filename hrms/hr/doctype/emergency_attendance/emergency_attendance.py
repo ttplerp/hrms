@@ -97,5 +97,25 @@ class EmergencyAttendance(Document):
 				
 					if start_time < check_in_time <= end_time:
 						frappe.throw("Cannot apply emergency attendance while your shift is not over")
+
+# Permission query
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+
+	if user == "Administrator":
+		return
+	if "HR User" in user_roles or "HR Manager" in user_roles:
+		return
+
+	return """(
+		`tabEmergency Attendance`.owner = '{user}'
+		or
+		exists(select 1
+				from `tabEmployee`
+				where `tabEmployee`.name = `tabEmergency Attendance`.employee
+				and `tabEmployee`.user_id = '{user}')
+	)""".format(user=user)
+
 		
 	

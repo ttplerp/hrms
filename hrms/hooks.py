@@ -108,7 +108,9 @@ permission_query_conditions = {
 	"Leave Encashment": "hrms.hr.doctype.leave_encashment.leave_encashment.get_permission_query_conditions",
 	"Travel Request": "hrms.hr.doctype.travel_request.travel_request.get_permission_query_conditions",
 	"Expense Claim": "hrms.hr.doctype.expense_claim.expense_claim.get_permission_query_conditions",
-	"Employee Complaints": "hrms.hr.doctype.employee_complaints.employee_complaints.get_permission_query_conditions",
+	"Employee Alerts": "hrms.hr.doctype.employee_alerts.employee_alerts.get_permission_query_conditions",
+	"Emergency Attendance": "hrms.hr.doctype.emergency_attendance.emergency_attendance.get_permission_query_conditions",
+ 	
 }
 #
 # has_permission = {

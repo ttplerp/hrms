@@ -24,11 +24,11 @@ def get_permission_query_conditions(user):
 		return
 
 	return """(
-		`tabEmployee Complaints`.owner = '{user}'
+		`tabEmployee Alerts`.owner = '{user}'
 		or
 		exists(select 1
 				from `tabEmployee`
-				where `tabEmployee`.name = `tabEmployee Complaints`.employee
+				where `tabEmployee`.name = `tabEmployee Alerts`.employee
 				and `tabEmployee`.user_id = '{user}')
 	)""".format(user=user)
 
