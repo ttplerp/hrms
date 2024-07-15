@@ -24,6 +24,7 @@
   "shift",
   "in_time",
   "out_time",
+  "total_working_hours",
   "column_break_18",
   "late_entry",
   "early_exit",
@@ -191,14 +192,7 @@
    "label": "Details"
   },
   {
-   "depends_on": "shift",
-   "fieldname": "in_time",
-   "fieldtype": "Datetime",
-   "label": "In Time",
-   "read_only": 1
-  },
-  {
-   "depends_on": "shift",
+   "allow_on_submit": 1,
    "fieldname": "out_time",
    "fieldtype": "Datetime",
    "label": "Out Time",
@@ -228,13 +222,28 @@
   {
    "fieldname": "column_break_5gqcy",
    "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "in_time",
+   "fieldtype": "Datetime",
+   "label": "In Time",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "in_time - out_time",
+   "fieldname": "total_working_hours",
+   "fieldtype": "Data",
+   "label": "Total Working Hours",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-20 15:12:58.498836",
+ "modified": "2024-07-09 11:44:07.001874",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
