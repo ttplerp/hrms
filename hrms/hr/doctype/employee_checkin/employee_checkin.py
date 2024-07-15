@@ -3,7 +3,7 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils import now, cint, get_datetime, flt, nowdate
+from frappe.utils import now, cint, get_datetime, flt, nowdate, nowtime
 from frappe.model.document import Document
 from frappe import _
 from datetime import datetime
@@ -97,7 +97,7 @@ class EmployeeCheckin(Document):
 				doc = frappe.new_doc("Attendance")
 				doc.employee = self.employee
 				doc.attendance_date = self.date
-				doc.attendace_time = self.time
+				doc.attendance_time = self.datetime
 				doc.time_difference = self.time_difference
 				doc.shift = self.shift
 				if half_day == 0:
@@ -119,12 +119,32 @@ class EmployeeCheckin(Document):
 					select name from `tabAttendance` where shift = '{0}' and status = "Half Day" and employee = '{1}'
 					and attendance_date = '{2}' and docstatus = 1
 				""".format(self.shift, self.employee, self.date), as_dict = True)
+				
 				#change
 				if half_day != 1:
 					doc = frappe.get_doc("Attendance",att[0].name)
+					in_time = frappe.db.get_value("Attendance",att[0].name,"in_time")
 					if self.reason:
 						doc.early_exit = "1"
 						doc.reason_for_early_exit =str(self.reason)
+					#calcuation for total working hours
+					if self.time:						 
+						out_time = datetime.strptime(self.date.strftime("%Y-%m-%d") + " " + self.time, "%Y-%m-%d %H:%M:%S.%f")						 
+						doc.out_time = out_time.isoformat() 
+
+						if doc.in_time:							 
+							time_difference = out_time - doc.in_time							 
+							total_seconds = time_difference.total_seconds()							 
+							total_hours = int(total_seconds // 3600)
+							remaining_minutes = int((total_seconds % 3600) // 60)
+							# Format the hours and minutes as "H:MM"
+							doc.total_working_hours = f"{total_hours}:{remaining_minutes:02d}"
+							 
+						else:
+							frappe.throw("In-time is not defined.")
+					else:
+						frappe.throw("Time is not defined.")
+					
 					doc.status = "Present"
 					doc.save(ignore_permissions=True)
 
@@ -140,22 +160,33 @@ class EmployeeCheckin(Document):
 					select name from `tabAttendance Request` where employee = '{0}'
 					and '{1}' between from_date and to_date and half_day = 1
 			    """.format(self.employee, self.date), as_dict=1)
+
 				if not att_request:
 					doc = frappe.new_doc("Attendance")
 					doc.employee = self.employee
-					doc.attendance_date = self.date
-					doc.attendace_time = self.time
-					doc.time_difference = self.time_difference
+					doc.attendance_date = self.date					
+					doc.attendance_time = self.time
+					# doc.time_difference = self.time_difference
 					doc.shift = self.shift
+
+					if self.time:						 
+   						 doc.in_time = datetime.strptime(self.date.strftime("%Y-%m-%d") + " " + self.time, "%Y-%m-%d %H:%M:%S.%f")    					 
+   						 doc.in_time = doc.in_time.isoformat()
+						 	
 					if self.reason:
 						doc.late_entry = 1
-						doc.reason_for_late_entry =self.reason
+						doc.reason_for_late_entry = self.reason
 					if half_day == 0:
 						doc.status = "Half Day"
 					elif half_day == 1:
 						doc.status = "Present"
+
+					doc.total_working_hours=""
 					doc.save(ignore_permissions=True)
 					doc.submit()
+					
+
+				
 
 	def check_reason(self):
 		if self.reason:
@@ -250,6 +281,8 @@ def mark_attendance_and_link_log(logs, attendance_status, attendance_date, worki
 				'doctype': 'Attendance',
 				'employee': employee,
 				'attendance_date': attendance_date,
+				'in_time': in_time,
+				'out_time': out_time,
 				'status': attendance_status,
 				'working_hours': working_hours,
 				'company': employee_doc.company,
@@ -344,3 +377,5 @@ def get_permission_query_conditions(user):
 	return """(
 		`tabEmployee Checkin`.owner = '{user}'
 		)""".format(user=user)
+
+
