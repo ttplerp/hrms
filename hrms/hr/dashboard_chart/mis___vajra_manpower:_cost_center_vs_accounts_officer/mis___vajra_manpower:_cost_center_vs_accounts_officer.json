@@ -1,0 +1,155 @@
+{
+ "chart_name": "MIS - Vajra Manpower: Cost_center vs Accounts_officer",
+ "chart_type": "Report",
+ "creation": "2024-07-19 11:01:26.872978",
+ "custom_options": "{\"x_field\": \"cost_center\", \"chart_type\": \"Bar\", \"y_axis_fields\": [{\"idx\": 1, \"__islocal\": true, \"name\": \"row 1\", \"y_field\": \"accounts_officer\"}, {\"idx\": 2, \"__islocal\": true, \"name\": \"row 2\", \"y_field\": \"adm_officer\"}, {\"idx\": 3, \"__islocal\": true, \"name\": \"row 3\", \"y_field\": \"architect\"}, {\"idx\": 4, \"__islocal\": true, \"name\": \"row 4\", \"y_field\": \"assistant_project_manager\"}, {\"idx\": 5, \"__islocal\": true, \"name\": \"row 5\", \"y_field\": \"asst._admo\"}, {\"idx\": 6, \"__islocal\": true, \"name\": \"row 6\", \"y_field\": \"asst._liaison_officer\"}, {\"idx\": 7, \"__islocal\": true, \"name\": \"row 7\", \"y_field\": \"asst._procurement_officer\"}, {\"idx\": 8, \"__islocal\": true, \"name\": \"row 8\", \"y_field\": \"asst._store_incharge\"}, {\"idx\": 9, \"__islocal\": true, \"name\": \"row 9\", \"y_field\": \"asst.store_incharge\"}, {\"idx\": 10, \"__islocal\": true, \"name\": \"row 10\", \"y_field\": \"blaster\"}, {\"idx\": 11, \"__islocal\": true, \"name\": \"row 11\", \"y_field\": \"ce/pe_(roads_&_bridges)\"}, {\"idx\": 12, \"__islocal\": true, \"name\": \"row 12\", \"y_field\": \"chief_executive_officer\"}, {\"idx\": 13, \"__islocal\": true, \"name\": \"row 13\", \"y_field\": \"civil_engineer\"}, {\"idx\": 14, \"__islocal\": true, \"name\": \"row 14\", \"y_field\": \"civil_engineer_(hpp)\"}, {\"idx\": 15, \"__islocal\": true, \"name\": \"row 15\", \"y_field\": \"civil_engineer_(lab)\"}, {\"idx\": 16, \"__islocal\": true, \"name\": \"row 16\", \"y_field\": \"civil_engineer_(plumbing)\"}, {\"idx\": 17, \"__islocal\": true, \"name\": \"row 17\", \"y_field\": \"civil_engineer_(road)\"}, {\"idx\": 18, \"__islocal\": true, \"name\": \"row 18\", \"y_field\": \"const._safety_supervisor\"}, {\"idx\": 19, \"__islocal\": true, \"name\": \"row 19\", \"y_field\": \"director\"}, {\"idx\": 20, \"__islocal\": true, \"name\": \"row 20\", \"y_field\": \"director,_dept._of_corporate_services\"}, {\"idx\": 21, \"__islocal\": true, \"name\": \"row 21\", \"y_field\": \"director,_engineering_&_construction_dept.\"}, {\"idx\": 22, \"__islocal\": true, \"name\": \"row 22\", \"y_field\": \"director,_training_&_appretenceship\"}, {\"idx\": 23, \"__islocal\": true, \"name\": \"row 23\", \"y_field\": \"director,_training_&_appretenceship\"}, {\"idx\": 24, \"__islocal\": true, \"name\": \"row 24\", \"y_field\": \"driver_(dy._ceo's_chauffeur)\"}, {\"idx\": 25, \"__islocal\": true, \"name\": \"row 25\", \"y_field\": \"driver_(heavy)\"}, {\"idx\": 26, \"__islocal\": true, \"name\": \"row 26\", \"y_field\": \"driver_(heavy_bus)\"}, {\"idx\": 27, \"__islocal\": true, \"name\": \"row 27\", \"y_field\": \"driver_(light)\"}, {\"idx\": 28, \"__islocal\": true, \"name\": \"row 28\", \"y_field\": \"dy._chief_executive_officer\"}, {\"idx\": 29, \"__islocal\": true, \"name\": \"row 29\", \"y_field\": \"electrical_engineer\"}, {\"idx\": 30, \"__islocal\": true, \"name\": \"row 30\", \"y_field\": \"electrical_technician\"}, {\"idx\": 31, \"__islocal\": true, \"name\": \"row 31\", \"y_field\": \"finance_manager\"}, {\"idx\": 32, \"__islocal\": true, \"name\": \"row 32\", \"y_field\": \"gm,_finance_division\"}, {\"idx\": 33, \"__islocal\": true, \"name\": \"row 33\", \"y_field\": \"gm,_human_resource_&_administration_div.\"}, {\"idx\": 34, \"__islocal\": true, \"name\": \"row 34\", \"y_field\": \"gm,_hydropower_division\"}, {\"idx\": 35, \"__islocal\": true, \"name\": \"row 35\", \"y_field\": \"gm,_vajra_construction_&_service_center\"}, {\"idx\": 36, \"__islocal\": true, \"name\": \"row 36\", \"y_field\": \"geologist\"}, {\"idx\": 37, \"__islocal\": true, \"name\": \"row 37\", \"y_field\": \"hro\"}, {\"idx\": 38, \"__islocal\": true, \"name\": \"row 38\", \"y_field\": \"head,_tender_&_billing\"}, {\"idx\": 39, \"__islocal\": true, \"name\": \"row 39\", \"y_field\": \"mechanic\"}, {\"idx\": 40, \"__islocal\": true, \"name\": \"row 40\", \"y_field\": \"operater_(chain_excavator)\"}, {\"idx\": 41, \"__islocal\": true, \"name\": \"row 41\", \"y_field\": \"technician_(_painting_&_polishing_)\"}, {\"idx\": 42, \"__islocal\": true, \"name\": \"row 42\", \"y_field\": \"director\"}], \"y_fields\": [\"accounts_officer\", \"adm_officer\", \"architect\", \"assistant_project_manager\", \"asst._admo\", \"asst._liaison_officer\", \"asst._procurement_officer\", \"asst._store_incharge\", \"asst.store_incharge\", \"blaster\", \"ce/pe_(roads_&_bridges)\", \"chief_executive_officer\", \"civil_engineer\", \"civil_engineer_(hpp)\", \"civil_engineer_(lab)\", \"civil_engineer_(plumbing)\", \"civil_engineer_(road)\", \"const._safety_supervisor\", \"director\", \"director,_dept._of_corporate_services\", \"director,_engineering_&_construction_dept.\", \"director,_training_&_appretenceship\", \"director,_training_&_appretenceship\", \"driver_(dy._ceo's_chauffeur)\", \"driver_(heavy)\", \"driver_(heavy_bus)\", \"driver_(light)\", \"dy._chief_executive_officer\", \"electrical_engineer\", \"electrical_technician\", \"finance_manager\", \"gm,_finance_division\", \"gm,_human_resource_&_administration_div.\", \"gm,_hydropower_division\", \"gm,_vajra_construction_&_service_center\", \"geologist\", \"hro\", \"head,_tender_&_billing\", \"mechanic\", \"operater_(chain_excavator)\", \"technician_(_painting_&_polishing_)\", \"director\"], \"colors\": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2024-07-19 11:01:26.920071",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "MIS - Vajra Manpower: Cost_center vs Accounts_officer",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "MIS - Vajra Manpower",
+ "roles": [],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "cost_center",
+ "y_axis": [
+  {
+   "y_field": "accounts_officer"
+  },
+  {
+   "y_field": "adm_officer"
+  },
+  {
+   "y_field": "architect"
+  },
+  {
+   "y_field": "assistant_project_manager"
+  },
+  {
+   "y_field": "asst._admo"
+  },
+  {
+   "y_field": "asst._liaison_officer"
+  },
+  {
+   "y_field": "asst._procurement_officer"
+  },
+  {
+   "y_field": "asst._store_incharge"
+  },
+  {
+   "y_field": "asst.store_incharge"
+  },
+  {
+   "y_field": "blaster"
+  },
+  {
+   "y_field": "ce/pe_(roads_&_bridges)"
+  },
+  {
+   "y_field": "chief_executive_officer"
+  },
+  {
+   "y_field": "civil_engineer"
+  },
+  {
+   "y_field": "civil_engineer_(hpp)"
+  },
+  {
+   "y_field": "civil_engineer_(lab)"
+  },
+  {
+   "y_field": "civil_engineer_(plumbing)"
+  },
+  {
+   "y_field": "civil_engineer_(road)"
+  },
+  {
+   "y_field": "const._safety_supervisor"
+  },
+  {
+   "y_field": "director"
+  },
+  {
+   "y_field": "director,_dept._of_corporate_services"
+  },
+  {
+   "y_field": "director,_engineering_&_construction_dept."
+  },
+  {
+   "y_field": "director,_training_&_appretenceship"
+  },
+  {
+   "y_field": "director,_training_&_appretenceship"
+  },
+  {
+   "y_field": "driver_(dy._ceo's_chauffeur)"
+  },
+  {
+   "y_field": "driver_(heavy)"
+  },
+  {
+   "y_field": "driver_(heavy_bus)"
+  },
+  {
+   "y_field": "driver_(light)"
+  },
+  {
+   "y_field": "dy._chief_executive_officer"
+  },
+  {
+   "y_field": "electrical_engineer"
+  },
+  {
+   "y_field": "electrical_technician"
+  },
+  {
+   "y_field": "finance_manager"
+  },
+  {
+   "y_field": "gm,_finance_division"
+  },
+  {
+   "y_field": "gm,_human_resource_&_administration_div."
+  },
+  {
+   "y_field": "gm,_hydropower_division"
+  },
+  {
+   "y_field": "gm,_vajra_construction_&_service_center"
+  },
+  {
+   "y_field": "geologist"
+  },
+  {
+   "y_field": "hro"
+  },
+  {
+   "y_field": "head,_tender_&_billing"
+  },
+  {
+   "y_field": "mechanic"
+  },
+  {
+   "y_field": "operater_(chain_excavator)"
+  },
+  {
+   "y_field": "technician_(_painting_&_polishing_)"
+  },
+  {
+   "y_field": "director"
+  }
+ ]
+}
