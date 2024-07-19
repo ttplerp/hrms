@@ -25,4 +25,14 @@ class UpdateBankAccount(Document):
 				else:
 					frappe.throw("Bank Details are missing")
 
+@frappe.whitelist(allow_guest=True)
+def get_detail(did, cid, dob):
+	if frappe.db.exists("Desuup", did):
+		doc=frappe.get_doc("Desuup", did)
+		if cid == doc.cid_number and dob == doc.date_of_birth:
+			return doc
+
+			
+
+
 
