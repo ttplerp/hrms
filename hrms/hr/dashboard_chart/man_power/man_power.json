@@ -1,0 +1,56 @@
+{
+ "chart_name": "Man Power",
+ "chart_type": "Report",
+ "creation": "2024-07-19 17:20:48.525263",
+ "custom_options": "{\"x_field\": \"cost_center\", \"chart_type\": \"Bar\", \"y_axis_fields\": [{\"idx\": 1, \"__islocal\": true, \"name\": \"row 1\", \"y_field\": \"admin,_finance_and_store\"}, {\"idx\": 2, \"__islocal\": true, \"name\": \"row 2\", \"y_field\": \"civil\"}, {\"idx\": 3, \"__islocal\": true, \"name\": \"row 3\", \"y_field\": \"directors\"}, {\"idx\": 4, \"__islocal\": true, \"name\": \"row 4\", \"y_field\": \"drivers_and_operations\"}, {\"idx\": 5, \"__islocal\": true, \"name\": \"row 5\", \"y_field\": \"executives\"}, {\"idx\": 6, \"__islocal\": true, \"name\": \"row 6\", \"y_field\": \"general_manager\"}, {\"idx\": 7, \"__islocal\": true, \"name\": \"row 7\", \"y_field\": \"multi_skilled_workers\"}, {\"idx\": 8, \"__islocal\": true, \"name\": \"row 8\", \"y_field\": \"on_the_job_training\"}, {\"idx\": 9, \"__islocal\": true, \"name\": \"row 9\", \"y_field\": \"total\"}], \"y_fields\": [\"admin,_finance_and_store\", \"civil\", \"directors\", \"drivers_and_operations\", \"executives\", \"general_manager\", \"multi_skilled_workers\", \"on_the_job_training\", \"total\"], \"colors\": [null, null, null, null, null, null, null, null, null]}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2024-07-19 17:20:48.560022",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Man Power",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "MIS - Vajra Manpower",
+ "roles": [],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "cost_center",
+ "y_axis": [
+  {
+   "y_field": "admin,_finance_and_store"
+  },
+  {
+   "y_field": "civil"
+  },
+  {
+   "y_field": "directors"
+  },
+  {
+   "y_field": "drivers_and_operations"
+  },
+  {
+   "y_field": "executives"
+  },
+  {
+   "y_field": "general_manager"
+  },
+  {
+   "y_field": "multi_skilled_workers"
+  },
+  {
+   "y_field": "on_the_job_training"
+  },
+  {
+   "y_field": "total"
+  }
+ ]
+}

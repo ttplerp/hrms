@@ -12,7 +12,7 @@
  ],
  "charts": [
   {
-   "chart": "Manpower",
+   "chart": "Man Power",
    "width": "Full"
   },
   {
@@ -36,7 +36,7 @@
    "width": "Full"
   },
   {
-   "chart": "Department Wise Employee Count",
+   "chart": "Department Wise",
    "width": "Full"
   }
  ],
@@ -47,8 +47,8 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2024-07-19 16:43:28.151145",
- "modified_by": "pema.dhendup@thimphutechpark.bt",
+ "modified": "2024-07-19 17:21:18.565013",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "Human Resource",
  "owner": "birendra.bhuejel@thimphutechpark.bt"
