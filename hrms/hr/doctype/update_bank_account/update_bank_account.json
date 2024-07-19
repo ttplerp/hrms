@@ -1,0 +1,145 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "format:DR-{YY}-{MM}-{####}",
+ "creation": "2024-07-17 13:54:07.846511",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "did",
+  "cid_number",
+  "email_id",
+  "mobile_number",
+  "column_break_5",
+  "desuup_name",
+  "gender",
+  "date_of_birth",
+  "section_break_9",
+  "bank_name",
+  "bank_branch",
+  "column_break_32",
+  "bank_account_type",
+  "bank_account_number"
+ ],
+ "fields": [
+  {
+   "fieldname": "did",
+   "fieldtype": "Link",
+   "label": "Desuup ID",
+   "options": "Desuup",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cid_number",
+   "fieldtype": "Data",
+   "label": "CID Number"
+  },
+  {
+   "fieldname": "email_id",
+   "fieldtype": "Data",
+   "label": "Email ID"
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "did.desuup_name",
+   "fieldname": "desuup_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "did.gender",
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Gender",
+   "options": "\nMale\nFemale\nOthers"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date Of Birth",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Link",
+   "label": "Bank Name",
+   "options": "Financial Institution"
+  },
+  {
+   "fieldname": "bank_branch",
+   "fieldtype": "Link",
+   "label": "Bank Branch",
+   "options": "Financial Institution Branch"
+  },
+  {
+   "fieldname": "column_break_32",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bank_account_type",
+   "fieldtype": "Link",
+   "label": "Bank Account Type",
+   "options": "Bank Account Type"
+  },
+  {
+   "fieldname": "bank_account_number",
+   "fieldtype": "Data",
+   "label": "Bank A/C No.",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-17 14:00:30.500305",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Update Bank Account",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "desuup_name,gender",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
