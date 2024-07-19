@@ -20,17 +20,33 @@ def execute(filters=None):
 
 def get_data(filters):
     return frappe.db.sql("""
+        # SELECT 
+        #     cost_center, 
+        #     designation, 
+        #     COUNT(name) as employee_count 
+        # FROM 
+        #     `tabEmployee` 
+        # WHERE 
+        #     status = 'Active' 
+        # GROUP BY 
+        #     cost_center, 
+        #     designation
+        
         SELECT 
-            cost_center, 
-            designation, 
-            COUNT(name) as employee_count 
-        FROM 
-            `tabEmployee` 
-        WHERE 
-            status = 'Active' 
-        GROUP BY 
-            cost_center, 
-            designation
+		e.cost_center,
+		dg.name1 as designation,  
+		COUNT(e.name) as employee_count
+	FROM 
+		`tabEmployee` e
+	INNER JOIN 
+		`tabDesignation` d ON e.designation = d.name
+	INNER JOIN 
+		`tabDesignation Group` dg ON d.designation_group = dg.name
+	WHERE 
+		e.status = 'Active'
+	GROUP BY 
+ e.cost_center,
+		dg.name1;
         """, as_dict=True)
 
 def get_columns(data):
