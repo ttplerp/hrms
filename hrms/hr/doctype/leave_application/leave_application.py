@@ -476,10 +476,11 @@ class LeaveApplication(Document):
 			(self.employee, self.from_date, self.to_date),
 		)
 		if attendance:
-			frappe.throw(
-				_("Attendance for employee {0} is already marked for this day").format(self.employee),
-				AttendanceAlreadyMarkedError,
-			)
+			pass
+			# frappe.throw(
+			# 	_("Attendance for employee {0} is already marked for this day").format(self.employee),
+			# 	AttendanceAlreadyMarkedError,
+			# )
 
 	def validate_optional_leave(self):
 		leave_period = get_leave_period(self.from_date, self.to_date, self.company)
