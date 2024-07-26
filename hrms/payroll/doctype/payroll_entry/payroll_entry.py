@@ -977,7 +977,6 @@ def create_salary_slips_for_employees(employees, args, title=None, publish_progr
 				ss.insert()
 				successful += 1
 			except Exception as e:
-				frappe.throw(_("{}").format(e))
 				error = str(e)
 				failed += 1
 			count+=1
@@ -1012,7 +1011,7 @@ def create_salary_slips_for_employees(employees, args, title=None, publish_progr
 					frappe.publish_progress(count*100/len(set(employees) - set(salary_slips_exists_for)),
 						title = title if title else _("Creating Salary Slips..."),
 						description = description)
-					pass
+					
 	payroll_entry.db_set("salary_slips_created", 0 if failed else 1)
 	payroll_entry.db_set("successful", cint(payroll_entry.successful)+cint(successful))
 	payroll_entry.db_set("failed", cint(payroll_entry.number_of_employees)-(cint(payroll_entry.successful)))
