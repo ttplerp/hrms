@@ -86,6 +86,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_foreign_allowance: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_long_distance_allowance: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_corporate_allowance: function(frm){
 		calculate_others(frm);
 	},
@@ -226,6 +229,9 @@ frappe.ui.form.on('Salary Structure', {
 	fa: function(frm){
 		calculate_others(frm);
 	},
+	ld: function(frm){
+		calculate_others(frm);
+	},
 	ca: function(frm){
 		calculate_others(frm);
 	},
@@ -292,6 +298,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_others(frm);
 	},
 	pa_method: function(frm){
+		calculate_others(frm);
+	},
+	ld_method: function(frm){
 		calculate_others(frm);
 	},
 	officiating_allowance_method: function(frm){

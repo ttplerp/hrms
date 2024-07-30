@@ -54,6 +54,9 @@
   "shift_method",
   "shift",
   "cb_10",
+  "eligible_for_long_distance_allowance",
+  "ld_method",
+  "ld",
   "eligible_for_foreign_allowance",
   "fa_method",
   "fa",
@@ -878,12 +881,34 @@
    "fieldname": "si",
    "fieldtype": "Currency",
    "label": "Value(Special Incentives)"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_long_distance_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Long Distance Allowance"
+  },
+  {
+   "default": "Lumpsum",
+   "depends_on": "eval:doc.eligible_for_long_distance_allowance==1",
+   "fieldname": "ld_method",
+   "fieldtype": "Select",
+   "label": "Long Distance Allowance Payment Method",
+   "mandatory_depends_on": "eval:doc.eligible_for_long_distance_allowance==1",
+   "options": "Lumpsum\nPercent"
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_long_distance_allowance==1",
+   "fieldname": "ld",
+   "fieldtype": "Currency",
+   "label": "Value(Long Distance Allowance)",
+   "mandatory_depends_on": "eval:doc.eligible_for_long_distance_allowance==1"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2024-01-15 11:19:46.947785",
+ "modified": "2024-07-30 09:25:48.590558",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
