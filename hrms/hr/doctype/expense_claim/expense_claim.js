@@ -7,6 +7,16 @@ frappe.provide("erpnext.accounts.dimensions");
 frappe.ui.form.on('Expense Claim', {
 	onload: function(frm) {
 		erpnext.accounts.dimensions.setup_dimension_filters(frm, frm.doctype);
+
+		frm.set_query("item_code", "expenses", function(doc, cdt, cdn) {
+			const row = locals[cdt][cdn];
+			return {
+				filters: {
+					"item_group": row.item_group
+				}
+			};
+		});
+		
 	},
 	company: function(frm) {
 		erpnext.accounts.dimensions.update_dimension(frm, frm.doctype);
@@ -55,11 +65,14 @@ frappe.ui.form.on('Expense Claim Detail', {
 			callback: function(r) {
 				if (r.message) {
 					d.default_account = r.message.account;
+					console.log(d.default_account);
+					frm.refresh_field("default_account");
 					// d.cost_center = r.message.cost_center;
 				}
 			}
 		});
 	}
+
 });
 
 cur_frm.add_fetch('employee', 'company', 'company');
@@ -400,6 +413,10 @@ frappe.ui.form.on("Expense Claim", {
 });
 
 frappe.ui.form.on("Expense Claim Detail", {
+	item_code:function(frm,cdt,cdn){
+		update_expense_account(frm, cdt, cdn);
+	},
+
 	amount: function(frm, cdt, cdn) {
 		var child = locals[cdt][cdn];
 		frappe.model.set_value(cdt, cdn, 'sanctioned_amount', child.amount);
@@ -420,6 +437,24 @@ frappe.ui.form.on("Expense Claim Detail", {
 		erpnext.utils.copy_value_in_all_rows(frm.doc, cdt, cdn, "expenses", "cost_center");
 	}
 });
+
+var update_expense_account = function(frm, cdt, cdn){
+	let row = locals[cdt][cdn];
+	if(row.item_code){
+		frappe.call({
+			method: "hrms.hr.doctype.employee_advance_settlement.employee_advance_settlement.get_expense_account",
+			args: {
+				"company": frm.doc.company,
+				"item": row.item_code,
+			},
+			callback: function(r){
+				console.log(r.message)
+				frappe.model.set_value(cdt, cdn, "default_account", r.message);
+				cur_frm.refresh_field(cdt, cdn, "default_account");
+			}
+		})
+	}
+}
 
 frappe.ui.form.on("Expense Claim Advance", {
 	refresh: function(frm, cdt, cdn){

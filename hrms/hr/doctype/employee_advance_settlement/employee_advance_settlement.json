@@ -68,6 +68,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
    "label": "Posting Date",
@@ -78,7 +79,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Advance Type",
-   "options": "\nProject Imprest\nSalary Advance",
+   "options": "\nProject Imprest\nTravel Advance",
    "reqd": 1
   },
   {
@@ -229,22 +230,19 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval:doc.advance_type!='Project Imprest';",
    "fieldname": "debit_account",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Debit Account",
-   "mandatory_depends_on": "eval:doc.advance_type!='Project Imprest';",
    "options": "Account"
   },
   {
-   "depends_on": "eval:doc.advance_type == \"Project Imprest\";",
    "fieldname": "tds_percent",
    "fieldtype": "Select",
    "label": "TDS Percent",
    "options": "\n2\n3\n5"
   },
   {
-   "depends_on": "eval:doc.advance_type == 'Project Imprest';",
    "fieldname": "tds_account",
    "fieldtype": "Link",
    "label": "TDS Account",
@@ -252,7 +250,6 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval:doc.advance_type == \"Project Imprest\";",
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Expense Details",
@@ -361,7 +358,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-01 17:21:28.492191",
+ "modified": "2024-08-01 19:19:58.254339",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance Settlement",

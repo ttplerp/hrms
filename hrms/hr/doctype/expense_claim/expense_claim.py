@@ -190,11 +190,14 @@ class ExpenseClaim(AccountsController):
 			jeb = frappe.new_doc("Journal Entry")
 			jeb.flags.ignore_permissions = 1
 			jeb.title = "Expense Claim Payment(" + self.employee_name + "  " + self.name + ")"
-			jeb.voucher_type = "Journal Entry"
+			jeb.voucher_type = "Bank Entry"
 			jeb.naming_series = "Bank Payment Voucher"
 			expense_claim_type = ""
 			for b in self.expenses:
-				expense_claim_type = b.expense_type
+				if b.is_stock_item:
+					expense_claim_type = b.item_code
+				else:
+					expense_claim_type = b.expense_type
 			jeb.remark = 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name
 			jeb.user_remark = 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name
 			jeb.posting_date = today()
@@ -284,9 +287,6 @@ class ExpenseClaim(AccountsController):
 				jeb.append("accounts", {
 					"account": employee_payable_account,
 					"cost_center": self.cost_center,
-					"party_type": "Employee",
-					"party": self.employee,
-					"party_name":self.employee_name,
 					"credit_in_account_currency": advance_amount,
 					"credit": advance_amount,
 					"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,

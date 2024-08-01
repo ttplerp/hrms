@@ -14,18 +14,21 @@ from erpnext.accounts.general_ledger import (
 from erpnext.controllers.accounts_controller import AccountsController
 
 class EmployeeAdvanceSettlement(AccountsController):
-	def validate(self):
-		if self.advance_type != "Project Imprest":
-			self.check_for_duplicate_entry()
-			self.get_advance_details()
+	def autoname(self):
+		# year_month = str(self.posting_date)[0:4] + str(self.posting_date)[5:7]
 		if self.advance_type == "Project Imprest":
-			self.get_credit_account()
-			self.validate_expense_branch()
+			self.name = make_autoname('PIS.YYYY.MM.####')
+		elif self.advance_type == "Travel Advance":
+			self.name = make_autoname('TAS.YYYY.MM.####')
+
+	def validate(self):
+		self.get_credit_account()
+		self.validate_expense_branch()
 		self.calculate_amounts()
-		validate_workflow_states(self)
+		# validate_workflow_states(self)
 	
 	def on_submit(self):
-		self.validate_settlement_amounts()
+		# self.validate_settlement_amounts()
 		self.make_gl_entry()
 		if self.advance_type == "Salary Advance":
 			self.post_amount_to_salary_detail()
@@ -44,12 +47,11 @@ class EmployeeAdvanceSettlement(AccountsController):
 				frappe.throw("You cannot have branch <strong>{}</strong> in row #<strong>{}</strong>. Please set branch to <strong>{}</strong> or change expense branch.".format(item.branch, item.idx, self.expense_branch))
 	
 	def calculate_amounts(self):
-		if self.advance_type == "Project Imprest":
-			self.settlement_amount = 0
-			for a in self.items:
-				self.settlement_amount += flt(a.amount,2)
-				a.tax_amount = flt(flt(a.amount,2)*(flt(self.tds_percent)/100),2)
-			self.tds_amount = flt(flt(self.settlement_amount,2)*(flt(self.tds_percent)/100),2)
+		self.settlement_amount = 0
+		for a in self.items:
+			self.settlement_amount += flt(a.amount,2)
+			a.tax_amount = flt(flt(a.amount,2)*(flt(self.tds_percent)/100),2)
+		self.tds_amount = flt(flt(self.settlement_amount,2)*(flt(self.tds_percent)/100),2)
 
 	def update_employee_advance(self, cancel=0):
 		if cint(cancel) == 0:
@@ -69,7 +71,7 @@ class EmployeeAdvanceSettlement(AccountsController):
 		settlement_amount = flt(self.settlement_amount)
 		balance_amount = flt(self.balance_amount)
 
-		if settlement_amount != balance_amount and self.advance_type != "Project Imprest":
+		if settlement_amount != balance_amount and (self.advance_type != "Project Imprest" or self.advance_type != "Travel Advance"):
 			frappe.throw(_("The <b>Settlement amount: '{}'</b> should be equal to the remaining <b>Outstanding amount: '{}'</b>. Partial payment is not allowed.").format(settlement_amount, balance_amount))
 		elif settlement_amount < 0:
 			frappe.throw(_("<b>Settlement Amount</b> amount cannot be less than zero"))
@@ -89,21 +91,21 @@ class EmployeeAdvanceSettlement(AccountsController):
 	def get_credit_account(self):
 		if self.advance_type == "Project Imprest":
 			return frappe.db.get_value("Company", self.company, "imprest_advance_account")
+		elif self.advance_type == "Travel Advance":
+			return frappe.db.get_value("Company", self.company, "travel_advance_account")
 	
 	def make_gl_entry(self):
 		gl_entries = []
 		self.posting_date = self.posting_date
 
 		debit_account = self.debit_account
-		credit_account = self.advance_account if self.advance_type != "Project Imprest" else self.credit_account
+		credit_account = self.credit_account
 	
 		if not credit_account:
 			frappe.throw("Credit Account Not found")
-		if not debit_account and self.advance_type != "Project Imprest":
-			frappe.throw("Debit Account not Found")
 
 		remarks = ("Employee Advance Settlement amount received from Employee {0} dated {1}").format(self.employee, self.posting_date)
-		if self.advance_type == "Project Imprest":
+		if self.advance_type == "Project Imprest" or self.advance_type == "Travel Advance":
 			gl_entries.append(
 				self.get_gl_dict({
 					"account": self.credit_account,
