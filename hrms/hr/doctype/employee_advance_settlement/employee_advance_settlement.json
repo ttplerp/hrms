@@ -78,7 +78,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Advance Type",
-   "options": "Salary Advance\nProject Imprest",
+   "options": "\nProject Imprest\nSalary Advance",
    "reqd": 1
   },
   {
@@ -361,7 +361,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-21 10:52:32.196568",
+ "modified": "2024-08-01 17:21:28.492191",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance Settlement",

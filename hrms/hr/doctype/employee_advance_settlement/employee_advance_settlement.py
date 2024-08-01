@@ -5,6 +5,7 @@ import frappe
 from frappe import _
 from frappe.utils import flt, cint, get_datetime
 from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
+from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 from frappe.model.naming import make_autoname
 from erpnext.accounts.general_ledger import (
 	make_gl_entries,
@@ -18,6 +19,7 @@ class EmployeeAdvanceSettlement(AccountsController):
 			self.check_for_duplicate_entry()
 			self.get_advance_details()
 		if self.advance_type == "Project Imprest":
+			self.get_credit_account()
 			self.validate_expense_branch()
 		self.calculate_amounts()
 		validate_workflow_states(self)
@@ -242,4 +244,20 @@ class EmployeeAdvanceSettlement(AccountsController):
 		if not data:
 			frappe.throw(_("Employee <b>{}</b> does not have outstanding Advance"), title="No Advance Record")
 		
-		
+@frappe.whitelist()
+def get_expense_account(company, item):
+	item_group_defaults = get_item_group_defaults(item, company)
+
+	expense_account = item_group_defaults.expense_account
+	
+	if not expense_account:
+		frappe.throw(
+					_(
+						"Please set Exepense Account either in {} or {}.".format(
+							frappe.get_desk_link('Item Group', frappe.db.get_value('Item', item, 'item_group')),
+							frappe.get_desk_link('Item Group', frappe.db.get_value('Item', item, 'item_sub_group')),
+						)
+					), 
+					title=_("Expense Account Missing"),
+				)
+	return expense_account

@@ -2,6 +2,16 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Employee Advance Settlement', {
+	onload: (frm) => {
+		frm.set_query("item_code", "items", function(doc, cdt, cdn) {
+            const row = locals[cdt][cdn];
+            return {
+                filters: {
+                    "item_group": row.item_group
+                }
+            };
+        });
+	},
 	setup: function(frm){
 		if (frm.doc.employee && frm.doc.__islocal){
 			frappe.call({
@@ -90,6 +100,30 @@ frappe.ui.form.on('Employee Advance Settlement', {
 		frm.refresh_field('items')
 	}
 });
+
+frappe.ui.form.on('Employee Advance Settlement Item', {
+	item_code:function(frm,cdt,cdn){
+		update_expense_account(frm, cdt, cdn);
+	}
+})
+
+var update_expense_account = function(frm, cdt, cdn){
+	let row = locals[cdt][cdn];
+	if(row.item_code){
+		frappe.call({
+			method: "hrms.hr.doctype.employee_advance_settlement.employee_advance_settlement.get_expense_account",
+			args: {
+				"company": frm.doc.company,
+				"item": row.item_code,
+			},
+			callback: function(r){
+				console.log(r.message)
+				frappe.model.set_value(cdt, cdn, "account", r.message);
+				cur_frm.refresh_field(cdt, cdn, "account");
+			}
+		})
+	}
+}
 
 var set_branch_child = function (frm) {
 	frm.doc.items.forEach(el => {
