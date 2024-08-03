@@ -18,8 +18,9 @@ class EmployeePMSEvaluatorMapper(Document):
 		""".format(self.evaluator, self.name)):
 			frappe.throw("Another Mapper already exists for this Evaluator")
 
-	# def on_delete(self):
-	# 	frappe.throw('Here')
+	def before_delete(self):
+		if self.docstatus == 0:
+			frappe.throw('Cannot delete a saved document.')
 
 	def update_employee_evaluators(self):
 		emps = []
@@ -47,6 +48,16 @@ class EmployeePMSEvaluatorMapper(Document):
 				""".format(b.name))
 			frappe.msgprint("Updated Evaluator Information in Employees")
 
+		if not emps:
+			for b in frappe.db.sql("""
+				select pe.name from `tabPerformance Evaluator` pe, `tabEmployee` e where pe.parent = e.name and
+				e.name and pe.evaluator = '{}'
+			""".format(self.evaluator), as_dict=1):
+				frappe.db.sql("""
+					delete from `tabPerformance Evaluator` where name = '{}'
+				""".format(b.name))
+			frappe.msgprint("Updated Evaluator Information in Employees")
+
 	def update_mr_employee_evaluators(self):
 		mr_emps = []
 		for a in self.mr_employees:
@@ -68,6 +79,15 @@ class EmployeePMSEvaluatorMapper(Document):
 				select pe.name from `tabPerformance Evaluator` pe, `tabMuster Roll Employee` mre where pe.parent = mre.name and
 				mre.name not in ({}) and pe.evaluator = '{}'
 			""".format(", ".join("'"+em+"'" for em in mr_emps), self.evaluator), as_dict=1):
+				frappe.db.sql("""
+					delete from `tabPerformance Evaluator` where name = '{}'
+				""".format(b.name))
+			frappe.msgprint("Updated Evaluator Information in Muster Roll Employees")
+
+		if not mr_emps:
+			for b in frappe.db.sql("""
+				select pe.name from `tabPerformance Evaluator` pe, `tabMuster Roll Employee` mre where pe.parent = mre.name and pe.evaluator = '{}'
+			""".format(self.evaluator), as_dict=1):
 				frappe.db.sql("""
 					delete from `tabPerformance Evaluator` where name = '{}'
 				""".format(b.name))

@@ -29,13 +29,12 @@ class PerformanceEvaluation(Document):
 		self.start_date = getdate(month_start_date)
 		self.end_date = getdate(month_end_date)
 
-	def validate(self):
-		if not self.get("__islocal"):
-			self.validate_evaluator_score()
+	def validate(self):			
 		self.set_evaluation_period_dates()
 		self.check_duplicate_entry()
 
 	def on_submit(self):
+		self.validate_evaluator_score()
 		self.is_evaluated()
 		
 	def is_evaluated(self):

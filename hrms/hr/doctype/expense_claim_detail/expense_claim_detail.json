@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "expense_date",
+  "equipment",
   "column_break_2",
   "is_stock_item",
   "expense_type",
@@ -164,12 +165,18 @@
    "fieldname": "is_stock_item",
    "fieldtype": "Check",
    "label": "Stock Item?"
+  },
+  {
+   "fieldname": "equipment",
+   "fieldtype": "Link",
+   "label": "Equipment/Vehicle",
+   "options": "Equipment"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-08-01 18:37:31.580772",
+ "modified": "2024-08-03 11:45:37.999057",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Detail",

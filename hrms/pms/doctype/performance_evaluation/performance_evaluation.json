@@ -169,7 +169,6 @@
   {
    "fieldname": "month",
    "fieldtype": "Select",
-   "hidden": 1,
    "label": "Month",
    "options": "\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12",
    "search_index": 1
@@ -214,7 +213,7 @@
    "in_standard_filter": 1,
    "label": "Month",
    "options": "\nJanuary\nFebruary\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
-   "read_only": 1
+   "reqd": 1
   },
   {
    "fieldname": "column_break_pezec",
@@ -243,8 +242,9 @@
   {
    "fetch_from": "evaluator.user_id",
    "fieldname": "evaluator_user_id",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Evaluator Email ID",
+   "options": "User",
    "read_only": 1
   },
   {
@@ -275,7 +275,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-17 09:55:57.377414",
+ "modified": "2024-07-12 12:44:15.014805",
  "modified_by": "Administrator",
  "module": "PMS",
  "name": "Performance Evaluation",

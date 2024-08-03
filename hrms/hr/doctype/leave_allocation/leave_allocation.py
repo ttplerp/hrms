@@ -52,7 +52,7 @@ class LeaveAllocation(Document):
 		self.validate_leave_allocation_days()
 
 	def validate_leave_policy(self):
-		if not self.leave_policy_assignment or not self.leave_policy:
+		if not (self.leave_policy_assignment or self.leave_policy) and self.leave_type == "Earned Leave":
 			frappe.throw("Leave allocation must be routed through"+ ': <a href="/app/Form/Leave Policy Assignment/">{0}</a>'.format('Leave Policy Assignmnet'), title='Leave Allocation Error')
 
 	def validate_leave_allocation_days(self):

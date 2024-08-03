@@ -8,7 +8,9 @@
  "engine": "InnoDB",
  "field_order": [
   "document_type",
+  "column_break_id1hl",
   "evaluator",
+  "column_break_kxsiy",
   "evaluator_name",
   "sb_employees",
   "get_all_employees",
@@ -68,11 +70,19 @@
    "in_standard_filter": 1,
    "label": "Evaluator",
    "options": "document_type"
+  },
+  {
+   "fieldname": "column_break_id1hl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_kxsiy",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-01-19 10:36:37.855629",
+ "modified": "2024-08-03 15:15:04.497779",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee PMS Evaluator Mapper",

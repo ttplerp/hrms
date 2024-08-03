@@ -20,6 +20,13 @@ frappe.ui.form.on('Leave Policy Assignment', {
 				}
 			};
 		});
+		frm.set_query('employee', function() {
+			return {
+				filters: {
+					"employment_status": ['!=', 'Probation']
+				}
+			};
+		});
 	},
 
 	assignment_based_on: function(frm) {
