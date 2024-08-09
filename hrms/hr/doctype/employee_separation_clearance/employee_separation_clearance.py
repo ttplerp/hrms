@@ -26,11 +26,11 @@ class EmployeeSeparationClearance(Document):
 		self.check_signatures()
 		self.check_document_no()
 		self.update_reference()
-		self.notify_employee()
+		# self.notify_employee()
 
 	def on_cancel(self):
 		self.update_reference()
-		self.notifiy_employee()
+		# self.notifiy_employee()
 
 	def check_document_no(self):
 		if not self.document_no:

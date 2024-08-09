@@ -11,26 +11,26 @@ frappe.ui.form.on('Employee Separation Clearance', {
 				toggle_remarks_display(frm, r.message[0], r.message[1], r.message[2], r.message[3])
 			}
 		})
-		if(frm.doc.mail_sent == 0 && frm.doc.approvers_set == 1){
-			frm.add_custom_button(__('Apply'), () => {
-				frappe.call({
-					method: "apply",
-					doc: frm.doc,
-					callback: function(r){
-						console.log(r.message)
-						let alert_dialog = new frappe.ui.Dialog({
-							title: String(r.message),
-							primary_action: values => {
-								alert_dialog.disable_primary_action();
-								window.location.reload()
-							},
-							primary_action_label: 'OK'
-						});
-						alert_dialog.show();
-					}
-			})
-			}, __('Action'));
-		}
+		// if(frm.doc.mail_sent == 0 && frm.doc.approvers_set == 1){
+		// 	frm.add_custom_button(__('Apply'), () => {
+		// 		frappe.call({
+		// 			method: "apply",
+		// 			doc: frm.doc,
+		// 			callback: function(r){
+		// 				console.log(r.message)
+		// 				let alert_dialog = new frappe.ui.Dialog({
+		// 					title: String(r.message),
+		// 					primary_action: values => {
+		// 						alert_dialog.disable_primary_action();
+		// 						window.location.reload()
+		// 					},
+		// 					primary_action_label: 'OK'
+		// 				});
+		// 				alert_dialog.show();
+		// 			}
+		// 	})
+		// 	}, __('Action'));
+		// }
 	},
 	onload: function(frm){
 		if(frm.doc.approvers_set == 0){

@@ -12,8 +12,8 @@ from frappe.utils import today
 class EmployeeSeparation(EmployeeBoardingController):
 	def validate(self):
 		super(EmployeeSeparation, self).validate()
-		validate_workflow_states(self)
-		notify_workflow_states(self)
+		# validate_workflow_states(self)
+		# notify_workflow_states(self)
 
 	def on_submit(self):
 		super(EmployeeSeparation, self).on_submit()
@@ -24,7 +24,7 @@ class EmployeeSeparation(EmployeeBoardingController):
 
 	def on_cancel(self):
 		super(EmployeeSeparation, self).on_cancel()
-		notify_workflow_states(self)
+		# notify_workflow_states(self)
 
 	# @frappe.whitelist()
 	# def get_training_obligation_list(self): 		
@@ -89,7 +89,6 @@ def make_separation_clearance(source_name, target_doc=None, skip_item_mapping=Fa
 			"doctype": "Employee Separation Clearance",
 			"field_map":{
 				"name": "employee_separation_id",
-				"employee_grade": "grade",
 			},
             "postprocess": update_item,
 		},

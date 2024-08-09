@@ -10,7 +10,6 @@
   "employee_name",
   "department",
   "designation",
-  "employee_grade",
   "project",
   "boarding_status",
   "notify_users_by_email",
@@ -120,14 +119,6 @@
    "in_list_view": 1,
    "label": "Designation",
    "options": "Designation",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.grade",
-   "fieldname": "employee_grade",
-   "fieldtype": "Link",
-   "label": "Employee Grade",
-   "options": "Employee Grade",
    "read_only": 1
   },
   {
@@ -268,7 +259,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-17 12:12:35.293517",
+ "modified": "2024-08-09 09:38:46.221344",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation",

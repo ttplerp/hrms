@@ -11,7 +11,6 @@
   "document_no",
   "sb_emp_details",
   "employee",
-  "grade",
   "cid",
   "phone_number",
   "fixed_line_number",
@@ -96,13 +95,6 @@
    "read_only": 1
   },
   {
-   "fetch_from": "employee.grade",
-   "fieldname": "grade",
-   "fieldtype": "Link",
-   "label": "Grade",
-   "options": "Employee Grade"
-  },
-  {
    "fieldname": "reason_for_resignation",
    "fieldtype": "Select",
    "label": "Separation Type",
@@ -165,8 +157,7 @@
    "fetch_from": "employee.passport_number",
    "fieldname": "cid",
    "fieldtype": "Data",
-   "label": "CID",
-   "reqd": 1
+   "label": "CID"
   },
   {
    "fetch_from": "employee.cell_number",
@@ -268,7 +259,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-17 12:12:17.358873",
+ "modified": "2024-08-09 09:57:39.238261",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",
