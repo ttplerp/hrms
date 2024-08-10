@@ -16,10 +16,10 @@
   "approver_remarks",
   "column_break_4",
   "posting_date",
+  "designation",
   "advance_type",
   "reference_type",
   "reference",
-  "employee_qualification",
   "currency",
   "exchange_rate",
   "pms_rating",
@@ -458,13 +458,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "employee.employee_qualification",
-   "fieldname": "employee_qualification",
-   "fieldtype": "Data",
-   "label": "Employee Qualification",
-   "read_only": 1
-  },
-  {
    "fetch_from": "employee.employee_group",
    "fieldname": "employee_group",
    "fieldtype": "Link",
@@ -493,11 +486,19 @@
    "label": "Approver Remarks",
    "mandatory_depends_on": "eval:doc.workflow_state==\"Waiting Approval\";",
    "read_only_depends_on": "eval:doc.workflow_state==\"Draft\";"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-04-29 09:57:48.324349",
+ "modified": "2024-08-10 18:21:43.999274",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
