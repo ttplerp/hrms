@@ -705,6 +705,17 @@ class LeaveApplication(Document):
 				args.update(dict(from_date=start_date, to_date=self.to_date, leaves=leaves * -1))
 				create_leave_ledger_entry(self, args, submit)
 
+	@frappe.whitelist()
+	def check_logged_in_user_role(self):
+		sup = 1
+		app = 1
+		if self.workflow_state == "Waiting Supervisor Approval":
+			sup = 0
+		elif self.workflow_state == "Waiting Approval" or self.workflow_state == "Recommended By Supervisor":
+			app = 0
+		return sup, app
+
+
 
 def get_allocation_expiry_for_cf_leaves(
 	employee: str, leave_type: str, to_date: str, from_date: str

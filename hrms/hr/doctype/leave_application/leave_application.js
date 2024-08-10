@@ -95,6 +95,7 @@ frappe.ui.form.on("Leave Application", {
 	},
 
 	refresh: function(frm) {
+		
 		if (frm.is_new()) {
 			frm.trigger("calculate_total_days");
 		}
@@ -109,6 +110,15 @@ frappe.ui.form.on("Leave Application", {
 				frm.set_value('employee', perm['Employee'].map(perm_doc => perm_doc.doc)[0]);
 			}
 		}
+
+		frappe.call({
+			method: "check_logged_in_user_role",
+			doc:frm.doc,
+			callback: function(r){
+				console.log(r.message)
+				toggle_remarks_display(frm, r.message[0], r.message[1])
+			}
+		})
 	},
 
 	employee: function(frm) {
@@ -269,3 +279,14 @@ frappe.tour["Leave Application"] = [
 	// 	description: __("Select your Leave Approver i.e. the person who approves or rejects your leaves.")
 	// }
 ];
+
+var toggle_remarks_display = function (frm, sup, app) {
+	// For Supervisor Remarks
+	frm.set_df_property("supervisor_remarks", "read_only", sup);
+	// frm.toggle_reqd("supervisor_remarks", sup);
+
+
+	// For Approver Remarks
+	frm.set_df_property("approver_remarks", "read_only", app);
+	// frm.toggle_reqd("approver_remarks", app);
+};
