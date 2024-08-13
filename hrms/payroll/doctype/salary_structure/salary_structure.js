@@ -9,6 +9,22 @@ frappe.ui.form.on('Salary Structure', {
 	onload: function(frm, cdt, cdn){
 		// Following function is created as a replacement for the following commented block by SHIV on 2020/09/23
 		make_ed_table(frm);
+		frappe.call({
+			method: "frappe.client.get",
+			args: {
+				doctype: "Employee",
+				name: frm.doc.employee,
+			},
+			callback(r) {
+				console.log(r.message.employment_status)
+				if(r.message.employment_status == "Study Leave"){
+					frm.toggle_display("study_leave", 1);
+				}
+				else{
+					frm.toggle_display("study_leave", 0);
+				}
+			}
+		});
 		/*
 		e_tbl = frm.doc.earnings || [];
 		d_tbl = frm.doc.deductions || [];

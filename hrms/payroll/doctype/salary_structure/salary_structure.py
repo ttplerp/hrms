@@ -258,6 +258,8 @@ class SalaryStructure(Document):
 								amount = flt(new_basic_pay)
 							basic_pay = amount
 							ed_item.amount = basic_pay
+							if frappe.db.get_value("Employee", self.employee, "employment_status") == "Study Leave" and self.study_leave == 1:
+								basic_pay = math.floor(basic_pay/2)
 						# Following condition added by SHIV on 2019/04/29
 						elif frappe.db.exists("Salary Component", {"name": ed_item.salary_component, "is_pf_deductible": 1}):
 							basic_pay_arrears += flt(ed_item.amount)
@@ -459,6 +461,9 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 						calc_amount = round(flt(amount)*flt(payment_days)/flt(days_in_month))
 					else:
 						calc_amount = round(flt(amount)*(flt(working_days)/flt(days_in_month)))
+					if d.salary_component == 'Basic Pay':
+						if frappe.db.get_value("Employee", source.employee, "employment_status") == "Study Leave":
+							calc_amount = math.floor(calc_amount/2)
 				calc_amount = roundoff(calc_amount)
 
 				# following condition added by SHIV on 2021/05/28
@@ -519,7 +524,11 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 			if 'earnings' in calc_map.keys():
 				for e in calc_map['earnings']:
 					if e['salary_component'] == 'Basic Pay':
-						basic_amt = (flt(e['amount']))
+						if frappe.db.get_value("Employee", source.employee, "employment_status") == "Study Leave":
+							basic_amt = math.floor((flt(e['amount']))/2)
+						else:
+							basic_amt = (flt(e['amount']))
+    
 		
 			calc_map['deductions'].append({
 				'salary_component':'Semso',
