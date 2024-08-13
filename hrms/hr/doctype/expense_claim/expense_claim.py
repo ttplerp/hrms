@@ -92,7 +92,8 @@ class ExpenseClaim(AccountsController):
 	# 	self.grand_total = flt(self.total_sanctioned_amount) + flt(self.total_taxes_and_charges) - flt(self.total_advance_amount)
 		
 	def on_update(self):
-		share_doc_with_approver(self, self.expense_approver)
+		# share_doc_with_approver(self, self.expense_approver)
+		pass
 
 	def set_payable_account(self):
 		if not self.payable_account and not self.is_paid:
@@ -166,7 +167,7 @@ class ExpenseClaim(AccountsController):
 				frappe.throw("Setup Expense Bank Account in Branch or Default Expense Bank Account in Company Accounts Settings")
 
 		# expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
-		employee_payable_account = frappe.db.get_value("Company", self.company, "employee_payable_account")
+		employee_payable_account = frappe.db.get_value("Company", self.company, "default_bank_account")
 		
 		# if not expense_account:
 		# 	frappe.throw("Setup Leave Encashment Account in Company Settings")

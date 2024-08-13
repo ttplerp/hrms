@@ -6,7 +6,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "purpose_of_travel"
+  "purpose_of_travel",
+  "linked_to_training"
  ],
  "fields": [
   {
@@ -14,10 +15,16 @@
    "fieldtype": "Data",
    "label": "Purpose of Travel",
    "unique": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "linked_to_training",
+   "fieldtype": "Check",
+   "label": "Linked To Training"
   }
  ],
  "links": [],
- "modified": "2023-02-06 15:23:28.852714",
+ "modified": "2024-08-13 11:05:19.889215",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Purpose of Travel",

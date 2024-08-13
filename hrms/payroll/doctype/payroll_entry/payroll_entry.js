@@ -80,10 +80,29 @@ frappe.ui.form.on('Payroll Entry', {
 		}else{
 			cur_frm.page.clear_actions();
 		}
+		if(frm.doc.file){
+			frm.add_custom_button(__('Download'), function() {
+				var file_url = frm.doc.file;
+				if (frm.doc.filename) {
+					file_url = file_url.replace(/#/g, '%23');
+				}
+				window.open(file_url);
+			}, "fa fa-download");
+		}
 		// if (frm.doc.docstatus == 1) {
 		// 	if (frm.custom_buttons) frm.clear_custom_buttons();
 		// 	frm.events.add_context_buttons(frm);
 		// }
+		
+	},
+	
+	deduct_semso: function(frm){
+		if (frm.doc.deduct_semso === 0){
+			frm.set_value('semso_percent', '');
+			frm.toggle_reqd("semso_percent", 0);
+		}else{
+			frm.toggle_reqd("semso_percent", 1);
+		}
 	},
 
 	get_employee_details: function (frm) {

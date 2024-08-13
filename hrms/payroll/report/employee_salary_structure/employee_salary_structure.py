@@ -20,7 +20,7 @@ def execute(filters=None):
     columns, earning_types, ded_types = get_columns(salary_structures)
     ss_earning_map = get_ss_earning_map(salary_structures)
     ss_ded_map = get_ss_ded_map(salary_structures)
-
+    # frappe.throw(str(salary_structures))
     for ss in salary_structures:
         status = ""
         gross_pay = 0
@@ -30,8 +30,7 @@ def execute(filters=None):
             status = "Active"
         else:
             status = "Inactive"
-
-        row = [ss.employee, ss.employee_name,
+        row = [ss.employee, ss.employee_name, ss.name,
                ss.bank_name, ss.bank_account_no,
                ss.company, ss.branch, ss.department,
                ss.division, ss.employee_grade, ss.designation,
@@ -59,8 +58,9 @@ def execute(filters=None):
 
 def get_columns(salary_structures):
     columns = [
-        _("Employee") + ":Link/Employee:80",
-        _("Employee Name") + "::140",
+        _("Employee") + ":Data:80",
+        _("Employee Name") + ":Data:140",
+        _("Salary Structure ID") + ":Link/Salary Structure:80",
         _("Bank Name") + "::80",
         _("Bank A/C#")+"::100",
         _("Company") + ":Link/Company:120",

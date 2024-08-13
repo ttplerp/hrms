@@ -1,0 +1,189 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-07-18 10:44:28.679559",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "relationship_details_section",
+  "relationship",
+  "full_name",
+  "gender",
+  "date_of_birth",
+  "c_brake",
+  "cid_no",
+  "district_name",
+  "city_name",
+  "village_name",
+  "column_break_10",
+  "f_remarks",
+  "cid_attach",
+  "mc_document",
+  "sb_member_status",
+  "status",
+  "contribution",
+  "column_break_13",
+  "sws_application",
+  "claim_date",
+  "claim_amount",
+  "deceased"
+ ],
+ "fields": [
+  {
+   "fieldname": "relationship",
+   "fieldtype": "Link",
+   "label": "Relationship",
+   "options": "Relationship",
+   "reqd": 1
+  },
+  {
+   "fieldname": "c_brake",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "district_name",
+   "fieldtype": "Link",
+   "label": "District/Dzongkhag",
+   "options": "Dzongkhag"
+  },
+  {
+   "fieldname": "city_name",
+   "fieldtype": "Link",
+   "label": "City/Gewog",
+   "options": "Gewog"
+  },
+  {
+   "fieldname": "village_name",
+   "fieldtype": "Link",
+   "label": "Village",
+   "options": "Village"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "f_remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "cid_attach",
+   "fieldtype": "Attach Image",
+   "label": "Supporting Doc"
+  },
+  {
+   "depends_on": "eval:doc.relationship == \"Spouse\";",
+   "fieldname": "mc_document",
+   "fieldtype": "Attach",
+   "label": "Marriage Certificate"
+  },
+  {
+   "fieldname": "sb_member_status",
+   "fieldtype": "Section Break",
+   "label": "MEMBER STATUS"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "allow_on_submit": 1,
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Active\nClaimed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "contribution",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Contribution/month",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "sws_application",
+   "fieldtype": "Link",
+   "label": "SWS Application",
+   "options": "SWS Application",
+   "read_only": 1
+  },
+  {
+   "fieldname": "claim_date",
+   "fieldtype": "Date",
+   "label": "Claim Date",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "claim_amount",
+   "fieldtype": "Currency",
+   "label": "Claim Amount",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "deceased",
+   "fieldtype": "Check",
+   "label": "Deceased",
+   "read_only": 1
+  },
+  {
+   "fieldname": "relationship_details_section",
+   "fieldtype": "Section Break",
+   "label": "Relationship Details"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Full Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Data",
+   "label": "Employee",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cid_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "CID"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-08 15:44:13.908356",
+ "modified_by": "Administrator",
+ "module": "SWS",
+ "name": "SWS Membership Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

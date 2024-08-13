@@ -141,8 +141,13 @@ class PromotionEntry(Document):
 				# frappe.msgprint(str(is_eligible))
 				# frappe.msgprint(str(e.employee)+" "+str(is_eligible)+" grade:"+str(e.employee_grade))
 				if is_eligible:
-					salary_structure = frappe.db.sql("select sd.amount as amount from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Basic Pay'".format(e.employee), as_dict = True)
-					new_grade, new_basic_pay = self.get_additional_details(e.employee, salary_structure[0].amount)
+					salary_structure = frappe.db.sql("select sd.amount as amount, ss.employee_grade from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Basic Pay'".format(e.employee), as_dict = True)
+					personal_pay = frappe.db.sql("select sd.amount as amount from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Personal Pay'".format(e.employee), as_dict = True)
+					if len(personal_pay) > 0:
+						personal_pay = flt(personal_pay[0].amount,2)
+					else:
+						personal_pay = 0
+					new_grade, new_basic_pay = self.get_additional_details(e.employee, salary_structure[0].amount, personal_pay)
 					emp.append({"employee":e.employee, "employee_name": e.employee_name, "department": e.department, "designation": e.designation, "employee_grade": e.employee_grade, "current_basic_pay": salary_structure[0].amount, "new_basic_pay": new_basic_pay, "new_employee_grade": new_grade})
 			else:
 				# is_eligible = frappe.db.sql("""
@@ -158,31 +163,50 @@ class PromotionEntry(Document):
                     and t1.name = '{}'            
                             """.format(pe_date, e.employee))
 				if is_eligible:
-					salary_structure = frappe.db.sql("select sd.amount as amount from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Basic Pay'".format(e.employee), as_dict = True)
-					new_grade, new_basic_pay = self.get_additional_details(e.employee, salary_structure[0].amount)
+					salary_structure = frappe.db.sql("select sd.amount as amount,  ss.employee_grade from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Basic Pay'".format(e.employee), as_dict = True)
+					personal_pay = frappe.db.sql("select sd.amount as amount from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Personal Pay'".format(e.employee), as_dict = True)
+					if len(personal_pay) > 0:
+						personal_pay = flt(personal_pay[0].amount,2)
+					else:
+						personal_pay = 0
+					new_grade, new_basic_pay = self.get_additional_details(e.employee, salary_structure[0].amount, personal_pay)
 					emp.append({"employee":e.employee, "employee_name": e.employee_name, "department": e.department, "designation": e.designation, "employee_grade": e.employee_grade, "current_basic_pay": salary_structure[0].amount, "new_basic_pay": new_basic_pay, "new_employee_grade": new_grade})		
 		# it = iter(emp)
 		# emp_dict = dict(zip(it, it))
 		# frappe.msgprint(str(emp))
 		return emp
 
-	def get_additional_details(self, employee, basic_pay):
+	def get_additional_details(self, employee, basic_pay, personal_pay):
 		emp = frappe.get_doc("Employee", employee)
+		current_increment = frappe.db.get_value("Employee Grade", emp.grade, "increment")
 		new_grade = frappe.db.get_value("Employee Grade", emp.grade, "promotion_grade")
 		if not new_grade:
 			frappe.throw("Promote to Grade not set for Employee {}".format(employee))
 		new_lower_limit = frappe.db.get_value("Employee Grade", new_grade, "lower_limit")
 		new_increment = frappe.db.get_value("Employee Grade", new_grade, "increment")
 		new_upper_limit = frappe.db.get_value("Employee Grade", new_grade, "upper_limit")
-		new_basic_increment = flt(basic_pay) + flt(new_increment)
-		if flt(new_basic_increment) > flt(new_lower_limit): 
-			while True:
-				new_lower_limit += new_increment
-				amount = new_lower_limit
-				if new_lower_limit >= new_basic_increment:
-					break
+		# if personal_pay > 0:
+		# 	ratio = ((flt(basic_pay) + flt(personal_pay))-flt(new_lower_limit))/flt(new_increment)
+		# else:
+		ratio = ((flt(basic_pay) + flt(personal_pay) + flt(new_increment))-flt(new_lower_limit))/flt(new_increment)
+		if flt(str(ratio).split(".")[1]) >= 0.01 and ratio > 0:				
+			ratio = math.ceil(ratio)
+		elif flt(str(ratio).split(".")[1]) == 0 and ratio > 0:
+			ratio += 1
 		else:
-			amount = new_lower_limit
+			ratio = 0
+		new_basic_increment = (ratio*flt(new_increment))+flt(new_lower_limit)
+		if new_basic_increment > new_upper_limit:
+			new_basic_increment = new_upper_limit
+
+		# if flt(new_basic_increment) > flt(new_lower_limit): 
+		# 	while True:
+		# 		new_lower_limit += new_increment
+		# 		amount = new_lower_limit
+		# 		if new_lower_limit >= new_basic_increment:
+		# 			break
+		# else:
+		amount = new_basic_increment
 		return new_grade, amount
 
 	@frappe.whitelist()
@@ -364,18 +388,18 @@ def create_employee_promotion_for_employees(employees, args, publish_progress=Tr
 			ep.new_upper_limit = new_upper_limit
 			salary_structure = frappe.db.sql("select sd.amount as amount from `tabSalary Detail` sd, `tabSalary Structure` ss where sd.parent = ss.name and ss.employee = '{0}' and ss.is_active = 'Yes' and sd.salary_component = 'Basic Pay'".format(emp.employee), as_dict = True)
 			ep.current_basic_pay = salary_structure[0].amount
-			bp_diff = flt(salary_structure[0].amount) - flt(new_lower_limit)
-			new_increment_div = flt(bp_diff) / flt(new_increment)
-			if new_increment_div < 0:
-				new_increment_div = -1 * new_increment_div
-			new_increment_div = math.floor(new_increment_div) + 2
-			new_basic_multiple = new_increment_div * new_increment
-			amount = new_basic_multiple + new_lower_limit
+			# bp_diff = flt(salary_structure[0].amount) - flt(new_lower_limit)
+			# new_increment_div = flt(bp_diff) / flt(new_increment)
+			# if new_increment_div < 0:
+			# 	new_increment_div = -1 * new_increment_div
+			# new_increment_div = math.floor(new_increment_div) + 2
+			# new_basic_multiple = new_increment_div * new_increment
+			# amount = new_basic_multiple + new_lower_limit
 			# if int(salary_structure[0].amount) <= new_lower_limit:
 			# 	amount = new_lower_limit + new_increment
 			# elif int(salary_structure[0].amount) > new_lower_limit:
 			# 	amount = int(salary_structure[0].amount)+new_increment
-			ep.new_basic_pay = amount
+			ep.new_basic_pay = emp.new_basic_pay
 			#----------------------------------End--------------------------------------------------------#
 
 			if args.month == "January":

@@ -40,7 +40,7 @@ class OvertimeApplication(Document):
 			# elif overtime_limit_type == "Per Year":
 			# 	month_start_date = add_to_date(i.to_date, years=-1)
 			i.amount = flt(i.rate) * flt(i.number_of_hours)
-			total_amount += i.amount
+			total_amount += flt(i.amount,0)
 		self.actual_hours = flt(total_hours)
 		# if flt(total_hours) > flt(overtime_limit):
 		# 	frappe.throw(_("Only {} hours accepted for payment").format(overtime_limit))

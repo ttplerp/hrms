@@ -1,0 +1,119 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-07-18 10:47:17.248931",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "reference_document",
+  "relationship",
+  "cid_no",
+  "full_name",
+  "column_break_10",
+  "f_remarks",
+  "deceased",
+  "section_break_7",
+  "sws_event",
+  "column_break_9",
+  "claim_amount",
+  "column_break_11",
+  "amount"
+ ],
+ "fields": [
+  {
+   "description": "Should be maintained during Family Details in Employee Master",
+   "fieldname": "reference_document",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Reference Document",
+   "options": "SWS Membership Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "relationship",
+   "fieldtype": "Read Only",
+   "ignore_user_permissions": 1,
+   "in_list_view": 1,
+   "label": "Relationship",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cid_no",
+   "fieldtype": "Read Only",
+   "ignore_user_permissions": 1,
+   "in_list_view": 1,
+   "label": "CID No./Passport /Work Permit"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Read Only",
+   "ignore_user_permissions": 1,
+   "in_list_view": 1,
+   "label": "Full Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "f_remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "default": "0",
+   "fetch_from": "sws_event.deceased",
+   "fieldname": "deceased",
+   "fieldtype": "Check",
+   "ignore_user_permissions": 1,
+   "label": "Deceased",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sws_event",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Reason for Claim ",
+   "options": "SWS Event",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "claim_amount",
+   "fieldtype": "Currency",
+   "label": "Claim Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Actual Amount (Approved by Committee)",
+   "permlevel": 2
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-06 12:31:01.846983",
+ "modified_by": "Administrator",
+ "module": "SWS",
+ "name": "SWS Application Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

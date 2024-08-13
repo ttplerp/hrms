@@ -162,12 +162,16 @@ class EmployeeSeparationClearance(Document):
 	@frappe.whitelist()
 	def set_approvers(self):
 		#----------------------------Supervisor-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+		if not frappe.db.get_value("Employee",self.employee, "reports_to"):
+			frappe.throw("Reports To for employee {} is not set".format(self.employee))
 		supervisor_officiate = get_officiating_employee(frappe.db.get_value("Employee",self.employee, "reports_to"))
 		if supervisor_officiate:
 			self.supervisor = frappe.db.get_value("Employee",supervisor_officiate[0].officiate,"user_id")
 		else:
 			self.supervisor = frappe.db.get_value("Employee",frappe.db.get_value("Employee",self.employee, "reports_to"),"user_id")
 		#--------------------------- Accounts & Finance Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		if not frappe.db.get_single_value("HR Settings", "afd"):
+			frappe.throw("Accounts & Finance Division clearance approver is not set in HR Settings")
 		afd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "afd"))
 		if afd_officiate:
 			self.afd = frappe.db.get_value("Employee",afd_officiate[0].officiate,"user_id")
@@ -175,11 +179,15 @@ class EmployeeSeparationClearance(Document):
 			self.afd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "afd"),"user_id")
 		#--------------------------- Store & Procurement Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		spd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "spd"))
+		if not frappe.db.get_single_value("HR Settings", "spd"):
+			frappe.throw("Store & Procurement Division clearance approver is not set in HR Settings")
 		if spd_officiate:
 			self.spd = frappe.db.get_value("Employee",spd_officiate[0].officiate,"user_id")
 		else:
 			self.spd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "spd"),"user_id")
 		#--------------------------- ICT & HR Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		if not frappe.db.get_single_value("HR Settings", "icthr"):
+			frappe.throw("ICT & HR Division clearance approver is not set in HR Settings")
 		icthr_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "icthr"))
 		if icthr_officiate:
 			self.icthr = frappe.db.get_value("Employee",icthr_officiate[0].officiate,"user_id")
@@ -187,6 +195,8 @@ class EmployeeSeparationClearance(Document):
 			self.icthr = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "icthr"),"user_id")
 
 		#--------------------------- Internal Audit Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		if not frappe.db.get_single_value("HR Settings", "iad"):
+			frappe.throw("Internal Audit Division clearance approver is not set in HR Settings")
 		iad_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "iad"))
 		if iad_officiate:
 			self.iad = frappe.db.get_value("Employee",iad_officiate[0].officiate,"user_id")
@@ -194,6 +204,8 @@ class EmployeeSeparationClearance(Document):
 			self.iad = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "iad"),"user_id")
 		
 		#--------------------------- Rental and Tenancy-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		if not frappe.db.get_single_value("HR Settings", "rtc"):
+			frappe.throw("Rental and Tenacy clearance approver is not set in HR Settings")
 		rtc_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "rtc"))
 		if rtc_officiate:
 			self.rtc = frappe.db.get_value("Employee",rtc_officiate[0].officiate,"user_id")
@@ -201,12 +213,13 @@ class EmployeeSeparationClearance(Document):
 			self.rtc = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "rtc"),"user_id")
 		
 		#--------------------------- ICT Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		if not frappe.db.get_single_value("HR Settings", "ict"):
+			frappe.throw("ICT Division clearance approver is not set in HR Settings")
 		ict_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ict"))
 		if ict_officiate:
 			self.ict = frappe.db.get_value("Employee",ict_officiate[0].officiate,"user_id")
 		else:
 			self.ict = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "ict"),"user_id")
-		
 		#--------------------------- SWS Treasurer-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		# sws_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ict"))
 		# if sws_officiate:

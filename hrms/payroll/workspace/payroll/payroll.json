@@ -5,14 +5,16 @@
    "label": "Outgoing Salary"
   }
  ],
- "content": "[{\"type\":\"chart\",\"data\":{\"chart_name\":\"Outgoing Salary\",\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Increment Entry\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Increment\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Register\",\"col\":3}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Quick Links\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"tI04OKSvXZ\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Outgoing Salary\",\"col\":12}},{\"id\":\"BbpcIdk_3Y\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"FBOehk9dpF\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Increment Entry\",\"col\":3}},{\"id\":\"hWoZJ97CO7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Increment\",\"col\":3}},{\"id\":\"j2bL7vY0xx\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"RB6AlRukzG\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Register\",\"col\":3}},{\"id\":\"bBJfpLtrci\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"jZBjDriyQN\",\"type\":\"card\",\"data\":{\"card_name\":\"Payroll Transactions\",\"col\":4}},{\"id\":\"EA0Ao4BOLq\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"1GFzHFUAKM\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2020-05-27 19:54:23.405607",
+ "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
  "icon": "money-coins-1",
  "idx": 0,
+ "is_hidden": 0,
  "label": "Payroll",
  "links": [
   {
@@ -311,8 +313,58 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Payroll Transactions",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payroll Entry",
+   "link_count": 0,
+   "link_to": "Payroll Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Slip",
+   "link_count": 0,
+   "link_to": "Salary Slip",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Increment Entry",
+   "link_count": 0,
+   "link_to": "Increment Entry",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Increment",
+   "link_count": 0,
+   "link_to": "Salary Increment",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Reports",
-   "link_count": 6,
+   "link_count": 7,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -378,64 +430,27 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Quick Links",
-   "link_count": 4,
+   "is_query_report": 1,
+   "label": "Staff Welfare Scheme",
+   "link_count": 0,
+   "link_to": "Staff Welfare Scheme",
+   "link_type": "Report",
    "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Payroll Entry",
-   "link_count": 0,
-   "link_to": "Payroll Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Slip",
-   "link_count": 0,
-   "link_to": "Salary Slip",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Increment Entry",
-   "link_count": 0,
-   "link_to": "Increment Entry",
-   "link_type": "DocType",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Increment",
-   "link_count": 0,
-   "link_to": "Salary Increment",
-   "link_type": "DocType",
-   "onboard": 1,
    "type": "Link"
   }
  ],
- "modified": "2023-06-07 11:26:44.500231",
- "modified_by": "Administrator",
+ "modified": "2024-07-11 15:52:06.534015",
+ "modified_by": "pralad.rai@thimphutechpark.bt",
  "module": "Payroll",
  "name": "Payroll",
+ "number_cards": [],
  "owner": "Administrator",
  "parent_page": "HR",
  "public": 1,
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 9.0,
+ "sequence_id": 8.0,
  "shortcuts": [
   {
    "color": "Red",

@@ -226,7 +226,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-11-28 14:29:58.243077",
+ "modified": "2024-07-09 14:34:15.383578",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Promotion",
@@ -240,6 +240,7 @@
    "read": 1,
    "report": 1,
    "role": "Employee",
+   "select": 1,
    "share": 1
   },
   {

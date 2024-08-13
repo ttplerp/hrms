@@ -2,6 +2,12 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('HR Settings', {
+	"add_semso": function(frm) {
+		add_semso_deduction(frm)
+	},
+	"remove_semso": function(frm) {
+		remove_semso_deduction(frm)
+	},
 });
 
 frappe.tour['HR Settings'] = [
@@ -21,3 +27,30 @@ frappe.tour['HR Settings'] = [
 		description: __('Review various other settings related to Employee Leaves and Expense Claim')
 	}
 ];
+
+function add_semso_deduction(frm) {
+	frappe.call({
+		method: "hrms.hr.doctype.hr_settings.hr_settings.add_semso_deduction",
+		args: {
+			"semso": frm.doc.semso
+		},
+		callback: function(r){
+			cur_frm.reload_doc();
+		},
+		freeze: true,		
+		freeze_message: "Adding Semso.... Please Wait",
+	})
+}
+function remove_semso_deduction(frm){
+	frappe.call({
+		method: "hrms.hr.doctype.hr_settings.hr_settings.remove_semso_deduction",
+		args: {
+			"semso": frm.doc.semso
+		},
+		callback: function(r){
+			cur_frm.reload_doc();
+		},
+		freeze: true,		
+		freeze_message: "Removing Semso.... Please Wait",
+	})
+}

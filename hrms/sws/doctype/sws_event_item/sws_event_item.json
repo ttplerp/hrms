@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-07-18 11:50:35.373453",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+    "noof_years",
+    "amount"
+   ],
+   "fields": [
+    {
+     "allow_in_quick_entry": 1,
+     "columns": 5,
+     "fieldname": "noof_years",
+     "fieldtype": "Select",
+     "in_list_view": 1,
+     "label": "No.of years as member",
+     "options": "\nWithin 1 year\nWithin 2 years\nWithin 3 years\nWithin 4 years\n5 years and above",
+     "reqd": 1
+    },
+    {
+     "allow_in_quick_entry": 1,
+     "columns": 5,
+     "fieldname": "amount",
+     "fieldtype": "Currency",
+     "in_list_view": 1,
+     "label": "Claim Payout",
+     "reqd": 1
+    }
+   ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-07-18 11:50:35.373453",
+ "modified_by": "Administrator",
+ "module": "SWS",
+ "name": "SWS Event Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

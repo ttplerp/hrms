@@ -13,6 +13,8 @@
   "month",
   "column_break_40",
   "processing_branch",
+  "deduct_semso",
+  "semso_percent",
   "section_break_8",
   "branch",
   "department",
@@ -55,6 +57,7 @@
   "posting_date",
   "payroll_frequency",
   "column_break1",
+  "file",
   "company"
  ],
  "fields": [
@@ -352,12 +355,30 @@
    "fieldtype": "Table",
    "options": "Payroll Employee Failed",
    "read_only": 1
+  },
+  {
+   "fieldname": "file",
+   "fieldtype": "Data",
+   "label": "File",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "deduct_semso",
+   "fieldtype": "Check",
+   "label": "Deduct Semso"
+  },
+  {
+   "depends_on": "deduct_semso",
+   "fieldname": "semso_percent",
+   "fieldtype": "Float",
+   "label": "Semso Percent"
   }
  ],
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-27 10:06:06.186919",
+ "modified": "2024-07-18 14:54:19.525976",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",

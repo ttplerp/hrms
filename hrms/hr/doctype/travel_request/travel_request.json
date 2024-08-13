@@ -25,6 +25,7 @@
   "mode_of_travel",
   "column_break_17",
   "purpose_of_travel",
+  "training_event",
   "attach_report",
   "date_of_birth",
   "section_break_4",
@@ -556,13 +557,11 @@
   {
    "fieldname": "miscellaneous_amount_details_section",
    "fieldtype": "Section Break",
-   "hidden": 1,
    "label": "Miscellaneous Amount Details"
   },
   {
    "fieldname": "miscellaneous_amount",
    "fieldtype": "Currency",
-   "hidden": 1,
    "label": "Miscellaneous Amount"
   },
   {
@@ -572,7 +571,6 @@
   {
    "fieldname": "remarks_for_miscellaneous_amount_claim",
    "fieldtype": "Small Text",
-   "hidden": 1,
    "label": "Remarks For Miscellaneous Amount Claim",
    "mandatory_depends_on": "eval:doc.miscellaneous_amount > 0"
   },
@@ -581,11 +579,17 @@
    "fieldtype": "Attach",
    "ignore_user_permissions": 1,
    "label": "Attach Report"
+  },
+  {
+   "fieldname": "training_event",
+   "fieldtype": "Data",
+   "label": "Training Event",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-08-15 11:41:52.001019",
+ "modified": "2024-08-13 11:17:28.360611",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",

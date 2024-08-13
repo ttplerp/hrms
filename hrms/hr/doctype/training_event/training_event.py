@@ -6,6 +6,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from frappe.utils import time_diff_in_seconds
+from frappe.model.mapper import get_mapped_doc
 
 from erpnext.setup.doctype.employee.employee import get_employee_emails
 
@@ -36,3 +37,25 @@ class TrainingEvent(Document):
 				employee.status = "Open"
 
 		self.db_update_all()
+
+@frappe.whitelist()
+def create_travelestequst(source_name, target_doc=None):
+	def set_missing_values(obj, target, source_parent):
+		target.payment_type = "One-One Payment"
+		target.transaction_type = "Journal Entry"
+		target.posting_date = get_datetime()
+		target.from_date = None
+		target.to_date = None
+		target.paid_from = frappe.db.get_value("Branch", target.branch,"expense_bank_account")
+		target.get_entries()
+
+	doc = get_mapped_doc("Training Event", source_name, {
+			"Training Event": {
+				"doctype": "Travel Request",
+				"field_map": {
+					"name": "transaction_no",
+				},
+				"postprocess": set_missing_values,
+			},
+	}, target_doc, ignore_permissions=True)
+	return doc

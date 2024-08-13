@@ -158,7 +158,14 @@
   "review_approval_notification_template",
   "evaluation_approval_notification_template",
   "pms_appeal_approval_notification_template",
-  "housing_clearance_approver_notification"
+  "housing_clearance_approver_notification",
+  "sws_setting_tab",
+  "semso_deduction_from_salary_section",
+  "semso",
+  "column_break_77300",
+  "add_semso",
+  "column_break_8shme",
+  "remove_semso"
  ],
  "fields": [
   {
@@ -791,22 +798,19 @@
    "fieldname": "spd",
    "fieldtype": "Link",
    "label": "Store & Procurement Division",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fieldname": "icthr",
    "fieldtype": "Link",
    "label": "HR Division",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fieldname": "iad",
    "fieldtype": "Link",
    "label": "Internal Audit Division",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fetch_from": "spd.employee_name",
@@ -833,8 +837,7 @@
    "fieldname": "afd",
    "fieldtype": "Link",
    "label": "Accounts & Finance Division",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fetch_from": "afd.employee_name",
@@ -880,8 +883,7 @@
    "fieldname": "rtc",
    "fieldtype": "Link",
    "label": "Rental & Tenancy",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fetch_from": "rtc.employee_name",
@@ -917,15 +919,13 @@
    "fieldname": "ict",
    "fieldtype": "Link",
    "label": "ICT Division",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fieldname": "sws",
    "fieldtype": "Link",
    "label": "SWS Treasurer",
-   "options": "Employee",
-   "reqd": 1
+   "options": "Employee"
   },
   {
    "fetch_from": "ict.employee_name",
@@ -1023,13 +1023,48 @@
    "fieldname": "seal",
    "fieldtype": "Attach Image",
    "label": "Finance Focal Seal"
+  },
+  {
+   "fieldname": "sws_setting_tab",
+   "fieldtype": "Tab Break",
+   "hidden": 1,
+   "label": "SWS Setting",
+   "read_only": 1
+  },
+  {
+   "fieldname": "semso_deduction_from_salary_section",
+   "fieldtype": "Section Break",
+   "label": "Semso Deduction From Salary"
+  },
+  {
+   "fieldname": "semso",
+   "fieldtype": "Percent",
+   "label": "Semso Deduction  Percent"
+  },
+  {
+   "fieldname": "column_break_77300",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "add_semso",
+   "fieldtype": "Button",
+   "label": "Add Semso"
+  },
+  {
+   "fieldname": "column_break_8shme",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remove_semso",
+   "fieldtype": "Button",
+   "label": "Remove Semso"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-07 16:27:14.959027",
+ "modified": "2024-07-18 15:15:48.784475",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

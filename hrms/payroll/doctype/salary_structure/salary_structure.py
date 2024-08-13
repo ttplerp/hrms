@@ -490,7 +490,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				})
 		#Getting Approved OTs
 		ot_details = frappe.db.sql("""select  * from `tabOvertime Application` where docstatus = 1 and employee = '{0}' 
-			and processed = 0 and workflow_state = 'Approved' and posting_date <= '{1}'""".format(source.employee, end_date), as_dict =1)
+			and processed = 0 and posting_date <= '{1}'""".format(source.employee, end_date), as_dict =1)
 		# frappe.throw(str(ot_details))
 		total_overtime_amount = 0.0
 		for d in ot_details:
@@ -515,6 +515,18 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				'payment_days': flt(payment_days)
 				})
 		#ends ot logic
+		if cint(target.deduct_semso) == 1 and flt(target.semso_percent) > 0:
+			if 'earnings' in calc_map.keys():
+				for e in calc_map['earnings']:
+					if e['salary_component'] == 'Basic Pay':
+						basic_amt = (flt(e['amount']))
+		
+			calc_map['deductions'].append({
+				'salary_component':'Semso',
+				'from_date':start_date,
+				'to_date':end_date,
+				'amount':flt(basic_amt * flt(target.semso_percent) / 100),
+			})
 
 		for e in calc_map['earnings']:
 			if e['salary_component'] == 'Basic Pay':

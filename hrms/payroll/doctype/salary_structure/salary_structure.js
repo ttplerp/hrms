@@ -71,6 +71,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_hra: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_housing: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_deployment: function(frm){
 		calculate_others(frm);
 	},
@@ -234,6 +237,9 @@ frappe.ui.form.on('Salary Structure', {
 		calculate_others(frm);
 	},
 	honorarium: function(frm){
+		calculate_others(frm);
+	},
+	housing: function(frm){
 		calculate_others(frm);
 	},
 	banking_allowance: function(frm){

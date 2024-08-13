@@ -1,0 +1,79 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-07-18 11:50:12.472757",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "sws_event",
+  "deceased",
+  "sb_claim_payout",
+  "items"
+ ],
+ "fields": [
+  {
+   "fieldname": "sws_event",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "SWS Event",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "deceased",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Mark as Deceased"
+  },
+  {
+   "fieldname": "sb_claim_payout",
+   "fieldtype": "Section Break",
+   "label": "CLAIM PAYOUT DETAILS"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Payout Details",
+   "options": "SWS Event Item",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-01 16:42:05.160638",
+ "modified_by": "Administrator",
+ "module": "SWS",
+ "name": "SWS Event",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

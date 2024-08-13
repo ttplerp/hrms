@@ -5,7 +5,7 @@ cur_frm.add_fetch("employee", "grade", "grade")
 
 frappe.ui.form.on('Travel Request', {
 	refresh: function(frm){
-		if (frm.doc.docstatus === 0 && frm.doc.workflow_state == 'Verified By Supervisor' && !frm.doc.__islocal && cint(frm.doc.need_advance) == 1) {
+		if (frm.doc.docstatus === 0 && frm.doc.workflow_state == 'Waiting Supervisor Approval' && !frm.doc.__islocal && cint(frm.doc.need_advance) == 1) {
 			cur_frm.add_custom_button('Request Advance', function() {
 				return frappe.call({
 					method: "make_advance_payment",
@@ -123,6 +123,27 @@ frappe.ui.form.on("Travel Itinerary", {
 			update_total_claim(cdt, cdn)
 		}
 	},
+	"passport_fees_currency": function (frm, cdt, cdn) {
+		update_total_claim(cdt, cdn)
+	},
+	"visa_fees_currency": function (frm, cdt, cdn) {
+		update_total_claim(cdt, cdn)
+	},
+	"incidental_fees_currency": function (frm, cdt, cdn) {
+		update_total_claim(cdt, cdn)
+	},
+	"porter_pony_charges": function (frm, cdt, cdn) {
+		update_total_claim(cdt, cdn)
+	},
+	"visa_fees": function (frm, cdt, cdn) {
+		update_total_claim(cdt, cdn)
+	},
+	"passport_fees": function (frm, cdt, cdn) {
+		update_total_claim(cdt, cdn)
+	},
+	"incidental_fees": function (frm, cdt, cdn) {
+		update_total_claim(cdt, cdn)
+	},
 	"no_days_actual":function(frm, cdt,cdn){
 		update_amount(frm,cdt, cdn);
 	}
@@ -183,6 +204,7 @@ var set_noof_days = function(frm, cdt, cdn){
 
 function update_total_claim(cdt, cdn){
 	var item = locals[cdt][cdn];
+	var total_claim = 0;
 	frappe.call({
 		method: "hrms.hr.doctype.travel_request.travel_request.get_exchange_rate",
 		args: {
@@ -194,12 +216,89 @@ function update_total_claim(cdt, cdn){
 		callback: function(r) {
 			if(r.message) {
 				frappe.model.set_value(cdt, cdn, "exchange_rate", flt(r.message))
-				frappe.model.set_value(cdt, cdn, "actual_amount", flt(r.message) * ((flt(item.total_claim))))
+				frappe.model.set_value(cdt, cdn, "actual_amount", flt(r.message) * ((flt(item.total_claim)))+flt(item.porter_pony_charges))
 				frappe.model.set_value(cdt, cdn, "amount", flt(item.dsa) * (flt(item.dsa_percent)/100) * flt(item.no_days_actual))
+				total_claim = item.actual_amount
                 frm.refresh_field("itinerary")
 			}
 		}
 	})
+	//If there is visa fee
+	if(item.visa_fees_currency != "BTN"){
+		frappe.call({
+			method: "erpnext.hr.doctype.travel_authorization.travel_authorization.get_exchange_rate",
+			args: {
+				"from_currency": item.visa_fees_currency,
+				"to_currency": "BTN",
+				"date": item.currency_exchange_date
+			},
+			async: false,
+			callback: function(vf){
+				if(vf.message){
+					frappe.model.set_value(cdt, cdn, "actual_amount", flt(vf.message)*flt(item.visa_fees) + flt(total_claim))	
+					frappe.model.set_value(cdt, cdn, "total_claim", flt(vf.message)*flt(item.visa_fees) + flt(total_claim))
+					total_claim = flt(vf.message)*flt(item.visa_fees) + flt(amount);
+				}
+
+			}
+		})
+	}
+	else {
+		frappe.model.set_value(cdt, cdn, "actual_amount", flt(item.visa_fees) + flt(amount))
+		frappe.model.set_value(cdt, cdn, "amount", flt(item.visa_fees) + flt(amount))
+		total_claim = flt(item.visa_fees) + flt(amount)
+	}
+	//If there is passport fee
+	if(item.passport_fees_currency != "BTN"){
+		frappe.call({
+			method: "hrms.hr.doctype.travel_request.travel_request.get_exchange_rate",
+			args: {
+				"from_currency": item.passport_fees_currency,
+				"to_currency": "BTN",
+				"date": item.currency_exchange_date
+			},
+			async: false,
+			callback: function(vf){
+				if(vf.message){
+					frappe.model.set_value(cdt, cdn, "actual_amount", flt(vf.message)*flt(item.passport_fees) + flt(total_claim))	
+					frappe.model.set_value(cdt, cdn, "total_claim", flt(vf.message)*flt(item.passport_fees) + flt(total_claim))
+					total_claim = flt(vf.message)*flt(item.passport_fees) + flt(total_claim)
+				}
+
+			}
+		})
+	}
+	else {
+		frappe.model.set_value(cdt, cdn, "actual_amount", flt(item.passport_fees) + flt(total_claim))
+		frappe.model.set_value(cdt, cdn, "amount", flt(item.passport_fees) + flt(total_claim))
+		total_claim = flt(item.passport_fees) + flt(amount);
+	}
+	//If there is incidental expenses
+	if(item.incidental_fees_currency != "BTN"){
+		frappe.call({
+			method: "hrms.hr.doctype.travel_request.travel_request.get_exchange_rate",
+			args: {
+				"from_currency": item.incidental_fees_currency,
+				"to_currency": "BTN",
+				"date": item.currency_exchange_date
+			},
+			async: false,
+			callback: function(vf){
+				if(vf.message){
+					frappe.model.set_value(cdt, cdn, "actual_amount", flt(vf.message)*flt(item.incidental_fees) + flt(total_claim))	
+					frappe.model.set_value(cdt, cdn, "amount", flt(vf.message)*flt(item.incidental_fees) + flt(total_claim))
+					total_claim = flt(vf.message)*flt(item.incidental_fees) + flt(total_claim);
+				}
+
+			}
+		})
+	}
+	else {
+		frappe.model.set_value(cdt, cdn, "actual_amount", flt(item.incidental_fees) + flt(total_claim))
+		frappe.model.set_value(cdt, cdn, "total_claim", flt(item.incidental_fees) + flt(amount))
+	}
+	refresh_field("total_claim");
+	refresh_field("actual_amount");
 }
 function update_advance_amount(frm) {
 	frappe.call({

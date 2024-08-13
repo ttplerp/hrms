@@ -203,7 +203,7 @@
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-10-12 09:48:49.895931",
+ "modified": "2024-07-04 15:53:00.029702",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",
@@ -212,7 +212,6 @@
  "permissions": [
   {
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,

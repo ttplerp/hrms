@@ -5,7 +5,12 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe.utils import format_date
+from frappe.utils import formatdate, format_datetime
+from frappe.utils import add_months, get_first_day, get_last_day, date_diff, cint,flt
+import math
+import datetime
+import calendar
+
 
 # Wether to proceed with frequency change
 PROCEED_WITH_FREQUENCY_CHANGE = False
@@ -83,3 +88,61 @@ def set_proceed_with_frequency_change():
 	"""Enables proceed with frequency change"""
 	global PROCEED_WITH_FREQUENCY_CHANGE
 	PROCEED_WITH_FREQUENCY_CHANGE = True
+
+@frappe.whitelist()
+def add_semso_deduction(semso):
+	frappe.throw("PLease process from Payroll Entry")
+	now_date = datetime.datetime.now()
+	start_date = now_date.replace(day=1)
+	last_day = calendar.monthrange(now_date.year, now_date.month)[1]
+	end_date = now_date.replace(day=last_day)
+	percent = int(semso)/100
+	# frappe.throw(str(percent))
+	li = frappe.db.sql("""
+					   SELECT ss.name
+					   FROM `tabSalary Structure` ss, `tabEmployee` e
+					   WHERE ss.is_active = "Yes"
+					   AND ss.employee = e.name
+					""", as_dict=True)
+	for rec in li:
+		basic_pay = 0
+		sst = frappe.get_doc("Salary Structure", rec.name)
+		for i in sst.earnings:
+			if i.salary_component == "Basic Pay":
+				basic_pay = flt(i.amount)
+
+		# semso
+		if not basic_pay:
+			frappe.throw("ERROR: Basic Pay not found")
+			
+		row = sst.append("deductions", {})
+		row.salary_component = "Semso"
+		row.salary_component_type = "Deduction"
+		row.amount = math.ceil(flt(basic_pay)*flt(percent))
+		row.from_date = start_date.date()
+		row.to_date = end_date.date()
+		row.save(ignore_permissions=True)
+		sst.save(ignore_permissions=True)
+	frappe.msgprint("Semso Added")
+	frappe.db.commit()
+	
+
+@frappe.whitelist()
+def remove_semso_deduction(semso):
+	frappe.throw("PLease process from Payroll Entry")
+	li = frappe.db.sql("""
+					   SELECT name
+					   FROM `tabSalary Detail`
+					   WHERE salary_component_type = "Deduction"
+					   AND salary_component = "Semso"
+					""", as_dict=True)
+	if not li:
+		frappe.throw("Semso had been alrady removed")
+	for rec in li:
+		frappe.db.sql("""
+			delete from `tabSalary Detail`
+			where name ='{}'
+		""".format(rec.name))
+	frappe.msgprint("Removed Semso from Salary")
+	
+

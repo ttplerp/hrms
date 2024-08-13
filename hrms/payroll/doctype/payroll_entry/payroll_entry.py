@@ -171,7 +171,9 @@ class PayrollEntry(Document):
 				"deduct_tax_for_unsubmitted_tax_exemption_proof": self.deduct_tax_for_unsubmitted_tax_exemption_proof,
 				"payroll_entry": self.name,
 				"fiscal_year": self.fiscal_year,
-				"month": self.month
+				"month": self.month,
+				"deduct_semso": self.deduct_semso,
+				"semso_percent": self.semso_percent
 			})
 			if len(emp_list) > 300:
 				frappe.enqueue(create_salary_slips_for_employees, timeout=600, employees=emp_list, args=args)
@@ -287,7 +289,29 @@ class PayrollEntry(Document):
 				(case when ifnull(sc.make_party_entry,0) = 1 then t1.employee else 'Other' end)
 			order by t1.cost_center, t1.business_activity, sc.type, sc.name
 		""".format(self.fiscal_year, self.month, salary_component_pf, self.name),as_dict=1)
-	
+
+	def generate_txt_file(self):
+		# File path
+		file_path = '/files/'+str(self.name)+".txt"
+		actual_file_path = '/home/frappe/erp/sites/bdb.erp.bt/public/files/'+str(self.name)+".txt"
+
+		# Append mode ('a') will append to the end of the file
+		total_pay = 0
+		with open(actual_file_path, 'w') as file:
+			for emp in self.employees:
+				if not frappe.db.get_value("Employee", emp.employee, "bank_ac_no"):
+					frappe.throw("Please set Bank Account No. for Employee {} in Employee Master".format(emp.employee))
+				net_pay = frappe.db.get_value("Salary Slip", emp.salary_slip, "net_pay")
+				total_pay += flt(net_pay)
+				for a in range(17-len(str(net_pay))):
+					net_pay = " "+str(net_pay)
+				file.write(str(frappe.db.get_value("Employee", emp.employee, "bank_ac_no"))+"     BTN0010     C"+str(net_pay)+"Salary / Remit for "+str(self.month_name)[0:3]+" "+str(self.fiscal_year)+"\n")
+			for a in range(17-len(str(total_pay))):
+				total_pay = " "+str(total_pay)
+			file.write("0010200050011    BTN0010     D"+str(total_pay)+"Pay / Remit for "+str(self.month_name)[0:3]+" "+str(self.fiscal_year)+"\n")
+		self.file = file_path
+
+
 	@frappe.whitelist()
 	def make_accounting_entry(self):
 		"""
@@ -542,7 +566,8 @@ class PayrollEntry(Document):
 					jv_name = doc.name
 
 			if jv_name:
-				self.update_salary_slip_status(jv_name = jv_name)		
+				self.update_salary_slip_status(jv_name = jv_name)
+			self.generate_txt_file()	
 			frappe.msgprint(_("Salary posting to accounts is successful."),title="Posting Successful")
 		else:
 			frappe.throw(_("No data found"),title="Posting failed")

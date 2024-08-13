@@ -51,6 +51,9 @@
   "shift_method",
   "shift",
   "eligible_for_hra",
+  "eligible_for_housing",
+  "housing_method",
+  "housing",
   "cb_10",
   "eligible_for_difficulty",
   "difficulty_method",
@@ -615,14 +618,14 @@
    "default": "0",
    "fieldname": "eligible_for_honorarium",
    "fieldtype": "Check",
-   "label": "Eligible for Honorarium",
+   "label": "Eligible for Banking Allowance",
    "print_hide": 1
   },
   {
    "depends_on": "eligible_for_honorarium",
    "fieldname": "honorarium_method",
    "fieldtype": "Select",
-   "label": "Eligible for Honorarium Payment Method",
+   "label": "Eligible for Banking Allowance Payment Method",
    "options": "Percent\nLumpsum",
    "print_hide": 1
   },
@@ -630,7 +633,7 @@
    "depends_on": "eligible_for_honorarium",
    "fieldname": "honorarium",
    "fieldtype": "Currency",
-   "label": "Value(Honorarium)",
+   "label": "Value(Banking Allowance)",
    "print_hide": 1
   },
   {
@@ -884,12 +887,14 @@
    "label": "Eligible for Deployment Allowance"
   },
   {
+   "depends_on": "eligible_for_deployment",
    "fieldname": "deployment_method",
    "fieldtype": "Select",
    "label": "Eligible for Deployment Allowance",
    "options": "Percent\nLumpsum"
   },
   {
+   "depends_on": "eligible_for_deployment",
    "fieldname": "deployment",
    "fieldtype": "Data",
    "label": "Value Deployment"
@@ -918,12 +923,31 @@
    "fieldname": "ltc_allowance",
    "fieldtype": "Int",
    "label": "Value(Leave Travel Concession )"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_housing",
+   "fieldtype": "Check",
+   "label": "Eligible for Housing Allowance (Pro-rata))"
+  },
+  {
+   "depends_on": "eligible_for_housing",
+   "fieldname": "housing_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Housing Allowance Payment Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eligible_for_housing",
+   "fieldname": "housing",
+   "fieldtype": "Int",
+   "label": "Value(Housing Allowance)"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-12-11 15:15:40.077875",
+ "modified": "2024-07-04 16:26:14.393088",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",

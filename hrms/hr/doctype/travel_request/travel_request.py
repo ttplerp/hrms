@@ -30,7 +30,6 @@ class TravelRequest(AccountsController):
 		if self.workflow_state == "Verified By Supervisor":
 			self.notify_supervisor()
 		if self.workflow_state == "Waiting Supervisor Approval":
-			self.check_date()
 			self.check_advance_and_report()
 			self.notify_supervisor()
 		if self.workflow_state != "Approved":
@@ -52,8 +51,8 @@ class TravelRequest(AccountsController):
 		notify_workflow_states(self)
 
 	def validate_advance_amount(self):
-		if flt(self.advance_amount) > flt(self.total_travel_amount) * flt(0.9):
-			frappe.msgprint("Advance amount cannot be greater than 90% of the <b>Total Travel Amount</b>",title="Excess Advance Amount",indicator="red",raise_exception=True)
+		if flt(self.advance_amount) > flt(self.total_travel_amount) * flt(0.75):
+			frappe.msgprint("Advance amount cannot be greater than 75% of the <b>Total Travel Amount</b>",title="Excess Advance Amount",indicator="red",raise_exception=True)
 		elif flt(self.advance_amount) <= 0 and self.need_advance == 1:
 			frappe.throw("Advance amount cannot be: {}".format(self.advance_amount))
 
@@ -70,16 +69,12 @@ class TravelRequest(AccountsController):
 	def check_leave_applications(self):
 		las = frappe.db.sql("""select t1.name from `tabLeave Application` t1 
 				where t1.employee = "{employee}"
-				and t1.docstatus != 2 and  case when t1.half_day = 1 then t1.from_date = t1.to_date end
+				and t1.docstatus != 2
 				and exists(select 1
 						from `tabTravel Itinerary` t2
 						where t2.parent = "{travel_authorization}"
-						and (
-							(t1.from_date <= t2.to_date and t1.to_date >= t2.from_date)
-							or
-							(t2.from_date <= t1.to_date and t2.to_date >= t1.from_date)
+      					and (t2.from_date between t1.from_date and t1.to_date) or (t2.to_date between t1.from_date and t1.to_date)
 						)
-				)
 		""".format(travel_authorization = self.name, employee = self.employee), as_dict=True)
 		for t in las:
 			frappe.throw("The dates in your current travel request have been used in leave application {}".format(frappe.get_desk_link("Leave Application", t.name)))
@@ -130,7 +125,7 @@ class TravelRequest(AccountsController):
 		for item in self.get("itinerary"):
 			las_date = item.from_date
 		if datetime.strptime(nowdate(),"%Y-%m-%d").date() <= datetime.strptime(str(las_date),"%Y-%m-%d").date():
-			frappe.throw("You cannot Claim Travel before '{}'".format(las_date))
+			frappe.throw("Cannot Claim Travel before '{}'".format(las_date))
 
 	def check_duplicate_requests(self):
 		# check if the travel dates are already used in other travel request
@@ -209,11 +204,15 @@ class TravelRequest(AccountsController):
 			""".format(travel_authorization = self.name, employee = self.employee), as_dict=True)
 			for t in tas:
 				frappe.throw("Row#{}: The dates in your current Travel Request have already been claimed in {} between {} and {}"\
-					.format(t.idx, frappe.get_desk_link("Travel Request", t.name), t.date, t.till_date))
+					.format(t.idx, frappe.get_desk_link("Travel Request", t.name), t.from_date, t.to_date))
 	
 	
 	def update_amount(self):
+		company_currency = "BTN"
 		for item in self.get("itinerary"):
+			visa_exchange_rate  = 1 if item.visa_fees_currency == company_currency else get_exchange_rate(item.visa_fees_currency, company_currency,transaction_date=item.currency_exchange_date)
+			passport_exchange_rate  = 1 if item.passport_fees_currency == company_currency else get_exchange_rate(item.passport_fees_currency, company_currency, transaction_date=item.currency_exchange_date)
+			incidental_exchange_rate  = 1 if item.incidental_fees_currency == company_currency else get_exchange_rate(item.incidental_fees_currency, company_currency, transaction_date=item.currency_exchange_date)
 			if not item.to_date:
 				item.no_days_actual = date_diff(item.from_date, item.from_date)+1
 			else:
@@ -221,7 +220,9 @@ class TravelRequest(AccountsController):
 			item.amount = flt(item.no_days_actual) * (flt(item.dsa) * (flt(item.dsa_percent)/100))
 			item.mileage_amount = flt(item.mileage_rate) * flt(item.distance)
 			item.mileage_amount = flt(item.mileage_amount)
-			item.total_claim = flt(item.amount)+flt(item.mileage_amount)+flt(item.fare_amount)+flt(item.entertainment_amount)+flt(item.hotel_charges_amount)
+			item.total_claim = flt(item.amount)+flt(item.mileage_amount)+flt(item.fare_amount)+flt(item.entertainment_amount)+flt(item.hotel_charges_amount) + flt(item.visa_fees) * flt(visa_exchange_rate) + flt(item.passport_fees) * flt(passport_exchange_rate) + flt(item.incidental_fees) * flt(incidental_exchange_rate)
+			if self.travel_type == "Domestic":
+				item.total_claim += flt(item.porter_pony_charges)
 
 	def make_employee_advance(self):
 		if cint(self.need_advance) and flt(self.advance_amount) > 0:
@@ -291,7 +292,7 @@ class TravelRequest(AccountsController):
 		
 		expense_types = [
 			("Travel (In Country)" if self.travel_type == "Domestic" else "Travel (Ex Country)", travel_amt),
-			("Mileage (In Country)" if self.travel_type == "Domestic" else "Mileage (Ex Country)", mileage_amt),
+			("Mileage (In Country)" if self.travel_type == "Domestic" else "Mileage (In Country)", mileage_amt),
 			("Accommodation Expense (In country)" if self.travel_type == "Domestic" else "Accommodation Expense (Ex country)", hotel_amt),
 			("Entertainment Expense (In Country)" if self.travel_type == "Domestic" else "Entertainment Expense (Ex Country)", entertainment_amt),
 			("Transportation Expense (In Country)" if self.travel_type == "Domestic" else "Transportation Expense (Ex Country)", fare_amt)

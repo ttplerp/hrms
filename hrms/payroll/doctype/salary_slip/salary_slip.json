@@ -12,6 +12,7 @@
   "employee_group",
   "employee_grade",
   "designation",
+  "deduct_semso",
   "col_break_1",
   "company",
   "branch",
@@ -21,6 +22,7 @@
   "section",
   "business_activity",
   "letter_head",
+  "semso_percent",
   "section_break_10",
   "fiscal_year",
   "yearmonth",
@@ -568,13 +570,27 @@
    "fieldtype": "Currency",
    "label": "Overtime Amount",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "deduct_semso",
+   "fieldtype": "Check",
+   "label": "Deduct Semso",
+   "read_only": 1
+  },
+  {
+   "depends_on": "deduct_semso",
+   "fieldname": "semso_percent",
+   "fieldtype": "Data",
+   "label": "Semso Percent",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-10-09 11:26:28.623685",
+ "modified": "2024-07-18 15:57:16.044954",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
