@@ -141,7 +141,8 @@ class EmployeeCheckin(Document):
 							doc.total_working_hours = f"{total_hours}:{remaining_minutes:02d}"
 							 
 						else:
-							frappe.throw("In-time is not defined.")
+							pass
+							# frappe.throw("In-time is not defined.")
 					else:
 						frappe.throw("Time is not defined.")
 					
@@ -190,7 +191,8 @@ class EmployeeCheckin(Document):
 
 	def check_reason(self):
 		if self.reason:
-			self.send_email()
+			pass
+			# self.send_email()
 
 	def send_email(self):
 		"""Send Email to Supervisor and HR Manager if late office in or early exit"""
