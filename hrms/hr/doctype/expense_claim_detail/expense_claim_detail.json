@@ -7,6 +7,10 @@
  "field_order": [
   "expense_date",
   "equipment",
+  "quantity",
+  "rate",
+  "bill_no",
+  "bill_date",
   "column_break_2",
   "is_stock_item",
   "expense_type",
@@ -171,12 +175,32 @@
    "fieldtype": "Link",
    "label": "Equipment/Vehicle",
    "options": "Equipment"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate"
+  },
+  {
+   "fieldname": "bill_no",
+   "fieldtype": "Data",
+   "label": "Bill No"
+  },
+  {
+   "fieldname": "bill_date",
+   "fieldtype": "Date",
+   "label": "Bill Date"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-08-03 11:45:37.999057",
+ "modified": "2024-08-10 13:47:02.488886",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Detail",
