@@ -36,11 +36,12 @@ class EmployeeAdvance(Document):
 		self.check_duplicate_advance()
 	
 	def on_cancel(self):
-		self.ignore_linked_doctypes = "GL Entry"
+		self.ignore_linked_doctypes = ("GL Entry", "Payment Ledger Entry")
 		self.set_status(update=True)
 		self.update_travel_request()
 		self.update_reference(cancel = 1)
 		self.update_salary_structure(True)
+
 	def on_submit(self):
 		if self.advance_type =="Travel Advance":
 			self.update_travel_request()
