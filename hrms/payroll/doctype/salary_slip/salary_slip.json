@@ -6,12 +6,19 @@
  "document_type": "Setup",
  "engine": "InnoDB",
  "field_order": [
+  "employee_summary_section",
+  "employee_info",
+  "show_fields",
   "employee",
+  "cb1",
+  "employee_photo",
+  "sb0",
   "employee_name",
   "employment_type",
   "employee_group",
   "employee_grade",
   "designation",
+  "salary_structure",
   "col_break_1",
   "company",
   "branch",
@@ -29,9 +36,9 @@
   "end_date",
   "column_break_15",
   "month",
-  "salary_structure",
-  "total_days_in_month",
   "leave_without_pay",
+  "cb3",
+  "total_days_in_month",
   "payment_days",
   "hourly_wages",
   "timesheets",
@@ -563,13 +570,48 @@
    "fieldtype": "Currency",
    "label": "Overtime Amount",
    "read_only": 1
+  },
+  {
+   "fieldname": "employee_summary_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "employee_info",
+   "fieldtype": "HTML",
+   "label": "Employee Information"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee_photo",
+   "fieldtype": "HTML",
+   "label": "Employee Photo "
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.show_fields == 1",
+   "fieldname": "sb0",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "show_fields",
+   "fieldtype": "Check",
+   "label": "Show Fields"
+  },
+  {
+   "fieldname": "cb3",
+   "fieldtype": "Column Break"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-09 16:12:13.280727",
+ "modified": "2024-08-27 21:09:51.076355",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
