@@ -189,7 +189,8 @@
    "fieldtype": "Link",
    "label": "Business Activity",
    "options": "Business Activity",
-   "read_only": 1
+   "read_only": 1,
+   "reqd": 1
   },
   {
    "fieldname": "letter_head",
@@ -479,6 +480,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "description": "Net Pay (in words) will be visible once you save the Salary Slip.",
    "fieldname": "total_in_words",
    "fieldtype": "Data",
@@ -590,7 +592,7 @@
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-18 15:57:16.044954",
+ "modified": "2024-08-22 11:52:40.386979",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",

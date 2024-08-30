@@ -39,23 +39,23 @@ class TrainingEvent(Document):
 		self.db_update_all()
 
 @frappe.whitelist()
-def create_travelestequst(source_name, target_doc=None):
-	def set_missing_values(obj, target, source_parent):
-		target.payment_type = "One-One Payment"
-		target.transaction_type = "Journal Entry"
-		target.posting_date = get_datetime()
-		target.from_date = None
-		target.to_date = None
-		target.paid_from = frappe.db.get_value("Branch", target.branch,"expense_bank_account")
-		target.get_entries()
+def create_travel_request(source_name, target_doc=None):
+	def set_missing_values(source, target):
+		target.employee = frappe.flags.args.get("employee")
+		target.employee_name = frappe.db.get_value("Employee", target.employee, "employee_name")
+		target.designation = frappe.db.get_value("Employee", target.employee, "designation")
+		target.grade = frappe.db.get_value("Employee", target.employee, "grade")
+		target.cell_number = frappe.db.get_value("Employee", target.employee, "cell_number")
+		target.prefered_email = frappe.db.get_value("Employee", target.employee, "company_email")
+		target.travel_type = source.international_or_domestic
+		target.training_event = source.name
+		target.training_event_child_ref = frappe.flags.args.get("child_ref")
 
 	doc = get_mapped_doc("Training Event", source_name, {
 			"Training Event": {
 				"doctype": "Travel Request",
 				"field_map": {
 					"name": "transaction_no",
-				},
-				"postprocess": set_missing_values,
-			},
-	}, target_doc, ignore_permissions=True)
+				}},
+	}, target_doc, set_missing_values, ignore_permissions=True)
 	return doc

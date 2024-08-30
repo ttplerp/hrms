@@ -38,8 +38,8 @@ class EmployeeSeparationClearance(Document):
 			frappe.throw("Supervisor has not granted clearance.")
 		if self.afd_clearance == 0:
 			frappe.throw("Accounts & Finance Division has not granted clearance.")
-		if self.spd_clearance == 0:
-			frappe.throw("Store & Procurement Division has not granted clearance.")
+		if self.ceo_clearance == 0:
+			frappe.throw("CEO has not granted clearance.")
 		if self.icthr_clearance == 0:
 			frappe.throw("HR Division has not granted clearance.")
 		if self.iad_clearance == 0:
@@ -73,8 +73,8 @@ class EmployeeSeparationClearance(Document):
 			receipients.append(self.supervisor)
 		if self.afd:
 			receipients.append(self.afd)
-		if self.spd:
-			receipients.append(self.spd)
+		if self.ceo:
+			receipients.append(self.ceo)
 		if self.icthr:
 			receipients.append(self.icthr)
 		if self.iad:
@@ -177,14 +177,22 @@ class EmployeeSeparationClearance(Document):
 			self.afd = frappe.db.get_value("Employee",afd_officiate[0].officiate,"user_id")
 		else:
 			self.afd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "afd"),"user_id")
-		#--------------------------- Store & Procurement Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		spd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "spd"))
-		if not frappe.db.get_single_value("HR Settings", "spd"):
-			frappe.throw("Store & Procurement Division clearance approver is not set in HR Settings")
-		if spd_officiate:
-			self.spd = frappe.db.get_value("Employee",spd_officiate[0].officiate,"user_id")
+		#--------------------------- CEO -----------------------------------------------------------------------------------------------------------------------------------------------------|
+		ceo_officiate = get_officiating_employee(frappe.db.get_value("Employee", {"designation": "Chief Executive Officer", "status": "Active"}, "name"))
+		# if not frappe.db.get_value("Employee", {"designation": "Chief Executive Officer", "status": "Active"}, "name"):
+		# 	frappe.throw("Store & Procurement Division clearance approver is not set in HR Settings")
+		if ceo_officiate:
+			self.ceo = frappe.db.get_value("Employee",ceo_officiate[0].officiate,"user_id")
 		else:
-			self.spd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "spd"),"user_id")
+			self.ceo = frappe.db.get_value("Employee", {"designation": "Chief Executive Officer", "status": "Active"}, "user_id")
+		#--------------------------- Store & Procurement Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		# spd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "spd"))
+		# if not frappe.db.get_single_value("HR Settings", "spd"):
+		# 	frappe.throw("Store & Procurement Division clearance approver is not set in HR Settings")
+		# if spd_officiate:
+		# 	self.spd = frappe.db.get_value("Employee",spd_officiate[0].officiate,"user_id")
+		# else:
+		# 	self.spd = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "spd"),"user_id")
 		#--------------------------- ICT & HR Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		if not frappe.db.get_single_value("HR Settings", "icthr"):
 			frappe.throw("ICT & HR Division clearance approver is not set in HR Settings")
@@ -251,7 +259,7 @@ def get_permission_query_conditions(user):
 		or
 		(`tabEmployee Separation Clearance`.afd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
-		(`tabEmployee Separation Clearance`.spd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		(`tabEmployee Separation Clearance`.ceo = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
 		(`tabEmployee Separation Clearance`.icthr = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or

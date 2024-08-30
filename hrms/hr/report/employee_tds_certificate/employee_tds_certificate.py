@@ -122,7 +122,7 @@ def get_pbva(filters):
 									ROUND(IFNULL(bd.tax_amount,0),2) as tds,
 									CONCAT(MONTH(b.posting_date),'-',
 									b.fiscal_year) AS month_year,
-									'PBVA' AS type, 
+									'PBVI' AS type, 
 									0 as basic, 
 									0 as others, 
 									0 AS pf, 
@@ -132,9 +132,9 @@ def get_pbva(filters):
 									r.receipt_date,	
 									r.receipt_number,
 									b.posting_date
-								FROM tabPBVA b
-								INNER JOIN `tabTDS Receipt Entry` r ON b.fiscal_year = r.fiscal_year AND r.purpose = 'PBVA'
-								LEFT JOIN `tabPBVA Details` bd ON b.name = bd.parent AND bd.employee = '{employee}'
+								FROM tabPBVI b
+								INNER JOIN `tabTDS Receipt Entry` r ON b.fiscal_year = r.fiscal_year AND r.purpose = 'PBVI'
+								LEFT JOIN `tabPBVI Details` bd ON b.name = bd.parent AND bd.employee = '{employee}'
 								WHERE b.docstatus = 1 AND bd.amount > 0 
 								AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
 				      """.format( employee = filters.employee, fiscal_year=filters.fiscal_year, from_date = getdate(str(filters.fiscal_year) + "-01-01"),

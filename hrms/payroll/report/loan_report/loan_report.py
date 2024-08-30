@@ -57,8 +57,8 @@ def get_data(filters):
 				from `tabSalary Component` sc
 				where sc.name = t2.salary_component
 			)
-		and t2.reference_type != 'NULL'
 	"""% conditions, filters)
+		# and t2.reference_type != 'NULL'
 	return data
 
 def get_conditions(filters):

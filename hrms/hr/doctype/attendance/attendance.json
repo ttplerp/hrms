@@ -27,7 +27,11 @@
   "column_break_18",
   "late_entry",
   "early_exit",
-  "amended_from"
+  "amended_from",
+  "sb_reason",
+  "reason_for_late_entry",
+  "cb_reason",
+  "reason_for_early_exit"
  ],
  "fields": [
   {
@@ -78,6 +82,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "default": "Present",
    "fieldname": "status",
    "fieldtype": "Select",
@@ -172,6 +177,7 @@
    "label": "Late Entry"
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "early_exit",
    "fieldtype": "Check",
@@ -190,6 +196,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "depends_on": "shift",
    "fieldname": "out_time",
    "fieldtype": "Datetime",
@@ -199,16 +206,40 @@
   {
    "fieldname": "column_break_18",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb_reason",
+   "fieldtype": "Section Break",
+   "label": "Reason"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "reason_for_late_entry",
+   "fieldtype": "Text",
+   "label": "Reason for Late Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_reason",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "reason_for_early_exit",
+   "fieldtype": "Text",
+   "label": "Reason for Early Exit",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-18 17:26:09.703215",
+ "modified": "2024-08-28 11:40:37.065380",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -256,5 +287,6 @@
  "search_fields": "employee,employee_name,attendance_date,status",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name"
 }

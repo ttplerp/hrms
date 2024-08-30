@@ -363,7 +363,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Reports",
-   "link_count": 7,
+   "link_count": 8,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -437,10 +437,20 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Component",
+   "link_count": 0,
+   "link_to": "Salary Component",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-07-11 15:52:06.534015",
- "modified_by": "pralad.rai@thimphutechpark.bt",
+ "modified": "2024-08-15 15:24:05.344007",
+ "modified_by": "sonam.zangmo@thimphutechpark.bt",
  "module": "Payroll",
  "name": "Payroll",
  "number_cards": [],

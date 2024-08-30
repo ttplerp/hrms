@@ -106,7 +106,7 @@ class EmployeeAdvance(Document):
 				and posting_date between "{2}" and "{3}"
 			""".format(self.name,self.employee,from_date, today()))
 			if advance_status:
-				frappe.throw("Employee Advance for employee {} has been already Clamed ".format(self.employee_name))
+				frappe.throw("Employee Advance for employee {} has been already claimed ".format(self.employee_name))
 	def check_duplicate_advance(self):
 		if frappe.db.sql("""
 				select count(reference) 
@@ -459,6 +459,7 @@ class EmployeeAdvance(Document):
 				"cost_center": employee_cost_center,
 				"party": self.employee,
 				"is_advance": "Yes",
+				"business_activity": "Common"
 			},
 		)
 		je.append(
@@ -469,6 +470,7 @@ class EmployeeAdvance(Document):
 				"credit_in_account_currency": flt(self.advance_amount),
 				"account_currency": payment_account.account_currency,
 				"exchange_rate": flt(paying_exchange_rate),
+				"business_activity": "Common"
 			},
 		)
 		je.flags.ignore_permissions=1
@@ -586,6 +588,7 @@ def make_return_entry(
 			"party": employee,
 			"is_advance": "Yes",
 			"cost_center": erpnext.get_default_cost_center(company),
+			"business_activity": "Common"
 		},
 	)
 

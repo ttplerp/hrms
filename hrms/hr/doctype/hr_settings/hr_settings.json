@@ -148,6 +148,7 @@
   "enote_copyto_notification",
   "column_break_139",
   "enote_status_notification",
+  "enote_reviewer_notification",
   "pms_section",
   "target_set_up_status_notification_template",
   "review_status_notification_template",
@@ -1058,13 +1059,19 @@
    "fieldname": "remove_semso",
    "fieldtype": "Button",
    "label": "Remove Semso"
+  },
+  {
+   "fieldname": "enote_reviewer_notification",
+   "fieldtype": "Link",
+   "label": "eNote Reviewer Notification",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-07-18 15:15:48.784475",
+ "modified": "2024-08-26 11:56:39.849593",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

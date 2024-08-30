@@ -103,6 +103,10 @@ def get_columns(salary_slips):
 	
 def get_salary_slips(filters):
 	conditions, filters = get_conditions(filters)
+	# frappe.throw("""
+    #           	select * from `tabSalary Slip` where 1 = 1 {}
+	# 			order by employee, month
+    #           """.format(conditions))
 	salary_slips = frappe.db.sql("""
 								select * from `tabSalary Slip` where 1 = 1 %s
 								order by employee, month

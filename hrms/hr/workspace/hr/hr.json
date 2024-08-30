@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"Bwo2eiZtTK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"id\":\"6pKpZ0Vkmv\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"HR Dashboard\",\"col\":3}},{\"id\":\"Mw7wz0hW6B\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Dashboard\",\"col\":3}},{\"id\":\"s19ujYQa9G\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"qkpcEjkn6I\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"f40Jd3C9YX\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"9clpZCpPDH\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee Master\",\"col\":4}},{\"id\":\"MYp0pl0AIG\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"qDwr_Ei4da\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"Bwo2eiZtTK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Employee\",\"col\":3}},{\"id\":\"6pKpZ0Vkmv\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"HR Dashboard\",\"col\":3}},{\"id\":\"Mw7wz0hW6B\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Recruitment Dashboard\",\"col\":3}},{\"id\":\"s19ujYQa9G\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":12}},{\"id\":\"qkpcEjkn6I\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"f40Jd3C9YX\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"9clpZCpPDH\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee Master\",\"col\":4}},{\"id\":\"MYp0pl0AIG\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"qDwr_Ei4da\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}},{\"id\":\"rCgLKRhX7B\",\"type\":\"card\",\"data\":{\"card_name\":\"Daily Activity\",\"col\":4}}]",
  "creation": "2020-03-02 15:48:58.322521",
  "custom_blocks": [],
  "docstatus": 0,
@@ -778,90 +778,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Key Reports",
-   "link_count": 7,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "dependencies": "Attendance",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Monthly Attendance Sheet",
-   "link_count": 0,
-   "link_to": "Monthly Attendance Sheet",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Staffing Plan",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Recruitment Analytics",
-   "link_count": 0,
-   "link_to": "Recruitment Analytics",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Analytics",
-   "link_count": 0,
-   "link_to": "Employee Analytics",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Leave Balance",
-   "link_count": 0,
-   "link_to": "Employee Leave Balance",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Leave Balance Summary",
-   "link_count": 0,
-   "link_to": "Employee Leave Balance Summary",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "Employee Advance",
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Employee Advance Summary",
-   "link_count": 0,
-   "link_to": "Employee Advance Summary",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Exits",
-   "link_count": 0,
-   "link_to": "Employee Exits",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Settings",
    "link_count": 3,
    "onboard": 0,
@@ -1131,10 +1047,124 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Key Reports",
+   "link_count": 8,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "Attendance",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Monthly Attendance Sheet",
+   "link_count": 0,
+   "link_to": "Monthly Attendance Sheet",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Staffing Plan",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Recruitment Analytics",
+   "link_count": 0,
+   "link_to": "Recruitment Analytics",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Analytics",
+   "link_count": 0,
+   "link_to": "Employee Analytics",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Leave Balance",
+   "link_count": 0,
+   "link_to": "Employee Leave Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Leave Balance Summary",
+   "link_count": 0,
+   "link_to": "Employee Leave Balance Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "Employee Advance",
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Advance Summary",
+   "link_count": 0,
+   "link_to": "Employee Advance Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Exits",
+   "link_count": 0,
+   "link_to": "Employee Exits",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Daily Actiivity Log Report",
+   "link_count": 0,
+   "link_to": "Daily Activity Log Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Daily Activity",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Daily Actiivty Log",
+   "link_count": 0,
+   "link_to": "Daily Activity Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-06-21 15:11:56.004500",
- "modified_by": "sonam.choki@thimphutechpark.bt",
+ "modified": "2024-08-28 20:49:39.902720",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
  "number_cards": [],

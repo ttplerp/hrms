@@ -22,6 +22,7 @@
   "default",
   "is_loan_component",
   "is_pf_deductible",
+  "group_by_institution_name",
   "sb_posting_settings",
   "make_party_entry",
   "colume_break_5",
@@ -198,12 +199,18 @@
    "fieldtype": "Data",
    "label": "Abbreviation",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "group_by_institution_name",
+   "fieldtype": "Check",
+   "label": "Group By Institution Name"
   }
  ],
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-04 15:53:00.029702",
+ "modified": "2024-08-22 14:58:58.918590",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",

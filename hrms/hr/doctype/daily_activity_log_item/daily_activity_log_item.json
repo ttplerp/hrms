@@ -1,0 +1,71 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-27 14:09:41.604007",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "activity",
+  "cb_01",
+  "start_time",
+  "cb_02",
+  "end_time",
+  "sb_duration",
+  "duration"
+ ],
+ "fields": [
+  {
+   "fieldname": "activity",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Activity",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "Start Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb_02",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "in_list_view": 1,
+   "label": "End Time"
+  },
+  {
+   "fieldname": "sb_duration",
+   "fieldtype": "Section Break",
+   "label": "Duration Details"
+  },
+  {
+   "fieldname": "duration",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Time Taken(Hours)",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-27 14:33:36.652706",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Daily Activity Log Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

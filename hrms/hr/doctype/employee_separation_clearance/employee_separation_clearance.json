@@ -33,6 +33,9 @@
   "rtc_clearance",
   "rtc_remarks",
   "column_break_29",
+  "ceo",
+  "ceo_clearance",
+  "ceo_remarks",
   "spd",
   "spd_clearance",
   "spd_remarks",
@@ -249,6 +252,7 @@
   {
    "fieldname": "spd",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Store & Procurement Division",
    "options": "User",
    "read_only": 1
@@ -257,16 +261,14 @@
    "default": "0",
    "fieldname": "spd_clearance",
    "fieldtype": "Check",
-   "label": "Clearance Acquired (Store & Procurement Division)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.spd",
-   "read_only_depends_on": "eval:frappe.session.user != doc.spd"
+   "hidden": 1,
+   "label": "Clearance Acquired (Store & Procurement Division)"
   },
   {
    "fieldname": "spd_remarks",
    "fieldtype": "Small Text",
-   "label": "Store & Procurement Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.spd",
-   "read_only_depends_on": "eval:frappe.session.user != doc.spd"
+   "hidden": 1,
+   "label": "Store & Procurement Division Remarks"
   },
   {
    "fieldname": "icthr",
@@ -355,11 +357,33 @@
    "label": "Clearance Acquired(ICT Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
    "read_only_depends_on": "eval:frappe.session.user != doc.ict"
+  },
+  {
+   "fieldname": "ceo",
+   "fieldtype": "Link",
+   "label": "Office of the CEO",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "ceo_clearance",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired(CEO)",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.ceo",
+   "read_only_depends_on": "eval:frappe.session.user != doc.ceo"
+  },
+  {
+   "fieldname": "ceo_remarks",
+   "fieldtype": "Small Text",
+   "label": "CEO Remarks",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.ceo",
+   "read_only_depends_on": "eval:frappe.session.user != doc.ceo"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-12 10:52:27.362790",
+ "modified": "2024-08-15 00:45:33.201369",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",

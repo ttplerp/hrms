@@ -84,6 +84,7 @@ class PayrollEntry(Document):
 					and t3.docstatus != 2
 					and t3.fiscal_year = '{}'
 					and t3.month = '{}')
+			and t1.status = 'Active'
 			{}
 			order by t1.branch, t1.name
 		""".format(self.fiscal_year, self.month, cond), as_dict=True)
@@ -233,9 +234,9 @@ class PayrollEntry(Document):
 	def get_cc_wise_entries(self, salary_component_pf):
 		# Filters
 		#cond = self.get_filter_condition()
-		
 		return frappe.db.sql("""
 			select
+				sd.institution_name,
 				t1.cost_center             as cost_center,
 				t1.business_activity       as business_activity,
 				(case
@@ -336,6 +337,7 @@ class PayrollEntry(Document):
 		default_gpf_account     = company.get("employer_contribution_to_pf")
 		default_business_activity = get_default_ba()
 		salary_component_pf     = "PF"
+		cbs_enabled = frappe.db.exists("Company",{"csb_enabled":1})
 
 		if not default_bank_account:
 			frappe.throw(_("Please set default <b>Expense Bank Account</b> for processing branch {}")\
@@ -366,6 +368,8 @@ class PayrollEntry(Document):
 					else ifnull(sc.clubbed_component,sc.name)
 				end)                       as salary_component,
 				sc.type                    as component_type,
+				sc.group_by_institution_name as group_by_institution_name,
+				sd.institution_name,
 				(case
 					when sc.type = 'Earning' then 0
 					else ifnull(sc.is_remittable,0)
@@ -403,6 +407,10 @@ class PayrollEntry(Document):
 			group by 
 				(case
 					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 then c.company_cost_center
+					else t1.cost_center
+				end),
+				(case
+					when sc.type = 'Deduction' and ifnull(sc.group_by_institution_name,0) = 1 then sd.institution_name
 					else t1.cost_center
 				end),
 				(case
@@ -444,8 +452,8 @@ class PayrollEntry(Document):
 			# Remittance
 			if rec.is_remittable and rec.component_type == 'Deduction':
 				remit_amount    = 0
-				remit_gl_list   = [rec.gl_head,default_gpf_account] if rec.salary_component == salary_component_pf else [rec.gl_head]
-
+				# remit_gl_list   = [rec.gl_head,default_gpf_account] if rec.salary_component == salary_component_pf else [rec.gl_head]
+				remit_gl_list = [rec.gl_head]
 				for r in remit_gl_list:
 					# remit_amount += flt(rec.amount)
 					if r == default_gpf_account:
@@ -466,19 +474,33 @@ class PayrollEntry(Document):
 							})
 					else:
 						remit_amount += flt(rec.amount)
-						posting.setdefault(rec.salary_component,[]).append({
-							"account"       : r,
-							"debit_in_account_currency" : flt(rec.amount),
-							"cost_center"   : rec.cost_center,
-							"business_activity" : rec.business_activity,
-							"party_check"   : 0,
-							"account_type"   : rec.account_type if rec.party_type == "Employee" else "",
-							"party_type"     : rec.party_type if rec.party_type == "Employee" else "",
-							"party"          : rec.party if rec.party_type == "Employee" else "",
-							"reference_type": self.doctype,
-							"reference_name": self.name,
-							"salary_component": rec.salary_component
-						})
+						if rec.group_by_institution_name == 0:
+							posting.setdefault(rec.salary_component,[]).append({
+								"account"       : r,
+								"debit_in_account_currency" : flt(rec.amount),
+								"cost_center"   : rec.cost_center,
+								"business_activity" : rec.business_activity,
+								"party_check"   : 0,
+								"account_type"   : rec.account_type if rec.party_type == "Employee" else "",
+								"party_type"     : rec.party_type if rec.party_type == "Employee" else "",
+								"party"          : rec.party if rec.party_type == "Employee" else "",
+								"reference_type": self.doctype,
+								"reference_name": self.name,
+								"salary_component": rec.salary_component
+							})
+						else:
+							posting.setdefault(rec.salary_component,[]).append({
+								"account"       : r,
+								"debit_in_account_currency" : flt(rec.amount),
+								"cost_center"   : rec.cost_center,
+								"business_activity" : rec.business_activity,
+								"account_type"   : rec.account_type if rec.party_type == "Employee" else "",
+								"party_type"     : "Supplier",
+								"party"          : rec.institution_name,
+								"reference_type": self.doctype,
+								"reference_name": self.name,
+								"salary_component": rec.salary_component
+							})
 					
 				posting.setdefault(rec.salary_component,[]).append({
 					"account"       : default_bank_account,
@@ -530,18 +552,30 @@ class PayrollEntry(Document):
 			jv_name, v_title = None, ""
 			for i in posting:
 				if i == "to_payables":
-					v_title         = "To Payables"
+					v_title         = "To Payables" if not cbs_enabled else ""
 					v_voucher_type  = "Journal Entry"
 					v_naming_series = "Journal Voucher"
 				else:
-					v_title         = "To Bank" if i == "to_bank" else i
-					v_voucher_type  = "Bank Entry"
-					v_naming_series = "Bank Payment Voucher"
+					if i == "to_bank":
+						v_title = "To Bank"
+						v_voucher_type  = "Bank Entry" if not cbs_enabled else "Journal Entry"
+						v_naming_series = "Bank Payment Voucher" if not cbs_enabled else "Journal Voucher"
+					else:
+						v_title = i + " " + "Remittance"
+						if cbs_enabled:
+							v_voucher_type = "Journal Entry"
+							v_naming_series = "Journal Voucher"
+							if i == "Salary Tax":
+								v_voucher_type = "Bank Entry"
+								v_naming_series = "Bank Payment Voucher"
+						else:
+							v_voucher_type = "Bank Entry"
+							v_naming_series = "Bank Payment Voucher"
 
 				if v_title:
 					v_title = "SALARY "+str(self.fiscal_year)+str(self.month)+" - "+str(v_title)
 				else:
-					v_title = "SALARY "+str(self.fiscal_year)+str(self.month)
+					v_title = "SALARY "+str(self.fiscal_year)+str(self.month)				
      
 				doc = frappe.get_doc({
 						"doctype": "Journal Entry",
@@ -562,12 +596,12 @@ class PayrollEntry(Document):
 				doc.insert()
 
 				if i == "to_payables":
-					doc.submit() #Added by Thukten to submit Payable from HR
+					#doc.submit() #Added by Thukten to submit Payable from HR
 					jv_name = doc.name
 
 			if jv_name:
 				self.update_salary_slip_status(jv_name = jv_name)
-			self.generate_txt_file()	
+			#self.generate_txt_file()	
 			frappe.msgprint(_("Salary posting to accounts is successful."),title="Posting Successful")
 		else:
 			frappe.throw(_("No data found"),title="Posting failed")
@@ -858,7 +892,7 @@ def get_payroll_entries_for_jv(doctype, txt, searchfield, start, page_len, filte
 			'start': start, 'page_len': page_len
 		})
 
-# CBS Integration, following method created by SHIV on 2021/09/15
+# CBS Integration
 def get_emp_component_amount(payroll_entry, salary_component):
 	if salary_component == "Net Pay":
 		return frappe.db.sql("""select ss.employee, net_pay amount,

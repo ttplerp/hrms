@@ -1,19 +1,21 @@
 
-<h3 class="text-center">National Housing Development Corporation Ltd.</h3>
+<h3 class="text-center">Bhutan Development Bank Ltd.</h3>
 <h4 class="text-center">{%= __(report.report_name) %} for the Year: {%= filters.fiscal_year %}</h4>
 
 <table style="width: 100%;">
 	<tr>
-		<td>Widthholding Agency:</td><td colspan="3" style="text-align: left"><strong>National Housing Development Corporation Ltd.</strong></td>
+		<td>Widthholding Agency:</td><td style="text-align: left"><strong>Bhutan Development Bank Ltd.</strong></td>
 		<td>Agency TPN: </td><td><strong>SAC00307</strong></td>
 	</tr>
 	<tr>
 		<td>Employee:</td><td><strong>{%= filters.employee %}:{%= filters.e_name %}</strong></td>
-		<td>Citizen ID: </td><td><strong>{%= filters.cid %}</strong></td>
 		<td>TPN No: </td><td><strong>{%= filters.tpn %}</strong></td>
 	</tr>
+	<tr>
+		<td>Branch:</td><td><strong>{%= filters.branch %}</strong></td>
+		<td>Citizen ID: </td><td><strong>{%= filters.cid %}</strong></td>
+	</tr>
 </table>
-
 <hr>
 <table class="table table-bordered">
 	<thead>
@@ -45,6 +47,7 @@
 		{% } %}
 	</tbody>
 </table>
+<p>*Note: Allowances include LTC Payment.</p>
 <div>
 I hereby certify that the information given in this certificate is true and correct to the best of my knowledge. In case any information is found untrue and false, I shall be liable for fines and penalities as per chapter 5, General Provisions of the Income Tax Act of the Kindom of Bhutan, 2001
 </div>

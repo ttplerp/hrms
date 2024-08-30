@@ -26,6 +26,7 @@
   "column_break_17",
   "purpose_of_travel",
   "training_event",
+  "training_event_child_ref",
   "attach_report",
   "date_of_birth",
   "section_break_4",
@@ -585,11 +586,18 @@
    "fieldtype": "Data",
    "label": "Training Event",
    "read_only": 1
+  },
+  {
+   "fieldname": "training_event_child_ref",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Training Event Child Ref",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-13 11:17:28.360611",
+ "modified": "2024-08-13 16:10:02.999409",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",

@@ -26,6 +26,7 @@ frappe.query_reports["Employee TDS Certificate"] = {
 					frappe.query_report.set_filter_value("e_name", fy.employee_name);
 					frappe.query_report.set_filter_value("cid", fy.passport_number);
 					frappe.query_report.set_filter_value("tpn", fy.tpn_number);
+					frappe.query_report.set_filter_value("branch", fy.branch);
 					frappe.query_report.refresh();
 				});
 				frappe.call({
@@ -46,6 +47,12 @@ frappe.query_reports["Employee TDS Certificate"] = {
 			"fieldname":"e_name",
 			"fieldtype":"Data",
 			"label": __("Employee Name"),
+			"read_only": 1
+		},
+		{
+			"fieldname":"branch",
+			"fieldtype":"Data",
+			"label": __("Branch"),
 			"read_only": 1
 		},
 		{

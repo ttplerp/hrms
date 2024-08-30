@@ -34,6 +34,8 @@ class TravelRequest(AccountsController):
 			self.notify_supervisor()
 		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
+		if self.training_event:
+			self.update_training_event()
 
 	def on_update(self):
 		self.validate_travel_dates(update=True)
@@ -49,6 +51,10 @@ class TravelRequest(AccountsController):
 
 	def on_cancel(self):
 		notify_workflow_states(self)
+		self.update_training_event(cancel=True)
+
+	def on_trash(self):
+		self.update_training_event(cancel=True)
 
 	def validate_advance_amount(self):
 		if flt(self.advance_amount) > flt(self.total_travel_amount) * flt(0.75):
@@ -56,6 +62,17 @@ class TravelRequest(AccountsController):
 		elif flt(self.advance_amount) <= 0 and self.need_advance == 1:
 			frappe.throw("Advance amount cannot be: {}".format(self.advance_amount))
 
+	def update_training_event(self, cancel = False):
+		if not cancel:
+			if frappe.db.get_value("Training Event Employee", self.training_event_child_ref, "travel_request_id") in (None, ''):
+				frappe.db.sql("""
+					update `tabTraining Event Employee` set travel_request_id = '{}' where name = '{}'
+					""".format(self.name, self.training_event_child_ref))
+		else:
+			if frappe.db.get_value("Training Event Employee", self.training_event_child_ref, "travel_request_id") == self.name:
+				frappe.db.sql("""
+					update `tabTraining Event Employee` set travel_request_id = NULL where name = '{}'
+					""".format(self.training_event_child_ref))
 	def set_dsa_percent(self):
 		for item in self.get("itinerary"):
 			if len(self.itinerary) == 1 or item.idx == len(self.itinerary) or cint(item.return_same_day) == 1:
@@ -112,6 +129,8 @@ class TravelRequest(AccountsController):
 
 	def set_currency_exchange(self):
 		for item in self.get("itinerary"):
+			if not item.total_claim:
+				item.total_claim = 0
 			if item.currency != "BTN":
 				to_currency = "BTN"
 				from_currency = item.currency
@@ -210,9 +229,9 @@ class TravelRequest(AccountsController):
 	def update_amount(self):
 		company_currency = "BTN"
 		for item in self.get("itinerary"):
-			visa_exchange_rate  = 1 if item.visa_fees_currency == company_currency else get_exchange_rate(item.visa_fees_currency, company_currency,transaction_date=item.currency_exchange_date)
-			passport_exchange_rate  = 1 if item.passport_fees_currency == company_currency else get_exchange_rate(item.passport_fees_currency, company_currency, transaction_date=item.currency_exchange_date)
-			incidental_exchange_rate  = 1 if item.incidental_fees_currency == company_currency else get_exchange_rate(item.incidental_fees_currency, company_currency, transaction_date=item.currency_exchange_date)
+			visa_exchange_rate  = 1 if item.visa_fees_currency == company_currency else get_exchange_rate(item.visa_fees_currency, company_currency, item.currency_exchange_date)
+			passport_exchange_rate  = 1 if item.passport_fees_currency == company_currency else get_exchange_rate(item.passport_fees_currency, company_currency, item.currency_exchange_date)
+			incidental_exchange_rate  = 1 if item.incidental_fees_currency == company_currency else get_exchange_rate(item.incidental_fees_currency, company_currency, item.currency_exchange_date)
 			if not item.to_date:
 				item.no_days_actual = date_diff(item.from_date, item.from_date)+1
 			else:
@@ -291,7 +310,7 @@ class TravelRequest(AccountsController):
 				fare_amt += float(d.fare_amount) * exchange_rate
 		
 		expense_types = [
-			("Travel (In Country)" if self.travel_type == "Domestic" else "Travel (Ex Country)", travel_amt),
+			("Travel (In Country)" if self.travel_type == "Domestic" else "Travel (Ex Country)", travel_amt-self.advance_amount),
 			("Mileage (In Country)" if self.travel_type == "Domestic" else "Mileage (In Country)", mileage_amt),
 			("Accommodation Expense (In country)" if self.travel_type == "Domestic" else "Accommodation Expense (Ex country)", hotel_amt),
 			("Entertainment Expense (In Country)" if self.travel_type == "Domestic" else "Entertainment Expense (Ex Country)", entertainment_amt),
@@ -411,11 +430,13 @@ def get_exchange_rate(from_currency, to_currency, posting_date):
 		and date = '{posting_date}'
 		order by date desc
 		limit 1
-	""".format(from_currency=from_currency, to_currency=to_currency, posting_date=posting_date), as_dict=False)
+	""".format(from_currency=from_currency, to_currency=to_currency, posting_date=posting_date), as_dict=True)
 	if not ex_rate:
+		if from_currency == "BTN":
+			return 1
 		frappe.throw("No Exchange Rate defined in Currency Exchange! Kindly contact your accounts section")
 	else:
-		return ex_rate[0][0]
+		return ex_rate[0].exchange_rate
 	
 
 def get_permission_query_conditions(user):

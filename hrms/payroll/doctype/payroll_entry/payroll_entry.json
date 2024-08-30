@@ -378,7 +378,7 @@
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-18 14:54:19.525976",
+ "modified": "2024-08-18 17:36:32.084259",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",
@@ -399,5 +399,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

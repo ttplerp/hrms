@@ -41,7 +41,11 @@ class SalarySlip(TransactionBase):
 		self.calculate_net_pay()                #Added by SHIV on 2018/10/15
 		self.validate_amounts()                 #Added by SHIV on 2018/10/15
 		company_currency = get_company_currency(self.company)
-		self.total_in_words = money_in_words(self.rounded_total, company_currency)
+		if self.rounded_total:
+			self.total_in_words = money_in_words(self.rounded_total, company_currency)
+		else:
+			self.total_in_words = money_in_words(self.net_pay, company_currency)
+
 		self.check_house_rent_deduction()
 
 	def validate_dates(self):
@@ -371,8 +375,10 @@ class SalarySlip(TransactionBase):
 		self.calculate_earning_total()
 		self.calculate_ded_total()
 		self.net_pay = flt(self.gross_pay) - flt(self.total_deduction)
-		self.rounded_total = rounded(self.net_pay,
-			self.precision("net_pay") if disable_rounded_total else 0)
+		# self.rounded_total = rounded(self.net_pay,
+		# 	self.precision("net_pay") if disable_rounded_total else 0)
+		self.net_pay = flt(self.net_pay,2)
+		self.rounded_total = self.net_pay if disable_rounded_total else 0
 
 	#Added by SHIV on 2018/10/15
 	def validate_amounts(self):
@@ -385,6 +391,17 @@ class SalarySlip(TransactionBase):
 		self.post_sws_entry()
 		self.update_ot()
 
+	def is_rounding_total_disabled(self):
+		return cint(frappe.db.get_single_value("Payroll Settings", "disable_rounded_total"))
+
+	def set_net_total_in_words(self):
+		company_currency = get_company_currency(self.company)
+		total = self.net_pay if self.is_rounding_total_disabled() else self.rounded_total
+		# base_total = self.base_net_pay if self.is_rounding_total_disabled() else self.base_rounded_total
+		# self.total_in_words = money_in_words(total, doc_currency)
+		self.db_set("total_in_words", money_in_words(total, company_currency))
+		# frappe.db.commit()
+		# self.base_total_in_words = money_in_words(base_total, company_currency)
 
 	def update_ot(self, cancel = False):
 		processed = 1
@@ -674,14 +691,6 @@ def make_last_pay_certificate(source_name, target_doc=None, skip_item_mapping=Fa
 # 					alert=True,
 # 				)
 
-# 	def set_net_total_in_words(self):
-# 		doc_currency = self.currency
-# 		company_currency = erpnext.get_company_currency(self.company)
-# 		total = self.net_pay if self.is_rounding_total_disabled() else self.rounded_total
-# 		base_total = self.base_net_pay if self.is_rounding_total_disabled() else self.base_rounded_total
-# 		self.total_in_words = money_in_words(total, doc_currency)
-# 		self.base_total_in_words = money_in_words(base_total, company_currency)
-
 # 	def on_submit(self):
 # 		if self.net_pay < 0:
 # 			frappe.throw(_("Net Pay cannot be less than 0"))
@@ -749,8 +758,6 @@ def make_last_pay_certificate(source_name, target_doc=None, skip_item_mapping=Fa
 # 		if relieving_date and date_diff(relieving_date, self.start_date) < 0:
 # 			frappe.throw(_("Cannot create Salary Slip for Employee who has left before Payroll Period"))
 
-# 	def is_rounding_total_disabled(self):
-# 		return cint(frappe.db.get_single_value("Payroll Settings", "disable_rounded_total"))
 
 # 	def check_existing(self):
 # 		if not self.salary_slip_based_on_timesheet:

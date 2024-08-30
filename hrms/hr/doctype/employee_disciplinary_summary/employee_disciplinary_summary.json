@@ -1,0 +1,154 @@
+{
+ "creation": "2021-07-23 14:58:03.565096",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "disciplinary_action_taken",
+  "nature",
+  "column_break_3",
+  "reason",
+  "section_break_2",
+  "from_date",
+  "column_break_4",
+  "to_date",
+  "sb_action_complaint",
+  "complaint_frequency",
+  "cb_a_c",
+  "action_taken",
+  "section_break_10",
+  "increment_month",
+  "promotion_month",
+  "remarks",
+  "hrc",
+  "disciplinary_record"
+ ],
+ "fields": [
+  {
+   "allow_on_submit": 1,
+   "fieldname": "disciplinary_action_taken",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Disciplinary Action Taken",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "reason",
+   "fieldtype": "Text",
+   "label": "Reason",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Suspension Dates"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_action_complaint",
+   "fieldtype": "Section Break",
+   "label": "Actions and Complaint"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "complaint_frequency",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Complaint Frequency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_a_c",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "No",
+   "fieldname": "action_taken",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Action Taken",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "increment_month",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Increment Month",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "promotion_month",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Promotion Month",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "hrc",
+   "fieldtype": "Text",
+   "label": "HRC",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "disciplinary_record",
+   "fieldtype": "Link",
+   "label": "Employee Disciplinary Record",
+   "options": "Employee Disciplinary Record",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "nature",
+   "fieldtype": "Text",
+   "in_list_view": 1,
+   "label": "Nature",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2021-07-28 11:00:45.443421",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Disciplinary Summary",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

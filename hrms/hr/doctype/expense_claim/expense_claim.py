@@ -151,6 +151,7 @@ class ExpenseClaim(AccountsController):
 		self.set_travel_reference(cancel = True)
 	
 	def update_ref_doc(self):
+		ref = None
 		for d in self.expenses:
 			ref = d.expense_type
 		self.ref_doc = ref

@@ -44,5 +44,17 @@ frappe.ui.form.on('Training Event', {
 frappe.ui.form.on("Training Event Employee", {
 	employee: function(frm) {
 		frm.events.set_employee_query(frm);
+	},
+	create_travel_request: function(frm, cdt, cdn){
+		var item = locals[cdt][cdn];
+		// Follwoing line temporarily replaced by SHIV on 2020/09/17, need to restore back
+		if (frm.doc.docstatus == 1 && (item.travel_request == '' || item.travel_request == undefined)) {
+				frappe.flags.employee = item.employee;
+				frappe.model.open_mapped_doc({
+					method: "hrms.hr.doctype.training_event.training_event.create_travel_request",
+					frm: cur_frm,
+					args: {"employee": item.employee, "child_ref": item.name}
+				})
+		}
 	}
 });

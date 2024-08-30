@@ -32,6 +32,7 @@
   "mileage_rate",
   "visa_fees",
   "visa_fees_currency",
+  "visa_fees_exchange_rate",
   "porter_pony_charges",
   "column_break_26",
   "distance",
@@ -40,6 +41,7 @@
   "other_costing_section",
   "passport_fees",
   "passport_fees_currency",
+  "passport_fees_exchange_rate",
   "ea_applicable",
   "entertainment_amount",
   "column_break_33",
@@ -52,6 +54,7 @@
   "column_break_28",
   "incidental_fees",
   "incidental_fees_currency",
+  "incidental_expenses_exchange_rate",
   "total_claim",
   "actual_amount",
   "section_break_14",
@@ -272,7 +275,6 @@
    "fieldname": "amount",
    "fieldtype": "Currency",
    "label": "DSA Amount",
-   "options": "currency",
    "read_only": 1
   },
   {
@@ -302,6 +304,7 @@
    "hidden": 1
   },
   {
+   "default": "0",
    "depends_on": "eval:doc.mode_of_travel == \"Personal Car\" && doc.halt==0;",
    "fieldname": "mileage_amount",
    "fieldtype": "Currency",
@@ -355,6 +358,7 @@
    "read_only": 1
   },
   {
+   "default": "0",
    "depends_on": "eval:(!in_list([\"\", \"Personal Car\"], doc.mode_of_travel)) && doc.halt==0;",
    "fieldname": "fare_amount",
    "fieldtype": "Currency",
@@ -390,12 +394,14 @@
    "label": "Entertainment Amount"
   },
   {
+   "default": "0",
    "depends_on": "eval:doc.hc_applicable == 1;",
    "fieldname": "hotel_charges_amount",
    "fieldtype": "Currency",
    "label": "Hotel Charges Amount"
   },
   {
+   "default": "0",
    "depends_on": "eval:parent.travel_type == \"International\";",
    "fieldname": "visa_fees",
    "fieldtype": "Currency",
@@ -405,13 +411,14 @@
   },
   {
    "default": "BTN",
-   "depends_on": "eval:doc.travel_type == \"International\";",
+   "depends_on": "eval:parent.travel_type == \"International\";",
    "fieldname": "visa_fees_currency",
    "fieldtype": "Link",
    "label": "Visa Fees Currency",
    "options": "Currency"
   },
   {
+   "default": "0",
    "depends_on": "eval:parent.travel_type == \"International\";",
    "fieldname": "incidental_fees",
    "fieldtype": "Currency",
@@ -427,6 +434,7 @@
    "options": "Currency"
   },
   {
+   "default": "0",
    "depends_on": "eval:parent.travel_type == \"International\";",
    "fieldname": "passport_fees",
    "fieldtype": "Currency",
@@ -446,7 +454,6 @@
    "fieldname": "porter_pony_charges",
    "fieldtype": "Currency",
    "label": "Porter and Pony Charges",
-   "options": "currency",
    "precision": "2"
   },
   {
@@ -454,11 +461,32 @@
    "fieldname": "currency_exchange_date",
    "fieldtype": "Date",
    "label": "Currency Exchange Date"
+  },
+  {
+   "depends_on": "eval:parent.travel_type == \"International\";",
+   "fieldname": "visa_fees_exchange_rate",
+   "fieldtype": "Currency",
+   "label": "Visa Fees Exchange Rate",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:parent.travel_type == \"International\";",
+   "fieldname": "passport_fees_exchange_rate",
+   "fieldtype": "Currency",
+   "label": "Passport Fees Exchange Rate",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:parent.travel_type == \"International\";",
+   "fieldname": "incidental_expenses_exchange_rate",
+   "fieldtype": "Currency",
+   "label": "Incidental Expenses Exchange Rate",
+   "read_only": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2024-08-12 11:54:38.535921",
+ "modified": "2024-08-14 20:31:04.483768",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Itinerary",
