@@ -56,6 +56,73 @@ frappe.ui.form.on("Salary Slip", {
 				})
 			});
 		}
+		//Jampel's code start
+		// Fetch values from other fields
+        var employee_name = frm.doc.employee_name || '';
+        var designation = frm.doc.designation || '';
+        var employee_grade = frm.doc.grade || '';
+        var employment_type = frm.doc.employment_type || '';
+        var department = frm.doc.department || '';
+        var branch = frm.doc.branch || '';
+        var cid = frm.doc.cid_number || '';
+        var tpn = frm.doc.tpn_number || '';
+        var company = frm.doc.company || '';
+        var gis = frm.doc.gis_number || '';
+        var pf = frm.doc.pf_number || '';
+
+        // Create HTML content
+        var html_content = `
+            <div>
+                <h4>Employee Information</h4>
+                <p><strong>Employee Name:</strong> ${employee_name}</p>
+                <p><strong>Designation:</strong> ${designation}</p>
+                <p><strong>Employee Grade:</strong> ${employee_grade}</p>
+                <p><strong>Employment Type:</strong> ${employment_type}</p>
+                <p><strong>Department:</strong> ${department}</p>
+                <p><strong>Branch:</strong> ${branch}</p>
+                <p><strong>CID:</strong> ${cid}</p>
+                <p><strong>TPN:</strong> ${tpn}</p>
+                <p><strong>Company:</strong> ${company}</p>
+                <p><strong>GIS:</strong> ${gis}</p>
+                <p><strong>PF:</strong> ${pf}</p>
+            </div>
+        `;
+
+        // Set the HTML field's content
+        frm.fields_dict['employee_info'].html(html_content);
+
+		// Check if employee field is not empty
+        if (frm.doc.employee) {
+            // Make a server call to fetch the employee photo URL
+            frappe.call({
+                method: "frappe.client.get_value",
+                args: {
+                    doctype: "Employee",
+                    filters: {
+                        name: frm.doc.employee
+                    },
+                    fieldname: ["image"]
+                },
+                callback: function(r) {
+                    if (r.message) {
+                        var image_url = r.message.image;
+
+                        // Check if the image URL exists
+                        if (image_url) {
+                            // Create HTML content to display the image
+                          var html_content = `<img src="${image_url}" alt="Employee Photo" style="max-width: 350px; max-height: 350px; border-width: 2px; border-style: solid; margin: 1px;">`;
+                        } else {
+                            // If no image found, display a placeholder or a message
+                            var html_content = `<p>No Photo Available</p>`;
+                        }
+
+                        // Set the HTML content to the employee_photo field
+                        frm.fields_dict['employee_photo'].html(html_content);
+                    }
+                }
+            });
+        }
+		// Jampel's Code end
 	},
 	
 	employee: function(frm){
