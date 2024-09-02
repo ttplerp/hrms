@@ -49,7 +49,6 @@ def get_columns(filters):
 	columns =  [
 		_("Employee ID") + ":Link/Employee:120",
 		_("Employee Name") + ":Data:120",
-		_("Employee Name") + ":Data:120",
 		_("Date") + ":Date:120",
 		_("Time Spent(Hours)") + ":Float:100",
 		_("Branch") + ":Link/Branch:100",
