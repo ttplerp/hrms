@@ -108,6 +108,7 @@ permission_query_conditions = {
 	"Leave Encashment": "hrms.hr.doctype.leave_encashment.leave_encashment.get_permission_query_conditions",
 	"Travel Request": "hrms.hr.doctype.travel_request.travel_request.get_permission_query_conditions",
 	"Expense Claim": "hrms.hr.doctype.expense_claim.expense_claim.get_permission_query_conditions",
+	"Daily Activity Log": "hrms.hr.doctype.daily_activity_log.daily_activity_log.get_permission_query_conditions",
 }
 #
 # has_permission = {

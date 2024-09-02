@@ -30,4 +30,22 @@ class DailyActivityLog(Document):
 	def calculate_duration(self, start_time, end_time):
 		if start_time and end_time:
 			return time_diff_in_hours(end_time, start_time)
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+
+	if user == "Administrator":
+		return
+	if "HR User" in user_roles or "HR Manager" in user_roles:
+		return
+
+	return """(
+		`tabDaily Activity Log`.owner = '{user}'
+		or
+		exists(select 1
+				from `tabEmployee`
+				where `tabEmployee`.name = `tabDaily Activity Log`.employee
+				and `tabEmployee`.user_id = '{user}'))
+    """.format(user=user)
 			
