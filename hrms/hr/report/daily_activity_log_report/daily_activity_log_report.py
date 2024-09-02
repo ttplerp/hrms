@@ -20,7 +20,7 @@ def get_data(filters):
 	# 	AND department is not null %s			
 	# 	"""%conditions, filters)
 	data = frappe.db.sql("""
-		SELECT dal.employee, dal.employee_name, sum(dali.duration) as time_spent, dal.branch, dal.department, dal.division, dal.section, dal.unit, e.employment_type, e.employee_group,
+		SELECT dal.employee, dal.employee_name, dal.posting_date, sum(dali.duration) as time_spent, dal.branch, dal.department, dal.division, dal.section, dal.unit, e.employment_type, e.employee_group,
 		e.grade, dal.designation, e.reports_to, e.reports_to_name
 		FROM `tabDaily Activity Log` dal, `tabDaily Activity Log Item` dali, `tabEmployee` e
 		WHERE dal.name = dali.parent and dal.employee = e.name and e.status = 'Active' {}
@@ -49,7 +49,9 @@ def get_columns(filters):
 	columns =  [
 		_("Employee ID") + ":Link/Employee:120",
 		_("Employee Name") + ":Data:120",
-		_("Time Spent") + ":Float:100",
+		_("Employee Name") + ":Data:120",
+		_("Date") + ":Date:120",
+		_("Time Spent(Hours)") + ":Float:100",
 		_("Branch") + ":Link/Branch:100",
 		_("Department") + ":Link/Department:120",
 		_("Division") + ":Link/Department:120",
