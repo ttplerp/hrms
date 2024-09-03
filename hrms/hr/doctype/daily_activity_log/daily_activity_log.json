@@ -52,6 +52,7 @@
    "label": "Activity Details"
   },
   {
+   "allow_bulk_edit": 1,
    "fieldname": "activities",
    "fieldtype": "Table",
    "options": "Daily Activity Log Item",
@@ -150,7 +151,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-02 14:33:24.042188",
+ "modified": "2024-09-03 11:39:15.487777",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Daily Activity Log",
