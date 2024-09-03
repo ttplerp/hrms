@@ -21,7 +21,7 @@
   "trainer_name",
   "trainer_email",
   "column_break_7",
-  "supplier",
+  "training_institute",
   "contact_number",
   "section_break_9",
   "course",
@@ -114,12 +114,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "supplier",
-   "fieldtype": "Link",
-   "label": "Supplier",
-   "options": "Supplier"
-  },
-  {
    "fieldname": "contact_number",
    "fieldtype": "Data",
    "label": "Contact Number"
@@ -202,11 +196,16 @@
    "label": "International or Domestic",
    "options": "Domestic\nInternational",
    "reqd": 1
+  },
+  {
+   "fieldname": "training_institute",
+   "fieldtype": "Data",
+   "label": "Training Institute"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-13 15:23:01.289963",
+ "modified": "2024-09-03 11:33:09.556069",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Event",
