@@ -1,0 +1,206 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "format:DIS-{YY}-{MM}-{####}",
+ "creation": "2021-03-17 20:31:47.410220",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "post_date",
+  "column_break_2",
+  "dispatch_type",
+  "section_break_4",
+  "dispatch_number",
+  "subject",
+  "column_break_7",
+  "letter_from",
+  "letter_to",
+  "section_break_10",
+  "forward_to",
+  "employee",
+  "letter_author",
+  "author_name",
+  "department",
+  "dispatch_format",
+  "column_break_17",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "dispatch_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Dispatch Type",
+   "options": "In Coming\nOut Going"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "bold": 1,
+   "fieldname": "dispatch_number",
+   "fieldtype": "Data",
+   "label": "Dispatch Number",
+   "no_copy": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.dispatch_type==\"Out Going\"",
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "depends_on": "eval:doc.dispatch_type==\"Out Going\"",
+   "fieldname": "dispatch_format",
+   "fieldtype": "Link",
+   "label": "Dispatch Format",
+   "options": "Dispatch Format"
+  },
+  {
+   "depends_on": "eval:doc.dispatch_type==\"In Coming\"",
+   "fieldname": "forward_to",
+   "fieldtype": "Link",
+   "label": "Forward To",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "label": "Subject"
+  },
+  {
+   "depends_on": "eval:doc.dispatch_type==\"Out Going\"",
+   "fetch_from": "letter_author.employee_name",
+   "fieldname": "author_name",
+   "fieldtype": "Data",
+   "label": "Author Name",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.dispatch_type==\"Out Going\"",
+   "fieldname": "letter_author",
+   "fieldtype": "Link",
+   "label": "Letter Author",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.dispatch_type==\"In Coming\"",
+   "fieldname": "letter_from",
+   "fieldtype": "Data",
+   "label": "Letter From"
+  },
+  {
+   "depends_on": "eval:doc.dispatch_type==\"Out Going\"",
+   "fieldname": "letter_to",
+   "fieldtype": "Data",
+   "label": "Letter To"
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Dispatch",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.dispatch_type==\"In Coming\"",
+   "fetch_from": "forward_to.employee_name",
+   "fieldname": "employee",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "post_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Post  Date",
+   "reqd": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-09-04 11:55:19.132302",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Dispatch",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Dispatch Creator",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "subject, dispatch_type",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "dispatch_number",
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
+}
