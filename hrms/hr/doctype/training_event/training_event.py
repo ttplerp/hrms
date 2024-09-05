@@ -5,7 +5,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import time_diff_in_seconds
+from frappe.utils import time_diff_in_seconds, date_diff
 from frappe.model.mapper import get_mapped_doc
 
 from erpnext.setup.doctype.employee.employee import get_employee_emails
@@ -13,18 +13,27 @@ from erpnext.setup.doctype.employee.employee import get_employee_emails
 
 class TrainingEvent(Document):
 	def validate(self):
+		self.check_invalid_employee_data()
 		self.set_employee_emails()
 		self.validate_period()
 
 	def on_update_after_submit(self):
 		self.set_status_for_attendees()
 
+	def check_invalid_employee_data(self):
+		if self.employees:
+			to_remove = []
+			for d in self.employees:
+				if frappe.db.get_value("Employee", d.employee, "status") == 'Left' or not frappe.db.exists("Employee", d.employee):
+					to_remove.append(d)
+			[self.remove(d) for d in to_remove]
+
 	def set_employee_emails(self):
 		self.employee_emails = ", ".join(get_employee_emails([d.employee for d in self.employees]))
 
 	def validate_period(self):
-		if time_diff_in_seconds(self.end_time, self.start_time) <= 0:
-			frappe.throw(_("End time cannot be before start time"))
+		if date_diff(self.end_time, self.start_time) < 0:
+			frappe.throw(_("End Date cannot be before Start Date"))
 
 	def set_status_for_attendees(self):
 		if self.event_status == "Completed":
