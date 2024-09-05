@@ -1,68 +1,101 @@
 {
-    "creation": "2024-08-02 15:55:19.834038",
-    "doctype": "DocType",
-    "editable_grid": 1,
-    "engine": "InnoDB",
-    "field_order": [
-     "username",
-     "host",
-     "column_break_3",
-     "password",
-     "organization_id",
-     "test_connectivity"
-    ],
-    "fields": [
-     {
-      "fieldname": "column_break_3",
-      "fieldtype": "Column Break"
-     },
-     {
-      "fieldname": "username",
-      "fieldtype": "Data",
-      "label": "Username"
-     },
-     {
-      "fieldname": "password",
-      "fieldtype": "Password",
-      "label": "Password"
-     },
-     {
-      "fieldname": "test_connectivity",
-      "fieldtype": "Button",
-      "label": "Test Connectivity"
-     },
-     {
-      "default": "3",
-      "fieldname": "organization_id",
-      "fieldtype": "Data",
-      "label": "Organization Id"
-     },
-     {
-      "fieldname": "host",
-      "fieldtype": "Data",
-      "label": "Host"
-     }
-    ],
-    "issingle": 1,
-    "modified": "2024-08-20 11:51:00.446615",
-    "modified_by": "Administrator",
-    "module": "HR",
-    "name": "TheGateway Connectivity",
-    "owner": "Administrator",
-    "permissions": [
-     {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "print": 1,
-      "read": 1,
-      "role": "System Manager",
-      "share": 1,
-      "write": 1
-     }
-    ],
-    "quick_entry": 1,
-    "sort_field": "modified",
-    "sort_order": "DESC",
-    "track_changes": 1
-   }
+ "actions": [],
+ "creation": "2024-08-02 15:55:19.834038",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "username",
+  "host",
+  "column_break_3",
+  "password",
+  "organization_id",
+  "test_connectivity"
+ ],
+ "fields": [
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "username",
+   "fieldtype": "Data",
+   "label": "Username"
+  },
+  {
+   "fieldname": "password",
+   "fieldtype": "Password",
+   "label": "Password"
+  },
+  {
+   "fieldname": "test_connectivity",
+   "fieldtype": "Button",
+   "label": "Test Connectivity"
+  },
+  {
+   "default": "3",
+   "fieldname": "organization_id",
+   "fieldtype": "Data",
+   "label": "Organization Id"
+  },
+  {
+   "fieldname": "host",
+   "fieldtype": "Data",
+   "label": "Host"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-09-05 10:09:39.410162",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "TheGateway Connectivity",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR Master",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
