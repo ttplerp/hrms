@@ -90,7 +90,7 @@ class TravelRequest(AccountsController):
 				and exists(select 1
 						from `tabTravel Itinerary` t2
 						where t2.parent = "{travel_authorization}"
-      					and (t2.from_date between t1.from_date and t1.to_date) or (t2.to_date between t1.from_date and t1.to_date)
+      					and ((t2.from_date between t1.from_date and t1.to_date) or (t2.to_date between t1.from_date and t1.to_date))
 						)
 		""".format(travel_authorization = self.name, employee = self.employee), as_dict=True)
 		for t in las:
