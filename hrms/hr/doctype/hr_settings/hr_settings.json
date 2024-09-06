@@ -127,6 +127,12 @@
   "travel_request_settings_section",
   "travel_request_approval_notification_template",
   "travel_request_supervisor_notification_template",
+  "travel_authorization_approval_notification_template",
+  "travel_authorization_supervisor_notification_template",
+  "travel_authorization_status_notification_template",
+  "travel_claim_approval_notification_template",
+  "travel_claim_supervisor_notification_template",
+  "travel_claim_status_notification_template",
   "column_break_110",
   "travel_request_status_notification_template",
   "utility_bill_settings_section",
@@ -1065,13 +1071,49 @@
    "fieldtype": "Link",
    "label": "eNote Reviewer Notification",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "travel_authorization_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Travel Authorization Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "travel_authorization_supervisor_notification_template",
+   "fieldtype": "Link",
+   "label": "Travel Authorization Supervisor Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "travel_authorization_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Travel Authorization Status Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "travel_claim_approval_notification_template",
+   "fieldtype": "Link",
+   "label": "Travel Claim Approval Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "travel_claim_supervisor_notification_template",
+   "fieldtype": "Link",
+   "label": "Travel Claim Supervisor Notification Template",
+   "options": "Email Template"
+  },
+  {
+   "fieldname": "travel_claim_status_notification_template",
+   "fieldtype": "Link",
+   "label": "Travel Claim Status Notification Template",
+   "options": "Email Template"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-08-26 11:56:39.849593",
+ "modified": "2024-09-06 15:58:17.849276",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

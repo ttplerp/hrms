@@ -126,6 +126,13 @@ class SWSApplication(Document):
 		frappe.db.sql("delete from `tabSWS Entry` where ref_doc = %s", self.name)
 
 	@frappe.whitelist()
+	def get_sws_accounts(self):
+		credit_account = frappe.db.get_value("Company", self.company, "sws_credit_account")
+		debit_account = frappe.db.get_value("Company", self.company, "sws_debit_account")
+		return credit_account, debit_account
+
+
+	@frappe.whitelist()
 	def get_member_details(self, name):
 		if not name:
 			frappe.msgprint("Please select Reference Document first")

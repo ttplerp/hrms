@@ -6,6 +6,20 @@ frappe.ui.form.on('SWS Application', {
 		if(!frm.doc.posting_date) {
 			frm.set_value("posting_date", get_today())
 		}
+	},
+	onload: function(frm){
+		frappe.call({
+			method: "get_sws_accounts",
+			doc: frm.doc,
+			callback: function(r){
+				if(r.message){
+					frm.set_value("credit_account", r.message[0]);
+					frm.set_value("debit_account", r.message[1]);
+					frm.refresh_field("credit_account");
+					frm.refresh_field("debit_account");
+				}
+			}
+		})
 	}
 });
 frappe.ui.form.on('SWS Application Item', {
