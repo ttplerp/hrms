@@ -17,15 +17,24 @@ def execute(filters=None):
 	
 def get_columns(data):
 	columns = [
-		_("Employee") + ":Link/Employee:100", _("Employee Name") + "::140",
-		_("Transaction No") + ":Link/Leave Encashment:140", _("Date") + "::80", 
+		_("Employee") + ":Link/Employee:100", 
+		_("Employee Name") + "::140",
+		_("Transaction No") + ":Link/Leave Encashment:140", 
+		_("Date") + "::80", 
 		_("TPN No") + ":Link/Leave Encashment:80",
 		_("Accounts Entry") + ":Link/Journal Entry:120",
-		_("Gross Amount") + ":Currency:140", _("Tax Amount") + ":Currency:140", _("Net Amount") + ":Currency:140",
+		_("Gross Amount") + ":Currency:140", 
+		_("Tax Amount") + ":Currency:140", 
+		_("Net Amount") + ":Currency:140",
 		_("Remarks") + "::140",
-		_("Balance Before") + "::80", _("Days Encashed") + "::80", _("Balance After") + "::80",
-		_("Company") + ":Link/Company:120", _("Branch") + ":Link/Branch:120", _("Department") + ":Link/Department:120",
-		_("Division") + ":Link/Division:120", _("Section") + ":Link/Section:120",
+		_("Balance Before") + "::80", 
+		_("Days Encashed") + "::80", 
+		_("Balance After") + "::80",
+		_("Company") + ":Link/Company:120", 
+		_("Branch") + ":Link/Branch:120", 
+		_("Department") + ":Link/Department:120",
+		_("Division") + ":Link/Division:120", 
+		_("Section") + ":Link/Section:120",
 	]
 	
 	return columns
@@ -40,12 +49,9 @@ def get_data(filters):
 	data = frappe.db.sql("""
 		select t1.employee, t1.employee_name, t1.name, min(t1.encashment_date) as transactiondt,
 		min(t3.tpn_number) as tpn_number, t2.parent voucherno,
-		sum(case when t2.account = '%(enc_gl)s' then ifnull(debit_in_account_currency,0) else 0 end) grossamount,
-		sum(case when t2.account = '%(tax_gl)s' then ifnull(credit_in_account_currency,0) else 0 end) taxamount,
-		sum(case
-			when t2.account = '%(enc_gl)s' then ifnull(debit_in_account_currency,0)
-			when t2.account = '%(tax_gl)s' then -1*ifnull(credit_in_account_currency,0)
-			else 0 end) as netamount,
+		t1.encashment_amount,
+		t1.encashment_tax,
+		t1.payable_amount,
 		t1.remarks,
 		min(t1.leave_balance) as balance_before, min(t1.encashable_days) as encashed_days, 
 		min(t1.leave_balance-t1.encashable_days) as balance_after,
