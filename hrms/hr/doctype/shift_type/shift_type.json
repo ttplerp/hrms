@@ -8,6 +8,7 @@
  "field_order": [
   "start_time",
   "end_time",
+  "half_day_end_time",
   "column_break_3",
   "holiday_list",
   "no_of_working_hrs",
@@ -165,10 +166,17 @@
    "in_list_view": 1,
    "label": "No Of Working Hrs",
    "reqd": 1
+  },
+  {
+   "description": "Note: Will be considered in Attendance if <i>Saturday Half Working Day</i> is checked in Holiday List",
+   "fieldname": "half_day_end_time",
+   "fieldtype": "Time",
+   "label": "Half Day End Time",
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2022-11-26 13:48:11.647957",
+ "modified": "2024-09-07 15:00:47.110130",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Shift Type",
