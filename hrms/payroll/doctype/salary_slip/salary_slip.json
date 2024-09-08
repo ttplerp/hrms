@@ -53,6 +53,7 @@
   "bank_account_type",
   "bank_account_no",
   "column_break_01",
+  "cid_number",
   "tpn_number",
   "pf_number",
   "pf_tiers",
@@ -535,12 +536,14 @@
    "read_only": 1
   },
   {
+   "fetch_from": "employee.tpn_number",
    "fieldname": "tpn_number",
    "fieldtype": "Data",
    "label": "TPN Number",
    "read_only": 1
   },
   {
+   "fetch_from": "employee.pf_number",
    "fieldname": "pf_number",
    "fieldtype": "Data",
    "label": "PF Number",
@@ -605,13 +608,20 @@
   {
    "fieldname": "cb3",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.cid_number",
+   "fieldname": "cid_number",
+   "fieldtype": "Data",
+   "label": "CID Number",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-27 21:09:51.076355",
+ "modified": "2024-09-08 14:43:09.152885",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",
