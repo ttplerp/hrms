@@ -218,7 +218,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Journey",
-   "link_count": 6,
+   "link_count": 7,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -282,10 +282,20 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Internal Clearance",
+   "link_count": 0,
+   "link_to": "Internal Clearance",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-08-15 00:58:32.849431",
- "modified_by": "Administrator",
+ "modified": "2024-09-18 10:59:04.650192",
+ "modified_by": "sonam.choki@thimphutechpark.bt",
  "module": "HR",
  "name": "Employee Lifecycle",
  "number_cards": [],

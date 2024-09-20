@@ -172,7 +172,9 @@
   "column_break_77300",
   "add_semso",
   "column_break_8shme",
-  "remove_semso"
+  "remove_semso",
+  "tb_travel",
+  "return_day_dsa"
  ],
  "fields": [
   {
@@ -1107,13 +1109,23 @@
    "fieldtype": "Link",
    "label": "Travel Claim Status Notification Template",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "tb_travel",
+   "fieldtype": "Tab Break",
+   "label": "Travel Settings"
+  },
+  {
+   "fieldname": "return_day_dsa",
+   "fieldtype": "Percent",
+   "label": "Return Day DSA Percent"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-09-06 15:58:17.849276",
+ "modified": "2024-09-11 11:34:31.131594",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

@@ -1147,7 +1147,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Daily Activity",
-   "link_count": 1,
+   "link_count": 3,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -1161,9 +1161,29 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Dispatch",
+   "link_count": 0,
+   "link_to": "Dispatch",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Dispatch Format",
+   "link_count": 0,
+   "link_to": "Dispatch Format",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-08-28 20:49:39.902720",
+ "modified": "2024-09-04 12:44:13.726642",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",

@@ -356,7 +356,7 @@ class PayrollEntry(Document):
 		cc = frappe.db.sql("""
 			select
 				(case
-					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 then c.company_cost_center
+					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 and ifnull(sc.make_cc_entry,0) = 0 then c.company_cost_center
 					else t1.cost_center
 				end)                       as cost_center,
 				(case
@@ -376,6 +376,7 @@ class PayrollEntry(Document):
 				end)                       as is_remittable,
 				sc.gl_head                 as gl_head,
 				sum(ifnull(sd.amount,0))   as amount,
+				sum(ifnull(t1.employer_pf,0))   as employer_pf,
 				(case
 					when ifnull(sc.make_party_entry,0) = 1 then 'Payable'
 					else 'Other'
@@ -406,7 +407,7 @@ class PayrollEntry(Document):
 						and ped.employee = t1.employee)
 			group by 
 				(case
-					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 then c.company_cost_center
+					when sc.type = 'Deduction' and ifnull(sc.make_party_entry,0) = 0 and ifnull(sc.make_cc_entry,0) = 0 then c.company_cost_center
 					else t1.cost_center
 				end),
 				(case
@@ -431,7 +432,7 @@ class PayrollEntry(Document):
 		cc_wise_totals = frappe._dict()
 		tot_payable_amt= 0
 		# frappe.throw(str(cc))
-		for rec in cc:
+		for index, rec in enumerate(cc):
 			# To Payables
 			tot_payable_amt += (-1*flt(rec.amount) if rec.component_type == 'Deduction' else flt(rec.amount))
 			posting.setdefault("to_payables",[]).append({
@@ -452,26 +453,26 @@ class PayrollEntry(Document):
 			# Remittance
 			if rec.is_remittable and rec.component_type == 'Deduction':
 				remit_amount    = 0
-				# remit_gl_list   = [rec.gl_head,default_gpf_account] if rec.salary_component == salary_component_pf else [rec.gl_head]
-				remit_gl_list = [rec.gl_head]
+				remit_gl_list   = [rec.gl_head,default_gpf_account] if rec.salary_component == salary_component_pf else [rec.gl_head]
+				# remit_gl_list = [rec.gl_head]
 				for r in remit_gl_list:
 					# remit_amount += flt(rec.amount)
 					if r == default_gpf_account:
-						for i in self.get_cc_wise_entries(salary_component_pf):
-							remit_amount += flt(i.amount)
-							posting.setdefault(rec.salary_component,[]).append({
-								"account"       : r,
-								"debit_in_account_currency" : flt(i.amount),
-								"cost_center"   : i.cost_center,
-								"business_activity" : i.business_activity,
-								"party_check"   : 0,
-								"account_type"   : i.account_type if i.party_type == "Employee" else "",
-								"party_type"     : i.party_type if i.party_type == "Employee" else "",
-								"party"          : i.party if i.party_type == "Employee" else "",
-								"reference_type": self.doctype,
-								"reference_name": self.name,
-								"salary_component": rec.salary_component
-							})
+						# for i in self.get_cc_wise_entries(salary_component_pf):
+						remit_amount += flt(rec.employer_pf)
+						posting.setdefault(rec.salary_component,[]).append({
+							"account"       : r,
+							"debit_in_account_currency" : flt(rec.employer_pf),
+							"cost_center"   : rec.cost_center,
+							"business_activity" : rec.business_activity,
+							"party_check"   : 0,
+							"account_type"   : rec.account_type if rec.party_type == "Employee" else "",
+							"party_type"     : rec.party_type if rec.party_type == "Employee" else "",
+							"party"          : rec.party if rec.party_type == "Employee" else "",
+							"reference_type": self.doctype,
+							"reference_name": self.name,
+							"salary_component": rec.salary_component
+						})
 					else:
 						remit_amount += flt(rec.amount)
 						if rec.group_by_institution_name == 0:
@@ -501,17 +502,25 @@ class PayrollEntry(Document):
 								"reference_name": self.name,
 								"salary_component": rec.salary_component
 							})
-					
-				posting.setdefault(rec.salary_component,[]).append({
-					"account"       : default_bank_account,
-					"credit_in_account_currency" : flt(remit_amount),
-					"cost_center"   : rec.cost_center,
-					"business_activity" : rec.business_activity,
-					"party_check"   : 0,
-					"reference_type": self.doctype,
-					"reference_name": self.name,
-					"salary_component": rec.salary_component
-				})
+				if not any("credit_in_account_currency" in d for d in posting[rec.salary_component]):
+					posting.setdefault(rec.salary_component,[]).append({
+						"account"       : default_bank_account,
+						"credit_in_account_currency" : flt(remit_amount),
+						"cost_center"   : rec.cost_center,
+						"business_activity" : rec.business_activity,
+						"party_check"   : 0,
+						"reference_type": self.doctype,
+						"reference_name": self.name,
+						"salary_component": rec.salary_component
+					})
+				else:
+					# frappe.throw(str(posting[rec.salary_component][index]['debit_in_account_currency']))
+					# frappe.msgprint(str(posting[rec.salary_component]))
+					if "credit_in_account_currency" in posting[rec.salary_component][next(id for id,item in enumerate(posting[rec.salary_component]) if 'credit_in_account_currency' in item)]:
+						# frappe.throw(str(posting[rec.salary_component][0]['debit_in_account_currency']))
+						posting[rec.salary_component][next(id for id,item in enumerate(posting[rec.salary_component]) if 'credit_in_account_currency' in item)]['credit_in_account_currency'] += flt(remit_amount)
+						# frappe.throw(str(posting[rec.salary_component][0]))
+		# frappe.throw(str(len(posting['PF'])))
 
 		# To Bank
 		if posting.get("to_payables") and len(posting.get("to_payables")):

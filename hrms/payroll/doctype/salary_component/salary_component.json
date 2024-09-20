@@ -25,6 +25,7 @@
   "group_by_institution_name",
   "sb_posting_settings",
   "make_party_entry",
+  "make_cc_entry",
   "colume_break_5",
   "clubbed_component",
   "remittance_settings_section",
@@ -205,12 +206,18 @@
    "fieldname": "group_by_institution_name",
    "fieldtype": "Check",
    "label": "Group By Institution Name"
+  },
+  {
+   "default": "0",
+   "fieldname": "make_cc_entry",
+   "fieldtype": "Check",
+   "label": "Make Cost Center Wise Entries"
   }
  ],
  "icon": "fa fa-flag",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-22 14:58:58.918590",
+ "modified": "2024-09-17 15:01:11.362907",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Component",

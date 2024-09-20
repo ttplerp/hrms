@@ -1,447 +1,447 @@
 {
- "actions": [],
- "autoname": "ESC.YY.MM.####",
- "beta": 1,
- "creation": "2023-02-15 17:05:56.743940",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "posting_date",
-  "document_no",
-  "sb_emp_details",
-  "employee",
-  "grade",
-  "cid",
-  "phone_number",
-  "fixed_line_number",
-  "cb_01",
-  "employee_name",
-  "designation",
-  "division",
-  "region",
-  "sb_official",
-  "reason_for_resignation",
-  "sb_remarks",
-  "supervisor",
-  "supervisor_clearance",
-  "supervisor_remarks",
-  "afd",
-  "afd_clearance",
-  "afd_remarks",
-  "rtc",
-  "rtc_clearance",
-  "rtc_remarks",
-  "column_break_29",
-  "ceo",
-  "ceo_clearance",
-  "ceo_remarks",
-  "spd",
-  "spd_clearance",
-  "spd_remarks",
-  "icthr",
-  "icthr_clearance",
-  "icthr_remarks",
-  "iad",
-  "iad_clearance",
-  "iad_remarks",
-  "ict",
-  "clearance",
-  "ict_remarks",
-  "sb_reference",
-  "mail_sent",
-  "approvers_set",
-  "employee_separation_id",
-  "workflow_state",
-  "amended_from"
- ],
- "fields": [
-  {
-   "fieldname": "sb_emp_details",
-   "fieldtype": "Section Break",
-   "label": "Employee Details"
-  },
-  {
-   "fieldname": "employee",
-   "fieldtype": "Link",
-   "label": "Employee ID",
-   "options": "Employee"
-  },
-  {
-   "fetch_from": "employee.designation",
-   "fieldname": "designation",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Designation",
-   "options": "Designation"
-  },
-  {
-   "fetch_from": "employee.division",
-   "fieldname": "division",
-   "fieldtype": "Link",
-   "label": "Division",
-   "options": "Department"
-  },
-  {
-   "fieldname": "cb_01",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fetch_from": "employee.employee_name",
-   "fieldname": "employee_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Employee Name"
-  },
-  {
-   "fieldname": "employee_separation_id",
-   "fieldtype": "Data",
-   "label": "Employee Separation ID",
-   "read_only": 1
-  },
-  {
-   "fieldname": "workflow_state",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Workflow State",
-   "options": "Workflow State",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.grade",
-   "fieldname": "grade",
-   "fieldtype": "Link",
-   "label": "Grade",
-   "options": "Employee Grade"
-  },
-  {
-   "fieldname": "reason_for_resignation",
-   "fieldtype": "Select",
-   "label": "Separation Type",
-   "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract\ntest",
-   "read_only": 1
-  },
-  {
-   "fieldname": "sb_official",
-   "fieldtype": "Section Break"
-  },
-  {
-   "default": "Today",
-   "fieldname": "posting_date",
-   "fieldtype": "Date",
-   "label": "Posting Date"
-  },
-  {
-   "fieldname": "region",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Region",
-   "read_only": 1
-  },
-  {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break",
-   "label": "Clearance Section"
-  },
-  {
-   "description": "  ",
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Employee Separation Clearance",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "sb_reference",
-   "fieldtype": "Section Break",
-   "label": "Reference"
-  },
-  {
-   "default": "0",
-   "fieldname": "mail_sent",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Mail Sent",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "approvers_set",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Approvers Set",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "employee.passport_number",
-   "fieldname": "cid",
-   "fieldtype": "Data",
-   "label": "CID"
-  },
-  {
-   "fetch_from": "employee.cell_number",
-   "fieldname": "phone_number",
-   "fieldtype": "Data",
-   "label": "Phone Number"
-  },
-  {
-   "fetch_if_empty": 1,
-   "fieldname": "fixed_line_number",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Fixed Line Number"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "document_no",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Document No.",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_29",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "supervisor",
-   "fieldtype": "Link",
-   "label": "Supervisor",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "supervisor_clearance",
-   "fieldtype": "Check",
-   "label": "Clearance Acquired (Supervisor)",
-   "mandatory_depends_on": "frappe.session.user == doc.supervisor",
-   "read_only_depends_on": "eval:frappe.session.user != doc.supervisor"
-  },
-  {
-   "fieldname": "supervisor_remarks",
-   "fieldtype": "Small Text",
-   "label": "Supervisor's Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.supervisor",
-   "read_only_depends_on": "eval:frappe.session.user != doc.supervisor"
-  },
-  {
-   "fieldname": "afd",
-   "fieldtype": "Link",
-   "label": "Accounts & Finance Division",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "afd_clearance",
-   "fieldtype": "Check",
-   "label": "Clearance Acquired (Accounts & Finance Division)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.afd",
-   "read_only_depends_on": "eval:frappe.session.user != doc.afd"
-  },
-  {
-   "fieldname": "afd_remarks",
-   "fieldtype": "Small Text",
-   "label": "Accounts & Finance Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.afd",
-   "read_only_depends_on": "eval:frappe.session.user != doc.afd"
-  },
-  {
-   "fieldname": "spd",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Store & Procurement Division",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "spd_clearance",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Clearance Acquired (Store & Procurement Division)"
-  },
-  {
-   "fieldname": "spd_remarks",
-   "fieldtype": "Small Text",
-   "hidden": 1,
-   "label": "Store & Procurement Division Remarks"
-  },
-  {
-   "fieldname": "icthr",
-   "fieldtype": "Link",
-   "label": "HR Division",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "icthr_clearance",
-   "fieldtype": "Check",
-   "label": "Clearance Acquired (HR Division)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
-   "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
-  },
-  {
-   "fieldname": "icthr_remarks",
-   "fieldtype": "Small Text",
-   "label": "HR Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
-   "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
-  },
-  {
-   "fieldname": "iad",
-   "fieldtype": "Link",
-   "label": "Internal Audit Division",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "iad_clearance",
-   "fieldtype": "Check",
-   "label": "Clearance Acquired(Internal Audit Division)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
-   "read_only_depends_on": "eval:frappe.session.user != doc.iad"
-  },
-  {
-   "fieldname": "iad_remarks",
-   "fieldtype": "Small Text",
-   "label": "Internal Audit Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
-   "read_only_depends_on": "eval:frappe.session.user != doc.iad"
-  },
-  {
-   "fieldname": "rtc",
-   "fieldtype": "Link",
-   "label": "Rental & Tenancy",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "rtc_clearance",
-   "fieldtype": "Check",
-   "label": "Clearance Acquired(Rental & Tenancy)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.rtc",
-   "read_only_depends_on": "eval:frappe.session.user != doc.rtc"
-  },
-  {
-   "fieldname": "rtc_remarks",
-   "fieldtype": "Small Text",
-   "label": "Rental & Tenancy Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.rtc",
-   "read_only_depends_on": "eval:frappe.session.user != doc.rtc"
-  },
-  {
-   "fieldname": "ict",
-   "fieldtype": "Link",
-   "label": "ICT Division",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "fieldname": "ict_remarks",
-   "fieldtype": "Data",
-   "label": "ICT Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
-   "read_only_depends_on": "eval:frappe.session.user != doc.ict"
-  },
-  {
-   "default": "0",
-   "fieldname": "clearance",
-   "fieldtype": "Check",
-   "label": "Clearance Acquired(ICT Division)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
-   "read_only_depends_on": "eval:frappe.session.user != doc.ict"
-  },
-  {
-   "fieldname": "ceo",
-   "fieldtype": "Link",
-   "label": "Office of the CEO",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "ceo_clearance",
-   "fieldtype": "Check",
-   "label": "Clearance Acquired(CEO)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.ceo",
-   "read_only_depends_on": "eval:frappe.session.user != doc.ceo"
-  },
-  {
-   "fieldname": "ceo_remarks",
-   "fieldtype": "Small Text",
-   "label": "CEO Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.ceo",
-   "read_only_depends_on": "eval:frappe.session.user != doc.ceo"
-  }
- ],
- "is_submittable": 1,
- "links": [],
- "modified": "2024-08-15 00:45:33.201369",
- "modified_by": "Administrator",
- "module": "HR",
- "name": "Employee Separation Clearance",
- "naming_rule": "Expression (old style)",
- "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Employee",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "HR User",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "HR Manager",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  }
- ],
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1
-}
+    "actions": [],
+    "autoname": "ESC.YY.MM.####",
+    "beta": 1,
+    "creation": "2023-02-15 17:05:56.743940",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+     "posting_date",
+     "document_no",
+     "sb_emp_details",
+     "employee",
+     "grade",
+     "cid",
+     "phone_number",
+     "fixed_line_number",
+     "cb_01",
+     "employee_name",
+     "designation",
+     "division",
+     "region",
+     "sb_official",
+     "reason_for_resignation",
+     "sb_remarks",
+     "supervisor",
+     "supervisor_clearance",
+     "supervisor_remarks",
+     "afd",
+     "afd_clearance",
+     "afd_remarks",
+     "rtc",
+     "rtc_clearance",
+     "rtc_remarks",
+     "column_break_29",
+     "ceo",
+     "ceo_clearance",
+     "ceo_remarks",
+     "spd",
+     "spd_clearance",
+     "spd_remarks",
+     "icthr",
+     "icthr_clearance",
+     "icthr_remarks",
+     "iad",
+     "iad_clearance",
+     "iad_remarks",
+     "ict",
+     "clearance",
+     "ict_remarks",
+     "sb_reference",
+     "mail_sent",
+     "approvers_set",
+     "employee_separation_id",
+     "workflow_state",
+     "amended_from"
+    ],
+    "fields": [
+     {
+      "fieldname": "sb_emp_details",
+      "fieldtype": "Section Break",
+      "label": "Employee Details"
+     },
+     {
+      "fieldname": "employee",
+      "fieldtype": "Link",
+      "label": "Employee ID",
+      "options": "Employee"
+     },
+     {
+      "fetch_from": "employee.designation",
+      "fieldname": "designation",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Designation",
+      "options": "Designation"
+     },
+     {
+      "fetch_from": "employee.division",
+      "fieldname": "division",
+      "fieldtype": "Link",
+      "label": "Division",
+      "options": "Department"
+     },
+     {
+      "fieldname": "cb_01",
+      "fieldtype": "Column Break"
+     },
+     {
+      "fetch_from": "employee.employee_name",
+      "fieldname": "employee_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Employee Name"
+     },
+     {
+      "fieldname": "employee_separation_id",
+      "fieldtype": "Data",
+      "label": "Employee Separation ID",
+      "read_only": 1
+     },
+     {
+      "fieldname": "workflow_state",
+      "fieldtype": "Link",
+      "hidden": 1,
+      "label": "Workflow State",
+      "options": "Workflow State",
+      "read_only": 1
+     },
+     {
+      "fetch_from": "employee.grade",
+      "fieldname": "grade",
+      "fieldtype": "Link",
+      "label": "Grade",
+      "options": "Employee Grade"
+     },
+     {
+      "fieldname": "reason_for_resignation",
+      "fieldtype": "Select",
+      "label": "Separation Type",
+      "options": "\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract\ntest",
+      "read_only": 1
+     },
+     {
+      "fieldname": "sb_official",
+      "fieldtype": "Section Break"
+     },
+     {
+      "default": "Today",
+      "fieldname": "posting_date",
+      "fieldtype": "Date",
+      "label": "Posting Date"
+     },
+     {
+      "fieldname": "region",
+      "fieldtype": "Data",
+      "hidden": 1,
+      "label": "Region",
+      "read_only": 1
+     },
+     {
+      "fieldname": "sb_remarks",
+      "fieldtype": "Section Break",
+      "label": "Clearance Section"
+     },
+     {
+      "description": "  ",
+      "fieldname": "amended_from",
+      "fieldtype": "Link",
+      "label": "Amended From",
+      "no_copy": 1,
+      "options": "Employee Separation Clearance",
+      "print_hide": 1,
+      "read_only": 1
+     },
+     {
+      "fieldname": "sb_reference",
+      "fieldtype": "Section Break",
+      "label": "Reference"
+     },
+     {
+      "default": "0",
+      "fieldname": "mail_sent",
+      "fieldtype": "Check",
+      "hidden": 1,
+      "label": "Mail Sent",
+      "read_only": 1
+     },
+     {
+      "default": "0",
+      "fieldname": "approvers_set",
+      "fieldtype": "Check",
+      "hidden": 1,
+      "label": "Approvers Set",
+      "read_only": 1
+     },
+     {
+      "fetch_from": "employee.passport_number",
+      "fieldname": "cid",
+      "fieldtype": "Data",
+      "label": "CID"
+     },
+     {
+      "fetch_from": "employee.cell_number",
+      "fieldname": "phone_number",
+      "fieldtype": "Data",
+      "label": "Phone Number"
+     },
+     {
+      "fetch_if_empty": 1,
+      "fieldname": "fixed_line_number",
+      "fieldtype": "Data",
+      "hidden": 1,
+      "label": "Fixed Line Number"
+     },
+     {
+      "allow_on_submit": 1,
+      "fieldname": "document_no",
+      "fieldtype": "Data",
+      "hidden": 1,
+      "label": "Document No.",
+      "read_only": 1
+     },
+     {
+      "fieldname": "column_break_29",
+      "fieldtype": "Column Break"
+     },
+     {
+      "fieldname": "supervisor",
+      "fieldtype": "Link",
+      "label": "Supervisor",
+      "options": "User",
+      "read_only": 1
+     },
+     {
+      "default": "0",
+      "fieldname": "supervisor_clearance",
+      "fieldtype": "Check",
+      "label": "Clearance Acquired (Supervisor)",
+      "mandatory_depends_on": "frappe.session.user == doc.supervisor",
+      "read_only_depends_on": "eval:frappe.session.user != doc.supervisor"
+     },
+     {
+      "fieldname": "supervisor_remarks",
+      "fieldtype": "Small Text",
+      "label": "Supervisor's Remarks",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.supervisor",
+      "read_only_depends_on": "eval:frappe.session.user != doc.supervisor"
+     },
+     {
+      "fieldname": "afd",
+      "fieldtype": "Link",
+      "label": "Accounts & Finance Division",
+      "options": "User",
+      "read_only": 1
+     },
+     {
+      "default": "0",
+      "fieldname": "afd_clearance",
+      "fieldtype": "Check",
+      "label": "Clearance Acquired (Accounts & Finance Division)",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.afd",
+      "read_only_depends_on": "eval:frappe.session.user != doc.afd"
+     },
+     {
+      "fieldname": "afd_remarks",
+      "fieldtype": "Small Text",
+      "label": "Accounts & Finance Division Remarks",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.afd",
+      "read_only_depends_on": "eval:frappe.session.user != doc.afd"
+     },
+     {
+      "fieldname": "spd",
+      "fieldtype": "Link",
+      "hidden": 1,
+      "label": "Store & Procurement Division",
+      "options": "User",
+      "read_only": 1
+     },
+     {
+      "default": "0",
+      "fieldname": "spd_clearance",
+      "fieldtype": "Check",
+      "hidden": 1,
+      "label": "Clearance Acquired (Store & Procurement Division)"
+     },
+     {
+      "fieldname": "spd_remarks",
+      "fieldtype": "Small Text",
+      "hidden": 1,
+      "label": "Store & Procurement Division Remarks"
+     },
+     {
+      "fieldname": "icthr",
+      "fieldtype": "Link",
+      "label": "HR Division",
+      "options": "User",
+      "read_only": 1
+     },
+     {
+      "default": "0",
+      "fieldname": "icthr_clearance",
+      "fieldtype": "Check",
+      "label": "Clearance Acquired (HR Division)",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
+      "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
+     },
+     {
+      "fieldname": "icthr_remarks",
+      "fieldtype": "Small Text",
+      "label": "HR Division Remarks",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
+      "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
+     },
+     {
+      "fieldname": "iad",
+      "fieldtype": "Link",
+      "label": "Internal Audit Division",
+      "options": "User",
+      "read_only": 1
+     },
+     {
+      "default": "0",
+      "fieldname": "iad_clearance",
+      "fieldtype": "Check",
+      "label": "Clearance Acquired(Internal Audit Division)",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
+      "read_only_depends_on": "eval:frappe.session.user != doc.iad"
+     },
+     {
+      "fieldname": "iad_remarks",
+      "fieldtype": "Small Text",
+      "label": "Internal Audit Division Remarks",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
+      "read_only_depends_on": "eval:frappe.session.user != doc.iad"
+     },
+     {
+      "fieldname": "rtc",
+      "fieldtype": "Link",
+      "label": "Rental & Tenancy",
+      "options": "User",
+      "read_only": 1
+     },
+     {
+      "default": "0",
+      "fieldname": "rtc_clearance",
+      "fieldtype": "Check",
+      "label": "Clearance Acquired(Rental & Tenancy)",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.rtc",
+      "read_only_depends_on": "eval:frappe.session.user != doc.rtc"
+     },
+     {
+      "fieldname": "rtc_remarks",
+      "fieldtype": "Small Text",
+      "label": "Rental & Tenancy Remarks",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.rtc",
+      "read_only_depends_on": "eval:frappe.session.user != doc.rtc"
+     },
+     {
+      "fieldname": "ict",
+      "fieldtype": "Link",
+      "label": "ICT Division",
+      "options": "User",
+      "read_only": 1
+     },
+     {
+      "fieldname": "ict_remarks",
+      "fieldtype": "Data",
+      "label": "ICT Division Remarks",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
+      "read_only_depends_on": "eval:frappe.session.user != doc.ict"
+     },
+     {
+      "default": "0",
+      "fieldname": "clearance",
+      "fieldtype": "Check",
+      "label": "Clearance Acquired(ICT Division)",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
+      "read_only_depends_on": "eval:frappe.session.user != doc.ict"
+     },
+     {
+      "fieldname": "ceo",
+      "fieldtype": "Link",
+      "label": "Office of the CEO",
+      "options": "User",
+      "read_only": 1
+     },
+     {
+      "default": "0",
+      "fieldname": "ceo_clearance",
+      "fieldtype": "Check",
+      "label": "Clearance Acquired(CEO)",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.ceo",
+      "read_only_depends_on": "eval:frappe.session.user != doc.ceo"
+     },
+     {
+      "fieldname": "ceo_remarks",
+      "fieldtype": "Small Text",
+      "label": "CEO Remarks",
+      "mandatory_depends_on": "eval:frappe.session.user == doc.ceo",
+      "read_only_depends_on": "eval:frappe.session.user != doc.ceo"
+     }
+    ],
+    "is_submittable": 1,
+    "links": [],
+    "modified": "2024-08-15 00:45:33.201369",
+    "modified_by": "Administrator",
+    "module": "HR",
+    "name": "Employee Separation Clearance",
+    "naming_rule": "Expression (old style)",
+    "owner": "Administrator",
+    "permissions": [
+     {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+     },
+     {
+      "create": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Employee",
+      "share": 1,
+      "write": 1
+     },
+     {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "HR User",
+      "share": 1,
+      "submit": 1,
+      "write": 1
+     },
+     {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "HR Manager",
+      "share": 1,
+      "submit": 1,
+      "write": 1
+     }
+    ],
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1
+   }
