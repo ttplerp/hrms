@@ -1,0 +1,165 @@
+{
+ "actions": [],
+ "creation": "2017-04-21 19:44:27.503078",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "column_break_2",
+  "halt",
+  "return_same_day",
+  "column_break_4",
+  "till_date",
+  "no_days",
+  "from_place",
+  "column_break_9",
+  "to_place",
+  "country",
+  "halt_at",
+  "temp_from_place",
+  "temp_to_place",
+  "temp_halt_at",
+  "temp_till_date",
+  "sb_project_maintenance",
+  "reference_type",
+  "reference_name"
+ ],
+ "fields": [
+  {
+   "allow_on_submit": 1,
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "halt",
+   "fieldtype": "Check",
+   "label": "Halt?"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.halt",
+   "fieldname": "till_date",
+   "fieldtype": "Date",
+   "label": "Till Date"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "1",
+   "fieldname": "no_days",
+   "fieldtype": "Data",
+   "label": "Number of Halt Days",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.halt==0 && doc.date",
+   "fieldname": "from_place",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "From Place"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.halt==0 && doc.date",
+   "fieldname": "to_place",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "To Place"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "halt_at",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Halt At"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "temp_from_place",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Temp From Place"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "temp_to_place",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Temp To Place"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "temp_halt_at",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Temp Halt At"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "temp_till_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "Temp Till Date"
+  },
+  {
+   "default": "0",
+   "fieldname": "return_same_day",
+   "fieldtype": "Check",
+   "label": "Return on the same day?"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "sb_project_maintenance",
+   "fieldtype": "Section Break",
+   "label": "Project/Maintenance Details"
+  },
+  {
+   "depends_on": "eval:parent.for_maintenance_project == 1;",
+   "fieldname": "reference_type",
+   "fieldtype": "Select",
+   "label": "Reference Type",
+   "options": "\nProject\nTask\nMaintenance Order"
+  },
+  {
+   "depends_on": "eval:parent.for_maintenance_project == 1;",
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Reference Name",
+   "options": "reference_type"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2024-09-05 16:28:30.223627",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Travel Authorization Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

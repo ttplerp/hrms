@@ -1,0 +1,613 @@
+{
+ "actions": [],
+ "autoname": "TA.YY.MM.#####",
+ "creation": "2017-04-21 19:09:36.267860",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "workflow_state",
+  "document_status",
+  "column_break_2",
+  "reason",
+  "employee_information",
+  "employee",
+  "employee_name",
+  "for_maintenance_project",
+  "column_break_6",
+  "designation",
+  "grade",
+  "department",
+  "division",
+  "section",
+  "unit",
+  "cost_center",
+  "dsa_per_day",
+  "travel_purpose_information",
+  "travel_type",
+  "training_event",
+  "training_event_child_ref",
+  "place_type",
+  "col_break_mode",
+  "mode_of_travel",
+  "business_activity",
+  "travel_details",
+  "items",
+  "from_date",
+  "to_date",
+  "section_break_26",
+  "details",
+  "section_break_20",
+  "currency",
+  "exchange_rate",
+  "need_advance",
+  "column_break_16",
+  "estimated_amount",
+  "advance_amount",
+  "advance_amount_nu",
+  "travel_authorization_details",
+  "supervisor",
+  "supervisor_designation",
+  "supervisor_manager",
+  "posting_date",
+  "column_break_12",
+  "supervisor_name",
+  "supervisor_manager_name",
+  "end_date_auth",
+  "section_break_18",
+  "purpose",
+  "column_break_30",
+  "company",
+  "branch",
+  "travel_claim",
+  "advance_journal",
+  "amended_from",
+  "cancellation_reason",
+  "sb_remarks",
+  "remarks",
+  "column_break_54"
+ ],
+ "fields": [
+  {
+   "allow_on_submit": 1,
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "label": "Workflow State",
+   "options": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.branch",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "document_status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Authorization Status",
+   "options": "\nDraft\nApproved\nRejected\nCancelled",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.document_status=='Rejected'",
+   "fieldname": "reason",
+   "fieldtype": "Long Text",
+   "label": "Reason"
+  },
+  {
+   "fieldname": "employee_information",
+   "fieldtype": "Section Break",
+   "label": "Employee Information"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.grade",
+   "fieldname": "grade",
+   "fieldtype": "Link",
+   "label": "Grade",
+   "options": "Employee Grade",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.division",
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "dsa_per_day",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "DSA Per Day"
+  },
+  {
+   "fieldname": "travel_purpose_information",
+   "fieldtype": "Section Break",
+   "label": "TRAVEL DETAILS"
+  },
+  {
+   "fieldname": "travel_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Purpose",
+   "options": "\nTravel\nTraining\nMeeting and Seminars",
+   "reqd": 1
+  },
+  {
+   "fieldname": "place_type",
+   "fieldtype": "Select",
+   "label": "Place",
+   "options": "\nIn-Country\nOut-Country",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_mode",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mode_of_travel",
+   "fieldtype": "Select",
+   "label": "Mode of Travel",
+   "options": "\nFlight\nTrain\nTaxi\nOffice Car\nPersonal Car",
+   "reqd": 1
+  },
+  {
+   "default": "OTB",
+   "fieldname": "business_activity",
+   "fieldtype": "Link",
+   "label": "Business Activity",
+   "options": "Business Activity",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "travel_details",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Travel Authorization Item",
+   "reqd": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_26",
+   "fieldtype": "Section Break",
+   "label": "Original Travel Details"
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Table",
+   "options": "Travel Authorization Detail",
+   "read_only": 1
+  },
+  {
+   "fieldname": "travel_authorization_details",
+   "fieldtype": "Section Break",
+   "label": "Travel Authorization Details"
+  },
+  {
+   "fieldname": "supervisor",
+   "fieldtype": "Link",
+   "label": "Approver Email ID",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Travel Authorization Date",
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "end_date_auth",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "Authorization End Date"
+  },
+  {
+   "default": "0",
+   "fieldname": "need_advance",
+   "fieldtype": "Check",
+   "label": "Need Advance?"
+  },
+  {
+   "fieldname": "section_break_20",
+   "fieldtype": "Section Break",
+   "label": "TRAVEL ADVANCE DETAILS"
+  },
+  {
+   "default": "BTN",
+   "depends_on": "eval:doc.need_advance",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.need_advance",
+   "fieldname": "estimated_amount",
+   "fieldtype": "Currency",
+   "label": "Estimated Total Amount",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.need_advance",
+   "fieldname": "advance_amount",
+   "fieldtype": "Currency",
+   "label": "Advance Amount"
+  },
+  {
+   "depends_on": "eval:doc.need_advance && doc.currency!=\"BTN\"",
+   "fieldname": "advance_amount_nu",
+   "fieldtype": "Currency",
+   "label": "Amount in Nu.",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_18",
+   "fieldtype": "Section Break",
+   "label": "ADDITIONAL INFORMATION"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Long Text",
+   "label": "Purpose",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_30",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "travel_claim",
+   "fieldtype": "Link",
+   "label": "Travel Claim",
+   "no_copy": 1,
+   "options": "Travel Claim",
+   "read_only": 1
+  },
+  {
+   "fieldname": "advance_journal",
+   "fieldtype": "Data",
+   "label": "Advance Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Travel Authorization",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_remarks",
+   "fieldtype": "Section Break",
+   "hidden": 1,
+   "label": "REMARKS"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text Editor"
+  },
+  {
+   "depends_on": "eval:doc.docstatus==1 || doc.docstatus==2",
+   "fieldname": "cancellation_reason",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Cancellation Reason",
+   "options": "\nChange In Travel Plan\nWrong Data Entry\nOthers"
+  },
+  {
+   "fieldname": "column_break_54",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "supervisor_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "supervisor_designation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Supervisor Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "From Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "To Date",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "for_maintenance_project",
+   "fieldtype": "Check",
+   "label": "For Maintenance/Project"
+  },
+  {
+   "fieldname": "supervisor_manager",
+   "fieldtype": "Link",
+   "label": "Supervisor Manager Email",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "supervisor_manager.full_name",
+   "fieldname": "supervisor_manager_name",
+   "fieldtype": "Data",
+   "label": "Supervisor Manager Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "exchange_rate",
+   "fieldtype": "Currency",
+   "label": "Exchange Rate",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.section",
+   "fieldname": "section",
+   "fieldtype": "Data",
+   "label": "Section",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.unit",
+   "fieldname": "unit",
+   "fieldtype": "Data",
+   "label": "Unit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "training_event",
+   "fieldtype": "Data",
+   "label": "Training Event",
+   "read_only": 1
+  },
+  {
+   "fieldname": "training_event_child_ref",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Training Event Child Ref"
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-09-10 12:47:42.216692",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Travel Authorization",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Support",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Approver",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Auditor",
+   "share": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Approver",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Travel Administrator",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "employee_name",
+ "track_changes": 1
+}

@@ -1,0 +1,352 @@
+{
+ "actions": [],
+ "creation": "2017-04-21 22:28:59.154351",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "column_break_2",
+  "halt",
+  "column_break_4",
+  "till_date",
+  "from_place",
+  "column_break_9",
+  "halt_at",
+  "country",
+  "to_place",
+  "section_break_10",
+  "mode_of_travel",
+  "fare_amount",
+  "currency",
+  "currency_exchange_date",
+  "porter_pony_charges",
+  "col_break_currency",
+  "mileage_rate",
+  "visa_fees",
+  "visa_fees_currency",
+  "column_break_12",
+  "distance",
+  "passport_fees",
+  "passport_fees_currency",
+  "column_break_14",
+  "dsa",
+  "incidental_fees",
+  "incidental_fees_currency",
+  "section_break_18",
+  "dsa_percent",
+  "column_break_21",
+  "actual_amount",
+  "column_break_16",
+  "amount",
+  "column_break_20",
+  "last_day",
+  "exchange_rate",
+  "sb_remarks",
+  "no_days",
+  "days_allocated",
+  "cb_25",
+  "remarks",
+  "travel_authorization",
+  "sb_project_maintenance",
+  "reference_type",
+  "reference_name"
+ ],
+ "fields": [
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.date",
+   "fieldname": "halt",
+   "fieldtype": "Check",
+   "label": "Halt?",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.halt",
+   "fieldname": "till_date",
+   "fieldtype": "Date",
+   "label": "Till Date"
+  },
+  {
+   "depends_on": "eval:doc.halt==0 && doc.date",
+   "fieldname": "from_place",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "From Place",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.halt",
+   "fieldname": "halt_at",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Halt At"
+  },
+  {
+   "depends_on": "eval:doc.halt==0 && doc.date",
+   "fieldname": "to_place",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "To Place",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "col_break_currency",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.halt==0 && doc.date",
+   "fieldname": "mileage_rate",
+   "fieldtype": "Select",
+   "label": "Mileage Rate",
+   "options": "\n16"
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.halt==0 && doc.date",
+   "fieldname": "distance",
+   "fieldtype": "Data",
+   "label": "Distance (in KM)"
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "dsa",
+   "fieldtype": "Currency",
+   "label": " DSA Amount (Per Day)",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_18",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "100",
+   "fieldname": "dsa_percent",
+   "fieldtype": "Select",
+   "label": "DSA Percent",
+   "options": "100\n50\n20\n0",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_21",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "actual_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "last_day",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Last Day",
+   "read_only": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "exchange_rate",
+   "fieldtype": "Currency",
+   "label": "Exchange Rate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_remarks",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "no_days",
+   "fieldtype": "Data",
+   "label": "No.of Days Actual",
+   "read_only": 1
+  },
+  {
+   "fieldname": "days_allocated",
+   "fieldtype": "Int",
+   "label": "No.of Days Accepted For Claim",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_25",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks",
+   "read_only": 1
+  },
+  {
+   "fieldname": "travel_authorization",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Travel Authorization",
+   "options": "Travel Authorization",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:parent.place_type == \"In-Country\"",
+   "fieldname": "porter_pony_charges",
+   "fieldtype": "Currency",
+   "label": "Porter and Pony Charges"
+  },
+  {
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "visa_fees",
+   "fieldtype": "Currency",
+   "label": "Visa Fees",
+   "options": "visa_fees_currency"
+  },
+  {
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "passport_fees",
+   "fieldtype": "Currency",
+   "label": "Passport Fees",
+   "options": "passport_fees_currency"
+  },
+  {
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "incidental_fees",
+   "fieldtype": "Currency",
+   "label": "Incidental Expenses",
+   "options": "incidental_fees_currency"
+  },
+  {
+   "default": "BTN",
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "visa_fees_currency",
+   "fieldtype": "Link",
+   "label": "Visa Fees Currency",
+   "options": "Currency"
+  },
+  {
+   "default": "BTN",
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "passport_fees_currency",
+   "fieldtype": "Link",
+   "label": "Passport Fees Currency",
+   "options": "Currency"
+  },
+  {
+   "default": "BTN",
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "incidental_fees_currency",
+   "fieldtype": "Link",
+   "label": "Incidental Expenses Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_project_maintenance",
+   "fieldtype": "Section Break",
+   "label": "Project/Maintenance Details"
+  },
+  {
+   "depends_on": "eval:parent.for_maintenance_project == 1;",
+   "fieldname": "reference_type",
+   "fieldtype": "Select",
+   "label": "Reference Type",
+   "options": "\nProject\nTask\nMaintenance Order",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:parent.for_maintenance_project == 1;",
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Reference Name",
+   "options": "reference_type",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.currency != \"BTN\";",
+   "fieldname": "currency_exchange_date",
+   "fieldtype": "Date",
+   "label": "Currency Exchange Date"
+  },
+  {
+   "fieldname": "mode_of_travel",
+   "fieldtype": "Select",
+   "label": "Mode of Travel",
+   "options": "\nFlight\nTrain\nTaxi\nBus\nRented Car\nPersonal Car\nOffice Car"
+  },
+  {
+   "depends_on": "eval:(!in_list([\"\", \"Personal Car\", \"Office Car\"], doc.mode_of_travel)) && doc.halt==0;",
+   "fieldname": "fare_amount",
+   "fieldtype": "Currency",
+   "label": "Fare Amount"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2024-09-19 14:49:07.677472",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Travel Claim Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

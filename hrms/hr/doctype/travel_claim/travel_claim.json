@@ -1,0 +1,778 @@
+{
+ "actions": [],
+ "autoname": "TC.YY.MM.#####",
+ "creation": "2017-04-22 12:30:45.628489",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "workflow_state",
+  "col_break_2",
+  "supervisor_approval",
+  "supervisor_approved_on",
+  "column_break_3",
+  "hr_approval",
+  "hr_approved_on",
+  "rejection_information",
+  "claim_status",
+  "column_break_2",
+  "reason",
+  "employee_information",
+  "employee",
+  "employee_name",
+  "column_break_6",
+  "designation",
+  "grade",
+  "division",
+  "section",
+  "unit",
+  "department",
+  "dsa_per_day",
+  "section_break_24",
+  "for_maintenance_project",
+  "column_break_23",
+  "reference_type",
+  "column_break_22",
+  "reference_name",
+  "cost_center",
+  "is_settlement",
+  "travel_detail_information",
+  "travel_type",
+  "place_type",
+  "column_break_currency",
+  "training_event",
+  "training_event_child_ref",
+  "mode_of_travel",
+  "business_activity",
+  "column_break_26",
+  "extra_claim_amount",
+  "extra_claim_reason",
+  "section_break_36",
+  "start_date",
+  "column_break_50",
+  "end_date",
+  "get_travel_authorization",
+  "travel_details",
+  "items",
+  "from_date",
+  "to_date",
+  "travel_authorization_details",
+  "supervisor_name",
+  "supervisor",
+  "supervisor_manager_name",
+  "supervisor_manager",
+  "column_break_12",
+  "supervisor_designation",
+  "supervisor_manager_designation",
+  "posting_date",
+  "total_claim_amount",
+  "section_break_20",
+  "advance_journal",
+  "column_break_16",
+  "advance_amount",
+  "column_break_24",
+  "balance_amount",
+  "section_break_18",
+  "tour_report",
+  "column_break_30",
+  "ta",
+  "column_break_32",
+  "ta_date",
+  "section_break_44",
+  "claim_journal",
+  "column_break_46",
+  "amended_from",
+  "company",
+  "branch"
+ ],
+ "fields": [
+  {
+   "allow_on_submit": 1,
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "label": "Workflow State",
+   "options": "Workflow State",
+   "read_only": 1
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Branch",
+   "options": "Branch",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "supervisor_approval",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Approved By Supervisor",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "supervisor_approved_on",
+   "fieldtype": "Date",
+   "hidden": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "hr_approval",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Approved By Travel Administrator",
+   "permlevel": 2
+  },
+  {
+   "fieldname": "hr_approved_on",
+   "fieldtype": "Date",
+   "hidden": 1
+  },
+  {
+   "fieldname": "rejection_information",
+   "fieldtype": "Section Break",
+   "label": "Rejection Information"
+  },
+  {
+   "fieldname": "claim_status",
+   "fieldtype": "Select",
+   "label": "Authorization Rejected By",
+   "options": "\nRejected by Supervisor\nRejected by HR",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.claim_status=='Rejected by Supervisor' || doc.claim_status=='Rejected by HR'",
+   "fieldname": "reason",
+   "fieldtype": "Long Text",
+   "label": "Reason"
+  },
+  {
+   "fieldname": "employee_information",
+   "fieldtype": "Section Break",
+   "label": "Employee Information"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "label": "Designation",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.grade",
+   "fieldname": "grade",
+   "fieldtype": "Data",
+   "label": "Grade",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.division",
+   "fieldname": "division",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Division"
+  },
+  {
+   "fetch_from": "employee.department",
+   "fieldname": "department",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Department"
+  },
+  {
+   "fieldname": "dsa_per_day",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "DSA Per Day"
+  },
+  {
+   "fieldname": "travel_detail_information",
+   "fieldtype": "Section Break",
+   "label": "TRAVEL DETAILS"
+  },
+  {
+   "fieldname": "travel_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Purpose",
+   "options": "\nTravel\nTraining\nMeeting and Seminars",
+   "reqd": 1
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Get Travel Authorization From"
+  },
+  {
+   "fieldname": "place_type",
+   "fieldtype": "Select",
+   "label": "Place",
+   "options": "\nIn-Country\nOut-Country",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "Get Travel Authorization Till"
+  },
+  {
+   "fieldname": "column_break_currency",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "business_activity",
+   "fieldtype": "Link",
+   "label": "Business Activity",
+   "options": "Business Activity",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "extra_claim_amount",
+   "fieldtype": "Currency",
+   "label": "Miscellaneous Claim Amount"
+  },
+  {
+   "fieldname": "column_break_26",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.extra_claim_amount!=0",
+   "fieldname": "extra_claim_reason",
+   "fieldtype": "Small Text",
+   "label": "Miscellaneous Claim Reason"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_36",
+   "fieldtype": "Section Break",
+   "label": "CLAIM IN BULK"
+  },
+  {
+   "fieldname": "get_travel_authorization",
+   "fieldtype": "Button",
+   "label": "Get Travel Authorization"
+  },
+  {
+   "fieldname": "travel_details",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Travel Claim Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "travel_authorization_details",
+   "fieldtype": "Section Break",
+   "label": "Travel Claim Details"
+  },
+  {
+   "fieldname": "supervisor",
+   "fieldtype": "Link",
+   "label": "Supervisor Email ID",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Travel Claim Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_claim_amount",
+   "fieldtype": "Currency",
+   "label": "Total Claim Amount",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_20",
+   "fieldtype": "Section Break",
+   "label": "Tour Advance Information"
+  },
+  {
+   "fieldname": "advance_journal",
+   "fieldtype": "Data",
+   "label": "Advance Journal",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "advance_amount",
+   "fieldtype": "Currency",
+   "label": "Advance Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_24",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "balance_amount",
+   "fieldtype": "Currency",
+   "label": "Balance Amount",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_18",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "File size should be below 5MB",
+   "fieldname": "tour_report",
+   "fieldtype": "Attach",
+   "label": "Tour Report",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_30",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ta",
+   "fieldtype": "Link",
+   "label": "Travel Authorization",
+   "options": "Travel Authorization",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_32",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "ta_date",
+   "fieldtype": "Date",
+   "label": "Travel Authorization Date",
+   "permlevel": 3
+  },
+  {
+   "fieldname": "section_break_44",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "claim_journal",
+   "fieldtype": "Data",
+   "label": "Claim Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_46",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Travel Claim",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "supervisor_name",
+   "fieldtype": "Data",
+   "label": "Supervisor",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_50",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mode_of_travel",
+   "fieldtype": "Select",
+   "label": "Mode of Travel",
+   "options": "\nOffice Car\nPersonal Car\nPublic Transport\nWith Others",
+   "reqd": 1
+  },
+  {
+   "fieldname": "supervisor_designation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Supervisor Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "From Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "To Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reference_type",
+   "fieldtype": "Select",
+   "ignore_user_permissions": 1,
+   "label": "Maintenance/Project/Task",
+   "options": "\nProject\nTask\nMaintenance Order",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_22",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "ignore_user_permissions": 1,
+   "label": "Reference Name",
+   "options": "reference_type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_24",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "for_maintenance_project",
+   "fieldtype": "Check",
+   "label": "For Maintenance/Project"
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "supervisor_manager_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Supervisor Manager",
+   "read_only": 1
+  },
+  {
+   "fieldname": "supervisor_manager",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Supervisor Manager Email_ID",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "supervisor_manager_designation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Supervisor Manager Designation",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_settlement",
+   "fieldtype": "Check",
+   "label": "Is Settlement"
+  },
+  {
+   "fieldname": "training_event",
+   "fieldtype": "Data",
+   "label": "Training Event",
+   "read_only": 1
+  },
+  {
+   "fieldname": "training_event_child_ref",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Training Event Child Ref",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.section",
+   "fieldname": "section",
+   "fieldtype": "Data",
+   "label": "Section",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.unit",
+   "fieldname": "unit",
+   "fieldtype": "Data",
+   "label": "Unit",
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-09-20 14:42:17.623782",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Travel Claim",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Support",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Support",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Approver",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Approver",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Support",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Travel Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "employee_name",
+ "track_changes": 1
+}
