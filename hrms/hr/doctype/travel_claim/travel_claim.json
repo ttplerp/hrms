@@ -90,6 +90,7 @@
    "allow_on_submit": 1,
    "fieldname": "workflow_state",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Workflow State",
    "options": "Workflow State",
    "read_only": 1
@@ -559,7 +560,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-20 14:42:17.623782",
+ "modified": "2024-09-21 14:04:38.764132",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim",
