@@ -35,6 +35,7 @@ frappe.ui.form.on('Internal Clearance', {
 
 				frm.refresh_fields();
 				frm.reload_doc(); 
+				frm.reload_doc();
 
 	
 				

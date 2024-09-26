@@ -167,6 +167,7 @@
    "fieldtype": "Check",
    "label": "Clearance Acquired (Accounts & Finance Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.afd",
+   "no_copy": 1,
    "read_only_depends_on": "eval:frappe.session.user != doc.afd"
   },
   {
@@ -174,6 +175,7 @@
    "fieldtype": "Small Text",
    "label": "Accounts & Finance Division Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.afd",
+   "no_copy": 1,
    "read_only_depends_on": "eval:frappe.session.user != doc.afd"
   },
   {
@@ -193,6 +195,7 @@
    "fieldtype": "Check",
    "label": "Clearance Acquired (HR Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
+   "no_copy": 1,
    "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
   },
   {
@@ -200,6 +203,7 @@
    "fieldtype": "Small Text",
    "label": "HR Division Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
+   "no_copy": 1,
    "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
   },
   {
@@ -215,6 +219,7 @@
    "fieldtype": "Check",
    "label": "Clearance Acquired(Internal Audit Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
+   "no_copy": 1,
    "read_only_depends_on": "eval:frappe.session.user != doc.iad"
   },
   {
@@ -222,6 +227,7 @@
    "fieldtype": "Small Text",
    "label": "Internal Audit Division Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
+   "no_copy": 1,
    "read_only_depends_on": "eval:frappe.session.user != doc.iad"
   },
   {
@@ -234,6 +240,7 @@
    "fieldname": "mail_sent",
    "fieldtype": "Check",
    "label": "Mail Sent",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -333,6 +340,7 @@
    "fieldtype": "Check",
    "label": "Credit Acquired (Credit Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.ictcr",
+   "no_copy": 1,
    "read_only_depends_on": "eval:frappe.session.user != doc.ictcr"
   },
   {
@@ -340,6 +348,7 @@
    "fieldtype": "Small Text",
    "label": "Credit Division Remarks",
    "mandatory_depends_on": "eval:frappe.session.user == doc.ictcr",
+   "no_copy": 1,
    "read_only_depends_on": "eval:frappe.session.user != doc.ictcr"
   },
   {
@@ -358,7 +367,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-10 09:56:32.006629",
+ "modified": "2024-09-25 16:52:32.951900",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Internal Clearance",

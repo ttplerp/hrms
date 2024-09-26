@@ -110,6 +110,9 @@ permission_query_conditions = {
 	"Expense Claim": "hrms.hr.doctype.expense_claim.expense_claim.get_permission_query_conditions",
 	"Daily Activity Log": "hrms.hr.doctype.daily_activity_log.daily_activity_log.get_permission_query_conditions",
 	"Dispatch":"hrms.hr.doctype.dispatch.dispatch.get_permission_query_conditions",
+	"Internal Clearance":"hrms.hr.doctype.internal_clearance.internal_clearance.get_permission_query_conditions",
+	"Travel Authorization":"hrms.hr.doctype.travel_authorization.travel_authorization.get_permission_query_conditions",
+    "Travel Claim":"hrms.hr.doctype.travel_claim.travel_claim.get_permission_query_conditions",
 
 }
 #
