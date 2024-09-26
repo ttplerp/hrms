@@ -214,21 +214,27 @@ frappe.ui.form.on("Travel Authorization Item", {
 		// 		frappe.model.set_value(cdt, cdn, "no_days", 1 + cint(frappe.datetime.get_day_diff(item.till_date, item.date)))
 		// 	}
 		// }
+		
 		var halt = frappe.meta.get_docfield("Travel Authorization Item", "halt", cur_frm.doc.name);
 		var halt_at = frappe.meta.get_docfield("Travel Authorization Item", "halt_at", cur_frm.doc.name);
 		var return_same_day = frappe.meta.get_docfield("Travel Authorization Item", "return_same_day", cur_frm.doc.name);
-		console.log(item);
-		console.log(halt_at);
-		console.log(return_same_day);
-		console.log("Hello");
+		// console.log(item);
+		// console.log(halt_at);
+		// console.log(return_same_day);
+		
 		if (item.idx == 1) {
+			
+			//Tandin Phuntsho: setting the field to read only. somehow the toggle_editable is not working
+			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[3].read_only=1
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt', false);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt_at', false);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('return_same_day', true);
+			
 			frappe.model.set_value(cdt, cdn, "halt", 0);
 			frappe.model.set_value(cdt, cdn, "halt_at", null);
 		}
 		else {
+			
 			halt.read_only = 0;
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt', true);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt_at', true);
