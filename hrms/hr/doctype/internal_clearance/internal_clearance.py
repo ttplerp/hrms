@@ -97,18 +97,27 @@ def setemailcheck(docid):
     frappe.db.set_value('Internal Clearance', docid, 'mail_sent', 1)
 
 def get_permission_query_conditions(user):
-	if not user: user = frappe.session.user
-	user_roles = frappe.get_roles(user)
-	
-	if user == "Administrator":
-		return
+    if not user: user = frappe.session.user
+    user_roles = frappe.get_roles(user)
 
-	if "HR User" in user_roles or "HR Manager" in user_roles or  "Audit User" in user_roles or "Auditor Manager" in user_roles :
-		return
+ 
+    if user == "Administrator":
+        return
+    
+    res=frappe.db.sql("Select division, department from `tabEmployee` where company_email='{}' limit 1".format(user), as_dict=True)
+    
+    division = res[0].get('division')
+    department = res[0].get('department')
+    
+    if "GM" in user_roles and (division=="HR & Logistics Division - BDBL" or department=="Operations Department - BDBL'  LIMIT 1" or division=="Finance & Accounts Division - BDBL" or division=="Internal Audit  - BDBL"):
+        return
+    
+    if "HR User" in user_roles or "HR Manager" in user_roles or  "Audit User" in user_roles or "Auditor Manager" in user_roles :
+        return
 
-	return """(
-		`tabInternal Clearance`.owner = '{user}' 
-	)""".format(user=user)
+    return """(
+        `tabInternal Clearance`.owner = '{user}' 
+    )""".format(user=user)
             
 
         
