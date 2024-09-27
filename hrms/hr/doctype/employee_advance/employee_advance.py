@@ -436,6 +436,8 @@ class EmployeeAdvance(Document):
 			account_select = frappe.db.get_value("Company", self.company,"travel_advance_account")
 		elif self.advance_type == "Imprest Advance":
 			account_select = frappe.db.get_value("Company", self.company,"imprest_advance_account")
+		elif self.advance_type == "Other Advance":
+			account_select = frappe.db.get_value("Company", self.company,"imprest_advance_account")
 		else:
 			frappe.throw("Choose different advance type")
 		

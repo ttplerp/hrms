@@ -683,7 +683,11 @@ def get_permission_query_conditions(user):
 
 	if user == "Administrator":
 		return
-	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles:
+
+	if "Expense Claim List" in user_roles:
+		return 
+
+	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Master" in user_roles:
 		return
 
 	return """(
