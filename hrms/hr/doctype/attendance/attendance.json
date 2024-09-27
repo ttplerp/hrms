@@ -31,7 +31,8 @@
   "sb_reason",
   "reason_for_late_entry",
   "cb_reason",
-  "reason_for_early_exit"
+  "reason_for_early_exit",
+  "reference_name"
  ],
  "fields": [
   {
@@ -229,13 +230,19 @@
    "fieldtype": "Text",
    "label": "Reason for Early Exit",
    "read_only": 1
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Data",
+   "label": "Reference Name",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-10 13:07:10.469122",
+ "modified": "2024-09-27 14:27:00.992353",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",

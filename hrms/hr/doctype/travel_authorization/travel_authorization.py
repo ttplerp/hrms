@@ -159,7 +159,8 @@ class TravelAuthorization(Document):
 				attendance.submit()
 
 	def cancel_attendance(self):
-		frappe.db.sql("delete from tabAttendance where reference_name = %s", (self.name))
+		if frappe.db.exists("Attendance", {"reference_name":self}):
+			frappe.db.sql("delete from tabAttendance where reference_name = %s", (self.name))
 	
 	def assign_end_date(self):
 		if self.items:
