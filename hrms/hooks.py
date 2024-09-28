@@ -113,7 +113,8 @@ permission_query_conditions = {
 	"Internal Clearance":"hrms.hr.doctype.internal_clearance.internal_clearance.get_permission_query_conditions",
 	"Travel Authorization":"hrms.hr.doctype.travel_authorization.travel_authorization.get_permission_query_conditions",
     "Travel Claim":"hrms.hr.doctype.travel_claim.travel_claim.get_permission_query_conditions",
-
+	"Salary Structure": "hrms.payroll.doctype.salary_structure.salary_structure.get_permission_query_conditions",
+	"Salary Slip": "hrms.payroll.doctype.salary_slip.salary_slip.get_permission_query_conditions",
 }
 #
 # has_permission = {
