@@ -61,6 +61,8 @@ class InternalClearance(Document):
                     message="Dear Sir or Madam\nYour Internal Audit Clearance has been disapproved \n\n Thank you\nPlease Do not reply to the email",
                     
                 )
+        else:
+            frappe.throw("The Approvers Haven't finished approving")
                 
 
     def checkUsers(self):
