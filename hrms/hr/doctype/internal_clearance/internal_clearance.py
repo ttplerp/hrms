@@ -106,8 +106,8 @@ def get_permission_query_conditions(user):
     
     res=frappe.db.sql("Select division, department from `tabEmployee` where company_email='{}' limit 1".format(user), as_dict=True)
     
-    division = res[0].get('division')
-    department = res[0].get('department')
+    division = res[0].get('division') if len(res)>0 else ""
+    department = res[0].get('department') if len(res)>0 else ""
     
     if "GM" in user_roles and (division=="HR & Logistics Division - BDBL" or department=="Operations Department - BDBL'  LIMIT 1" or division=="Finance & Accounts Division - BDBL" or division=="Internal Audit  - BDBL"):
         return
