@@ -34,6 +34,8 @@ class InternalClearance(Document):
                     message='Dear Sir or Madam\nThere Internal Audit Clearance For Name: {uname} Designation: {designation} of Branch: {branch} for the purpose {purpose} has been approved by relevant approvers. Get the print and take to CEO for signature\n\n Thank you\nPlease Do not reply to the email'.format(uname=self.employee_name, designation=self.designation, purpose=self.purpose, branch=self.branch),
                     
                 )
+        elif not ictcr_ and not icthr_ and not afd_ and not iad_:
+            frappe.throw("The Approver's haven't finished approving")
             
     def isApproved(self):
         
@@ -61,8 +63,7 @@ class InternalClearance(Document):
                     message="Dear Sir or Madam\nYour Internal Audit Clearance has been disapproved \n\n Thank you\nPlease Do not reply to the email",
                     
                 )
-        else:
-            frappe.throw("The Approvers Haven't finished approving")
+            
                 
 
     def checkUsers(self):
