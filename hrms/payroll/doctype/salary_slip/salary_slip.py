@@ -14,6 +14,9 @@ from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employe
 from erpnext.utilities.transaction_base import TransactionBase
 from frappe.model.mapper import get_mapped_doc
 from erpnext import get_company_currency
+#added by tshering wangchuk
+from hrms.hr.hr_custom_functions import get_salary_tax
+import math
 
 class SalarySlip(TransactionBase):
 	def autoname(self):
@@ -43,6 +46,47 @@ class SalarySlip(TransactionBase):
 		company_currency = get_company_currency(self.company)
 		self.total_in_words = money_in_words(self.rounded_total, company_currency)
 		self.check_house_rent_deduction()
+		#Added by tshering wangchuk as salary tax is not calaculated for overtime
+		self.update_salary_tax()
+	
+ 
+	def update_salary_tax(self):
+		pf = flt(0)
+		comm_amt = flt(0)
+		tax_amt = flt(0)
+
+		# Find "PF" and "Communication Allowance" amounts
+		for earning in self.earnings:
+			if earning.salary_component == "PF":
+				pf = earning.amount
+			elif earning.salary_component == "Communication Allowance":
+				comm_amt = earning.amount
+
+		# Calculate tax amount for "Overtime Allowance"
+		for i in self.earnings:
+			if i.salary_component == "Overtime Allowance":
+				tax_amt = get_salary_tax(math.floor(flt(self.gross_pay) - flt(pf) - (flt(comm_amt) * 0.5)))
+
+		# If tax amount is greater than 0, append it to earnings as a negative value
+		
+		if tax_amt > 0:
+			self.append('deductions', {
+				"salary_component": "Salary Tax",
+				"amount": tax_amt  # Add as a negative amount to represent deduction
+			})
+
+
+				# frappe.throw(str(tax_amt))
+
+
+			
+	 
+		# total_earning = self.gross_pay
+  		# pf_amt = 
+		# gis_amt
+	 	# comm_allowance
+		# calc_amt = get_salary_tax(self.gross_pay)
+		# frappe.throw(str(calc_amt))
 
 	def validate_dates(self):
 		if date_diff(self.end_date, self.start_date) < 0:

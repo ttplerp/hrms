@@ -25,6 +25,7 @@
   "mr_employee_name",
   "section_break_ymwec",
   "advance_amount",
+  "narration",
   "column_break_jyiqf",
   "paid_amount",
   "adjusted_amount",
@@ -264,12 +265,18 @@
    "fieldtype": "Link",
    "label": "Team Lead",
    "options": "Team Lead"
+  },
+  {
+   "fieldname": "narration",
+   "fieldtype": "Small Text",
+   "label": "Narration",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-05 15:25:16.620151",
+ "modified": "2024-08-10 15:22:14.613732",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Advance",
