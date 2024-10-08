@@ -174,7 +174,11 @@
   "column_break_8shme",
   "remove_semso",
   "tb_travel",
-  "return_day_dsa"
+  "return_day_dsa",
+  "training_dsa",
+  "dsa_30_to_90",
+  "dsa_90_plus",
+  "dsa_within_same_locality"
  ],
  "fields": [
   {
@@ -1119,13 +1123,33 @@
    "fieldname": "return_day_dsa",
    "fieldtype": "Percent",
    "label": "Return Day DSA Percent"
+  },
+  {
+   "fieldname": "training_dsa",
+   "fieldtype": "Data",
+   "label": "Training DSA"
+  },
+  {
+   "fieldname": "dsa_30_to_90",
+   "fieldtype": "Data",
+   "label": "DSA (30 to 90) Percent"
+  },
+  {
+   "fieldname": "dsa_90_plus",
+   "fieldtype": "Data",
+   "label": "DSA (90 plus) Percent"
+  },
+  {
+   "fieldname": "dsa_within_same_locality",
+   "fieldtype": "Data",
+   "label": "DSA Within Same Locality Percent"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-09-11 11:34:31.131594",
+ "modified": "2024-10-04 14:02:03.713953",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

@@ -28,10 +28,18 @@
   "training_event",
   "training_event_child_ref",
   "place_type",
+  "countrys",
   "col_break_mode",
   "mode_of_travel",
   "business_activity",
   "travel_details",
+  "lodge",
+  "column_break_iirtw",
+  "food",
+  "column_break_t4v0o",
+  "incidental_expense",
+  "section_break_s22dq",
+  "within_the_dzongkhag",
   "items",
   "from_date",
   "to_date",
@@ -214,7 +222,8 @@
   },
   {
    "fieldname": "travel_details",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Sponsership"
   },
   {
    "allow_on_submit": 1,
@@ -454,11 +463,58 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Training Event Child Ref"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.place_type==\"In-Country\"",
+   "fieldname": "within_the_dzongkhag",
+   "fieldtype": "Check",
+   "label": "Within Same Locality",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "section_break_s22dq",
+   "fieldtype": "Section Break",
+   "label": "Travel Claim"
+  },
+  {
+   "default": "0",
+   "fieldname": "lodge",
+   "fieldtype": "Check",
+   "label": "Lodge"
+  },
+  {
+   "fieldname": "column_break_iirtw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "food",
+   "fieldtype": "Check",
+   "label": "Food"
+  },
+  {
+   "fieldname": "column_break_t4v0o",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "incidental_expense",
+   "fieldtype": "Check",
+   "label": "Incidental Expense"
+  },
+  {
+   "depends_on": "eval: doc.place_type==\"Out-Country\"",
+   "fieldname": "countrys",
+   "fieldtype": "Link",
+   "label": "Country",
+   "mandatory_depends_on": "eval: doc.place_type==\"Out-Country\"",
+   "options": "DSA Out Country"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-21 14:04:17.118535",
+ "modified": "2024-10-04 15:34:03.663311",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Authorization",

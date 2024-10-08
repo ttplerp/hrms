@@ -39,6 +39,7 @@
   "travel_detail_information",
   "travel_type",
   "place_type",
+  "country",
   "column_break_currency",
   "training_event",
   "training_event_child_ref",
@@ -53,6 +54,13 @@
   "end_date",
   "get_travel_authorization",
   "travel_details",
+  "lodge",
+  "column_break_chhck",
+  "food",
+  "column_break_btuht",
+  "incidental_expense",
+  "section_break_lhku4",
+  "within_same_locality",
   "items",
   "from_date",
   "to_date",
@@ -289,7 +297,8 @@
   },
   {
    "fieldname": "travel_details",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Sponsership"
   },
   {
    "allow_on_submit": 1,
@@ -437,7 +446,7 @@
    "fieldname": "mode_of_travel",
    "fieldtype": "Select",
    "label": "Mode of Travel",
-   "options": "\nOffice Car\nPersonal Car\nPublic Transport\nWith Others",
+   "options": "\nFlight\nOffice Car\nPersonal Car\nPublic Transport\nWith Others",
    "reqd": 1
   },
   {
@@ -556,11 +565,58 @@
    "fieldtype": "Data",
    "label": "Unit",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.place_type==\"Out-Country\"",
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "DSA Out Country"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:(doc.place_type==\"In-Country\" || (doc.place_type==\"Out-Country\" && doc.country.includes(\"India\"))) ",
+   "fieldname": "lodge",
+   "fieldtype": "Check",
+   "label": "Lodge"
+  },
+  {
+   "fieldname": "section_break_lhku4",
+   "fieldtype": "Section Break",
+   "label": "Claim Dates"
+  },
+  {
+   "fieldname": "column_break_chhck",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:(doc.place_type==\"In-Country\" || (doc.place_type==\"Out-Country\" && doc.country.includes(\"India\"))) ",
+   "fieldname": "food",
+   "fieldtype": "Check",
+   "label": "Food"
+  },
+  {
+   "fieldname": "column_break_btuht",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:(doc.place_type==\"In-Country\" || (doc.place_type==\"Out-Country\" && doc.country.includes(\"India\"))) ",
+   "fieldname": "incidental_expense",
+   "fieldtype": "Check",
+   "label": "Incidental Expense"
+  },
+  {
+   "default": "0",
+   "fieldname": "within_same_locality",
+   "fieldtype": "Check",
+   "label": "Within same locality"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-21 14:04:38.764132",
+ "modified": "2024-10-04 11:23:43.013301",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim",

@@ -10,10 +10,14 @@
  "field_order": [
   "posting_date",
   "document_no",
-  "employee",
   "office_order",
+  "column_break_erlwb",
+  "purpose",
+  "topic",
   "effect_date",
-  "sb_official",
+  "period",
+  "sb_emp_details",
+  "employee",
   "grade",
   "cid",
   "phone_number",
@@ -28,10 +32,6 @@
   "village",
   "gewog",
   "dzongkhag",
-  "sb_emp_details",
-  "purpose",
-  "topic",
-  "period",
   "sb_remarks",
   "afd",
   "afd_clearance",
@@ -46,8 +46,13 @@
   "iad",
   "iad_clearance",
   "iad_remarks",
+  "section_break_mmbjp",
+  "ceo",
+  "ceo_clearance",
+  "ceo_date",
+  "column_break_otlvd",
+  "ceo_remarks",
   "sb_reference",
-  "mail_sent",
   "reference_type",
   "reference_name",
   "workflow_state",
@@ -140,10 +145,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "sb_official",
-   "fieldtype": "Section Break"
-  },
-  {
    "fieldname": "purpose",
    "fieldtype": "Select",
    "label": "Purpose",
@@ -166,9 +167,8 @@
    "fieldname": "afd_clearance",
    "fieldtype": "Check",
    "label": "Clearance Acquired (Accounts & Finance Division)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.afd",
    "no_copy": 1,
-   "read_only_depends_on": "eval:frappe.session.user != doc.afd"
+   "read_only": 1
   },
   {
    "fieldname": "afd_remarks",
@@ -194,9 +194,8 @@
    "fieldname": "icthr_clearance",
    "fieldtype": "Check",
    "label": "Clearance Acquired (HR Division)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
    "no_copy": 1,
-   "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
+   "read_only": 1
   },
   {
    "fieldname": "icthr_remarks",
@@ -218,9 +217,8 @@
    "fieldname": "iad_clearance",
    "fieldtype": "Check",
    "label": "Clearance Acquired(Internal Audit Division)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
    "no_copy": 1,
-   "read_only_depends_on": "eval:frappe.session.user != doc.iad"
+   "read_only": 1
   },
   {
    "fieldname": "iad_remarks",
@@ -234,14 +232,6 @@
    "fieldname": "sb_reference",
    "fieldtype": "Section Break",
    "label": "Reference"
-  },
-  {
-   "default": "0",
-   "fieldname": "mail_sent",
-   "fieldtype": "Check",
-   "label": "Mail Sent",
-   "no_copy": 1,
-   "read_only": 1
   },
   {
    "fieldname": "reference_type",
@@ -263,26 +253,6 @@
    "hidden": 1,
    "label": "Workflow State",
    "options": "Workflow State",
-   "read_only": 1
-  },
-  {
-   "description": "  ",
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Employee Separation Clearance",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "description": "  ",
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Employee Separation Clearance",
-   "print_hide": 1,
    "read_only": 1
   },
   {
@@ -319,7 +289,7 @@
    "depends_on": "eval:doc.purpose==\"Training\"",
    "fieldname": "topic",
    "fieldtype": "Data",
-   "label": "Topic"
+   "label": "Training Topic"
   },
   {
    "depends_on": "eval:doc.purpose==\"Training\"",
@@ -339,9 +309,8 @@
    "fieldname": "ictcr_clearance",
    "fieldtype": "Check",
    "label": "Credit Acquired (Credit Division)",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.ictcr",
    "no_copy": 1,
-   "read_only_depends_on": "eval:frappe.session.user != doc.ictcr"
+   "read_only": 1
   },
   {
    "fieldname": "ictcr_remarks",
@@ -363,11 +332,62 @@
    "fieldname": "office_order",
    "fieldtype": "Data",
    "label": "Office Order No"
+  },
+  {
+   "fieldname": "section_break_mmbjp",
+   "fieldtype": "Section Break",
+   "label": "APPROVAL DETAIL"
+  },
+  {
+   "fieldname": "ceo",
+   "fieldtype": "Link",
+   "label": "CEO",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "ceo_clearance",
+   "fieldtype": "Check",
+   "label": "Clerance Acquired (CEO)",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "ceo_remarks",
+   "fieldtype": "Small Text",
+   "label": "Approval Remarks",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.ceo",
+   "read_only_depends_on": "eval:frappe.session.user != doc.ceo"
+  },
+  {
+   "fieldname": "ceo_date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "Approval Date"
+  },
+  {
+   "fieldname": "column_break_otlvd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_erlwb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Internal Clearance",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-25 16:52:32.951900",
+ "modified": "2024-10-07 16:21:38.244195",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Internal Clearance",

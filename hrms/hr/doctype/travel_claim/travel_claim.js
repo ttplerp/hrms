@@ -196,9 +196,29 @@ frappe.ui.form.on("Travel Claim Item", {
 		})
 		frm.set_value("total_claim_amount", total)
 	},
+	"date": function (frm, cdt, cdn) {
+		update_days(frm, cdt, cdn);
+	},
+	"till_date": function (frm, cdt, cdn) {
+		update_days(frm, cdt, cdn);
+	},
 })
 
+function update_days(frm, cdt, cdn){
+	frm.doc.items.forEach(function (d) {
+		if(d.halt==1){
+			const date1=new Date(d.date);
+			const date2=new Date(d.till_date);
+			let no_days=(date2-date1)/ (1000*60*60*24);
+			no_days+=1
+			console.log(no_days);
+			frappe.model.set_value(cdt, cdn, "no_days", String(no_days))
 
+
+		}
+	})
+	do_update(frm, cdt, cdn)
+}
 function get_travel_detail(form) {
 	if (form.doc.start_date && form.doc.end_date && form.doc.place_type && form.doc.travel_type) {
 		frappe.call({
@@ -269,7 +289,7 @@ function do_update(frm, cdt, cdn) {
 	if(frm.doc.place_type == "In-Country"){
 		amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) + (flt(item.mileage_rate) * flt(item.distance)) + flt(item.porter_pony_charges) + flt(item.fare_amount)) 
 		if (item.halt == 1) {
-			amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) * flt(item.no_days));
+			amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) * flt(item.no_days))+flt(item.porter_pony_charges);
 		}
 	}
 	else if(frm.doc.place_type == "Out-Country"){

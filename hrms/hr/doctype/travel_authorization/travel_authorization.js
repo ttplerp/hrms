@@ -181,7 +181,14 @@ frappe.ui.form.on('Travel Authorization', {
 		else {
 			update_advance_amount(frm)
 		}
+	},
+	"within_the_dzongkhag": function(frm){
+		if (frm.doc.within_the_dzongkhag==1){
+			frm.fields_dict['items'].grid.data[0].halt=1
+			
+		}
 	}
+	
 });
 
 frappe.ui.form.on("Travel Authorization Item", {
@@ -207,6 +214,7 @@ frappe.ui.form.on("Travel Authorization Item", {
 	// 	frm.refresh_field("items");
 	// 	frm.refresh_field("items");
 	// },
+	
 	form_render: function (frm, cdt, cdn) {
 		var item = locals[cdt][cdn];
 		// if(item.halt == 1){
@@ -218,11 +226,11 @@ frappe.ui.form.on("Travel Authorization Item", {
 		var halt = frappe.meta.get_docfield("Travel Authorization Item", "halt", cur_frm.doc.name);
 		var halt_at = frappe.meta.get_docfield("Travel Authorization Item", "halt_at", cur_frm.doc.name);
 		var return_same_day = frappe.meta.get_docfield("Travel Authorization Item", "return_same_day", cur_frm.doc.name);
-		// console.log(item);
+		
 		// console.log(halt_at);
 		// console.log(return_same_day);
 		
-		if (item.idx == 1) {
+		if (item.idx == 1 && frm.doc.within_the_dzongkhag!=1 ) {
 			
 			//Tandin Phuntsho: setting the field to read only. somehow the toggle_editable is not working
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[3].read_only=1
@@ -243,6 +251,7 @@ frappe.ui.form.on("Travel Authorization Item", {
 		}
 		frm.refresh_field("items");
 		frm.refresh_field("items");
+		
 	},
 	"date": function (frm, cdt, cdn) {
 		var item = locals[cdt][cdn];
@@ -250,8 +259,8 @@ frappe.ui.form.on("Travel Authorization Item", {
 			method: "check_double_dates",
 			doc: frm.doc,
 		})
-		console.log(item.idx - 1)
-		console.log(frm.doc.items[(item.idx)]);
+		// console.log(item.idx - 1)
+		// console.log(frm.doc.items[(item.idx)]);
 		// var halt = frappe.meta.get_docfield("Travel Authorization Item","halt", cur_frm.doc.name);
 		// var halt_at = frappe.meta.get_docfield("Travel Authorization Item","halt_at", cur_frm.doc.name);
 		// var return_same_day = frappe.meta.get_docfield("Travel Authorization Item","return_same_day", cur_frm.doc.name);
@@ -271,6 +280,7 @@ frappe.ui.form.on("Travel Authorization Item", {
 		// }
 		// frm.refresh_field("items");
 		// frm.refresh_field("items");
+
 		if (!item.halt) {
 			if (item.date != item.till_date || !item.till_date) {
 				frappe.model.set_value(cdt, cdn, "temp_till_date", item.till_date);
@@ -286,7 +296,9 @@ frappe.ui.form.on("Travel Authorization Item", {
 		if (item.till_date >= item.date) {
 			// frappe.throw("here"+String(1 + cint(frappe.datetime.get_day_diff(item.till_date, item.date))))
 			frappe.model.set_value(cdt, cdn, "no_days", 1 + cint(frappe.datetime.get_day_diff(item.till_date, item.date)))
+			console.log(item.no_days)
 		}
+
 		/*
 		if(item.till_date){
 			if (item.till_date >= item.date) {
@@ -310,6 +322,7 @@ frappe.ui.form.on("Travel Authorization Item", {
 	},
 
 	"till_date": function (frm, cdt, cdn) {
+		
 		var item = locals[cdt][cdn]
 		frappe.call({
 			method: "check_double_dates",
@@ -318,6 +331,7 @@ frappe.ui.form.on("Travel Authorization Item", {
 		if (item.till_date >= item.date) {
 			// frappe.throw("here"+String(1 + cint(frappe.datetime.get_day_diff(item.till_date, item.date))))
 			frappe.model.set_value(cdt, cdn, "no_days", 1 + cint(frappe.datetime.get_day_diff(item.till_date, item.date)))
+			console.log(item.no_days)
 		}
 		else {
 			if (item.till_date) {
@@ -349,7 +363,7 @@ frappe.ui.form.on("Travel Authorization Item", {
 			frappe.model.set_value(cdt, cdn, "from_place", "");
 			frappe.model.set_value(cdt, cdn, "to_place", "");
 			frappe.model.set_value(cdt, cdn, "halt_at", item.temp_halt_at);
-			frappe.model.set_value(cdt, cdn, "till_date", item.temp_till_date || item.date);
+			frappe.model.set_value(cdt, cdn, "till_date", item.temp_till_date || item.date);frappe.model.set_value(cdt, cdn, "no_days", 1 + cint(frappe.datetime.get_day_diff(item.till_date, item.date)))
 		}
 	},
 	items_remove: function(frm)
