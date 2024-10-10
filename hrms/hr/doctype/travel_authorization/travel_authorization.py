@@ -383,7 +383,7 @@ class TravelAuthorization(Document):
             if not train_dsa:
                 frappe.throw("Set Training DSA in HR Settings")
             
-            if self.travel_type == "Training" :
+            if self.travel_type == "Training" or  self.travel_type == "Meeting and Seminars":
             
                 if self.within_the_dzongkhag==1:
                     start_day=0
@@ -491,7 +491,7 @@ def make_travel_claim(source_name, target_doc=None):
         target.amount = target.dsa
         target.dsa_percent='100'
         
-        if source_parent.travel_type=="Training" :   
+        if source_parent.travel_type=="Training" or self.travel_type == "Meeting and Seminars" :   
             target.dsa = frappe.get_doc("HR Settings").training_dsa
             
         if source_parent.within_the_dzongkhag==1:
