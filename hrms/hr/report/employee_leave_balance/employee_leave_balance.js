@@ -7,15 +7,15 @@ frappe.query_reports["Employee Leave Balance"] = {
 			"fieldname": "from_date",
 			"label": __("From Date"),
 			"fieldtype": "Date",
-			"reqd": 1,
-			"default": frappe.defaults.get_default("year_start_date")
+			//"reqd": 1,
+			//"default": frappe.defaults.get_default("year_start_date")
 		},
 		{
 			"fieldname": "to_date",
 			"label": __("To Date"),
 			"fieldtype": "Date",
-			"reqd": 1,
-			"default": frappe.defaults.get_default("year_end_date")
+			//"reqd": 1,
+			//"default": frappe.defaults.get_default("year_end_date")
 		},
 		{
 			"fieldname": "employee",
@@ -73,8 +73,8 @@ frappe.query_reports["Employee Leave Balance"] = {
 			"label": __("Company"),
 			"fieldtype": "Link",
 			"options": "Company",
-			"reqd": 1,
-			"default": frappe.defaults.get_user_default("Company")
+			//"reqd": 1,
+			//"default": frappe.defaults.get_user_default("Company")
 		},
 		{
 			"fieldname": "employee_status",
@@ -91,20 +91,21 @@ frappe.query_reports["Employee Leave Balance"] = {
 		}
 	],
 
-	onload: () => {
-		frappe.call({
-			type: "GET",
-			method: "hrms.hr.utils.get_leave_period",
-			args: {
-				"from_date": frappe.defaults.get_default("year_start_date"),
-				"to_date": frappe.defaults.get_default("year_end_date"),
-				"company": frappe.defaults.get_user_default("Company")
-			},
-			freeze: true,
-			callback: (data) => {
-				frappe.query_report.set_filter_value("from_date", data.message[0].from_date);
-				frappe.query_report.set_filter_value("to_date", data.message[0].to_date);
-			}
-		});
-	}
+	// onload: () => {
+	// 	frappe.call({
+	// 		type: "GET",
+	// 		method: "hrms.hr.utils.get_leave_period",
+	// 		args: {
+	// 			"from_date": frappe.defaults.get_default("year_start_date"),
+	// 			"to_date": frappe.defaults.get_default("year_end_date"),
+	// 			"company": frappe.defaults.get_user_default("Company")
+	// 		},
+	// 		freeze: true,
+	// 		callback: (data) => {
+	// 			console.log(frappe)
+	// 			frappe.query_report.set_filter_value("from_date", data.message[0].from_date);
+	// 			frappe.query_report.set_filter_value("to_date", data.message[0].to_date);
+	// 		}
+	// 	});
+	// }
 }

@@ -21,9 +21,9 @@ Filters = frappe._dict
 def execute(filters: Optional[Filters] = None) -> Tuple:
 	if filters.to_date <= filters.from_date:
 		frappe.throw(_('"From Date" can not be greater than or equal to "To Date"'))
-
 	columns = get_columns()
 	data = get_data(filters)
+ 
 	charts = get_chart_data(data)
 	return columns, data, None, charts
 
