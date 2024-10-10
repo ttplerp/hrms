@@ -110,8 +110,9 @@ class EmployeeTransfer(Document):
 			d2 = datetime.strptime(str(self.transfer_date), '%Y-%m-%d')
 
 			datediff = relativedelta(d2,d1).years
-			if datediff < 4:
-    				frappe.throw("You are not eligble for transfer since you have not served in your current branch for at least 4 years")
+			# Not required
+			# if datediff < 4:
+    		# 		frappe.throw("You are not eligble for transfer since you have not served in your current branch for at least 4 years")
 
 @frappe.whitelist()
 def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False):
