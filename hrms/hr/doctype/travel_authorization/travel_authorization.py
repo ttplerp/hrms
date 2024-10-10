@@ -381,8 +381,6 @@ class TravelAuthorization(Document):
             
         if self.place_type == "In-Country":
             
-            
-            
             if self.travel_type == "Training" or  self.travel_type == "Meeting and Seminars":
             
                 if self.within_same_locality==1:
@@ -397,15 +395,41 @@ class TravelAuthorization(Document):
             else:
                 
                 train_dsa=dsa_rate
-                
-                
+            full_dsa = quarter_dsa = half_dsa = 0
+                            
+            for i in self.items:
+                from_date = i.date
+                to_date   = i.date if not i.till_date else i.till_date
+                no_days   = date_diff(to_date, from_date) + 1
+                # if i.quarantine:
+                # 	no_days = 0
+                total_days  += no_days
+                # frappe.msgprint("{0} {1}".format(from_date, total_days))
+
+            if flt(total_days)-flt(return_day)-flt(start_day) <= 30:
+                full_dsa = flt(total_days) - flt(return_day)- flt(start_day)
+                quarter_dsa = 0.0
+                half_dsa = 0.0
+
+            elif flt(total_days)-flt(return_day)-flt(start_day)>30  and flt(total_days)-flt(return_day)-flt(start_day) <= 90:
+                full_dsa = 30
+                quarter_dsa = flt(total_days) -30 - flt(return_day)- flt(start_day)
+                half_dsa = 0.0
+
+            elif flt(total_days)-flt(return_day)-flt(start_day) > 90:
+                full_dsa = 30
+                quarter_dsa = 60
+                half_dsa =  flt(total_days) - 90 - flt(return_day) - flt(start_day)
+            
+            self.estimated_amount =(flt(start_day) * flt(dsa_rate))+ (flt(full_dsa) * flt(train_dsa))  + flt(return_day) * (flt(return_dsa)/100)* flt(dsa_rate)  
+                    
         elif self.place_type == "Out-Country":
             
-            start_day = 0
-            return_day = 0
+            start_day = 1
+            return_day = 1
             
             if "India" in self.countrys:
-                
+                roles=frappe.get_roles(self.owner)
                 if "CEO" in roles:
                     train_dsa=flt(frappe.db.get_value("DSA Out Country", self.countrys, "ceo"))*percent
                 else:
@@ -416,34 +440,34 @@ class TravelAuthorization(Document):
                 train_dsa=flt(frappe.db.get_value("DSA Out Country", self.countrys, "dsa_rate"))*flt(get_exchange_rate(currency_from, "BTN", self.posting_date ))
 
 
-        full_dsa = quarter_dsa = half_dsa = 0
-                        
-        for i in self.items:
-            from_date = i.date
-            to_date   = i.date if not i.till_date else i.till_date
-            no_days   = date_diff(to_date, from_date) + 1
-            # if i.quarantine:
-            # 	no_days = 0
-            total_days  += no_days
-            # frappe.msgprint("{0} {1}".format(from_date, total_days))
+            full_dsa = quarter_dsa = half_dsa = 0
+                            
+            for i in self.items:
+                from_date = i.date
+                to_date   = i.date if not i.till_date else i.till_date
+                no_days   = date_diff(to_date, from_date) + 1
+                # if i.quarantine:
+                # 	no_days = 0
+                total_days  += no_days
+                # frappe.msgprint("{0} {1}".format(from_date, total_days))
+            
+            if flt(total_days)-flt(return_day)-flt(start_day) <= 30:
+                full_dsa = flt(total_days) - flt(return_day)- flt(start_day)
+                quarter_dsa = 0.0
+                half_dsa = 0.0
 
-        if flt(total_days)-flt(return_day)-flt(start_day) <= 30:
-            full_dsa = flt(total_days) - flt(return_day)- flt(start_day)
-            quarter_dsa = 0.0
-            half_dsa = 0.0
+            elif flt(total_days)-flt(return_day)-flt(start_day)>30  and flt(total_days)-flt(return_day)-flt(start_day) <= 90:
+                full_dsa = 30
+                quarter_dsa = flt(total_days) -30 - flt(return_day)- flt(start_day)
+                half_dsa = 0.0
 
-        elif flt(total_days)-flt(return_day)-flt(start_day)>30  and flt(total_days)-flt(return_day)-flt(start_day) <= 90:
-            full_dsa = 30
-            quarter_dsa = flt(total_days) -30 - flt(return_day)- flt(start_day)
-            half_dsa = 0.0
+            elif flt(total_days)-flt(return_day)-flt(start_day) > 90:
+                full_dsa = 30
+                quarter_dsa = 60
+                half_dsa =  flt(total_days) - 90 - flt(return_day) - flt(start_day)
+            
+            self.estimated_amount =(flt(start_day) * flt(train_dsa))+ (flt(full_dsa) * flt(train_dsa)) 
 
-        elif flt(total_days)-flt(return_day)-flt(start_day) > 90:
-            full_dsa = 30
-            quarter_dsa = 60
-            half_dsa =  flt(total_days) - 90 - flt(return_day) - flt(start_day)
-        
-        self.estimated_amount =(flt(start_day) * flt(dsa_rate))+ (flt(full_dsa) * flt(train_dsa))  + flt(return_day) * (flt(return_dsa)/100)* flt(dsa_rate) 
-    
                     
               
     @frappe.whitelist()
@@ -456,7 +480,7 @@ class TravelAuthorization(Document):
 @frappe.whitelist()
 def make_travel_claim(source_name, target_doc=None):
     
-    
+
     def update_date(obj, target, source_parent):
         target.posting_date = nowdate()
         target.supervisor = None
@@ -465,6 +489,7 @@ def make_travel_claim(source_name, target_doc=None):
 
     def transfer_currency(obj, target, source_parent):
         
+            
         if obj.halt:
             target.from_place = None
             target.to_place = None
@@ -491,7 +516,7 @@ def make_travel_claim(source_name, target_doc=None):
         target.amount = target.dsa
         target.dsa_percent='100'
         
-        if source_parent.travel_type=="Training" or source_parent.travel_type == "Meeting and Seminars" or source_parent.travel_type == "Workshop":   
+        if (source_parent.travel_type=="Training" or source_parent.travel_type == "Meeting and Seminars" or source_parent.travel_type == "Workshop") and source_parent.place_type=="In-Country":
             target.dsa = frappe.get_doc("HR Settings").training_dsa
             
         if source_parent.within_same_locality==1:
@@ -499,9 +524,11 @@ def make_travel_claim(source_name, target_doc=None):
                 
         if target.halt:
             
-            if source_parent.travel_type=="Training" or source_parent.travel_type == "Meeting and Seminars" or source_parent.travel_type == "Workshop":
+            if (source_parent.travel_type=="Training" or source_parent.travel_type == "Meeting and Seminars" or source_parent.travel_type == "Workshop") and source_parent.place_type=="In-Country":
                     
                 target.dsa = frappe.get_doc("HR Settings").training_dsa
+            
+            
                 
             target.amount = flt(target.dsa) * flt(target.no_days)
             
@@ -528,9 +555,7 @@ def make_travel_claim(source_name, target_doc=None):
             if source_parent.within_same_locality:
                 target.dsa = flt(frappe.get_doc("HR Settings").training_dsa)
                 target.amount = flt(target.dsa)
-            else:
-                target.dsa = flt(frappe.db.get_value("Employee Grade", source_parent.grade, "dsa"))
-                target.amount = flt(target.dsa)
+            
              
             
             
