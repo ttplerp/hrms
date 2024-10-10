@@ -36,11 +36,14 @@ class InternalClearance(Document):
             else:
                 self.workflow_state = "Waiting for Verification"
         
+        if action == "Approve":
+            self.verifyUpdate()
+        
         if action == "Reapply":
             em= frappe.db.sql("Select user_id from `tabEmployee` where name='{}'".format(self.employee), as_dict=True)
             if frappe.session.user != em[0].user_id:
                 frappe.throw("You cannot apply for another employee.")
-            self.verifyUpdate()
+            self.reApply()
             
     def reApply(self):
         self.iad_clearance = 0
@@ -164,8 +167,12 @@ class InternalClearance(Document):
             
 
     def setAprovers(self):
-        
-        subject_list=frappe.db.sql("select verifier_mail, verifier_type  from `tabInternal Audit Clearance Verifier List` where parent ='Audit Settings' and ( parentfield='verifier' or parentfield='approver' )", as_dict=True)
+        subject_list=frappe.db.sql("""select verifier_mail, verifier_type 
+                            from `tabInternal Audit Clearance Verifier List` 
+                            where parent ='Audit Settings' 
+                            and ( parentfield='verifier' or parentfield='approver' )
+                        """, as_dict=True)
+
         for subject in subject_list:
             if subject.verifier_type=="CEO":
                 self.ceo= subject.verifier_mail  
