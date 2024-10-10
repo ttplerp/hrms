@@ -245,13 +245,6 @@
    "label": "Get Travel Authorization From"
   },
   {
-   "fieldname": "place_type",
-   "fieldtype": "Select",
-   "label": "Place",
-   "options": "\nIn-Country\nOut-Country",
-   "reqd": 1
-  },
-  {
    "fieldname": "end_date",
    "fieldtype": "Date",
    "label": "Get Travel Authorization Till"
@@ -601,11 +594,17 @@
    "fieldname": "within_same_locality",
    "fieldtype": "Check",
    "label": "Within Same Locality"
+  },
+  {
+   "fieldname": "place_type",
+   "fieldtype": "Data",
+   "label": "Place",
+   "options": "In-Country\nOut-Country"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-10 10:44:20.353235",
+ "modified": "2024-10-10 17:22:57.058977",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim",

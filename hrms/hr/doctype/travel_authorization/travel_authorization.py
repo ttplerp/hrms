@@ -503,6 +503,7 @@ def make_travel_claim(source_name, target_doc=None):
         target.within_same_locality=source_parent.within_same_locality
         target.food=source_parent.food
         target.lodge=source_parent.lodge
+        target.place_type=source_parent.place_type
         target.incidental_expense=source_parent.incidental_expense 
         
         target.dsa = source_parent.dsa_per_day

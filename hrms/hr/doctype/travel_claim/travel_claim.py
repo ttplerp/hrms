@@ -452,7 +452,7 @@ class TravelClaim(Document):
                     ##### Ver 3.0.190213 Ends
                     # frappe.throw(str(i.days_allocated)+" "+str(i.dsa)+" "+str(i.dsa_percent))
                     
-                    if self.place_type == "In-Country" or ("India" in self.country):
+                    if self.place_type == "In-Country" or ("India" in i.country):
                         
                         if i.halt != 1:
                             
@@ -526,16 +526,16 @@ class TravelClaim(Document):
                         
                     elif self.place_type == "Out-Country":
                         
-                        if "India" in self.country:
+                        if "India" in i.country:
                             roles=frappe.get_roles(self.owner)
                         
                             if "CEO" in roles:
-                                ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", self.country, "ceo"))
+                                ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", i.country, "ceo"))
                             else:
-                                ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", self.country, "others"))
+                                ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", i.country, "others"))
                         else:
-                            ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", self.country, "dsa_rate"))
-                        currency_from=frappe.db.get_value("DSA Out Country", self.country, "currency")
+                            ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", i.country, "dsa_rate"))
+                        currency_from=frappe.db.get_value("DSA Out Country", i.country, "currency")
                         ex_country_dsa=ex_country_dsa*flt(get_exchange_rate(currency_from, company_currency, i.currency_exchange_date ))
                             
                         if i.halt != 1:
