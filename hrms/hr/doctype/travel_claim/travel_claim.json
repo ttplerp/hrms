@@ -39,7 +39,6 @@
   "travel_detail_information",
   "travel_type",
   "place_type",
-  "country",
   "column_break_currency",
   "training_event",
   "training_event_child_ref",
@@ -567,15 +566,7 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval: doc.place_type==\"Out-Country\"",
-   "fieldname": "country",
-   "fieldtype": "Link",
-   "label": "Country",
-   "options": "DSA Out Country"
-  },
-  {
    "default": "0",
-   "depends_on": "eval:(doc.place_type==\"In-Country\" || (doc.place_type==\"Out-Country\" && doc.country.includes(\"India\"))) ",
    "fieldname": "lodge",
    "fieldtype": "Check",
    "label": "Lodge"
@@ -591,7 +582,6 @@
   },
   {
    "default": "0",
-   "depends_on": "eval:(doc.place_type==\"In-Country\" || (doc.place_type==\"Out-Country\" && doc.country.includes(\"India\"))) ",
    "fieldname": "food",
    "fieldtype": "Check",
    "label": "Food"
@@ -602,7 +592,6 @@
   },
   {
    "default": "0",
-   "depends_on": "eval:(doc.place_type==\"In-Country\" || (doc.place_type==\"Out-Country\" && doc.country.includes(\"India\"))) ",
    "fieldname": "incidental_expense",
    "fieldtype": "Check",
    "label": "Incidental Expense"
@@ -611,12 +600,12 @@
    "default": "0",
    "fieldname": "within_same_locality",
    "fieldtype": "Check",
-   "label": "Within same locality"
+   "label": "Within Same Locality"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-04 11:23:43.013301",
+ "modified": "2024-10-10 10:44:20.353235",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim",
@@ -827,11 +816,9 @@
    "write": 1
   }
  ],
- 
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
  "title_field": "employee_name",
  "track_changes": 1
-
 }

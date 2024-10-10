@@ -385,7 +385,7 @@ class TravelAuthorization(Document):
             
             if self.travel_type == "Training" or  self.travel_type == "Meeting and Seminars":
             
-                if self.within_the_dzongkhag==1:
+                if self.within_same_locality==1:
                     start_day=0
                     return_day=0
                     within_same=frappe.get_doc("HR Settings").dsa_within_same_locality  
@@ -475,7 +475,7 @@ def make_travel_claim(source_name, target_doc=None):
             
         target.currency = source_parent.currency
         target.currency_exchange_date = source_parent.posting_date
-        target.within_the_dzongkhag=source_parent.within_the_dzongkhag
+        target.within_same_locality=source_parent.within_same_locality
         target.food=source_parent.food
         target.lodge=source_parent.lodge
         target.incidental_expense=source_parent.incidental_expense 
@@ -494,7 +494,7 @@ def make_travel_claim(source_name, target_doc=None):
         if source_parent.travel_type=="Training" or source_parent.travel_type == "Meeting and Seminars" or source_parent.travel_type == "Workshop":   
             target.dsa = frappe.get_doc("HR Settings").training_dsa
             
-        if source_parent.within_the_dzongkhag==1:
+        if source_parent.within_same_locality==1:
             target.dsa_percent= frappe.get_doc("HR Settings").dsa_within_same_locality
                 
         if target.halt:
@@ -525,7 +525,7 @@ def make_travel_claim(source_name, target_doc=None):
             else:
                 target.amount = flt(target.dsa)*30 + flt(target.dsa)*60*flt(after30/100) +flt(target.dsa) * (flt(target.no_days)-90) * (after90/100)
         else:
-            if source_parent.within_the_dzongkhag:
+            if source_parent.within_same_locality:
                 target.dsa = flt(frappe.get_doc("HR Settings").training_dsa)
                 target.amount = flt(target.dsa)
             else:
@@ -538,13 +538,13 @@ def make_travel_claim(source_name, target_doc=None):
         target.amount=target.actual_amount
         
     def adjust_last_date(source, target):
-        target.within_the_dzongkhag=source.within_the_dzongkhag
+        target.within_same_locality=source.within_same_locality
         dsa_percent = frappe.db.get_single_value("HR Settings", "return_day_dsa")
         
         #Tandin
         if source.place_type=="In-Country":
             
-            if source.within_the_dzongkhag:
+            if source.within_same_locality:
                 dsa_percent=100
                 
             percent = flt(dsa_percent) / 100.0

@@ -39,7 +39,7 @@
   "column_break_t4v0o",
   "incidental_expense",
   "section_break_s22dq",
-  "within_the_dzongkhag",
+  "within_same_locality",
   "items",
   "from_date",
   "to_date",
@@ -465,14 +465,6 @@
    "label": "Training Event Child Ref"
   },
   {
-   "default": "0",
-   "depends_on": "eval: doc.place_type==\"In-Country\"",
-   "fieldname": "within_the_dzongkhag",
-   "fieldtype": "Check",
-   "label": "Within Same Locality",
-   "no_copy": 1
-  },
-  {
    "fieldname": "section_break_s22dq",
    "fieldtype": "Section Break",
    "label": "Travel Claim"
@@ -510,11 +502,19 @@
    "label": "Country",
    "mandatory_depends_on": "eval: doc.place_type==\"Out-Country\"",
    "options": "DSA Out Country"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.place_type==\"In-Country\"",
+   "fieldname": "within_same_locality",
+   "fieldtype": "Check",
+   "label": "Within Same Locality",
+   "no_copy": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-10 10:11:02.028537",
+ "modified": "2024-10-10 10:49:03.269984",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Authorization",

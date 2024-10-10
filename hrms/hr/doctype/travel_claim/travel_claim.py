@@ -431,7 +431,7 @@ class TravelClaim(Document):
             exchange_rate       = 0
             company_currency    = "BTN"
             
-            if self.place_type!="In-Country" or self.within_the_dzongkhag==1:
+            if self.place_type!="In-Country" or self.within_same_locality==1:
                 lastday_dsa_percent=0
         
             
@@ -493,7 +493,7 @@ class TravelClaim(Document):
                             
                             if self.travel_type=="Training" or self.travel_type == "Meeting and Seminars" or self.travel_type == "Workshop":
                                 
-                                if self.within_the_dzongkhag==1:
+                                if self.within_same_locality==1:
                                     i.dsa_percent= str(within)
                                     
                                 
