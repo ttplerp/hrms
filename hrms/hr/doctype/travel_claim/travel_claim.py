@@ -491,7 +491,7 @@ class TravelClaim(Document):
                                 
                             
                             
-                            if self.travel_type=="Training" or self.travel_type == "Meeting and Seminars":
+                            if self.travel_type=="Training" or self.travel_type == "Meeting and Seminars" or self.travel_type == "Workshop":
                                 
                                 if self.within_the_dzongkhag==1:
                                     i.dsa_percent= str(within)

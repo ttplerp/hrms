@@ -491,7 +491,7 @@ def make_travel_claim(source_name, target_doc=None):
         target.amount = target.dsa
         target.dsa_percent='100'
         
-        if source_parent.travel_type=="Training" or self.travel_type == "Meeting and Seminars" :   
+        if source_parent.travel_type=="Training" or source_parent.travel_type == "Meeting and Seminars" or source_parent.travel_type == "Workshop":   
             target.dsa = frappe.get_doc("HR Settings").training_dsa
             
         if source_parent.within_the_dzongkhag==1:
@@ -499,7 +499,7 @@ def make_travel_claim(source_name, target_doc=None):
                 
         if target.halt:
             
-            if source_parent.travel_type=="Training" :
+            if source_parent.travel_type=="Training" or source_parent.travel_type == "Meeting and Seminars" or source_parent.travel_type == "Workshop":
                     
                 target.dsa = frappe.get_doc("HR Settings").training_dsa
                 

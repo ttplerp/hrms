@@ -190,7 +190,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Purpose",
-   "options": "\nTravel\nTraining\nMeeting and Seminars",
+   "options": "\nTravel\nTraining\nMeeting and Seminars\nWorkshop",
    "reqd": 1
   },
   {
@@ -514,7 +514,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-04 15:34:03.663311",
+ "modified": "2024-10-10 10:11:02.028537",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Authorization",
