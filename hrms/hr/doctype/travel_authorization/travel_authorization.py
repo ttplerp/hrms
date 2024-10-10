@@ -366,22 +366,22 @@ class TravelAuthorization(Document):
             
         after30=flt(after30)
         after90=flt(after90)
-            
+        train_dsa= flt(frappe.get_doc("HR Settings").training_dsa)*percent
+        dsa_rate  = frappe.db.get_value("Employee Grade", self.grade, "dsa")
+        return_dsa = frappe.get_doc("HR Settings").return_day_dsa
+
+        if not return_dsa:
+            frappe.throw("Set Return Day DSA Percent in HR Settings")
+        
+        if not dsa_rate:
+            frappe.throw("No DSA Rate set for Grade <b> {0} /<b> ".format(self.grade))
+
+        if not train_dsa:
+            frappe.throw("Set Training DSA in HR Settings") 
             
         if self.place_type == "In-Country":
             
-            train_dsa= flt(frappe.get_doc("HR Settings").training_dsa)*percent
-            dsa_rate  = frappe.db.get_value("Employee Grade", self.grade, "dsa")
-            return_dsa = frappe.get_doc("HR Settings").return_day_dsa
-
-            if not return_dsa:
-                frappe.throw("Set Return Day DSA Percent in HR Settings")
             
-            if not dsa_rate:
-                frappe.throw("No DSA Rate set for Grade <b> {0} /<b> ".format(self.grade))
-
-            if not train_dsa:
-                frappe.throw("Set Training DSA in HR Settings")
             
             if self.travel_type == "Training" or  self.travel_type == "Meeting and Seminars":
             
