@@ -4,6 +4,7 @@
 
 frappe.ui.form.on('Employee Transfer', {
 	onload:function(frm) {
+		
 		frm.set_query("new_department", function() {
 			return {
 				"filters": {
@@ -50,6 +51,7 @@ frappe.ui.form.on('Employee Transfer', {
 		});
 	},
 	refresh: function(frm) {
+		
 		enable_disable(frm);
 		if(cur_frm.doc.docstatus == 1 && cur_frm.doc.employee_benefits_status == "Not Claimed"){
 			frm.add_custom_button("Create Employee Benefits", function(){

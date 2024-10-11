@@ -180,9 +180,9 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:frappe.user.has_role(\"HR Manager\")",
    "fieldname": "rejection_reason",
    "fieldtype": "Small Text",
-   "hidden": 1,
    "label": "Reason for Rejection"
   },
   {
@@ -408,7 +408,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-18 12:28:48.947545",
+ "modified": "2024-10-11 12:02:00.660595",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer",
