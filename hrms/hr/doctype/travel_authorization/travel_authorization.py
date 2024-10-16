@@ -26,11 +26,44 @@ class TravelAuthorization(Document):
         self.set_travel_period()
         self.validate_travel_dates(update=True)
         self.check_maintenance_project()
-        if self.workflow_state != "Approved":
+        self.workflow_action()
+        if self.workflow_state != "Approved" and self.workflow_state != "Waiting for Verification":
             notify_workflow_states(self)
         if self.training_event:
             self.update_training_event()
-
+            
+    def workflow_action(self):
+        action = frappe.request.form.get('action') 
+        if action == "Forward to Verifier":
+            self.workflow_state="Waiting for Verification"
+            rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
+            self.notify_reviewers(rcvpnt)
+        elif action== "Reject":
+            if self.workflow_state == "Waiting for Verification":
+                if frappe.session.user!=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id"):
+                    frappe.throw(str("only {} can reject").format(frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")))
+            
+                
+    
+    def notify_reviewers(self, recipients):
+        parent_doc = frappe.get_doc(self.doctype, self.name)
+        args = parent_doc.as_dict()
+        
+        try:
+            email_template = frappe.get_doc("Email Template", 'Travel Authorization Status Notification')
+            message = frappe.render_template(email_template.response, args)
+            subject = email_template.subject
+        
+            frappe.sendmail(
+                recipients=recipients,
+                subject=_(subject),
+                message= _(message),
+                
+            )
+        except :
+            frappe.msgprint(_("Travel Authorization Status Notification is missing."))
+    
+        
     def on_update(self):
         self.set_dsa_rate()
         self.validate_travel_dates()
