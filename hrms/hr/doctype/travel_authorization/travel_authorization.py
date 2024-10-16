@@ -34,11 +34,11 @@ class TravelAuthorization(Document):
             
     def workflow_action(self):
         action = frappe.request.form.get('action') 
-        if action == "Forward to Verifier":
+        if action == "Apply" and self.travel_type!="Travel":
             self.workflow_state="Waiting for Verification"
             rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
             self.notify_reviewers(rcvpnt)
-        elif action== "Reject":
+        elif action== "Reject" and self.travel_type!="Travel":
             if self.workflow_state == "Waiting for Verification":
                 if frappe.session.user!=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id"):
                     frappe.throw(str("only {} can reject").format(frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")))

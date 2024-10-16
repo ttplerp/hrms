@@ -15,6 +15,7 @@ from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_ban
 
 class TravelClaim(Document):
     def validate(self):
+        self.workflow_action()
         validate_workflow_states(self)
         #self.check_return_date()
         self.validate_project()
@@ -46,7 +47,18 @@ class TravelClaim(Document):
                 if not item.reference_type or not item.reference_name:
                     frappe.throw("Project/Maintenance and Reference Name fields are Mandatory in Row {}".format(row),title="Cannot Save")
                 row += 1
-
+                
+    def workflow_action(self):
+        action = frappe.request.form.get('action') 
+        if action == "Apply" and self.travel_type!="Travel":
+            self.workflow_state="Waiting for Verification"
+            rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
+            self.notify_reviewers(rcvpnt)
+        elif action== "Reject" and self.travel_type!="Travel":
+            if self.workflow_state == "Waiting for Verification":
+                if frappe.session.user!=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id"):
+                    frappe.throw(str("only {} can reject").format(frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")))
+            
     def validate_duplicate(self):
         existing = []
         existing = frappe.db.sql("""
