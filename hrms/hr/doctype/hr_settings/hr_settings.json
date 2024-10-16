@@ -56,9 +56,11 @@
   "sb_approver",
   "hrgm",
   "hr_approver",
+  "hr_verifier",
   "cb_01",
   "hrgm_name",
   "hr_approver_name",
+  "hr_verifier_name",
   "separation_clearance_approver_section",
   "afd",
   "spd",
@@ -1143,13 +1145,25 @@
    "fieldname": "dsa_within_same_locality",
    "fieldtype": "Data",
    "label": "DSA Within Same Locality Percent"
+  },
+  {
+   "fieldname": "hr_verifier",
+   "fieldtype": "Link",
+   "label": "HR Verifier",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "hr_verifier.employee_name",
+   "fieldname": "hr_verifier_name",
+   "fieldtype": "Data",
+   "label": "HR Verifier Name"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-10-04 14:02:03.713953",
+ "modified": "2024-10-14 12:18:31.698310",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
