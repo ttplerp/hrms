@@ -29,7 +29,7 @@ frappe.ui.form.on('Officiating Employee', {
 	},
 	to_date: function(frm) {
 		if(frm.doc.from_date && frm.doc.to_date && frm.doc.to_date < frm.doc.from_date) {
-			cur_frm.set_vaue("to_date", "")
+			cur_frm.set_value("to_date", "")
 			cur_frm.refresh_field("to_date")
 			frappe.msgprint("To Date cannot be smaller than from date")
 		}
@@ -49,9 +49,14 @@ frappe.ui.form.on('Officiating Employee', {
 			method: "get_roles",
 			doc: frm.doc,
 			callback: function(r){
+				console.log(r.message)
 				frm.refresh_field("roles");
+				frm.set_value("officiate_name", r.message)
 			}
 		})
+		
+		frm.refresh_field("roles");
+		frm.refresh_field("officiate_name");
 	},
 	/*validate: function(frm) {
 		if(frm.doc.employee) {

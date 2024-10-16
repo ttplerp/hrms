@@ -58,6 +58,7 @@ class OfficiatingEmployee(Document):
 					row = self.append("roles",{})
 					a = {'role':a}
 					row.update(a)
+		return frappe.get_value("Employee", self.officiate, "employee_name")
 
 
 
