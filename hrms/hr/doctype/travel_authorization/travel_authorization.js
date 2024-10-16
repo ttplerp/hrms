@@ -118,9 +118,9 @@ frappe.ui.form.on('Travel Authorization', {
 	// 	}
 	// },
 	onload: function (frm) {
-		const tour_name = 'Travel  Authorization';
+		// const tour_name = 'Travel  Authorization';
 		
-        frm.tour.init({ tour_name }).then(() => frm.tour.start());
+        // frm.tour.init({ tour_name }).then(() => frm.tour.start());
 
 		if (!frm.doc.posting_date) {
 			frm.set_value("posting_date", frappe.datetime.get_today());
