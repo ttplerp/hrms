@@ -399,6 +399,7 @@ class TravelAuthorization(Document):
             
         after30=flt(after30)
         after90=flt(after90)
+        
         train_dsa= flt(frappe.get_doc("HR Settings").training_dsa)*percent
         dsa_rate  = frappe.db.get_value("Employee Grade", self.grade, "dsa")
         return_dsa = frappe.get_doc("HR Settings").return_day_dsa
@@ -599,6 +600,7 @@ def make_travel_claim(source_name, target_doc=None):
     def adjust_last_date(source, target):
         target.within_same_locality=source.within_same_locality
         dsa_percent = frappe.db.get_single_value("HR Settings", "return_day_dsa")
+        dsa_rate  = frappe.db.get_value("Employee Grade", self.grade, "dsa")
         
         #Tandin
         if source.place_type=="In-Country":
@@ -607,13 +609,12 @@ def make_travel_claim(source_name, target_doc=None):
                 dsa_percent=100
                 
             percent = flt(dsa_percent) / 100.0
-        else:
-            percent=0
+        
         
         if target.items[len(target.items) - 1].halt!=1:
             target.items[len(target.items) - 1].dsa_percent = dsa_percent
-            target.items[len(target.items) - 1].actual_amount = flt(target.items[len(target.items) - 1].actual_amount) * percent
-            target.items[len(target.items) - 1].amount = flt(target.items[len(target.items) - 1].amount) * percent
+            target.items[len(target.items) - 1].actual_amount = flt(dsa_rate) * percent
+            target.items[len(target.items) - 1].amount = flt(dsa_rate) * percent
             target.items[len(target.items) - 1].last_day = 1 
         
 

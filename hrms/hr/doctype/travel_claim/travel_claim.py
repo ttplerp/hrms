@@ -58,7 +58,24 @@ class TravelClaim(Document):
             if self.workflow_state == "Waiting for Verification":
                 if frappe.session.user!=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id"):
                     frappe.throw(str("only {} can reject").format(frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")))
-            
+    
+    def notify_reviewers(self, recipients):
+        parent_doc = frappe.get_doc(self.doctype, self.name)
+        args = parent_doc.as_dict()
+        
+        try:
+            email_template = frappe.get_doc("Email Template", 'Travel Authorization Status Notification')
+            message = frappe.render_template(email_template.response, args)
+            subject = email_template.subject
+        
+            frappe.sendmail(
+                recipients=recipients,
+                subject=_(subject),
+                message= _(message),
+                
+            )
+        except :
+            frappe.msgprint(_("Travel Authorization Status Notification is missing."))   
     def validate_duplicate(self):
         existing = []
         existing = frappe.db.sql("""
