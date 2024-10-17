@@ -454,138 +454,145 @@ class TravelClaim(Document):
                             i.days_allocated = 1 
     
     def update_amounts(self):
-            #dsa_per_day         = flt(frappe.db.get_value("Employee Grade", self.grade, "dsa"))
-            lastday_dsa_percent = frappe.db.get_single_value("HR Settings", "return_day_dsa")
-            total_claim_amount  = 0
-            exchange_rate       = 0
-            company_currency    = "BTN"
-            
-            if self.place_type!="In-Country" or self.within_same_locality==1:
-                lastday_dsa_percent=0
+        #dsa_per_day         = flt(frappe.db.get_value("Employee Grade", self.grade, "dsa"))
+        lastday_dsa_percent = frappe.db.get_single_value("HR Settings", "return_day_dsa")
+        total_claim_amount  = 0
+        exchange_rate       = 0
+        company_currency    = "BTN"
         
-            
-            for i in self.get("items"):
+        if self.place_type!="In-Country" or self.within_same_locality==1:
+            lastday_dsa_percent=0
+    
+        
+        for i in self.get("items"):
+                
+                i.days_allocated = i.no_days
+                exchange_rate      = 1 if i.currency == company_currency else get_exchange_rate(i.currency, company_currency, transaction_date=i.currency_exchange_date)
+                i.exchange_rate  = exchange_rate
+                visa_exchange_rate  = 1 if i.visa_fees_currency == company_currency else get_exchange_rate(i.visa_fees_currency, company_currency,transaction_date=i.currency_exchange_date)
+                passport_exchange_rate  = 1 if i.passport_fees_currency == company_currency else get_exchange_rate(i.passport_fees_currency, company_currency, transaction_date=i.currency_exchange_date)
+                incidental_exchange_rate  = 1 if i.incidental_fees_currency == company_currency else get_exchange_rate(i.incidental_fees_currency, company_currency, transaction_date=i.currency_exchange_date)
+                #i.dsa             = flt(dsa_per_day)
+                i.dsa              = flt(i.dsa)
+                ##### Ver 3.0.190213 Begins, Following line replaced by SHIV on 13/02/2019
+                i.dsa_percent      = 50 if i.last_day else i.dsa_percent
+                # i.dsa_percent      = (i.dsa_percent if cint(i.dsa_percent) <= cint(lastday_dsa_percent) else lastday_dsa_percent) if i.last_day else i.dsa_percent
+                i.dsa_percent = cint(i.dsa_percent)
+                ##### Ver 3.0.190213 Ends
+                # frappe.throw(str(i.days_allocated)+" "+str(i.dsa)+" "+str(i.dsa_percent))
+                
+                if self.place_type == "In-Country" or ("India" in i.country):
                     
-                    i.days_allocated = i.no_days
-                    exchange_rate      = 1 if i.currency == company_currency else get_exchange_rate(i.currency, company_currency, transaction_date=i.currency_exchange_date)
-                    i.exchange_rate  = exchange_rate
-                    visa_exchange_rate  = 1 if i.visa_fees_currency == company_currency else get_exchange_rate(i.visa_fees_currency, company_currency,transaction_date=i.currency_exchange_date)
-                    passport_exchange_rate  = 1 if i.passport_fees_currency == company_currency else get_exchange_rate(i.passport_fees_currency, company_currency, transaction_date=i.currency_exchange_date)
-                    incidental_exchange_rate  = 1 if i.incidental_fees_currency == company_currency else get_exchange_rate(i.incidental_fees_currency, company_currency, transaction_date=i.currency_exchange_date)
-                    #i.dsa             = flt(dsa_per_day)
-                    i.dsa              = flt(i.dsa)
-                    ##### Ver 3.0.190213 Begins, Following line replaced by SHIV on 13/02/2019
-                    i.dsa_percent      = lastday_dsa_percent if i.last_day else i.dsa_percent
-                    # i.dsa_percent      = (i.dsa_percent if cint(i.dsa_percent) <= cint(lastday_dsa_percent) else lastday_dsa_percent) if i.last_day else i.dsa_percent
-                    i.dsa_percent = cint(i.dsa_percent)
-                    ##### Ver 3.0.190213 Ends
-                    # frappe.throw(str(i.days_allocated)+" "+str(i.dsa)+" "+str(i.dsa_percent))
-                    
-                    if self.place_type == "In-Country" or ("India" in i.country):
+                    if i.halt != 1:
                         
-                        if i.halt != 1:
-                            
-                            i.amount = (flt(i.days_allocated)*(flt(i.dsa)*flt(i.dsa_percent)/100)) + (flt(i.mileage_rate) * flt(i.distance)) + flt(i.porter_pony_charges)
-                        else:
-                            
-                            percent='100'
-                            if self.food==1 and self.lodge==1 and self.incidental_expense==1:
-                                percent='20'
-                            elif self.food==1 and self.lodge==1:
-                                percent='30'
-                            elif self.lodge==1:
-                                percent='50'
-                            elif self.food==1:
-                                percent='75'
-                            i.dsa_percent=percent
-                            
-                            train_dsa=frappe.get_doc("HR Settings").training_dsa
-                            dsa_rate  = frappe.db.get_value("Employee Grade", self.grade, "dsa")
-                            return_dsa = frappe.get_doc("HR Settings").return_day_dsa
-                            after30=frappe.get_doc("HR Settings").dsa_30_to_90
-                            after90=frappe.get_doc("HR Settings").dsa_90_plus
-                            within=frappe.get_doc("HR Settings").dsa_within_same_locality
-                            
-                            if not return_dsa:
-                                frappe.throw("Set Return Day DSA Percent in HR Settings")
-                            
-                            if not dsa_rate:
-                                frappe.throw("No DSA Rate set for Grade <b> {0} /<b> ".format(self.grade))
+                        i.amount = (flt(i.days_allocated)*(flt(i.dsa)*flt(i.dsa_percent)/100)) + (flt(i.mileage_rate) * flt(i.distance)) + flt(i.porter_pony_charges)
+                    else:
+                        
+                        percent='100'
+                        if self.food==1 and self.lodge==1 and self.incidental_expense==1:
+                            percent='20'
+                        elif self.food==1 and self.lodge==1:
+                            percent='30'
+                        elif self.lodge==1:
+                            percent='50'
+                        elif self.food==1:
+                            percent='75'
+                        i.dsa_percent=percent
+                        
+                        train_dsa=frappe.get_doc("HR Settings").training_dsa
+                        dsa_rate  = frappe.db.get_value("Employee Grade", self.grade, "dsa")
+                        return_dsa = frappe.get_doc("HR Settings").return_day_dsa
+                        after30=frappe.get_doc("HR Settings").dsa_30_to_90
+                        after90=frappe.get_doc("HR Settings").dsa_90_plus
+                        within=frappe.get_doc("HR Settings").dsa_within_same_locality
+                        
+                        if not return_dsa:
+                            frappe.throw("Set Return Day DSA Percent in HR Settings")
+                        
+                        if not dsa_rate:
+                            frappe.throw("No DSA Rate set for Grade <b> {0} /<b> ".format(self.grade))
 
-                            if not train_dsa:
-                                frappe.throw("Set Training DSA in HR Settings")
-                                
-                            if not within:
-                                frappe.throw("Se DSA Within Same Locality Percent in HR Settings")
+                        if not train_dsa:
+                            frappe.throw("Set Training DSA in HR Settings")
+                            
+                        if not within:
+                            frappe.throw("Se DSA Within Same Locality Percent in HR Settings")
+                            
+                        
+                        
+                        if self.travel_type=="Training" or self.travel_type == "Meeting and Seminars" or self.travel_type == "Workshop":
+                            
+                            if self.within_same_locality==1:
+                                i.dsa_percent= str(within)
                                 
                             
+                            i.dsa=flt(train_dsa)
                             
-                            if self.travel_type=="Training" or self.travel_type == "Meeting and Seminars" or self.travel_type == "Workshop":
+                            if flt(i.days_allocated)<30:
                                 
-                                if self.within_same_locality==1:
-                                    i.dsa_percent= str(within)
-                                    
+                                i.amount = (flt(i.days_allocated)*(flt(train_dsa)))
                                 
-                                i.dsa=flt(train_dsa)
+                            elif flt(i.days_allocated)>30 and flt(i.days_allocated)<90:
+                                tot=0
+                                tot = (flt(30)*(flt(train_dsa)*flt(100)/100))
+                                tot+= (flt(flt(i.days_allocated)-30)*(flt(train_dsa)*flt(after30)/100))
+                                i.amount=tot
                                 
-                                if flt(i.days_allocated)<30:
-                                    
-                                    i.amount = (flt(i.days_allocated)*(flt(train_dsa)))
-                                    
-                                elif flt(i.days_allocated)>30 and flt(i.days_allocated)<90:
-                                    tot=0
-                                    tot = (flt(30)*(flt(train_dsa)*flt(100)/100))
-                                    tot+= (flt(flt(i.days_allocated)-30)*(flt(train_dsa)*flt(after30)/100))
-                                    i.amount=tot
-                                    
-                                else:
-                                    tot=0
-                                    tot = (flt(30)*(flt(train_dsa)*flt(100)/100))
-                                    tot += (flt(60)*(flt(train_dsa)*flt(after30)/100))
-                                    tot += ((flt(i.days_allocated)-90)*(flt(train_dsa)*flt(after90)/100))
-                                    
-                                    i.amount=tot
-                                
-                                i.amount= i.amount*(flt(i.dsa_percent)/100)
                             else:
-                                i.amount = (flt(i.days_allocated)*(flt(i.dsa)*flt(i.dsa_percent)/100))
+                                tot=0
+                                tot = (flt(30)*(flt(train_dsa)*flt(100)/100))
+                                tot += (flt(60)*(flt(train_dsa)*flt(after30)/100))
+                                tot += ((flt(i.days_allocated)-90)*(flt(train_dsa)*flt(after90)/100))
                                 
-                        
-                        i.amount = flt(i.amount) * flt(exchange_rate)
-                        
-                    elif self.place_type == "Out-Country":
-                        
-                        if "India" in i.country:
-                            roles=frappe.get_roles(self.owner)
-                        
-                            if "CEO" in roles:
-                                ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", i.country, "ceo"))
-                            else:
-                                ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", i.country, "others"))
+                                i.amount=tot
+                            
+                            i.amount= i.amount*(flt(i.dsa_percent)/100)
                         else:
-                            ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", i.country, "dsa_rate"))
-                        currency_from=frappe.db.get_value("DSA Out Country", i.country, "currency")
-                        ex_country_dsa=ex_country_dsa*flt(get_exchange_rate(currency_from, company_currency, i.currency_exchange_date ))
+                            i.amount = (flt(i.days_allocated)*(flt(i.dsa)*flt(i.dsa_percent)/100))
                             
-                        if i.halt != 1:
+                    
+                    i.amount = flt(i.amount) * flt(exchange_rate)
+                    
+                elif self.place_type == "Out-Country":
+                    
+                    dsa_rate  = frappe.db.get_value("Employee Grade", self.grade, "dsa")
+                    if "India" in i.country:
+                        roles=frappe.get_roles(self.owner)
+                    
+                        if "CEO" in roles:
+                            ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", i.country, "ceo"))
+                        else:
+                            ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", i.country, "others"))
+                    else:
+                        ex_country_dsa=flt(frappe.db.get_value("DSA Out Country", i.country, "dsa_rate"))
+                    currency_from=frappe.db.get_value("DSA Out Country", i.country, "currency")
+                    ex_country_dsa=ex_country_dsa*flt(get_exchange_rate(currency_from, company_currency, i.currency_exchange_date ))
+                    
+                    
+                    if i.halt != 1:
+                        if i.last_day:
+                            i.amount = (flt(i.days_allocated)*(flt(dsa_rate)*flt(50)/100))+ (flt(i.mileage_rate) * flt(i.distance))
+                            i.amount = flt(i.amount) * flt(exchange_rate)
+                            i.amount += flt(i.visa_fees) * flt(visa_exchange_rate) + flt(i.passport_fees) * flt(passport_exchange_rate) + flt(i.incidental_fees) * flt(incidental_exchange_rate)
+                        else:   
                             i.amount = (flt(i.days_allocated)*(flt(ex_country_dsa)*flt(i.dsa_percent)/100)) + (flt(i.mileage_rate) * flt(i.distance))
                             i.amount = flt(i.amount) * flt(exchange_rate)
                             i.amount += flt(i.visa_fees) * flt(visa_exchange_rate) + flt(i.passport_fees) * flt(passport_exchange_rate) + flt(i.incidental_fees) * flt(incidental_exchange_rate)
-                        else:
-                            i.amount = (flt(i.days_allocated)*(flt(ex_country_dsa)*flt(i.dsa_percent)/100))
-                            i.amount = flt(i.amount) * flt(exchange_rate)
-                            i.amount += flt(i.visa_fees) * flt(visa_exchange_rate) + flt(i.passport_fees) * flt(passport_exchange_rate) + flt(i.incidental_fees) * flt(incidental_exchange_rate)
-                    
-                        
-                    i.actual_amount  = flt(i.amount)
-                    total_claim_amount = flt(total_claim_amount) +  flt(i.actual_amount)
-
-            self.total_claim_amount = flt(total_claim_amount)
-            self.balance_amount     = flt(self.total_claim_amount) + flt(self.extra_claim_amount) - flt(self.advance_amount)
-
-            if flt(self.balance_amount) < 0:
-                    frappe.throw(_("Balance Amount cannot be a negative value."), title="Invalid Amount")
+                    else:
+                        i.amount = (flt(i.days_allocated)*(flt(ex_country_dsa)*flt(i.dsa_percent)/100))
+                        i.amount = flt(i.amount) * flt(exchange_rate)
+                        i.amount += flt(i.visa_fees) * flt(visa_exchange_rate) + flt(i.passport_fees) * flt(passport_exchange_rate) + flt(i.incidental_fees) * flt(incidental_exchange_rate)
                 
+                    
+                i.actual_amount  = flt(i.amount)
+                total_claim_amount = flt(total_claim_amount) +  flt(i.actual_amount)
+
+        self.total_claim_amount = flt(total_claim_amount)
+        self.balance_amount     = flt(self.total_claim_amount) + flt(self.extra_claim_amount) - flt(self.advance_amount)
+
+        if flt(self.balance_amount) < 0:
+                frappe.throw(_("Balance Amount cannot be a negative value."), title="Invalid Amount")
+            
     def check_return_date(self):
                 pass
                 """
