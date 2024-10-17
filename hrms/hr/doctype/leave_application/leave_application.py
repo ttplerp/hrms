@@ -774,11 +774,10 @@ def get_number_of_leave_days(
                     final-=0.5   
                 else:
                     final-=1
-                    print(f"Sunday date {cur_date} holiday {holiday.holiday_date}" )
-                    
-                
-                
+                    print(f"Sunday date {cur_date} holiday {holiday.holiday_date}" ) 
         cur_date=add_to_date(getdate(cur_date), days=1, as_string=True)
+    if half_day:
+        final-=0.5
     
     # if not frappe.db.get_value("Leave Type", leave_type, "include_holiday"):
     # 	number_of_days = flt(number_of_days) - flt(
