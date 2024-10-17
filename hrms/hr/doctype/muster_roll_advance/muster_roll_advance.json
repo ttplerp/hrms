@@ -8,9 +8,9 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "company",
   "muster_roll_group",
   "team_lead",
-  "company",
   "branch",
   "column_break_wffst",
   "posting_date",
@@ -25,7 +25,6 @@
   "mr_employee_name",
   "section_break_ymwec",
   "advance_amount",
-  "narration",
   "column_break_jyiqf",
   "paid_amount",
   "adjusted_amount",
@@ -40,6 +39,7 @@
   "column_break_uim4z",
   "approver_designation",
   "additional_information_section",
+  "narration",
   "journal_entry",
   "journal_entry_html",
   "journal_entry_status",
@@ -269,14 +269,13 @@
   {
    "fieldname": "narration",
    "fieldtype": "Small Text",
-   "label": "Narration",
-   "reqd": 1
+   "label": "Narration"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-10 15:22:14.613732",
+ "modified": "2024-10-17 10:41:25.432243",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Advance",
