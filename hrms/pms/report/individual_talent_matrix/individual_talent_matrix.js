@@ -27,11 +27,23 @@ frappe.query_reports["Individual Talent Matrix"] = {
 			"default": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth()],
 		},
 		{
+			"fieldname":"employee_group",
+			"fieldtype":"Link",
+			"label": __("Employee Group"),
+			"options": "Employee Group",
+		},
+		{
 			"fieldname": "pot_per",
 			"label": __("Select"),
 			"fieldtype": "Select",
 			"options": "\nFuture Senior Leader\nGrowth Employee\nHigh-Impact Performer\nTrusted Professional\nUnrealized Performer\nCore Employee\nEffective Employee\nInconsistent Performer\nLow Performer",
 			"default": "Core Employee"
+		},
+		{
+			"fieldname":"is_active",
+			"fieldtype":"Check",
+			"label": __("Is Active"),
+			"default": 1,
 		},
 		{
 			"fieldname":"exclude_muster_roll",
