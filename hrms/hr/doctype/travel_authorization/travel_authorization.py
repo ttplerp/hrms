@@ -600,7 +600,7 @@ def make_travel_claim(source_name, target_doc=None):
     def adjust_last_date(source, target):
         target.within_same_locality=source.within_same_locality
         dsa_percent = frappe.db.get_single_value("HR Settings", "return_day_dsa")
-        dsa_rate  = frappe.db.get_value("Employee Grade", self.grade, "dsa")
+        dsa_rate  = frappe.db.get_value("Employee Grade", source.grade, "dsa")
         
         #Tandin
         if source.place_type=="In-Country":
