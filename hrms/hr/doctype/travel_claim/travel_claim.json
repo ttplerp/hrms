@@ -121,6 +121,7 @@
    "fieldtype": "Check",
    "hidden": 1,
    "label": "Approved By Supervisor",
+   "no_copy": 1,
    "permlevel": 1
   },
   {
@@ -138,6 +139,7 @@
    "fieldtype": "Check",
    "hidden": 1,
    "label": "Approved By Travel Administrator",
+   "no_copy": 1,
    "permlevel": 2
   },
   {
@@ -465,6 +467,7 @@
   {
    "fieldname": "reference_type",
    "fieldtype": "Select",
+   "hidden": 1,
    "ignore_user_permissions": 1,
    "label": "Maintenance/Project/Task",
    "options": "\nProject\nTask\nMaintenance Order",
@@ -497,6 +500,7 @@
    "default": "0",
    "fieldname": "for_maintenance_project",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "For Maintenance/Project"
   },
   {
@@ -604,7 +608,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-10 17:22:57.058977",
+ "modified": "2024-10-21 12:22:04.529044",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim",
