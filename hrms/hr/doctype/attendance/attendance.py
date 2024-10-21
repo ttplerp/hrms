@@ -387,3 +387,17 @@ def get_unmarked_days(employee, month, exclude_holidays=0):
 			unmarked_days.append(date)
 
 	return unmarked_days
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+
+	if "HR User" in user_roles or "HR Manager" in user_roles:
+		return
+	else:
+		return """(
+			exists(select 1
+				from `tabEmployee` as e
+				where e.name = `tabAttendance`.employee
+				and e.user_id = '{user}')
+		)""".format(user=user)

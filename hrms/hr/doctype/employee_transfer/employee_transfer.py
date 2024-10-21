@@ -92,7 +92,7 @@ class EmployeeTransfer(Document):
 										parent = '{0}'
 										and reference_doctype = 'Employee Transfer'
 									order by idx desc limit 1
-            					""".format(self.employee),as_dict=True)
+								""".format(self.employee),as_dict=True)
 
 			if latest_work_history_date:
 				date1 = latest_work_history_date[0].from_date
@@ -103,7 +103,7 @@ class EmployeeTransfer(Document):
 								from 
 									`tabEmployee` 
 								where name = '{0}'
-            				""".format(self.employee),as_dict=True)	
+							""".format(self.employee),as_dict=True)	
 				date1 = date_of_joining[0].date_of_joining
 				# d1 = datetime.datetime.strptime(str(datetime.datetime.today().strftime('%Y-%m-%d')),'%Y-%m-%d')
 			d1 = datetime.strptime(str(date1),'%Y-%m-%d')
@@ -112,7 +112,7 @@ class EmployeeTransfer(Document):
 			datediff = relativedelta(d2,d1).years
 			# Not required
 			# if datediff < 4:
-    		# 		frappe.throw("You are not eligble for transfer since you have not served in your current branch for at least 4 years")
+			# 		frappe.throw("You are not eligble for transfer since you have not served in your current branch for at least 4 years")
 
 @frappe.whitelist()
 def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False):
@@ -129,3 +129,25 @@ def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False)
 	return target_doc
 
 	
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+	branch=frappe.db.sql("select branch from `tabEmployee` where user_id='{user}'".format(user=user))
+
+	if user == "Administrator":
+		return
+
+	if "HR User" in user_roles or "HR Manager" in user_roles:
+		return
+	
+	return """(
+		`tabEmployee Transfer`.owner = '{user}'
+		or
+		exists(select 1
+				from `tabEmployee`
+				where `tabEmployee`.name = `tabEmployee Transfer`.employee
+				and `tabEmployee`.user_id = '{user}')
+		or
+		(`tabEmployee Transfer`.supervisor = '{user}' and `tabEmployee Transfer`.workflow_state not in ('Draft','Claimed','Approved','Rejected','Rejected By Supervisor','Waiting HR','Cancelled'))
+	)""".format(user=user)
+

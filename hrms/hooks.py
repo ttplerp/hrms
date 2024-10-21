@@ -115,6 +115,10 @@ permission_query_conditions = {
     "Travel Claim":"hrms.hr.doctype.travel_claim.travel_claim.get_permission_query_conditions",
 	"Salary Structure": "hrms.payroll.doctype.salary_structure.salary_structure.get_permission_query_conditions",
 	"Salary Slip": "hrms.payroll.doctype.salary_slip.salary_slip.get_permission_query_conditions",
+	"Employee Transfer": "hrms.hr.doctype.employee_transfer.employee_transfer.get_permission_query_conditions",
+	"Employee Checkin": "hrms.hr.doctype.employee_checkin.employee_checkin.get_permission_query_conditions",
+	"Attendance": "hrms.hr.doctype.attendance.attendance.get_permission_query_conditions",
+	"Exit Interview": "hrms.hr.doctype.exit_interview.exit_interview.get_permission_query_conditions"
 }
 #
 # has_permission = {
