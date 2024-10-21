@@ -907,11 +907,11 @@ def get_permission_query_conditions(user):
     if not user: user = frappe.session.user
     user_roles = frappe.get_roles(user)
     permitted_regions = []
-    
+
     if user == "Administrator":
         return
 
-    if "HR Master" in user_roles or "HR Manager" in user_roles:
+    if "HR Master" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Master" in user_roles:
         return
     
     if "Travel Administrator" in user_roles:
