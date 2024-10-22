@@ -93,8 +93,8 @@ class EmployeeAdvance(Document):
 			working_days =date_diff(self.posting_date,joining_date)
 			if employment_type == "Probation":
 				frappe.throw("Employee who is in Probation Period is not eligible for Salary Advance.")
-			if working_days < 360 :
-				frappe.throw("Employee who did not serve 1 year is not eligible for Salary Advance")
+			# if working_days < 360 :
+			# 	frappe.throw("Employee who did not serve 1 year is not eligible for Salary Advance")
 			
 			from_date = frappe.defaults.get_user_default("year_start_date")
 			advance_status = frappe.db.sql("""
