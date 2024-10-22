@@ -608,7 +608,7 @@ def make_travel_claim(source_name, target_doc=None):
             if source.within_same_locality:
                 dsa_percent=100
                 
-            percent = flt(dsa_percent) / 100.0
+        percent = flt(dsa_percent) / 100.0
         
         
         if target.items[len(target.items) - 1].halt!=1:
@@ -666,6 +666,7 @@ def get_permission_query_conditions(user):
 
     if user == "Administrator":
         return
+        
     if "HR User" in user_roles or "HR Manager" in user_roles:
         return
 
