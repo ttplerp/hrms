@@ -1,8 +1,6 @@
-# Copyright (c) 2024, Frappe Technologies Pvt. Ltd. and contributors
-# For license information, please see license.txt
-
 import frappe
 from frappe import _
+from frappe.utils import getdate, flt
 
 def execute(filters=None):
     if not filters:
@@ -12,19 +10,37 @@ def execute(filters=None):
     columns = get_columns()
     return columns, data
 
+def get_opening_balance(filters):
+    gle = frappe.db.sql("""
+                        SELECT SUM(gl.debit) AS opening_balance
+                        FROM `tabGL Entry` gl
+                        JOIN `tabJournal Entry` je ON gl.voucher_no = je.name
+                        JOIN `tabJournal Entry Account` jea ON je.name = jea.parent
+                        WHERE gl.docstatus = 1 
+                        AND gl.is_cancelled = 0
+                        AND gl.voucher_type = 'Journal Entry'
+                        AND jea.reference_type = 'Employee Advance'
+                        AND gl.posting_date < %s
+                        AND gl.party = %s
+                        """, (filters.get("from_date"), filters.get("employee")), as_dict=True)
+    
+    return gle[0].get('opening_balance') if gle else 0
+
+
 def get_conditions(filters):
-    cond = ''
+    cond = []
     if filters.get('from_date') and filters.get('to_date'):
-        cond += " AND gl.posting_date BETWEEN '{}' AND '{}'".format(filters['from_date'], filters['to_date'])
+        cond.append("gl.posting_date BETWEEN %s AND %s")
     if filters.get('cost_center'):
-        cond += " AND gl.cost_center = '{}'".format(filters['cost_center'])
+        cond.append("gl.cost_center = %s")
     if filters.get('employee'):
-        cond += " AND gl.party = '{}'".format(filters['employee'])
-    return cond
+        cond.append("gl.party = %s")
+    return ' AND '.join(cond)
 
 def get_gl_entries(filters):
+    d1 = []
     cond = get_conditions(filters)
-    query = """
+    base_query = """
         SELECT 
             gl.voucher_type AS transaction_type, 
             gl.voucher_no AS transaction_id,
@@ -34,81 +50,108 @@ def get_gl_entries(filters):
             gl.debit,
             gl.credit,
             gl.account,
-            gl.against,
-            gl.cost_center,
-            (SELECT SUM(gl2.debit - gl2.credit) FROM `tabGL Entry` gl2 
-             WHERE gl2.party = gl.party AND gl2.posting_date < gl.posting_date) AS opening_balance
+            gl.cost_center
         FROM `tabGL Entry` AS gl 
-        WHERE gl.is_cancelled = 0 AND gl.party_type = 'Employee' {}
+        WHERE gl.is_cancelled = 0 AND gl.party_type = 'Employee'
+        {} 
+        AND gl.voucher_type IN ('Journal Entry', 'Employee Advance Settlement')
         ORDER BY gl.party, gl.posting_date ASC
-    """.format(cond)
-    return frappe.db.sql(query, as_dict=True)
+    """.format(f' AND {cond}' if cond else '')
 
-def add_subtotal_row(data, group_entries, group_by_field, group_by_value, opening_balance, closing_balance):
-    total_debit = sum(d['debit'] for d in group_entries if d['party'])
-    total_credit = sum(d['credit'] for d in group_entries if d['party'])
-    
-    # Add subtotal row if there are valid group_entries
-    if group_entries:
-        data.append({
-            group_by_field: group_by_value,
-            "transaction_type": "",
-            "transaction_id": "",
-            "party_type": "",
-            "posting_date": "",
-            "opening_balance": opening_balance,
-            "debit": total_debit,
-            "credit": total_credit,
-            "closing_balance": closing_balance,
-            "account": "",
-            "cost_center": "",
-            "reference_type": "",
-            "reference_name": "",
-            "is_subtotal": 1,
-            "bold": 1,
-        })
+    params = []
+    if filters.get('from_date') and filters.get('to_date'):
+        params.extend([filters['from_date'], filters['to_date']])
+    if filters.get('cost_center'):
+        params.append(filters['cost_center'])
+    if filters.get('employee'):
+        params.append(filters['employee'])
 
-        # Add empty row after subtotal
-        # data.append({
-        #     "is_subtotal": 0,  # Flag for empty row
-        #     "bold": 0,
-        # })
+    query = frappe.db.sql(base_query, params, as_dict=True)
 
-def calculate_balances(gl_entries):
-    current_party = None
-    opening_balance = 0
-    party_entries = []
-    result = []
-    
-    for entry in gl_entries:
-        if entry['party']:  # Only process if party is not None or empty
-            if current_party != entry['party']:
-                if current_party is not None:
-                    # Calculate closing balance for the last set of entries
-                    closing_balance = opening_balance + sum((d['debit'] or 0) - (d['credit'] or 0) for d in party_entries if d['party'])
-                    add_subtotal_row(result, party_entries, 'party', current_party, opening_balance, closing_balance)
-                    party_entries = []
-                current_party = entry['party']
-                opening_balance = entry['opening_balance'] or 0  # Initialize to 0 if None
-            
-            entry['opening_balance'] = opening_balance
-            entry['closing_balance'] = opening_balance + (entry['debit'] or 0) - (entry['credit'] or 0)
-            opening_balance = entry['closing_balance']
-            
-            party_entries.append(entry)
-            result.append(entry)
-    
-    if current_party is not None:
-        # Calculate closing balance for the last set of entries
-        closing_balance = opening_balance + sum((d['debit'] or 0) - (d['credit'] or 0) for d in party_entries if d['party'])
-        add_subtotal_row(result, party_entries, 'party', current_party, opening_balance, closing_balance)
-    
-    return result
+    opening_balance = get_opening_balance(filters)
+
+    flag = 0
+    temp = 0.0
+    for q in query:
+        if flag == 0:
+            q['opening_balance'] = flt(opening_balance)
+            temp = q['debit']
+            d1.append(q)
+            flag = 1
+        else:
+            q['opening_balance'] = flt(opening_balance) + temp
+            d1.append(q)
+            flag = 1
+            temp += q['debit']
+        
+    return d1
 
 def get_data(filters):
     gl_entries = get_gl_entries(filters)
-    data = calculate_balances(gl_entries)
+    new_gle = set_expense_account(gl_entries)
+    mapped_data = get_mapped_data(new_gle)
+    data = get_closing_balance(mapped_data)
     return data
+
+def get_closing_balance(mapped_data):
+    data = []
+    closing_balance = 0.0
+    for m in mapped_data:
+        m['closing_balance'] = m['opening_balance'] + m['debit'] -  m['credit']
+        data.append(m)
+    return data
+
+
+def get_mapped_data(gl_entries):
+    filtered_entries = []
+    for entry in gl_entries:
+        if entry['transaction_type'] == 'Journal Entry':
+            query = """
+                    SELECT je.name, jea.reference_name, jea.reference_type
+                    FROM `tabJournal Entry` je
+                    JOIN `tabJournal Entry Account` jea ON je.name = jea.parent
+                    WHERE je.name = %s AND jea.reference_type in ('POL Receive','Employee Advance')
+                    AND (jea.reference_name IN (SELECT ea.name FROM `tabEmployee Advance` ea WHERE ea.docstatus = 1 AND ea.advance_type='Imprest Advance') 
+                         OR jea.reference_name IN (SELECT pr.name FROM `tabPOL Receive` pr WHERE pr.settle_imprest_advance=1))
+                    AND je.docstatus = 1
+                    """
+            data = frappe.db.sql(query, entry['transaction_id'], as_dict=True)
+            if data:
+                entry['reference_name'] = data[0]['reference_name']
+                entry['reference_type'] = data[0]['reference_type']
+            else:
+                continue
+
+        elif entry['transaction_type'] == 'Employee Advance Settlement':
+            query = """
+                    SELECT eas.name, eas.bill_no, eas.narration, i.party
+                    FROM `tabEmployee Advance Settlement` eas, `tabEmployee Advance Settlement Item` i
+                    WHERE i.parent = eas.name and eas.name = %s AND eas.docstatus = 1 AND eas.advance_type = 'Project Imprest'
+                    """
+            data = frappe.db.sql(query, entry['transaction_id'], as_dict=True)
+            if data:
+                entry['reference_name'] = data[0]['name']
+                entry['bill_no'] = data[0]['bill_no']
+                entry['narration'] = data[0]['narration']
+                entry['supplier'] = data[0]['party']
+                entry['reference_type'] = 'Employee Advance Settlement'
+            else:
+                continue
+        
+        filtered_entries.append(entry)
+
+    return filtered_entries
+
+def set_expense_account(gl_entries):
+    data1 = []
+    for gle in gl_entries:
+        if gle.debit:
+            gle['expense_account'] = frappe.db.get_value("GL Entry", {'voucher_no': gle.transaction_id, 'credit': ('>', 0)}, 'account')
+        else:
+           gle['expense_account'] = frappe.db.get_value("GL Entry", {'voucher_no': gle.transaction_id, 'debit': ('>', 0)}, 'account')
+        data1.append(gle)
+
+    return data1
 
 def get_columns():
     return [    
@@ -116,12 +159,14 @@ def get_columns():
             "label": _("Transaction Type"),
             "fieldtype": "Data",
             "fieldname": "transaction_type",
-            "width": 150,
+            "width": 250,
         },
         {
             "label": _("Transaction ID"),
             "fieldtype": "Data",
             "fieldname": "transaction_id",
+            "fieldtype": "Dynamic Link",
+            "options": "transaction_type",
             "width": 150,
         },
         {
@@ -132,8 +177,9 @@ def get_columns():
         },
         {
             "label": _("Party"),
-            "fieldtype": "Data",
+            "fieldtype": "Dynamic Link",
             "fieldname": "party",
+            "options": "party_type",
             "width": 120,
         },
         {
@@ -149,16 +195,16 @@ def get_columns():
             "width": 150,
         },
         {
-            "label": _("Debit"),
+            "label": _("Imprest Amount"),
             "fieldtype": "Currency",
             "fieldname": "debit",
-            "width": 120,
+            "width": 140,
         },
         {
-            "label": _("Credit"),
+            "label": _("Expense Amount"),
             "fieldtype": "Currency",
             "fieldname": "credit",
-            "width": 120,
+            "width": 140,
         },
         {
             "label": _("Closing Balance"),
@@ -166,19 +212,32 @@ def get_columns():
             "fieldname": "closing_balance",
             "width": 150,
         },
+        # {
+        #     "label": _("Account"),
+        #     "fieldtype": "Link",
+        #     "fieldname": "account",
+        #     "options": "Account",
+        #     "width": 230,
+        # },
         {
-            "label": _("Account"),
+            "label": _("Expense Account"),
             "fieldtype": "Link",
-            "fieldname": "account",
+            "fieldname": "expense_account",
             "options": "Account",
             "width": 230,
         },
         {
-            "label": _("Against Account"),
+            "label": _("Bill No"),
+            "fieldtype": "Data",
+            "fieldname": "bill_no",
+            "width": 80,
+        },
+        {
+            "label": _("Supplier"),
             "fieldtype": "Link",
-            "fieldname": "against",
-            "options": "Account",
-            "width": 230,
+            "fieldname": "supplier",
+            "width": 150,
+            "options": "Supplier"
         },
         {
             "label": _("Cost Center"),
@@ -191,13 +250,19 @@ def get_columns():
             "label": _("Reference Type"),
             "fieldtype": "Data",
             "fieldname": "reference_type",
-            "width": 120,
+            "width": 250,
         },
         {
             "label": _("Reference Name"),
             "fieldtype": "Data",
             "fieldname": "reference_name",
-            "width": 120,
+            "width": 220,
+        },
+        {
+            "label": _("Narration"),
+            "fieldtype": "Small Text",
+            "fieldname": "narration",
+            "width": 300,
         },
         {
             "label": _("Is Subtotal"),
