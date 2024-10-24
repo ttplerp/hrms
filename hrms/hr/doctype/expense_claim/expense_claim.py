@@ -706,4 +706,6 @@ def get_permission_query_conditions(user):
 				from `tabEmployee`
 				where `tabEmployee`.name = `tabExpense Claim`.employee
 				and `tabEmployee`.user_id = '{user}')
+		or 
+		(`tabExpense Claim`.expense_approver = '{user}' and `tabExpense Claim`.workflow_state not in ('Draft','Claimed','Approved','Rejected','Waiting for Verification','Waiting Approval','Cancelled'))
 	)""".format(user=user)
