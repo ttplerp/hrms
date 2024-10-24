@@ -684,6 +684,9 @@ def get_permission_query_conditions(user):
 	if user == "Administrator":
 		return
 	
+	if "System Manager" in user_roles:
+		return
+	
 	if "Expense Approver" in user_roles or "Accounts User" in user_roles or "Accounts Master" in user_roles:
 		return """(
 			exists(select 1
