@@ -683,7 +683,7 @@ def get_permission_query_conditions(user):
 
 	if user == "Administrator":
 		return
-	
+	#for BAs
 	if "System Manager" in user_roles:
 		return
 	
