@@ -755,14 +755,17 @@ def get_number_of_leave_days(
     # 		number_of_days = date_diff(to_date, from_date) + 1
     # else:
     # 	number_of_days = date_diff(to_date, from_date) + 1
+    # print(f"From Date: {from_date}")
+    # print(f"To Date: {to_date}")
   
     no_days=date_diff(to_date, from_date)+1
     
-    final=no_days
+    final=float(no_days)
     total_days=0
     is_sat=frappe.db.get_value("Holiday List", get_holiday_list_for_employee(employee), "saturday_half")
     cur_date=from_date
-    
+    # print(f"inital: {no_days}")
+
         
     for i in range(0, no_days):
         for holiday in frappe.db.sql("select * from `tabHoliday` where parent='{}'".format(get_holiday_list_for_employee(employee)), as_dict=1):
@@ -770,12 +773,16 @@ def get_number_of_leave_days(
             if holiday.holiday_date==hol_date:
                 if holiday.holiday_date.weekday()==5:
                     
-                    print(f"Saturday: date {cur_date} holiday {holiday.holiday_date}" )
-                    final-=0.5   
+                    #print(f"Saturday: date {cur_date} holiday {holiday.holiday_date}" )
+                    final-=0.5  
+                    # print(f"Sat deduction: {final}") 
+                    
                 else:
                     final-=1
-                    print(f"Sunday date {cur_date} holiday {holiday.holiday_date}" ) 
+                    #print(f"Sunday date {cur_date} holiday {holiday.holiday_date}" ) 
+                    # print(f"Sun deduction: {final}") 
         cur_date=add_to_date(getdate(cur_date), days=1, as_string=True)
+
     if int(half_day)==1:
         final-=0.5
     
@@ -1008,11 +1015,13 @@ def get_leaves_for_period(
             half_day_date = None
             # fetch half day date for leaves with half days
             if leave_entry.leaves % 1:
-                half_day = 1
+                
                 half_day_date = frappe.db.get_value(
                     "Leave Application", {"name": leave_entry.transaction_name}, ["half_day_date"]
                 )
-
+                if half_day_date:
+                    half_day = 1
+            
             leave_days += (
                 get_number_of_leave_days(
                     employee,
@@ -1025,7 +1034,6 @@ def get_leaves_for_period(
                 )
                 * -1
             )
-    
     return leave_days
 
 
