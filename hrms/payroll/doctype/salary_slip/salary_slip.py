@@ -63,17 +63,22 @@ class SalarySlip(TransactionBase):
 				comm_amt = earning.amount
 
 		# Calculate tax amount for "Overtime Allowance"
-		for i in self.earnings:
-			if i.salary_component == "Overtime Allowance":
-				tax_amt = get_salary_tax(math.floor(flt(self.gross_pay) - flt(pf) - (flt(comm_amt) * 0.5)))
+		# Check if Salary Tax already exists in deductions
+		salary_tax_exists = any(d.salary_component == "Salary Tax" for d in self.deductions)
 
-		# If tax amount is greater than 0, append it to earnings as a negative value
-		
-		if tax_amt > 0:
-			self.append('deductions', {
-				"salary_component": "Salary Tax",
-				"amount": tax_amt  # Add as a negative amount to represent deduction
-			})
+		# Run the following code only if Salary Tax is not already present
+		if not salary_tax_exists:
+			for i in self.earnings:
+				if i.salary_component == "Overtime Allowance":
+					# Calculate the tax amount based on your logic
+					tax_amt = get_salary_tax(math.floor(flt(self.gross_pay) - flt(pf) - (flt(comm_amt) * 0.5)))
+
+					# If tax amount is greater than 0, append it to deductions as a negative value
+					if tax_amt > 0:
+						self.append('deductions', {
+							"salary_component": "Salary Tax",
+							"amount": tax_amt  # Add as a negative amount to represent deduction
+						})
 
 
 				# frappe.throw(str(tax_amt))
