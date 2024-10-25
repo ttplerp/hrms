@@ -437,7 +437,7 @@ class EmployeeAdvance(Document):
 		elif self.advance_type == "Imprest Advance":
 			account_select = frappe.db.get_value("Company", self.company,"imprest_advance_account")
 		elif self.advance_type == "Other Advance":
-			account_select = frappe.db.get_value("Company", self.company,"imprest_advance_account")
+			account_select = self.advance_account
 		else:
 			frappe.throw("Choose different advance type")
 		
@@ -472,6 +472,8 @@ class EmployeeAdvance(Document):
 				"credit_in_account_currency": flt(self.advance_amount),
 				"account_currency": payment_account.account_currency,
 				"exchange_rate": flt(paying_exchange_rate),
+				"party_type": "Employee",
+				"party": self.employee,
 				"business_activity": "Common"
 			},
 		)
