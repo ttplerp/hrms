@@ -112,6 +112,7 @@
   "eligible_for_leave_encashment",
   "eligible_for_overtime_and_payment",
   "eligible_for_sws",
+  "eligible_mess_deduction",
   "cb_17",
   "eligible_for_ltc",
   "eligible_for_pbva",
@@ -1004,12 +1005,18 @@
    "fieldname": "eligible_for_other_deduction",
    "fieldtype": "Check",
    "label": "Eligible for Other Deduction"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_mess_deduction",
+   "fieldtype": "Check",
+   "label": "Eligible for Mess Deduction"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2023-12-20 15:14:12.548018",
+ "modified": "2024-10-26 12:15:05.487819",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
