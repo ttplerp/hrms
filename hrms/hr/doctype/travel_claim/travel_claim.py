@@ -758,24 +758,9 @@ class TravelClaim(Document):
                 "business_activity": self.business_activity,
             })
 
-        # if flt(self.balance_amount) > 0:
-        # 	je.append("accounts", {
-        # 			"account": payable_account if advance_je == 0 else expense_bank_account,
-        # 			"party_type": "Employee" if advance_je == 0 else None,
-        # 			"party": self.employee if advance_je == 0 else None,
-        # 			"reference_type": "Travel Claim",
-        # 			"reference_name": self.name,
-        # 			"cost_center": cost_center,
-        # 			"credit_in_account_currency": bank_amt,
-        # 			"credit": bank_amt,
-        # 			"business_activity": self.business_activity,
-        # 		})
         je.insert()
         je_references = je.name
-        if self.is_settlement == 0:
-            if self.place_type != "Out-Country":
-                je.submit()
-
+        je.submit()
 
         #Added by Thukten to make payable
         if flt(self.balance_amount) > 0:
@@ -870,11 +855,6 @@ class TravelClaim(Document):
                 frappe.sendmail(recipients=email, sender=None, subject=subject, message=message)
             except:
                 pass
-            
-    
-
-        
-    
 
 @frappe.whitelist()
 def get_travel_detail(employee, start_date, end_date, place_type, travel_type):
@@ -913,57 +893,6 @@ def get_permission_query_conditions(user):
 
     if "HR Master" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Master" in user_roles:
         return
-    
-    if "Travel Administrator" in user_roles:
-        permitted_regions = frappe.db.sql_list("""
-            select 'Western Region' region from `tabWestern Region Administrators` where user = '{user}'
-            union
-            select 'Eastern Region' region from `tabEastern Region Administrators` where user = '{user}'
-            union
-            select 'South Western Region' region from `tabSouth Western Region Administrators` where user = '{user}'
-            union
-            select 'Central Region' region from `tabCentral Region Administrators` where user = '{user}'
-            union
-            select 'CHQ' region from `tabCHQ Administrators` where user = '{user}'
-        """.format(user=user))
-
-        if len(permitted_regions):
-            permitted_regions = "('{}')".format(permitted_regions[0]) if len(permitted_regions) == 1 else tuple(permitted_regions)
-            qry = """
-                (`tabTravel Claim`.workflow_state = 'Approved'
-                and (
-                    exists(select 1
-                        from `tabEmployee`
-                        where `tabEmployee`.name = `tabTravel Claim`.employee
-                        and (
-                            `tabEmployee`.region in {permitted_regions}
-                            or
-                            ('CHQ' in {permitted_regions} and `tabEmployee`.region not in ('Western Region', 'Eastern Region',
-                                'South Western Region', 'Central Region'))
-                        )
-                    )
-                )
-            )""".format(permitted_regions=permitted_regions)
-            return qry
-
-        # return """(
-        # 	case when `tabTravel Claim`.workflow_state = 'Approved' then case 
-        # 	when (select `tabEmployee`.region from `tabEmployee`
-        # 	where `tabEmployee`.name = `tabTravel Claim`.employee
-        # 	) = 'Western Region' then exists(select 1 from `tabWestern Region Administrators` where '{user}' = `tabWestern Region Administrators`.user)
-         # 	when (select `tabEmployee`.region from `tabEmployee`
-        # 	where `tabEmployee`.name = `tabTravel Claim`.employee
-        # 	) = 'Eastern Region' then exists(select 1 from `tabEastern Region Administrators` where '{user}' = `tabEastern Region Administrators`.user)
-         # 	when (select `tabEmployee`.region from `tabEmployee`
-        # 	where `tabEmployee`.name = `tabTravel Claim`.employee
-        # 	) = 'South Western Region' then exists(select 1 from `tabSouth Western Region Administrators` where '{user}' = `tabSouth Western Region Administrators`.user)
-         # 	when (select `tabEmployee`.region from `tabEmployee`
-        # 	where `tabEmployee`.name = `tabTravel Claim`.employee
-        # 	) = 'Central Region' then exists(select 1 from `tabCentral Region Administrators` where '{user}' = `tabCentral Region Administrators`.user)
-        # 	else exists(select 1 from `tabCHQ Administrators` where '{user}' = `tabCHQ Administrators`.user)
-        # 	end
-        # 	end
-        # )""".format(user=user)
 
     return """(
         `tabTravel Claim`.owner = '{user}'
@@ -975,26 +904,4 @@ def get_permission_query_conditions(user):
         or
         (`tabTravel Claim`.supervisor = '{user}' and `tabTravel Claim`.workflow_state not in ('Draft','Claimed','Approved','Rejected','Rejected By Supervisor','Waiting for Supervisor','Waiting HR','Cancelled'))
     )""".format(user=user)
-
-
-    # or
-    # 	(`tabTravel Claim`.supervisor_manager = '{user}' and `tabTravel Claim`.workflow_state not in ('Draft','Approved','Claimed','Rejected','Rejected By Supervisor','Cancelled'))
-    # 	or
-    # 	(
-    # 		case when `tabTravel Claim`.workflow_state = 'Approved' then case when (select `tabEmployee`.region from `tabEmployee`
-    # 		where `tabEmployee`.name = `tabTravel Claim`.employee
-    # 		) = 'Western Region' then exists(select 1 from `tabWestern Region Administrators` where '{user}' = `tabWestern Region Administrators`.user)
-     # 		when (select `tabEmployee`.region from `tabEmployee`
-    # 		where `tabEmployee`.name = `tabTravel Claim`.employee
-    # 		) = 'Eastern Region' then exists(select 1 from `tabEastern Region Administrators` where '{user}' = `tabEastern Region Administrators`.user)
-     # 		when (select `tabEmployee`.region from `tabEmployee`
-    # 		where `tabEmployee`.name = `tabTravel Claim`.employee
-    # 		) = 'South Western Region' then exists(select 1 from `tabSouth Western Region Administrators` where '{user}' = `tabSouth Western Region Administrators`.user)
-     # 		when (select `tabEmployee`.region from `tabEmployee`
-    # 		where `tabEmployee`.name = `tabTravel Claim`.employee
-    # 		) = 'Central Region' then exists(select 1 from `tabCentral Region Administrators` where '{user}' = `tabCentral Region Administrators`.user)
-    # 		else exists(select 1 from `tabCHQ Administrators` where '{user}' = `tabCHQ Administrators`.user)
-    # 		end
-    # 		end
-    # 	)
 
