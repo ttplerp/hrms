@@ -663,22 +663,13 @@ class TravelClaim(Document):
                 gl_account = "training_in_country_account"
             else:
                 gl_account = "training_out_country_account"
-        # elif self.travel_type == "Project Visit":
-        # 	gl_account = "project_travel_account"
-        # elif self.travel_type == "BT DAY":
-        # 	gl_account = "bt_day_account"
-        # elif self.travel_type == "Maintenance":
-        # 	if self.place_type == "In-Country":
-        # 		gl_account = "travel_incountry_account"
-        # elif self.travel_type == "Medical":
-            # gl_account = "medical_expenses_account"
         else:
             if self.place_type == "In-Country":
                 gl_account = "meeting_and_seminars_incountry_account"
             else:
                 gl_account = "meeting_and_seminars_outcountry_account"
         expense_account = frappe.db.get_value("Company", self.company, gl_account)
-        payable_account = frappe.get_cached_value("Company", self.company, "default_expense_claim_payable_account")
+        payable_account = frappe.db.get_value("Company", self.company, "default_expense_claim_payable_account")
         if not expense_account:
             frappe.throw("Setup Travel/Training Accounts in Company Settings")
         advance_je = frappe.db.get_value("Travel Authorization", self.ta, "need_advance")
@@ -691,10 +682,6 @@ class TravelClaim(Document):
         je.posting_date = self.posting_date
         je.branch = self.branch
         default_cc = frappe.db.get_value("Company", self.company, "company_cost_center")
-        # if self.reference_type:
-        # 	je.reference_type = self.reference_type
-        # 	je.reference_name = self.reference_name
-
         total_amt = flt(self.total_claim_amount) + flt(self.extra_claim_amount)
         references = {}
         for a in self.items:
@@ -710,16 +697,11 @@ class TravelClaim(Document):
                     references.update({"no_ref": {"reference_type": "Travel Claim", "amount": flt(a.amount)+flt(self.extra_claim_amount), "cost_center": cost_center}})
                 else:
                     references["no_ref"]["amount"] += flt(a.amount)
-        # for ref in references:
-            # if references[ref]["reference_type"] == "Maintenance Order":
-            # 	expense_account = frappe.db.get_value("HR Accounts Settings", "travel_incountry_account")
-            # elif references[ref]["reference_type"] == "Project":
-            # 	expense_account = frappe.db.get_single_value("HR Accounts Settings", "project_travel_account")
         je.append("accounts", {
                 "account": expense_account,
                 "reference_type": "Travel Claim",
                 "reference_name": self.name,
-                "cost_center": self.cost_center if self.place_type != "Out-Country" else default_cc,
+                "cost_center": self.cost_center,
                 "debit_in_account_currency": flt(total_amt,2),
                 "debit": flt(total_amt,2),
                 "business_activity": self.business_activity,
@@ -728,7 +710,7 @@ class TravelClaim(Document):
                 "account": payable_account,
                 "reference_type": "Travel Claim",
                 "reference_name": self.name,
-                "cost_center": self.cost_center if self.place_type != "Out-Country" else default_cc,
+                "cost_center": self.cost_center,
                 "credit_in_account_currency": flt(self.balance_amount,2),
                 "credit": flt(self.balance_amount,2),
                 "business_activity": self.business_activity,
