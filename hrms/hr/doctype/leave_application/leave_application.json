@@ -177,8 +177,7 @@
    "no_copy": 1,
    "options": "Open\nApproved\nRejected\nCancelled",
    "permlevel": 1,
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "sb10",
@@ -294,7 +293,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2023-10-19 10:01:05.175432",
+ "modified": "2024-10-29 08:48:18.134769",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
