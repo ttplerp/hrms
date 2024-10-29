@@ -11,11 +11,14 @@
   "posting_date",
   "document_no",
   "office_order",
+  "course_of_study",
   "column_break_erlwb",
   "purpose",
   "topic",
   "effect_date",
   "period",
+  "place_of_study",
+  "sponsership",
   "sb_emp_details",
   "employee",
   "grade",
@@ -148,7 +151,7 @@
    "fieldname": "purpose",
    "fieldtype": "Select",
    "label": "Purpose",
-   "options": "Training\nInternal Recruitment\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract\nService Regularization\nPromotion"
+   "options": "Training\nInternal Recruitment\nVoluntary Resignation\nSuperannuation\nLay-off or Compulsory Retirement\nEarly Retirement Scheme\nTermination without Benefits\nDemise\nEnd of Deputation\nProbation not completed successfully\nEnd of Contract\nService Regularization\nPromotion\nStudies"
   },
   {
    "fieldname": "sb_remarks",
@@ -383,11 +386,32 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "depends_on": "eval: doc.purpose=='Studies'",
+   "fieldname": "course_of_study",
+   "fieldtype": "Data",
+   "label": "Course Of Study",
+   "mandatory_depends_on": "eval: doc.purpose=='Studies'"
+  },
+  {
+   "depends_on": "eval: doc.purpose=='Studies'",
+   "fieldname": "place_of_study",
+   "fieldtype": "Data",
+   "label": "Place of Study",
+   "mandatory_depends_on": "eval: doc.purpose=='Studies'"
+  },
+  {
+   "depends_on": "eval: doc.purpose=='Studies'",
+   "fieldname": "sponsership",
+   "fieldtype": "Data",
+   "label": "Sponsership",
+   "mandatory_depends_on": "eval: doc.purpose=='Studies'"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-07 16:21:38.244195",
+ "modified": "2024-10-25 14:47:36.106747",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Internal Clearance",
