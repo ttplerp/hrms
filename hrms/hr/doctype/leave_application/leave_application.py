@@ -85,7 +85,7 @@ class LeaveApplication(Document):
             notify_workflow_states(self)
 
     def on_update(self):
-        if self.status == "Open" and self.docstatus < 1:
+        if self.status == "Open" and self.workflow_state != "Draft" and self.docstatus < 1:
             # notify leave approver about creation
             if frappe.db.get_single_value("HR Settings", "send_leave_notification"):
                 self.notify_leave_approver()
@@ -471,7 +471,7 @@ class LeaveApplication(Document):
                     and status = 'Present' and docstatus = 1""",
             (self.employee, self.from_date, self.to_date),
         )
-        if attendance:
+        if attendance and not self.half_day:
             frappe.throw(
                 _("Attendance for employee {0} is already marked for this day").format(self.employee),
                 AttendanceAlreadyMarkedError,
