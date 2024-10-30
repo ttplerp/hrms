@@ -238,6 +238,7 @@ frappe.ui.form.on("Travel Authorization Item", {
 			
 			//Tandin Phuntsho: setting the field to read only. somehow the toggle_editable is not working
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[3].read_only=1
+			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[12].read_only=1
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt', false);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt_at', false);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('return_same_day', true);
@@ -248,6 +249,7 @@ frappe.ui.form.on("Travel Authorization Item", {
 		else {
 			
 			halt.read_only = 0;
+			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[12].read_only=0
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt', true);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt_at', true);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('return_same_day', false);
