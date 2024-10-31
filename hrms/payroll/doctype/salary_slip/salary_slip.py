@@ -388,6 +388,7 @@ class SalarySlip(TransactionBase):
 	def on_submit(self):
 		self.update_status(self.name)
 		self.update_deduction_balance()
+		self.post_sws_contribution()
 		self.post_sws_entry()
 		self.update_ot()
 
@@ -432,6 +433,58 @@ class SalarySlip(TransactionBase):
 		doc.fiscal_year = self.fiscal_year
 		doc.month = self.month
 		doc.submit()
+
+	def post_sws_entry(self):
+		sws = frappe.db.get_single_value("SWS Settings", "salary_component")
+		amount = 0
+		for a in self.deductions:
+			if a.salary_component == sws:
+				amount = a.amount
+		if not amount:
+			return
+
+		doc = frappe.new_doc("SWS Entry")
+		doc.flags.ignore_permissions = 1
+		doc.posting_date = nowdate()
+		doc.branch = self.branch
+		doc.ref_doc = self.name
+		doc.employee = self.employee
+		doc.credit = amount
+		doc.fiscal_year = self.fiscal_year
+		doc.month = self.month
+		doc.submit()
+
+	def post_sws_contribution(self):
+		sws = frappe.db.get_single_value("SWS Settings", "salary_component")
+		amount = 0
+		for a in self.deductions:
+			if a.salary_component == sws:
+				amount = flt(a.amount,2)
+		if not amount:
+			return
+		sws_contribution = frappe.get_doc("SWS Contribution", {"employee": self.employee})
+		if not sws_contribution:
+			doc = frappe.new_doc("SWS Contribution")
+			doc.flags.ignore_permissions = 1
+			# doc.posting_date = nowdate()
+			# doc.branch = self.branch
+			doc.employee = self.employee
+			doc.employee_name = frappe.db.get_value("Employee", self.employee, "employee_name")
+			row = doc.append("contributions", {})
+			row.reference_type = "Salary Slip"
+			row.reference_name = self.name
+			row.contribution_amount = amount
+			row.fiscal_year = self.fiscal_year
+			row.month = self.month
+			doc.insert()
+		else:
+			row = sws_contribution.append("contributions", {})
+			row.reference_type = "Salary Slip"
+			row.reference_name = self.name
+			row.contribution_amount = amount
+			row.fiscal_year = self.fiscal_year
+			row.month = self.month
+			sws_contribution.save()
 				
 	def on_cancel(self):
 		self.update_status()

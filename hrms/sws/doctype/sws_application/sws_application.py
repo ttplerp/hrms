@@ -34,6 +34,7 @@ class SWSApplication(Document):
 		if self.total_amount <= 0:
 			frappe.throw("Total Amount cannot be 0 or less")
 		self.update_status()
+		self.post_sws_contribution()
 		self.post_sws_entry()
 		self.create_journal_entry()
 		# added by Kinley Dorji 2021/06/11
@@ -110,6 +111,38 @@ class SWSApplication(Document):
 		doc.employee = self.employee
 		doc.debit = self.total_amount
 		doc.submit()
+
+	def post_sws_contribution(self):
+		sws = frappe.db.get_single_value("SWS Settings", "salary_component")
+		amount = 0
+		for a in self.deductions:
+			if a.salary_component == sws:
+				amount = flt(a.amount,2)
+		if not amount:
+			return
+		sws_contribution = frappe.get_doc("SWS Contribution", {"employee": self.employee})
+		if not sws_contribution:
+			doc = frappe.new_doc("SWS Contribution")
+			doc.flags.ignore_permissions = 1
+			# doc.posting_date = nowdate()
+			# doc.branch = self.branch
+			doc.employee = self.employee
+			doc.employee_name = frappe.db.get_value("Employee", self.employee, "employee_name")
+			row = doc.append("contributions", {})
+			row.reference_type = "SWS Application"
+			row.reference_name = self.name
+			row.contribution_amount = -1*amount
+			row.fiscal_year = str(self.posting_date).split("-")[0]
+			row.month = str(self.posting_date).split("-")[1]
+			doc.insert()
+		else:
+			row = sws_contribution.append("contributions", {})
+			row.reference_type = "SWS Application"
+			row.reference_name = self.name
+			row.contribution_amount = -1*amount
+			row.fiscal_year = str(self.posting_date).split("-")[0]
+			row.month = str(self.posting_date).split("-")[1]
+			sws_contribution.save()
 
 	def before_cancel(self):
 		self.reset_status()

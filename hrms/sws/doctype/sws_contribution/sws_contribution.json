@@ -1,0 +1,94 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "SWSC.YY.MM.DD.#####",
+ "creation": "2024-10-31 14:12:51.927428",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "opening_sws_contribution",
+  "cb_01",
+  "employee_name",
+  "sb_contributions",
+  "contributions",
+  "total_contribution"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "opening_sws_contribution",
+   "fieldtype": "Currency",
+   "label": "Opening SWS Contribution",
+   "precision": "2"
+  },
+  {
+   "fieldname": "cb_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb_contributions",
+   "fieldtype": "Section Break",
+   "label": "Contribution Details"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "contributions",
+   "fieldtype": "Table",
+   "options": "SWS Contribution Item",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_contribution",
+   "fieldtype": "Currency",
+   "label": "Total Contribution",
+   "precision": "2",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-10-31 14:33:49.862167",
+ "modified_by": "Administrator",
+ "module": "SWS",
+ "name": "SWS Contribution",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "employee",
+ "track_changes": 1
+}
