@@ -40,14 +40,14 @@ class SalarySlip(TransactionBase):
 		if self.salary_slip_based_on_timesheet or not self.net_pay:
 		self.calculate_net_pay()
 		'''
-
+		self.update_salary_tax()
 		self.calculate_net_pay()                #Added by SHIV on 2018/10/15
 		self.validate_amounts()                 #Added by SHIV on 2018/10/15
 		company_currency = get_company_currency(self.company)
 		self.total_in_words = money_in_words(self.rounded_total, company_currency)
 		self.check_house_rent_deduction()
 		#Added by tshering wangchuk as salary tax is not calaculated for overtime
-		self.update_salary_tax()
+		# self.update_salary_tax()
 	
  
 	def update_salary_tax(self):
