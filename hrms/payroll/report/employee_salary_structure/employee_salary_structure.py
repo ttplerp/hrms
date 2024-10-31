@@ -135,10 +135,17 @@ def get_conditions(filters):
 def get_ss_earning_map(salary_structures):
     ss_earning_map = {}
 
+    # ss_earnings = frappe.db.sql("""select parent, salary_component, sum(ifnull(amount,0)) as amount 
+	# 				from `tabSalary Detail` where parent in (%s)
+	# 				and parentfield = 'earnings'
+	# 				and ifnull(to_date, CURDATE()) >= DATE_ADD(LAST_DAY(DATE_SUB(CURDATE(), interval 30 day)), interval 1 day)
+	# 				group by parent, salary_component
+	# 				""" %
+    #                             (', '.join(['%s']*len(salary_structures))), tuple([d.name for d in salary_structures]), as_dict=1)
+
     ss_earnings = frappe.db.sql("""select parent, salary_component, sum(ifnull(amount,0)) as amount 
 					from `tabSalary Detail` where parent in (%s)
 					and parentfield = 'earnings'
-					and ifnull(to_date, CURDATE()) >= DATE_ADD(LAST_DAY(DATE_SUB(CURDATE(), interval 30 day)), interval 1 day)
 					group by parent, salary_component
 					""" %
                                 (', '.join(['%s']*len(salary_structures))), tuple([d.name for d in salary_structures]), as_dict=1)
@@ -152,10 +159,17 @@ def get_ss_earning_map(salary_structures):
 
 
 def get_ss_ded_map(salary_structures):
+    # ss_deductions = frappe.db.sql("""select parent, salary_component, sum(ifnull(amount,0)) as amount 
+	# 	from `tabSalary Detail` where parent in (%s)
+	# 	and parentfield = 'deductions'
+	# 	and ifnull(to_date, CURDATE()) >= DATE_ADD(LAST_DAY(DATE_SUB(CURDATE(), interval 30 day)), interval 1 day)
+	# 	group by parent, salary_component
+	# 	""" %
+    #                               (', '.join(['%s']*len(salary_structures))), tuple([d.name for d in salary_structures]), as_dict=1)
+
     ss_deductions = frappe.db.sql("""select parent, salary_component, sum(ifnull(amount,0)) as amount 
 		from `tabSalary Detail` where parent in (%s)
 		and parentfield = 'deductions'
-		and ifnull(to_date, CURDATE()) >= DATE_ADD(LAST_DAY(DATE_SUB(CURDATE(), interval 30 day)), interval 1 day)
 		group by parent, salary_component
 		""" %
                                   (', '.join(['%s']*len(salary_structures))), tuple([d.name for d in salary_structures]), as_dict=1)
