@@ -8,6 +8,7 @@ from frappe.utils import flt
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
+from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 
 class SWSApplication(Document):
 	def validate(self):
@@ -67,9 +68,10 @@ class SWSApplication(Document):
 
 	def create_journal_entry(self):
 		je = frappe.new_doc("Journal Entry")
+		je_ref = ""
 		je.flags.ignore_permissions = 1 
 		cost_center = frappe.db.get_value("Branch",self.branch,"cost_center")
-
+		expense_bank_account = get_bank_account(self.branch)
 		je.update({
 			"voucher_type": "Journal Entry",
 			"company": self.company,
@@ -94,11 +96,49 @@ class SWSApplication(Document):
 			"reference_type": self.doctype,
 			"reference_name": self.name,
 			"business_activity": "Common",
+			"party_type": "Employee",
+			"party": self.employee,
 			"cost_center": cost_center
 			})
-		
 		je.save(ignore_permissions = True)
-		self.db_set("je_ref", je.name)
+		je.submit()
+		je_ref = je.name
+		jebp = frappe.new_doc("Journal Entry")
+		jebp.flags.ignore_permissions = 1 
+		cost_center = frappe.db.get_value("Branch",self.branch,"cost_center")
+		jebp.update({
+			"voucher_type": "Journal Entry",
+			"company": self.company,
+			"remark": self.name,
+			"posting_date": self.posting_date,
+			"branch": self.branch
+			})
+
+		#credit account update
+		jebp.append("accounts", {
+			"account": expense_bank_account,
+			"credit_in_account_currency": self.total_amount,
+			"reference_type": self.doctype,
+			"reference_name": self.name,
+			"party_type": "Employee",
+			"party": self.employee,
+			"business_activity": "Common",
+			"cost_center": cost_center
+			})
+		#debit account update
+		jebp.append("accounts", {
+			"account": self.credit_account,
+			"debit_in_account_currency": self.total_amount,
+			"reference_type": self.doctype,
+			"reference_name": self.name,
+			"business_activity": "Common",
+			"party_type": "Employee",
+			"party": self.employee,
+			"cost_center": cost_center
+			})
+		jebp.insert()
+		je_ref += ", "+jebp.name
+		self.db_set("je_ref", je_ref)
 
 
 	def post_sws_entry(self):
@@ -112,43 +152,50 @@ class SWSApplication(Document):
 		doc.debit = self.total_amount
 		doc.submit()
 
-	def post_sws_contribution(self):
-		sws = frappe.db.get_single_value("SWS Settings", "salary_component")
-		amount = 0
-		for a in self.deductions:
-			if a.salary_component == sws:
-				amount = flt(a.amount,2)
-		if not amount:
-			return
-		sws_contribution = frappe.get_doc("SWS Contribution", {"employee": self.employee})
-		if not sws_contribution:
-			doc = frappe.new_doc("SWS Contribution")
-			doc.flags.ignore_permissions = 1
-			# doc.posting_date = nowdate()
-			# doc.branch = self.branch
-			doc.employee = self.employee
-			doc.employee_name = frappe.db.get_value("Employee", self.employee, "employee_name")
-			row = doc.append("contributions", {})
-			row.reference_type = "SWS Application"
-			row.reference_name = self.name
-			row.contribution_amount = -1*amount
-			row.fiscal_year = str(self.posting_date).split("-")[0]
-			row.month = str(self.posting_date).split("-")[1]
-			doc.insert()
+	def post_sws_contribution(self, cancel=False):
+		# sws = frappe.db.get_single_value("SWS Settings", "salary_component")
+		amount = flt(self.total_amount,2)
+		if not cancel:
+			if not amount:
+				return
+			if not frappe.db.exists("SWS Contribution", {"employee": self.employee}):
+				doc = frappe.new_doc("SWS Contribution")
+				doc.flags.ignore_permissions = 1
+				# doc.posting_date = nowdate()
+				# doc.branch = self.branch
+				doc.employee = self.employee
+				doc.employee_name = frappe.db.get_value("Employee", self.employee, "employee_name")
+				row = doc.append("contributions", {})
+				row.reference_type = "SWS Application"
+				row.reference_name = self.name
+				row.contribution_amount = -1*amount
+				row.fiscal_year = str(self.posting_date).split("-")[0]
+				row.month = str(self.posting_date).split("-")[1]
+				doc.insert()
+			else:
+				sws_contribution = frappe.get_doc("SWS Contribution", {"employee": self.employee})
+				row = sws_contribution.append("contributions", {})
+				row.reference_type = "SWS Application"
+				row.reference_name = self.name
+				row.contribution_amount = -1*amount
+				row.fiscal_year = str(self.posting_date).split("-")[0]
+				row.month = str(self.posting_date).split("-")[1]
+				sws_contribution.save()
 		else:
-			row = sws_contribution.append("contributions", {})
-			row.reference_type = "SWS Application"
-			row.reference_name = self.name
-			row.contribution_amount = -1*amount
-			row.fiscal_year = str(self.posting_date).split("-")[0]
-			row.month = str(self.posting_date).split("-")[1]
-			sws_contribution.save()
+			if frappe.db.exists("SWS Contribution", {"employee": self.employee}):
+				doc = frappe.get_doc("SWS Contribution", {"employee": self.employee})
+				for a in doc.contributions:
+					if a.reference_name == self.name:
+						doc.delete(a)
+				doc.save(ignore_permissions=1)
+				
 
 	def before_cancel(self):
 		self.reset_status()
 
 	def on_cancel(self):
 		self.update_status(cancel = True)
+		self.post_sws_contribution(cancel=True)
 		self.delete_sws_entry()
 
 	def reset_status(self):

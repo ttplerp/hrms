@@ -454,41 +454,60 @@ class SalarySlip(TransactionBase):
 		doc.month = self.month
 		doc.submit()
 
-	def post_sws_contribution(self):
+	def post_sws_contribution(self, cancel=False):
 		sws = frappe.db.get_single_value("SWS Settings", "salary_component")
 		amount = 0
-		for a in self.deductions:
-			if a.salary_component == sws:
-				amount = flt(a.amount,2)
-		if not amount:
-			return
-		sws_contribution = frappe.get_doc("SWS Contribution", {"employee": self.employee})
-		if not sws_contribution:
-			doc = frappe.new_doc("SWS Contribution")
-			doc.flags.ignore_permissions = 1
-			# doc.posting_date = nowdate()
-			# doc.branch = self.branch
-			doc.employee = self.employee
-			doc.employee_name = frappe.db.get_value("Employee", self.employee, "employee_name")
-			row = doc.append("contributions", {})
-			row.reference_type = "Salary Slip"
-			row.reference_name = self.name
-			row.contribution_amount = amount
-			row.fiscal_year = self.fiscal_year
-			row.month = self.month
-			doc.insert()
+		if not cancel:
+			for a in self.deductions:
+				if a.salary_component == sws:
+					amount = flt(a.amount,2)
+			if not amount:
+				return
+			sws_contribution = frappe.get_doc("SWS Contribution", {"employee": self.employee})
+			if not sws_contribution:
+				doc = frappe.new_doc("SWS Contribution")
+				doc.flags.ignore_permissions = 1
+				# doc.posting_date = nowdate()
+				# doc.branch = self.branch
+				doc.employee = self.employee
+				doc.employee_name = frappe.db.get_value("Employee", self.employee, "employee_name")
+				row = doc.append("contributions", {})
+				row.reference_type = "Salary Slip"
+				row.reference_name = self.name
+				row.contribution_amount = amount
+				row.fiscal_year = self.fiscal_year
+				row.month = self.month
+				doc.insert()
+			else:
+				row = sws_contribution.append("contributions", {})
+				row.reference_type = "Salary Slip"
+				row.reference_name = self.name
+				row.contribution_amount = amount
+				row.fiscal_year = self.fiscal_year
+				row.month = self.month
+				sws_contribution.save()
 		else:
-			row = sws_contribution.append("contributions", {})
-			row.reference_type = "Salary Slip"
-			row.reference_name = self.name
-			row.contribution_amount = amount
-			row.fiscal_year = self.fiscal_year
-			row.month = self.month
-			sws_contribution.save()
+			else:
+				sws_contribution = frappe.get_doc("SWS Contribution", {"employee": self.employee})
+				row = sws_contribution.append("contributions", {})
+				row.reference_type = "SWS Application"
+				row.reference_name = self.name
+				row.contribution_amount = -1*amount
+				row.fiscal_year = str(self.posting_date).split("-")[0]
+				row.month = str(self.posting_date).split("-")[1]
+				sws_contribution.save()
+		else:
+			if frappe.db.exists("SWS Contribution", {"employee": self.employee}):
+				doc = frappe.get_doc("SWS Contribution", {"employee": self.employee})
+				for a in doc.contributions:
+					if a.reference_name == self.name:
+						doc.delete(a)
+				doc.save(ignore_permissions=1)
 				
 	def on_cancel(self):
 		self.update_status()
 		self.update_deduction_balance()
+		self.post_sws_contribution(cancel=True)
 		self.delete_sws_entry()
 		self.update_ot(cancel = True)
 
