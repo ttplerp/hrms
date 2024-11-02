@@ -27,7 +27,9 @@
   "lower_range",
   "upper_range",
   "column_break_20",
-  "publish_salary_range"
+  "publish_salary_range",
+  "section_break_22",
+  "term_of_reference"
  ],
  "fields": [
   {
@@ -156,12 +158,21 @@
    "fieldname": "publish_salary_range",
    "fieldtype": "Check",
    "label": "Publish Salary Range"
+  },
+  {
+   "fieldname": "section_break_22",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "term_of_reference",
+   "fieldtype": "Attach",
+   "label": "Terms of Reference"
   }
  ],
  "icon": "fa fa-bookmark",
  "idx": 1,
  "links": [],
- "modified": "2024-10-29 14:56:03.692601",
+ "modified": "2024-10-31 20:40:07.685158",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Opening",

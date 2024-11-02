@@ -23,8 +23,8 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 50,
- "modified": "2024-10-29 16:50:06.765910",
- "modified_by": "gurungkishan928@gmail.com",
+ "modified": "2024-11-01 12:26:08.759191",
+ "modified_by": "narayanneopaney71@gmail.com",
  "module": "HR",
  "name": "job-application-new",
  "owner": "narayanneopaney71@gmail.com",
@@ -580,19 +580,6 @@
   },
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "upper_range",
-   "fieldtype": "Currency",
-   "hidden": 0,
-   "label": "Upper Range",
-   "max_length": 0,
-   "max_value": 0,
-   "options": "Currency",
-   "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
    "fieldname": "lower_range",
    "fieldtype": "Currency",
    "hidden": 0,
@@ -619,6 +606,19 @@
   },
   {
    "allow_read_on_all_link_options": 0,
+   "fieldname": "upper_range",
+   "fieldtype": "Currency",
+   "hidden": 0,
+   "label": "Upper Range",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "Currency",
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
    "fieldname": "",
    "fieldtype": "Column Break",
    "hidden": 0,
@@ -628,6 +628,44 @@
    "options": "",
    "read_only": 0,
    "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "",
+   "fieldtype": "Section Break",
+   "hidden": 0,
+   "label": "Declaration",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "",
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldtype": "HTML",
+   "hidden": 0,
+   "label": "",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "Please complete the form according to the provided instructions and include a copy of your <b>CID, CV (curriculum vitae) </b>and any other Relevant Documents when submitting your job application. \n\n<br> For support mail to hr@rigsarbhutan.com or use whatsapp Portal from Homepage",
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "default": "0",
+   "fieldname": "agree",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "I Agree",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 1,
    "show_in_filter": 0
   }
  ]
