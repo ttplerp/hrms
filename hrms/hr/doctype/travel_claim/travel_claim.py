@@ -24,7 +24,7 @@ class TravelClaim(Document):
         # self.validate_dsa_ceiling()
         self.validate_duplicate()
         # Following line commented by SHIV on 2020/09/22 as the same code is taken care in on_submit
-        self.update_amounts()
+        # self.update_amounts()
         self.validate_cost_center()
         if self.travel_type not in ("Training", "Meeting and Seminars") and self.supervisor:
             self.set_supervisor_manager()
@@ -110,9 +110,9 @@ class TravelClaim(Document):
         # Following line commented by SHIV on 2020/10/04
         #self.sendmail(self.employee, "Travel Claim Approved" + str(self.name), "Your " + str(frappe.get_desk_link("Travel Claim", self.name)) + " has been approved and sent to Accounts Section. Kindly follow up.")
         notify_workflow_states(self)
-        if self.for_maintenance_project:
-            self.update_project_and_maintenance()
-            self.update_project_and_maintenance_cost()
+        # if self.for_maintenance_project:
+        #     self.update_project_and_maintenance()
+        #     self.update_project_and_maintenance_cost()
 
     def update_training_event(self, cancel = False):
         if not cancel:
@@ -299,9 +299,9 @@ class TravelClaim(Document):
         # Following line commented by SHIV on 2020/10/04
         #self.sendmail(self.employee, "Travel Claim Cancelled by HR" + str(self.name), "Your travel claim " + str(self.name) + " has been cancelled by the user")
         notify_workflow_states(self)
-        if self.for_maintenance_project:
-            self.cancel_project_maintenance()
-            self.update_project_and_maintenance_cost()
+        # if self.for_maintenance_project:
+        #     self.cancel_project_maintenance()
+        #     self.update_project_and_maintenance_cost()
         if self.ta:
             self.ta = None
         if self.training_event:
@@ -647,7 +647,6 @@ class TravelClaim(Document):
             cost_center = frappe.db.get_value("Employee", self.employee, "cost_center")
         if not cost_center:
             frappe.throw("Setup Cost Center for employee in Employee Information")
-        # expense_bank_account = frappe.db.get_value("Branch", self.branch, "expense_bank_account")
         expense_bank_account = get_bank_account(self.branch)
         if not expense_bank_account:
             frappe.throw("Setup Default Expense Bank Account for your Branch")
@@ -684,28 +683,46 @@ class TravelClaim(Document):
         default_cc = frappe.db.get_value("Company", self.company, "company_cost_center")
         total_amt = flt(self.total_claim_amount) + flt(self.extra_claim_amount)
         references = {}
+        mileage_amount = 0
         for a in self.items:
-            if self.for_maintenance_project == 1 and not a.reference_name:
-                frappe.throw("Reference cannot be empty for Project/Maintenance Travel")
-            if a.reference_name:
-                if a.reference_name not in references:
-                    references.update({a.reference_name: {"reference_type": a.reference_type, "amount": flt(a.amount), "cost_center": frappe.db.get_value(a.reference_type, a.reference_name, "cost_center")}})
-                else:
-                    references[a.reference_name]['amount'] += flt(a.amount)
+            #Getting the mileage_rate and distance_covered
+            if a.mileage_rate and a.distance:
+                mileage_amount+=flt(a.mileage_rate)*flt(a.distance)
+
+            # if self.for_maintenance_project == 1 and not a.reference_name:
+            #     frappe.throw("Reference cannot be empty for Project/Maintenance Travel")
+            # if a.reference_name:
+            #     if a.reference_name not in references:
+            #         references.update({a.reference_name: {"reference_type": a.reference_type, "amount": flt(a.amount), "cost_center": frappe.db.get_value(a.reference_type, a.reference_name, "cost_center")}})
+            #     else:
+            #         references[a.reference_name]['amount'] += flt(a.amount)
+            # else:
+            #     if "no_ref" not in references:
+            #         references.update({"no_ref": {"reference_type": "Travel Claim", "amount": flt(a.amount)+flt(self.extra_claim_amount), "cost_center": cost_center}})
+            #     else:
+            #         references["no_ref"]["amount"] += flt(a.amount)
+
+        if self.travel_type == "Training":
+            if self.place_type == "Out Country":
+                mileage_acc_field = "training_out_country_mileage_account"
             else:
-                if "no_ref" not in references:
-                    references.update({"no_ref": {"reference_type": "Travel Claim", "amount": flt(a.amount)+flt(self.extra_claim_amount), "cost_center": cost_center}})
-                else:
-                    references["no_ref"]["amount"] += flt(a.amount)
+                mileage_acc_field = "training_in_country_mileage_account"
+        else:
+            mileage_acc_field = "travel_mileage_account"
+        mileage_acc = frappe.db.get_value("Company", self.company, "travel_mileage_account")
+        if not mileage_acc:
+            frappe.throw("Please set the mileage account in company settings")
+
         je.append("accounts", {
                 "account": expense_account,
                 "reference_type": "Travel Claim",
                 "reference_name": self.name,
                 "cost_center": self.cost_center,
-                "debit_in_account_currency": flt(total_amt,2),
-                "debit": flt(total_amt,2),
+                "debit_in_account_currency": (flt(total_amt,2)-flt(mileage_amount, 2)),
+                "debit": (flt(total_amt,2)-flt(mileage_amount, 2)),
                 "business_activity": self.business_activity,
             })
+
         je.append("accounts", {
                 "account": payable_account,
                 "reference_type": "Travel Claim",
@@ -720,6 +737,17 @@ class TravelClaim(Document):
         
         advance_amt = flt(self.advance_amount)
         bank_amt = flt(self.balance_amount)
+
+        if mileage_amount>0:      
+            je.append("accounts", {
+                "account": mileage_acc,
+                "reference_type": "Travel Claim",
+                "reference_name": self.name,
+                "cost_center": self.cost_center,
+                "debit_in_account_currency": flt(mileage_amount,2),
+                "debit": flt(mileage_amount,2),
+                "business_activity": self.business_activity,
+            })
 
         if (self.advance_amount) > 0:
             advance_account = frappe.db.get_value("Company", self.company,  "travel_advance_account")
@@ -741,8 +769,8 @@ class TravelClaim(Document):
             })
 
         je.insert()
-        je_references = je.name
         je.submit()
+        je_references = je.name
 
         #Added by Thukten to make payable
         if flt(self.balance_amount) > 0:
