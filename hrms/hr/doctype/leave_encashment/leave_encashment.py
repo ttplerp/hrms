@@ -6,7 +6,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from frappe.utils import getdate, nowdate, today
-from frappe.utils import date_diff, flt, cint
+from frappe.utils import date_diff, flt, cint, money_in_words
 from hrms.hr.doctype.leave_application.leave_application import get_leaves_for_period
 from hrms.hr.doctype.leave_ledger_entry.leave_ledger_entry import create_leave_ledger_entry
 from hrms.hr.utils import set_employee_name, validate_active_employee
@@ -32,9 +32,115 @@ class LeaveEncashment(Document):
 			frappe.throw(_("You can only submit Leave Encashment for a valid encashment amount"))
 
 	def on_submit(self):
-		self.post_expense_claim()
+		# self.post_expense_claim()
+		self.post_accounts_entry()
 		self.create_leave_ledger_entry()
 		notify_workflow_states(self)
+	
+	def post_accounts_entry(self):
+		if not self.cost_center:
+			frappe.throw("Setup Cost Center for employee in Employee Information")
+
+		expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
+		if not expense_account:
+			frappe.throw("Setup Leave Encashment Account in Company")
+
+		tax_account = frappe.db.get_value("Company", self.company, "salary_tax_account")
+		expense_bank_account = get_bank_account(self.branch)
+		if not expense_bank_account:
+			frappe.throw("Setup Default Expense Bank Account for your Branch")
+		if not tax_account:
+			frappe.throw("Setup Tax Account in Company")
+		# Journal Entry		
+		je = frappe.new_doc("Journal Entry")
+		je.flags.ignore_permissions = 1 
+		je.title = 'Leave Encashment Payable - ' + str(self.employee_name) + "(" + str(self.employee) + ")"
+		je.voucher_type = "Journal Entry"
+		je.naming_series = "ACC-JV-.YYYY.-"
+		je.company = self.company
+		je.branch = self.branch
+		je.remark = 'Payable against Leave Encashment: ' + self.name
+		je.user_remark = 'Leave Encashment Payable - ' + str(self.employee_name) + "(" + str(self.employee) + ")"
+		je.posting_date = today()
+		je.total_amount_in_words =  money_in_words(flt(self.payable_amount))
+
+		je.append("accounts", {
+				"account": expense_account,
+				"debit_in_account_currency": flt(self.encashment_amount,2),
+				"debit": flt(self.encashment_amount,2),
+				"reference_type": "Leave Encashment",
+				"reference_name": self.name,
+				"cost_center": self.cost_center,
+				"business_activity": self.business_activity,
+		})
+
+		if flt(self.encashment_tax):
+			je.append("accounts", {
+					"account": tax_account,
+					"credit_in_account_currency": flt(self.encashment_tax,2),
+					"credit": flt(self.encashment_tax,2),
+					"reference_type": "Leave Encashment",
+					"reference_name": self.name,
+					"cost_center": self.cost_center,
+					"business_activity": self.business_activity,
+			})
+
+		payable_account = frappe.db.get_value("Company",self.company, "default_expense_claim_payable_account") #Added by Thukten
+		if flt(self.payable_amount) > 0:
+			je.append("accounts", {
+					"account": payable_account,
+					"reference_type": "Leave Encashment",
+					"reference_name": self.name,
+					"cost_center": self.cost_center,
+					"credit_in_account_currency": flt(self.payable_amount,2),
+					"credit": flt(self.payable_amount,2),
+					"business_activity": self.business_activity,
+					"party_type": "Employee",
+					"party": self.employee,
+				})
+		je.insert()
+		je.submit()
+		je_references = str(je.name)
+		#Bank Entry		
+		jebp = frappe.new_doc("Journal Entry")
+		jebp.flags.ignore_permissions = 1 
+		jebp.title = 'Leave Encashment Payment - ' + str(self.employee_name) + "(" + str(self.employee) + ")"
+		jebp.voucher_type = "Bank Entry"
+		jebp.naming_series = "ACC-JV-.YYYY.-"
+		jebp.company = self.company
+		jebp.branch = self.branch
+		jebp.remark = 'Payment against Leave Encashment: ' + self.name
+		jebp.user_remark = 'Leave Encashment Payment - ' + str(self.employee_name) + "(" + str(self.employee) + ")"
+		jebp.posting_date = today()
+		jebp.total_amount_in_words =  money_in_words(flt(self.payable_amount,2))
+		jebp.append("accounts", {
+				"account": payable_account,
+				"debit_in_account_currency": flt(self.payable_amount,2),
+				"debit": flt(self.payable_amount,2),
+				"reference_type": "Journal Entry",
+				"reference_name": je.name,
+				"cost_center": self.cost_center,
+				"business_activity": self.business_activity,
+				"party_type": "Employee",
+				"party": self.employee,
+		})
+
+		payable_account = frappe.db.get_value("Company",self.company, "default_expense_claim_payable_account") #Added by Thukten
+		if flt(self.payable_amount) > 0:
+			jebp.append("accounts", {
+					"account": expense_bank_account,
+					"reference_type": "Leave Encashment",
+					"reference_name": self.name,
+					"cost_center": self.cost_center,
+					"credit_in_account_currency": flt(self.payable_amount,2),
+					"credit": flt(self.payable_amount,2),
+					"business_activity": self.business_activity,
+					"party_type": "Employee",
+					"party": self.employee,
+				})
+		jebp.insert()
+		je_references += ", "+jebp.name
+		self.db_set("journal_entry", je_references)
 
 		# self.create_leave_ledger_entry()
 	def on_cancel(self):
@@ -47,6 +153,13 @@ class LeaveEncashment(Document):
 				- self.encashable_days,
 			)
 		self.create_leave_ledger_entry(submit=False)
+		self.check_journal_entry()
+
+	def check_journal_entry():
+		if self.journal_entry:
+			for je in str(self.journal_entry).split(", "):
+				if frappe.db.get_value("Journal Entry", je, "docstatus") < 2:
+					frappe.throw("Please cancel/delete Journal Entry {} first".format(frappe.get_desk("Journal Entry", je)))
 
 	def post_expense_claim(self):
 		cost_center = frappe.get_value("Employee", self.employee, "cost_center")

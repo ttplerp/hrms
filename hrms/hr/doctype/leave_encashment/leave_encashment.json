@@ -50,7 +50,8 @@
   "business_activity",
   "column_break_12",
   "branch",
-  "cost_center"
+  "cost_center",
+  "journal_entry"
  ],
  "fields": [
   {
@@ -351,11 +352,17 @@
    "fieldtype": "Data",
    "label": "Expense Claim",
    "read_only": 1
+  },
+  {
+   "fieldname": "journal_entry",
+   "fieldtype": "Link",
+   "label": "Journal Entry",
+   "options": "Journal Entry"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-19 16:14:10.402364",
+ "modified": "2024-10-30 11:40:53.155570",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Encashment",

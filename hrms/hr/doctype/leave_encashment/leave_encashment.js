@@ -20,6 +20,24 @@ frappe.ui.form.on('Leave Encashment', {
 		if(frm.doc.__islocal && !in_list(frappe.user_roles, "Employee")) {
 			frm.set_intro(__("Fill the form and save it"));
 		}
+
+		if(frm.docstatus==1){
+			frm.add_custom_button(
+				__("Payment Entry"),
+				function () {
+					// frm.events.make_expense_claim(frm);
+					// return frappe.call({
+					// 	method: "post_accounts_entry",
+					// 	doc: frm.doc,
+					// 	callback: function(r) {
+					// 		frm.refresh_fields();
+					// 	}
+					// });
+
+				},
+				__('Create')
+			);
+		}
 	},
 	employee: function(frm) {
 		if (frm.doc.employee) {
