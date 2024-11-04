@@ -487,16 +487,6 @@ class SalarySlip(TransactionBase):
 				row.month = self.month
 				sws_contribution.save()
 		else:
-			else:
-				sws_contribution = frappe.get_doc("SWS Contribution", {"employee": self.employee})
-				row = sws_contribution.append("contributions", {})
-				row.reference_type = "SWS Application"
-				row.reference_name = self.name
-				row.contribution_amount = -1*amount
-				row.fiscal_year = str(self.posting_date).split("-")[0]
-				row.month = str(self.posting_date).split("-")[1]
-				sws_contribution.save()
-		else:
 			if frappe.db.exists("SWS Contribution", {"employee": self.employee}):
 				doc = frappe.get_doc("SWS Contribution", {"employee": self.employee})
 				for a in doc.contributions:
