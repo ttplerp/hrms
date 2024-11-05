@@ -236,7 +236,9 @@ class EmployeeAdvance(Document):
 				# self.retained_amount = flt(self.advance_amount * 0.35,2)
 
 		else:
-			pass
+			self.max_advance_limit = fl('200000',2)
+			if flt(self.advance_amount,2) > self.max_advance_limit:
+				frappe.throw("Advance Amount for {} cannot be greater than Nu. 200000".format(self.advance_type))
 	@frappe.whitelist()
 	def validate_deduction_month(self):
 		self.recovery_start_date = get_first_day(today())
