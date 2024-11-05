@@ -268,6 +268,7 @@ frappe.ui.form.on('Employee Advance', {
 			doc: frm.doc,
 			callback: function(r){
 				frm.refresh_field("basic_pay");
+				frm.refresh_field("gross_pay");
 				frm.refresh_field("net_pay");
 				frm.refresh_field("deduction_month");
 				frm.refresh_field("max_advance_limit");

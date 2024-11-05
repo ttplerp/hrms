@@ -25,10 +25,12 @@
   "section_break_8",
   "basic_pay",
   "net_pay",
+  "gross_pay",
   "pending_amount",
   "purpose",
   "column_break_11",
   "max_advance_limit",
+  "total_eligible_amount",
   "total_advance",
   "advance_amount",
   "retained_amount",
@@ -445,7 +447,7 @@
    "description": "<i>accumulated advance amount in a given recovery start and end date</i>",
    "fieldname": "total_advance",
    "fieldtype": "Currency",
-   "label": "Total Advance",
+   "label": "Total Advance Balance",
    "read_only": 1
   },
   {
@@ -483,11 +485,24 @@
    "label": "Retained Amount",
    "precision": "2",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.advance_type == 'Salary Advance'",
+   "fieldname": "gross_pay",
+   "fieldtype": "Currency",
+   "label": "Gross Pay",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.advance_type == 'Salary Advance'",
+   "fieldname": "total_eligible_amount",
+   "fieldtype": "Currency",
+   "label": "Total Eligible Amount"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-17 15:26:13.022041",
+ "modified": "2024-11-05 12:24:04.254796",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

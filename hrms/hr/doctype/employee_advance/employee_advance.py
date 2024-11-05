@@ -93,20 +93,29 @@ class EmployeeAdvance(Document):
 			working_days =date_diff(self.posting_date,joining_date)
 			if employment_type == "Probation":
 				frappe.throw("Employee who is in Probation Period is not eligible for Salary Advance.")
-			# if working_days < 360 :
-			# 	frappe.throw("Employee who did not serve 1 year is not eligible for Salary Advance")
+			if working_days < 360 :
+				frappe.throw("Employee who did not serve 1 year is not eligible for Salary Advance")
 			
-			from_date = frappe.defaults.get_user_default("year_start_date")
-			advance_status = frappe.db.sql("""
-				select name 
-				from `tabEmployee Advance`
-				where name != '{0}'
-				and advance_type = "Salary Advance"
-				and employee = "{1}"
-				and posting_date between "{2}" and "{3}"
-			""".format(self.name,self.employee,from_date, today()))
-			if advance_status:
-				frappe.throw("Employee Advance for employee {} has been already claimed ".format(self.employee_name))
+			# from_date = frappe.defaults.get_user_default("year_start_date")
+			# advance_status = frappe.db.sql("""
+			# 	select name 
+			# 	from `tabEmployee Advance`
+			# 	where name != '{0}'
+			# 	and advance_type = "Salary Advance"
+			# 	and employee = "{1}"
+			# 	and posting_date between "{2}" and "{3}"
+			# """.format(self.name,self.employee,from_date, today()))
+			# if advance_status:
+			# 	frappe.throw("Employee Advance for employee {} has been already claimed ".format(self.employee_name))
+
+			advance_comp=frappe.db.sql("select sum(sd.amount) as sum from `tabSalary Structure`as ss join `tabEmployee` as te on ss.employee=te.name join `tabSalary Detail` as sd on sd.parent=ss.name where sd.salary_component='Salary Advance Deductions' and te.name={}".format(self.employee), as_dict=True)
+			limit = frappe.get_value("Employee Group", self.employee_group, "salary_advance_max_months")
+			# self.total_eligible_amount=flt(self.total_eligible_amount)-flt(advance_comp[0].sum)*flt(limit)
+			self.total_advance=flt(advance_comp[0].sum)*flt(limit)
+
+			if self.total_eligible_amount<0:
+				frappe.throw("You are not eligible for Salary Advance as your eligible amount is less than 0")
+
 	def check_duplicate_advance(self):
 		if frappe.db.sql("""
 				select count(reference) 
@@ -116,6 +125,9 @@ class EmployeeAdvance(Document):
 				and docstatus != 2
 			""".format(self.reference, self.name))[0][0] >= 1 :
 			frappe.throw("Advance for Travel Request '{}' is already created".format(self.name))
+		
+		
+
 	def update_salary_structure(self, cancel=False):
 		if cancel:
 			rem_list = []
@@ -152,15 +164,17 @@ class EmployeeAdvance(Document):
 
 	@frappe.whitelist()
 	def get_accumulated_advance_amount(self):
-		year_start_date = get_year_start(today())
-		acc = frappe.db.sql("""select sum(advance_amount)
-					from `tabEmployee Advance` 
-					where employee = '{0}'
-					and docstatus !=2
-					and name !='{1}'
-					and posting_date between'{2}' and '{3}'
-					and advance_type = '{4}'""".format(self.employee,self.name, year_start_date,self.recovery_end_date, self.advance_type))[0][0]
-		self.total_advance = flt(acc)
+		# year_start_date = get_year_start(today())
+		# acc = frappe.db.sql("""select sum(advance_amount)
+		# 			from `tabEmployee Advance` 
+		# 			where employee = '{0}'
+		# 			and docstatus !=2
+		# 			and name !='{1}'
+		# 			and posting_date between'{2}' and '{3}'
+		# 			and advance_type = '{4}'""".format(self.employee,self.name, year_start_date,self.recovery_end_date, self.advance_type))[0][0]
+		advance_comp=frappe.db.sql("select sum(sd.amount) as sum from `tabSalary Structure`as ss join `tabEmployee` as te on ss.employee=te.name join `tabSalary Detail` as sd on sd.parent=ss.name where sd.salary_component='Salary Advance Deductions' and te.name={}".format(self.employee), as_dict=True)
+		limit = frappe.get_value("Employee Group", self.employee_group, "salary_advance_max_months")
+		self.total_advance = flt(advance_comp[0].sum)*flt(limit)
 		#and salary_component ='Salary Advance Deductions'
 	@frappe.whitelist()
 	def validate_advance_amount(self):
@@ -189,6 +203,7 @@ class EmployeeAdvance(Document):
 						and advance_type = 'Salary Advance'
 						and salary_component ='Salary Advance Deductions'
 						and posting_date between'{2}' and '{3}' """.format(self.employee,self.name, year_start_date,self.recovery_end_date))[0][0]
+			
 			if not pervious_advance:
 				pervious_advance = 0
 			salary_advance_type = frappe.get_value("Employee Group", self.employee_group, "salary_advance_type")
@@ -196,7 +211,8 @@ class EmployeeAdvance(Document):
 				max_amount = frappe.get_value("Employee Group", self.employee_group, "salary_advance_limit")
 				remaining_pay = flt(max_amount)-flt(pervious_advance)
 			else:
-				max_amount =(flt(self.basic_pay) * flt(max_month_allow_from_employee_group))
+				max_amount = self.max_advance_limit
+				# (flt(self.basic_pay) * flt(max_month_allow_from_employee_group))
 				remaining_pay = flt(max_amount) - flt(pervious_advance) 
 			if flt(self.advance_amount) <= 0:
 				frappe.throw("Enter valid <b>Advance Amount</b>")
@@ -214,8 +230,10 @@ class EmployeeAdvance(Document):
 				else:
 					self.monthly_deduction = ceil(check_advance)
 			if self.advance_type == "Salary Advance":
-				self.advance_amount = flt(self.advance_amount * 0.65,2)
-				self.retained_amount = flt(self.advance_amount * 0.35,2)
+				if (flt(self.total_eligible_amount)-flt(self.total_advance))<flt(self.advance_amount):
+					frappe.throw("The Advance Amount you took is greater than Total Eligible Amount - Total Advance Balance")
+			# 	self.advance_amount = flt(self.advance_amount * 0.65,2)
+				# self.retained_amount = flt(self.advance_amount * 0.35,2)
 
 		else:
 			pass
@@ -250,6 +268,7 @@ class EmployeeAdvance(Document):
 	@frappe.whitelist()
 	def	set_pay_details(self):
 		pay = get_basic_and_gross_pay(employee=self.employee, effective_date=today())
+		self.gross_pay= flt(pay.get("gross_pay"))
 		self.basic_pay = flt(pay.get("basic_pay"))
 		self.net_pay = frappe.db.sql("""select sum(net_pay) 
 			from `tabSalary Structure` 
@@ -257,7 +276,14 @@ class EmployeeAdvance(Document):
 			and is_active = "Yes" """.format(self.employee))[0][0]
 		self.recovery_start_date = get_first_day(today())
 		self.recovery_end_date = get_year_ending(today())
-		
+		first_deduction=0
+		second_deduction=0
+		for deduc in frappe.db.sql("select sd.salary_component, sd.amount from `tabSalary Detail` sd join `tabSalary Structure` st on sd.parent=st.name join `tabEmployee` e on st.employee=e.name where e.name='{}'".format(self.employee), as_dict=True):
+			if deduc.salary_component=="Salary Tax" or deduc.salary_component=="Health Contribution" or deduc.salary_component=="SWS" or deduc.salary_component=="GIS" or deduc.salary_component=="PF":
+				first_deduction+=flt(deduc.amount)
+
+			if deduc.salary_component=="FI Loan Own" or deduc.salary_component=="SWL" or deduc.salary_component=="Financial Institution Loan(Others)" or deduc.salary_component=="Salary Advance Deductions" or deduc.salary_component=="Salary Saving Scheme":
+				second_deduction+=flt(deduc.amount)
 		ssl = frappe.db.sql("""select name,docstatus,str_to_date(concat(yearmonth,"01"),"%Y%m%d") as salary_month
 					from `tabSalary Slip`
 					where employee = '{0}'
@@ -272,10 +298,21 @@ class EmployeeAdvance(Document):
 		self.deduction_month = self.max_no_of_installment
 		self.max_months_limit = frappe.get_value("Employee Group", self.employee_group, "salary_advance_max_months")
 		salary_advance_type = frappe.get_value("Employee Group", self.employee_group, "salary_advance_type")
+		
+		mulitplier=frappe.get_value("Employee Group", self.employee_group, "limit_multiplier")
+		if not mulitplier:
+			frappe.throw("Set the Limit Multiplier in Employee Group.")
+
 		if salary_advance_type== "Flat Amount":
 			self.max_advance_limit = frappe.get_value("Employee Group", self.employee_group, "salary_advance_limit")
 		else:
-			self.max_advance_limit = flt(self.max_months_limit) * flt(self.basic_pay)
+			self.max_advance_limit = (flt(self.gross_pay)*flt(mulitplier))
+			self.retained_amount = (flt(self.gross_pay)-flt(first_deduction))*0.35
+			if (flt(self.gross_pay)*flt(mulitplier))<((((flt(self.gross_pay)-flt(first_deduction))*0.65)-flt(second_deduction))*flt(self.max_months_limit)):
+				self.total_eligible_amount = (flt(self.gross_pay)*flt(mulitplier))
+			else:
+				self.total_eligible_amount = ((((flt(self.gross_pay)-flt(first_deduction))*0.65)-flt(second_deduction))*flt(self.max_months_limit))
+				
 		self.monthly_deduction = ceil(flt(self.advance_amount)/ flt(self.deduction_month))
 
 	def update_travel_request(self):
