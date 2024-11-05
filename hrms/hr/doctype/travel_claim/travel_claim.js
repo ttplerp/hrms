@@ -148,6 +148,12 @@ frappe.ui.form.on("Travel Claim Item", {
 			// console.log(frm.fields_dict['items'].grid.grid_rows_by_docname[cdn]);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[3].read_only=0
 			frappe.model.set_value(cdt, cdn, "halt", 0)
+			
+
+		}
+		if (item.halt==0){
+			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('to_place', true)
+			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('from_place', true)
 		}
 		frm.refresh_field("items");
 		if (frm.doc.__islocal) {
