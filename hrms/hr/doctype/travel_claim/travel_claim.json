@@ -292,7 +292,7 @@
   {
    "fieldname": "travel_details",
    "fieldtype": "Section Break",
-   "label": "Sponsership"
+   "label": "Sponsorship"
   },
   {
    "allow_on_submit": 1,
@@ -608,7 +608,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-21 12:22:04.529044",
+ "modified": "2024-11-05 10:59:52.450309",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim",

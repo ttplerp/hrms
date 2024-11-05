@@ -140,6 +140,16 @@ function get_project_or_maintenance_cost_center(frm) {
 
 frappe.ui.form.on("Travel Claim Item", {
 	"form_render": function (frm, cdt, cdn) {
+		
+		frappe.model.set_value(cdt, cdn, "travel_authorization", frm.doc.ta)
+		
+		var item = frappe.get_doc(cdt, cdn)
+		if (item.idx!=0){
+			// console.log(frm.fields_dict['items'].grid.grid_rows_by_docname[cdn]);
+			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[3].read_only=0
+			frappe.model.set_value(cdt, cdn, "halt", 0)
+		}
+		frm.refresh_field("items");
 		if (frm.doc.__islocal) {
 			var item = frappe.get_doc(cdt, cdn)
 			// if (item.halt == 0) {
