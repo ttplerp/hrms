@@ -8,7 +8,7 @@ import logging
 from datetime import datetime, timedelta
 import datetime
 import calendar
-
+import math
 def post_leave_credits(today=None):
 	"""
 		:param today: First day of the month
@@ -314,7 +314,7 @@ def get_salary_tax(gross_amt):
 	max_amount = flt(max_limit[0][0])
 
 	if flt(gross_amt) > flt(max_amount):
-		tax_amount = ((flt(gross_amt) - 125000.00) * 0.30) + 20208.00
+		tax_amount = math.ceil(((flt(gross_amt) - 125000.00) * 0.30) + 20208.00)
 	else:
 		result = frappe.db.sql("""select ifnull(b.tax,0) from
 			`tabIncome Tax Slab` a, `tabTaxable Salary Slab` b
