@@ -1,4 +1,6 @@
 {
+ "_comments": "[]",
+ "_liked_by": "[]",
  "actions": [],
  "allow_rename": 1,
  "autoname": "HR-APP-.YYYY.-.#####",
@@ -9,13 +11,49 @@
  "email_append_to": 1,
  "engine": "InnoDB",
  "field_order": [
+  "job_title",
+  "cover_letter",
   "details_section",
   "applicant_name",
-  "email_id",
-  "phone_number",
-  "country",
+  "gender",
+  "cid_no",
+  "date_of_birth",
   "column_break_3",
-  "job_title",
+  "email_id",
+  "primary_phone_number",
+  "secondary_phone_number",
+  "contact_details_section",
+  "present_address_column",
+  "village",
+  "gewog",
+  "dzongkhags",
+  "permanent_address_column",
+  "villagetown",
+  "gewogthrome",
+  "dzongkhag",
+  "country",
+  "alternative_contact_column",
+  "full_name",
+  "phone_number",
+  "relation_to_the_applicant",
+  "education_and_employment_details_section",
+  "highest_level_of_education",
+  "schoolinstitution_name",
+  "column_break_29",
+  "year_graduated",
+  "major_field_of_study",
+  "column_break_32",
+  "current_employment_status",
+  "number_of_years_in_job",
+  "documents_submittal_section",
+  "cid_copy",
+  "column_break_37",
+  "resume_copy",
+  "column_break_39",
+  "relevant_documents",
+  "expected_salary_range_per_month_section",
+  "upper_range",
+  "lower_range",
   "designation",
   "status",
   "source_and_rating_section",
@@ -26,14 +64,12 @@
   "applicant_rating",
   "section_break_6",
   "notes",
-  "cover_letter",
   "resume_attachment",
   "resume_link",
   "section_break_16",
   "currency",
   "column_break_18",
-  "lower_range",
-  "upper_range"
+  "agree"
  ],
  "fields": [
   {
@@ -108,18 +144,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "phone_number",
-   "fieldtype": "Data",
-   "label": "Phone Number",
-   "options": "Phone"
-  },
-  {
-   "fieldname": "country",
-   "fieldtype": "Link",
-   "label": "Country",
-   "options": "Country"
-  },
-  {
    "fieldname": "resume_link",
    "fieldtype": "Data",
    "label": "Resume Link"
@@ -169,7 +193,7 @@
   {
    "fieldname": "details_section",
    "fieldtype": "Section Break",
-   "label": "Details"
+   "label": "Personal Details"
   },
   {
    "fieldname": "source_and_rating_section",
@@ -186,13 +210,193 @@
    "fieldtype": "Link",
    "label": "Designation",
    "options": "Designation"
+  },
+  {
+   "fieldname": "primary_phone_number",
+   "fieldtype": "Data",
+   "label": "Primary Phone Number",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "cid_no",
+   "fieldtype": "Data",
+   "label": "CID No"
+  },
+  {
+   "fieldname": "contact_details_section",
+   "fieldtype": "Section Break",
+   "label": "Contact Details"
+  },
+  {
+   "fieldname": "present_address_column",
+   "fieldtype": "Column Break",
+   "label": "Present Address"
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "label": "Village/Town"
+  },
+  {
+   "fieldname": "gewog",
+   "fieldtype": "Data",
+   "label": "Gewog/Throme"
+  },
+  {
+   "fieldname": "dzongkhags",
+   "fieldtype": "Data",
+   "label": "Dzongkhag"
+  },
+  {
+   "fieldname": "permanent_address_column",
+   "fieldtype": "Column Break",
+   "label": "Permanent Address"
+  },
+  {
+   "fieldname": "villagetown",
+   "fieldtype": "Data",
+   "label": "Village/Town"
+  },
+  {
+   "fieldname": "gewogthrome",
+   "fieldtype": "Data",
+   "label": "Gewog/Throme"
+  },
+  {
+   "fieldname": "dzongkhag",
+   "fieldtype": "Data",
+   "label": "Dzongkhag"
+  },
+  {
+   "fieldname": "alternative_contact_column",
+   "fieldtype": "Column Break",
+   "label": "Alternative Contact"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name"
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number"
+  },
+  {
+   "fieldname": "relation_to_the_applicant",
+   "fieldtype": "Data",
+   "label": "Relation to the Applicant"
+  },
+  {
+   "fieldname": "education_and_employment_details_section",
+   "fieldtype": "Section Break",
+   "label": "Education and Employment Details"
+  },
+  {
+   "fieldname": "highest_level_of_education",
+   "fieldtype": "Data",
+   "label": "Highest Level of Education"
+  },
+  {
+   "fieldname": "schoolinstitution_name",
+   "fieldtype": "Data",
+   "label": "School/Institution Name"
+  },
+  {
+   "fieldname": "column_break_29",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "year_graduated",
+   "fieldtype": "Data",
+   "label": "Year Graduated"
+  },
+  {
+   "fieldname": "major_field_of_study",
+   "fieldtype": "Data",
+   "label": "Major Field of Study"
+  },
+  {
+   "fieldname": "column_break_32",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "current_employment_status",
+   "fieldtype": "Data",
+   "label": "Current Employment Status"
+  },
+  {
+   "fieldname": "number_of_years_in_job",
+   "fieldtype": "Data",
+   "label": "Number of years in Job"
+  },
+  {
+   "fieldname": "documents_submittal_section",
+   "fieldtype": "Section Break",
+   "label": "Documents submittal"
+  },
+  {
+   "fieldname": "cid_copy",
+   "fieldtype": "Attach",
+   "label": "CID Copy"
+  },
+  {
+   "fieldname": "column_break_37",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "resume_copy",
+   "fieldtype": "Attach",
+   "label": "Resume Copy"
+  },
+  {
+   "fieldname": "column_break_39",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "relevant_documents",
+   "fieldtype": "Attach",
+   "label": "Relevant Documents"
+  },
+  {
+   "fieldname": "expected_salary_range_per_month_section",
+   "fieldtype": "Section Break",
+   "label": "Expected Salary Range per month"
+  },
+  {
+   "fieldname": "secondary_phone_number",
+   "fieldtype": "Data",
+   "label": "Secondary Phone Number"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Data",
+   "label": "Country"
+  },
+  {
+   "default": "0",
+   "fieldname": "agree",
+   "fieldtype": "Check",
+   "label": "I Agree",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-user",
  "idx": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-01-12 16:28:53.196881",
+ "modified": "2024-11-07 18:39:18.468977",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Applicant",

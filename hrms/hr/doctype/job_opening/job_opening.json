@@ -28,8 +28,7 @@
   "upper_range",
   "column_break_20",
   "publish_salary_range",
-  "section_break_22",
-  "term_of_reference"
+  "section_break_22"
  ],
  "fields": [
   {
@@ -162,17 +161,12 @@
   {
    "fieldname": "section_break_22",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "term_of_reference",
-   "fieldtype": "Attach",
-   "label": "Terms of Reference"
   }
  ],
  "icon": "fa fa-bookmark",
  "idx": 1,
  "links": [],
- "modified": "2024-10-31 20:40:07.685158",
+ "modified": "2024-11-07 18:38:37.178562",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Opening",

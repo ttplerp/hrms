@@ -13,7 +13,6 @@
  "client_script": "",
  "creation": "2024-10-21 15:52:15.351674",
  "currency": "BTN",
- "declearation": "<div class=\"ql-editor read-mode\"><p>Please complete the form according to the provided instructions and include a copy of your CID, CV (curriculum vitae) and any other Relevant Documents when submitting your job application. for support mail to <strong><a href=\"mailto:hr@rigsarbhutan.com\" rel=\"noopener noreferrer\">hr@rigsarbhutan.com</a></strong> or use whatsapp Portal from Homepage</p></div>",
  "doc_type": "Job Applicant",
  "docstatus": 0,
  "doctype": "Web Form",
@@ -23,8 +22,8 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 50,
- "modified": "2024-11-01 12:26:08.759191",
- "modified_by": "narayanneopaney71@gmail.com",
+ "modified": "2024-11-07 18:31:23.672063",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "job-application-new",
  "owner": "narayanneopaney71@gmail.com",
@@ -37,7 +36,6 @@
  "success_message": "Thank you for applying.",
  "success_title": "Successful",
  "success_url": "/jobs",
- "terms_of_reference": "<div class=\"ql-editor read-mode\"><p>Title: Project Manager for Road Construction</p><p><br></p><p>Objective: The Project Manager will oversee the planning, design, and construction of a new road project. The project aims to improve transportation infrastructure and support economic development in the region.</p><p><br></p><p><strong><u>Responsibilities:</u></strong></p><p><br></p><ol><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Develop and maintain a detailed project plan, including timelines, budgets, and resource requirements.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Manage project risks and issues, and develop contingency plans as needed.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Coordinate with stakeholders, including government agencies, contractors, and community members.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Ensure compliance with all relevant regulations and standards.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Manage project finances, including budget forecasting, cost tracking, and financial reporting.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Ensure the safety of all personnel involved in the project.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Conduct regular site visits to monitor construction progress and quality.</li></ol><p><strong><u>Qualifications:</u></strong></p><p><br></p><ol><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Bachelor's degree in civil engineering or a related field.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>At least&nbsp;years of experience managing road construction projects.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Strong project management skills, including budgeting, scheduling, and risk management.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Excellent communication skills, with the ability to work effectively with diverse stakeholders.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Knowledge of relevant regulations and standards.</li><li data-list=\"ordered\"><span class=\"ql-ui\" contenteditable=\"false\"></span>Familiarity with project management software tools.</li></ol><p><br></p></div>",
  "title": "Job Application",
  "web_form_fields": [
   {
@@ -137,7 +135,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -149,7 +147,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -175,7 +173,7 @@
    "max_value": 0,
    "options": "Phone",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -336,7 +334,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -348,7 +346,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -360,7 +358,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -461,7 +459,7 @@
    "max_value": 0,
    "options": "Currently Employed\nEmployed part time/Internship \nJust completed Studies [Unemployed]\nUnemployed",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -499,7 +497,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -524,7 +522,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -650,7 +648,7 @@
    "label": "",
    "max_length": 0,
    "max_value": 0,
-   "options": "Please complete the form according to the provided instructions and include a copy of your <b>CID, CV (curriculum vitae) </b>and any other Relevant Documents when submitting your job application. \n\n<br> For support mail to hr@rigsarbhutan.com or use whatsapp Portal from Homepage",
+   "options": "I hereby declare that all information provided in this document is true and correct to the best of my knowledge and belief. I understand that any false statements or misrepresentations may result in penalties or legal action. This declaration is made with full understanding of the implications and responsibilities therein.\n",
    "read_only": 0,
    "reqd": 0,
    "show_in_filter": 0
