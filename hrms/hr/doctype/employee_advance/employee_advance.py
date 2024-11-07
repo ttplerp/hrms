@@ -213,22 +213,23 @@ class EmployeeAdvance(Document):
 			else:
 				max_amount = self.max_advance_limit
 				# (flt(self.basic_pay) * flt(max_month_allow_from_employee_group))
-				remaining_pay = flt(max_amount) - flt(pervious_advance) 
+				remaining_pay = flt(max_amount) - flt(pervious_advance)	
 			if flt(self.advance_amount) <= 0:
 				frappe.throw("Enter valid <b>Advance Amount</b>")
-			elif flt(self.advance_amount) >= (flt(remaining_pay)+1):
-				frappe.throw("<b>Advance Amount</b> should not be more than max amount limit")
-			elif flt(pervious_advance) == flt(max_amount):
-				frappe.throw("Your <b>Salary Advance</b> was alrady claimed")
-			else:
-				self.max_no_of_installment = month_diff(self.recovery_end_date,self.recovery_start_date)
-				check_advance = flt(self.advance_amount) / flt(self.deduction_month)
-				if flt(self.advance_amount) > flt(max_amount):
-					frappe.throw("<b>Advance Amount</b> can not exced <b>Maximum Advance Limit</b> ")
-				# elif flt(check_advance) > flt(self.net_pay):
-				# 	frappe.throw("Your <b>Advance Amount</b> can not exced <b>Net Pay</b>")
+			if self.advance_type != "Other Advance":
+				if flt(self.advance_amount) >= (flt(remaining_pay)+1):
+					frappe.throw("<b>Advance Amount</b> should not be more than max amount limit")
+				elif flt(pervious_advance) == flt(max_amount):
+					frappe.throw("Your <b>Salary Advance</b> was alrady claimed")
 				else:
-					self.monthly_deduction = ceil(check_advance)
+					self.max_no_of_installment = month_diff(self.recovery_end_date,self.recovery_start_date)
+					check_advance = flt(self.advance_amount) / flt(self.deduction_month)
+					if flt(self.advance_amount) > flt(max_amount):
+						frappe.throw("<b>Advance Amount</b> can not exced <b>Maximum Advance Limit</b> ")
+					# elif flt(check_advance) > flt(self.net_pay):
+					# 	frappe.throw("Your <b>Advance Amount</b> can not exced <b>Net Pay</b>")
+					else:
+						self.monthly_deduction = ceil(check_advance)
 			if self.advance_type == "Salary Advance":
 				if (flt(self.total_eligible_amount)-flt(self.total_advance))<flt(self.advance_amount):
 					frappe.throw("The Advance Amount you took is greater than Total Eligible Amount - Total Advance Balance")
@@ -473,10 +474,10 @@ class EmployeeAdvance(Document):
 			account_select = frappe.db.get_value("Company", self.company,"salary_advance_account")
 		elif self.advance_type == "Travel Advance":
 			account_select = frappe.db.get_value("Company", self.company,"travel_advance_account")
-		elif self.advance_type == "Imprest Advance":
-			account_select = frappe.db.get_value("Company", self.company,"imprest_advance_account")
+		elif self.advance_type == "Medical Advance":
+			account_select = frappe.db.get_value("Company", self.company,"medical_advance_account")
 		elif self.advance_type == "Other Advance":
-			account_select = self.advance_account
+			account_select = frappe.db.get_value("Company", self.company,"other_advance_account")
 		else:
 			frappe.throw("Choose different advance type")
 		
