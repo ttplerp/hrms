@@ -708,11 +708,16 @@ class TravelClaim(Document):
                 mileage_acc_field = "training_out_country_mileage_account"
             else:
                 mileage_acc_field = "training_in_country_mileage_account"
+        elif self.travel_type in ("Workshop", "Meeting and Seminars"):
+            if self.place_type == "Out Country":
+                mileage_acc_field = "wms_out_country_mileage_account"
+            else:
+                mileage_acc_field = "wms_in_country_mileage_account"
         else:
             mileage_acc_field = "travel_mileage_account"
         mileage_acc = frappe.db.get_value("Company", self.company, "travel_mileage_account")
         if not mileage_acc:
-            frappe.throw("Please set the mileage account in company settings")
+            frappe.throw("Please set the {} mileage account in company settings".format(self.travel_type))
 
         je.append("accounts", {
                 "account": expense_account,
