@@ -801,6 +801,8 @@ class TravelClaim(Document):
                     "reference_type": "Travel Claim",
                     "reference_name": self.name,
                     "credit_in_account_currency": bank_amt,
+                    "party_type": "Employee",
+                    "party": self.employee,
                     "credit": bank_amt,
                     "business_activity": self.business_activity,
                 })
@@ -835,7 +837,10 @@ class TravelClaim(Document):
         auth_doc=frappe.get_doc("Travel Authorization", self.ta)
         
         travel_claim_limit=len(self.get("items"))
-        travel_auth_limit=len(auth_doc.get_all_children())-1
+        travel_auth_limit= 0
+        for docs in auth_doc.get_all_children():
+            if docs.doctype=="Travel Authorization Item":
+                travel_auth_limit+=1
 
         if travel_claim_limit< travel_auth_limit:
             frappe.throw("You cannot delete items from the travel claim which was already there in travel auth")
