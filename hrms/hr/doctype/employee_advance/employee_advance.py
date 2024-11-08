@@ -672,6 +672,10 @@ def select_account(advance_type, company):
 		account = frappe.db.get_value("Company", company, "salary_advance_account")
 	elif advance_type == "Travel Advance":
 		account = frappe.db.get_value("Company", company, "travel_advance_account")
+	elif advance_type == "Medical Advance":
+		account = frappe.db.get_value("Company", company, "medical_advance_account")
+	elif advance_type == "Other Advance":
+		account = frappe.db.get_value("Company", company, "other_advance_account")
 	# elif advance_type == "Imprest Advance":
 	# 	account = frappe.db.get_value("Company", company, "imprest_advance_account")
 	else:
