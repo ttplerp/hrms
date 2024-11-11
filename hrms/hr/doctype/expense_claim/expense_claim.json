@@ -46,15 +46,15 @@
   "payable_account",
   "accounting_dimensions_section",
   "project",
-  "dimension_col_break",
   "more_details",
   "payment_journal",
+  "ref_doc",
+  "dimension_col_break",
   "status",
+  "report_supporting_doc",
   "amended_from",
   "advance_payments",
-  "advances",
-  "ref_doc",
-  "report_supporting_doc"
+  "advances"
  ],
  "fields": [
   {
@@ -103,10 +103,10 @@
    "fieldtype": "Column Break"
   },
   {
+   "description": "<b>[Note: This user will be notified via email for approval or verification] </b>",
    "fieldname": "expense_approver",
    "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Expense Approver",
+   "label": "Verifier or Approver",
    "options": "User"
   },
   {
@@ -193,6 +193,7 @@
   {
    "fieldname": "task",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Task",
    "options": "Task",
    "remember_last_selected_value": 1
@@ -335,6 +336,7 @@
   {
    "fieldname": "accounting_dimensions_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Accounting Dimensions"
   },
   {
@@ -412,7 +414,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-22 15:13:46.721233",
+ "modified": "2024-11-11 09:52:04.722937",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",

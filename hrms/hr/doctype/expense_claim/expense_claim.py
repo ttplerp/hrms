@@ -43,10 +43,73 @@ class ExpenseClaim(AccountsController):
 		self.calculate_taxes()
 		self.set_status()
 		self.update_ref_doc()
+		self.send_notification()
+		self.validate_approver()
 		# self.calculate_grand_total()
 		if self.task and not self.project:
 			self.project = frappe.db.get_value("Task", self.task, "project")
+	
+	def validate_approver(self):
+		emp_user_id = frappe.db.get_value("Employee", self.employee, "user_id")
+		if emp_user_id == self.expense_approver:
+			frappe.throw("Approver cannot be set as the employee {} ".format(self.employee))
+		
+		action = frappe.request.form.get('action')
+		if action in ("Forward to Approver","Forward to Reviewer") and frappe.session.user == self.expense_approver:
+			frappe.throw(_("Not allowed to <b>Forward To</b> yourself. Change the <b>Expense Approver</b> Field value before forwarding."))
 
+	def send_notification(self):
+		action = frappe.request.form.get('action')  
+		if self.workflow_state == "Draft" or action == "Save":
+			return
+		elif self.workflow_state in ("Approved", "Rejected", "Verified", "Cancelled"):
+			self.notify_employee()
+		elif self.workflow_state not in ("Approved", "Rejected", "Cancelled"):
+			self.notify_approval()
+
+	#added by Thukten on 11-11-2024
+	def notify_approval(self):
+		args = self.get_args()
+		email_template = frappe.get_doc("Email Template", "Expense Claim")
+		if not email_template:
+			frappe.msgprint(_("Please set Email Template for Expense Claim "))
+		message = frappe.render_template(email_template.response, args)
+		recipients = self.expense_approver
+		subject = email_template.subject
+		self.send_mail(recipients,message, subject)
+	
+	#added by Thukten on 11-11-2024
+	def notify_employee(self):
+		args = self.get_args()
+
+		doc_link = frappe.utils.get_url_to_form('Expense Claim', self.name)
+		message = """
+				The Expense Claim {name} is <b>{state}</b> <br/>
+				<a href='{link}'>Click to view</a>
+			""".format(name=self.name, state=self.workflow_state, link=doc_link)
+
+		doc = frappe.get_doc("Employee", self.employee)
+		recipients = doc.user_id if doc.user_id else self.owner
+		subject = "Expense Claim Notification"
+		self.send_mail(recipients,message, subject)
+
+	#added by Thukten on 11-11-2024
+	def send_mail(self, recipients, message, subject):
+		try:
+			frappe.sendmail(
+					recipients=recipients,
+					subject=_(subject),
+					message= _(message),
+				)
+		except:
+			pass
+	
+	#Added by Thukten on 11-11-2024
+	def get_args(self):
+		parent_doc = frappe.get_doc(self.doctype, self.name)
+		args = parent_doc.as_dict()
+		return args
+	
 	def validate_references(self):
 		for a in self.expenses:
 			if a.expense_type in ('Leave Encashment','Travel','Meeting & Seminars','Training') and not a.reference:
@@ -674,7 +737,6 @@ def make_expense_claim_for_delivery_trip(source_name, target_doc=None):
 		{"Delivery Trip": {"doctype": "Expense Claim", "field_map": {"name": "delivery_trip"}}},
 		target_doc,
 	)
-
 	return doc
 
 def get_permission_query_conditions(user):
@@ -687,7 +749,7 @@ def get_permission_query_conditions(user):
 	if "System Manager" in user_roles:
 		return
 	
-	if "Expense Approver" in user_roles or "Accounts User" in user_roles or "Accounts Master" in user_roles:
+	if "Expense Approver" in user_roles or "Expense Verifier" in user_roles or "Accounts User" in user_roles or "Accounts Master" in user_roles:
 		return """(
 			exists(select 1
 				from `tabEmployee` as e
@@ -700,6 +762,11 @@ def get_permission_query_conditions(user):
 				and ab.employee = e.name
 				and bi.parent = ab.name
 				and bi.branch = `tabExpense Claim`.branch)
+			or  
+			(`tabExpense Claim`.expense_approver = '{user}' 
+			and 
+			`tabExpense Claim`.workflow_state not in ('Draft','Cancelled')
+			)
 		)""".format(user=user)
 
 	return """(
@@ -709,6 +776,5 @@ def get_permission_query_conditions(user):
 				from `tabEmployee`
 				where `tabEmployee`.name = `tabExpense Claim`.employee
 				and `tabEmployee`.user_id = '{user}')
-		or 
-		(`tabExpense Claim`.expense_approver = '{user}' and `tabExpense Claim`.workflow_state not in ('Draft','Claimed','Approved','Rejected','Waiting for Verification','Waiting Approval','Cancelled'))
+		
 	)""".format(user=user)

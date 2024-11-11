@@ -190,7 +190,7 @@ frappe.ui.form.on("Expense Claim", {
 			return {
 				filters: [
 					['company', '=', frm.doc.company],
-					['account_type', 'in', ["Tax", "Chargeable", "Income Account", "Expenses Included In Valuation"]]
+					['account_type', 'in', ["Tax", "Chargeable","Payable", "Income Account", "Expenses Included In Valuation"]]
 				]
 			};
 		});
@@ -208,6 +208,7 @@ frappe.ui.form.on("Expense Claim", {
 
 		frm.set_query("task", function() {
 			return {
+				
 				filters: {
 					'project': frm.doc.project
 				}
