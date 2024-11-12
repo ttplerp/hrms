@@ -818,7 +818,7 @@ class TravelClaim(Document):
         #Set a reference to the claim journal entry
 
     ##
-    # Update the claim reference on travel authorization
+    # Update the claim reference on travel authorization and append items
     ##
     def update_travel_authorization(self):
         count_a = 0
