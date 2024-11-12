@@ -293,7 +293,7 @@ class TravelAuthorization(Document):
             if update:
                 frappe.db.set_value("Travel Authorization Item", item.name, "no_days", item.no_days)
         
-        if self.items:
+        if self.items and self.workflow_state != "Rejected":
             # check if the travel dates are already used in other travel authorization
             tas = frappe.db.sql("""select t3.idx, t1.name, t2.date, t2.till_date
                     from 
