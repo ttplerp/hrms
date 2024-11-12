@@ -223,7 +223,7 @@
   {
    "fieldname": "travel_details",
    "fieldtype": "Section Break",
-   "label": "Sponsership"
+   "label": "Travel Expense Sponsor"
   },
   {
    "allow_on_submit": 1,
@@ -515,7 +515,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-18 15:34:06.692945",
+ "modified": "2024-11-10 18:04:31.836865",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Authorization",

@@ -105,8 +105,8 @@ class TravelAuthorization(Document):
         notify_workflow_states(self)
 
     def on_update_after_submit(self):
-        if self.travel_claim:
-            frappe.throw("Cannot change once claim is created")
+        # if self.travel_claim:
+        #     frappe.throw("Cannot change once claim is created")
         self.validate_travel_dates(update=True)
         self.check_double_dates()
         self.check_leave_applications()
