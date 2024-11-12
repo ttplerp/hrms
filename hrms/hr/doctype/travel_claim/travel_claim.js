@@ -141,9 +141,11 @@ function get_project_or_maintenance_cost_center(frm) {
 frappe.ui.form.on("Travel Claim Item", {
 	"form_render": function (frm, cdt, cdn) {
 		
-		frappe.model.set_value(cdt, cdn, "travel_authorization", frm.doc.ta)
-		
+		frappe.model.set_value(cdt, cdn, "travel_authorization", frm.doc.ta);
+		frappe.model.set_value(cdt, cdn, "currency_exchange_date", frm.doc.ta_date);
+		frm.refresh_field("items");
 		var item = frappe.get_doc(cdt, cdn)
+		
 		if (item.idx!=0){
 			// console.log(frm.fields_dict['items'].grid.grid_rows_by_docname[cdn]);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[3].read_only=0
@@ -214,6 +216,10 @@ frappe.ui.form.on("Travel Claim Item", {
 	},
 	"date": function (frm, cdt, cdn) {
 		update_days(frm, cdt, cdn);
+		var items = frappe.get_doc(cdt, cdn)
+		if(items.halt==0){
+			frappe.model.set_value(cdt, cdn, "till_date", items.date)
+		}
 	},
 	"till_date": function (frm, cdt, cdn) {
 		update_days(frm, cdt, cdn);

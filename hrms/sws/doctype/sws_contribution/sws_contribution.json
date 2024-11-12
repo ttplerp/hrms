@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "SWSC.YY.MM.DD.#####",
  "creation": "2024-10-31 14:12:51.927428",
@@ -66,7 +67,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-10-31 14:33:49.862167",
+ "modified": "2024-11-12 15:03:30.076012",
  "modified_by": "Administrator",
  "module": "SWS",
  "name": "SWS Contribution",
