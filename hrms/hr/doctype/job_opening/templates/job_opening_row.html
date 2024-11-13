@@ -4,7 +4,9 @@
 	{%- if doc.publish_salary_range -%}
 	<p><b>{{_("Salary range per month")}}: </b>{{ frappe.format_value(frappe.utils.flt(doc.lower_range), currency=doc.currency) }} - {{ frappe.format_value(frappe.utils.flt(doc.upper_range), currency=doc.currency) }}</p>
 	{% endif %}
+	<!--
 	<p><strong><a href='{{ doc.term_of_reference }}' target="new"> <i> Download Terms Of Reference</i></a></strong></p>
+	-->
 	<div>
 		{%- if doc.job_application_route -%}
 		<a class='btn btn-primary'
