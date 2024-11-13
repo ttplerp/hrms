@@ -164,7 +164,7 @@ class ProcessPerformanceEvaluation(Document):
         })
         
         if emp_list: 
-            '''       
+                   
             if len(emp_list) > 300:
                 frappe.enqueue(
                     create_performance_evaluation_for_employees,
@@ -176,9 +176,9 @@ class ProcessPerformanceEvaluation(Document):
                 create_performance_evaluation_for_employees(emp_list, args, publish_progress=False)
                 # since this method is called via frm.call this doc needs to be updated manually
                 self.reload()
-            '''
-            create_performance_evaluation_for_employees(emp_list, args, publish_progress=False)
-            self.reload()
+            
+            # create_performance_evaluation_for_employees(emp_list, args, publish_progress=False)
+            # self.reload()
 
         if mr_emp_list:
             create_performance_evaluation_for_mr_employees(mr_emp_list, args, publish_progress=True)
@@ -190,10 +190,11 @@ def get_existing_performance_evaluation(employees, args):
 			select distinct employee from `tabPerformance Evaluation`
             where docstatus !=2 and company = %s
             and month = %s
+            and fiscal_year = %s
             and employee in (%s)
             """
-        % ("%s", "%s", ", ".join(["%s"] * len(employees))),
-        [args.company, args.month] + employees,
+        % ("%s", "%s", "%s", ", ".join(["%s"] * len(employees))),
+        [args.company, args.fiscal_year, args.month] + employees,
     )
 
 def get_existing_performance_evaluation_mr(mr_employees, args):
@@ -202,10 +203,11 @@ def get_existing_performance_evaluation_mr(mr_employees, args):
 			select distinct mr_employee from `tabPerformance Evaluation`
             where docstatus !=2 and company = %s
             and month = %s
+            and fiscal_year = %s
             and mr_employee in (%s)
             """
-        % ("%s", "%s", ", ".join(["%s"] * len(mr_employees))),
-        [args.company, args.month] + mr_employees,
+        % ("%s", "%s", "%s", ", ".join(["%s"] * len(mr_employees))),
+        [args.company, args.fiscal_year, args.month] + mr_employees,
     )
 
 def get_eval_list(employee):
@@ -231,6 +233,7 @@ def create_performance_evaluation_for_mr_employees(mr_employees, args, title=Non
     count = 0
     process_performance_evaluation = frappe.get_doc("Process Performance Evaluation", args.process_performance_evaluation)
     for mr_emp in process_performance_evaluation.get("mr_employees"):
+        error = None
         pms_employee_group = frappe.get_value("Muster Roll Employee", mr_emp.mr_employee, "pms_employee_group")
         if not pms_employee_group:
             frappe.throw(_("Set PMS Employee Group for Muster Roll Emplyee ID {}".format(mr_emp.mr_employee)))
@@ -277,14 +280,30 @@ def create_performance_evaluation_for_mr_employees(mr_employees, args, title=Non
                         row = doc.append('work_competency', {})
                         row.update(d)
                         row.evaluator = 0
+                    doc.save()
 
-                    ppe_detail = frappe.get_doc("PPE MR Employee Detail", mr_emp.name)
-                    try:
-                        doc.save()
-                        ppe_detail.db_set("performance_evaluation", doc.name)
-                    except Exception as e:
-                        error = str(e)
-                    count += 1
+        ppe_detail = frappe.get_doc("PPE MR Employee Detail", mr_emp.name)
+        try:
+            # ppe_detail.db_set("performance_evaluation", doc.name)
+            pass
+        except Exception as e:
+            error = str(e)
+        count += 1
+
+        if error:
+            ppe_detail.db_set("status", "Failed")
+            ppe_detail.db_set("error", error)
+            process_performance_evaluation.append(
+                "employees_failed",
+                {
+                    "mr_employee": mr_emp.employee,
+                    "mr_employee_name": mr_emp.employee_name,
+                    "status": "Failed",
+                    "error": error,
+                },
+            )
+        else:
+            ppe_detail.db_set("status", "Success")
 
     process_performance_evaluation.reload()
 
@@ -300,6 +319,7 @@ def create_performance_evaluation_for_employees(employees, args, title=None, pub
     total_count = len(set(employees))
 
     for emp in process_performance_evaluation.get("employees"):
+        error = None
         employee_group = frappe.get_value("Employee", emp.employee, "employee_group")
         if not employee_group:
             frappe.throw(_("Set Employee Group for emplyee ID {}".format(emp.employee)))
@@ -315,8 +335,6 @@ def create_performance_evaluation_for_employees(employees, args, title=None, pub
             evals = []
             for a in evaluator_list:
                 evals.append(a.evaluator)
-
-            error = None
 
             # get work competency
             data = frappe.db.sql("""
@@ -360,59 +378,60 @@ def create_performance_evaluation_for_employees(employees, args, title=None, pub
                         row = doc.append('work_competency', {})
                         row.update(d)
                         row.evaluator = 0
-                    ppe_detail = frappe.get_doc("PPE Employee Detail", emp.name)
-                    try:
-                        doc.save()
-                        successful += 1
-                        ppe_detail.db_set("performance_evaluation", doc.name)
-                    except Exception as e:
-                        error = str(e)
-                        failed += 1
-                    count += 1
+                    
+                    doc.save()
+        ppe_detail = frappe.get_doc("PPE Employee Detail", emp.name)
+        try:
+            successful += 1
+            # ppe_detail.db_set("performance_evaluation", doc.name)
+        except Exception as e:
+            error = str(e)
+            failed += 1
+        count += 1
 
-            # ppe_detail.db_set("performance_evaluation", pe.name)
-            if error:
-                ppe_detail.db_set("status", "Failed")
-                ppe_detail.db_set("error", error)
-                process_performance_evaluation.append(
-                    "employees_failed",
-                    {
-                        "employee": emp.employee,
-                        "employee_name": emp.employee_name,
-                        "status": "Failed",
-                        "error": error,
-                    },
+        # ppe_detail.db_set("performance_evaluation", pe.name)
+        if error:
+            ppe_detail.db_set("status", "Failed")
+            ppe_detail.db_set("error", error)
+            process_performance_evaluation.append(
+                "employees_failed",
+                {
+                    "employee": emp.employee,
+                    "employee_name": emp.employee_name,
+                    "status": "Failed",
+                    "error": error,
+                },
+            )
+        else:
+            ppe_detail.db_set("status", "Success")
+
+        if publish_progress:
+            show_progress = 0
+            if count <= refresh_interval:
+                show_progress = 1
+            elif refresh_interval > total_count:
+                show_progress = 1
+            elif count % refresh_interval == 0:
+                show_progress = 1
+            if show_progress:
+                description = (
+                    " Processing {}: ".format(doc.name if doc else emp.employee)
+                    + "["
+                    + str(count)
+                    + "/"
+                    + str(total_count)
+                    + "]"
                 )
-            else:
-                ppe_detail.db_set("status", "Success")
-
-            if publish_progress:
-                show_progress = 0
-                if count <= refresh_interval:
-                    show_progress = 1
-                elif refresh_interval > total_count:
-                    show_progress = 1
-                elif count % refresh_interval == 0:
-                    show_progress = 1
-                if show_progress:
-                    description = (
-                        " Processing {}: ".format(doc.name if doc else emp.employee)
-                        + "["
-                        + str(count)
-                        + "/"
-                        + str(total_count)
-                        + "]"
-                    )
-                    frappe.publish_progress(
-                        count
-                        * 100
-                        / len(set(employees) - set(performance_evaluation_exists_for)),
-                        title=title
-                        if title
-                        else _("Creating Performance Evaluation..."),
-                        description=description,
-                    )
-                    pass
+                frappe.publish_progress(
+                    count
+                    * 100
+                    / len(set(employees) - set(performance_evaluation_exists_for)),
+                    title=title
+                    if title
+                    else _("Creating Performance Evaluation..."),
+                    description=description,
+                )
+                pass
     process_performance_evaluation.db_set("performance_evaluation_created", 0 if failed else 1)
     process_performance_evaluation.db_set(
         "successful", cint(process_performance_evaluation.successful) + cint(successful)
