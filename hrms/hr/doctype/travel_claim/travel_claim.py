@@ -16,7 +16,8 @@ from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_ban
 class TravelClaim(Document):
     def validate(self):
         self.workflow_action()
-        validate_workflow_states(self)
+        if frappe.request.form.get('action') != "Save":
+            validate_workflow_states(self)
         self.validate_dates()
         self.validate_duplicate()
         self.validate_cost_center()
@@ -24,7 +25,7 @@ class TravelClaim(Document):
             self.set_supervisor_manager()
         if self.training_event:
             self.update_training_event()
-        if self.workflow_state not in ("Claimed","Cancelled"):
+        if self.workflow_state not in ("Claimed","Cancelled") and frappe.request.form.get('action')!="Save":
             notify_workflow_states(self)
                 
     def workflow_action(self):
@@ -52,7 +53,7 @@ class TravelClaim(Document):
                                 )
                                 group by u.name
                             """.format(branch=self.branch), as_dict=True):
-                recipients.append(a.parent)
+                recipients.append(a.name)
             self.notify_reviewers(recipients)
     
     def notify_reviewers(self, recipients):
