@@ -22,21 +22,21 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 50,
- "modified": "2024-11-07 18:31:23.672063",
- "modified_by": "Administrator",
+ "modified": "2024-11-15 17:47:26.420611",
+ "modified_by": "narayanneopaney71@gmail.com",
  "module": "HR",
  "name": "job-application-new",
  "owner": "narayanneopaney71@gmail.com",
  "payment_button_label": "Buy Now",
  "published": 1,
- "route": "job-application",
+ "route": "job-application-for-office-staff",
  "show_attachments": 0,
  "show_list": 0,
  "show_sidebar": 0,
  "success_message": "Thank you for applying.",
  "success_title": "Successful",
  "success_url": "/jobs",
- "title": "Job Application",
+ "title": "Job Application For Office Staff",
  "web_form_fields": [
   {
    "allow_read_on_all_link_options": 0,
@@ -285,7 +285,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -297,7 +297,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -309,7 +309,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
