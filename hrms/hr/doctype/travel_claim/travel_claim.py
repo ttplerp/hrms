@@ -59,6 +59,7 @@ class TravelClaim(Document):
     def notify_reviewers(self, recipients):
         parent_doc = frappe.get_doc(self.doctype, self.name)
         args = parent_doc.as_dict()
+        args.workflow_state = self.workflow_state
         try:
             email_template = frappe.get_doc("Email Template", 'Travel Claim Status Notification')
             message = frappe.render_template(email_template.response, args)
@@ -103,13 +104,6 @@ class TravelClaim(Document):
 
         if self.supervisor_approval and self.hr_approval:
             self.db_set("hr_approved_on", nowdate())
-        
-        # Following line commented by SHIV on 2020/10/04
-        #self.sendmail(self.employee, "Travel Claim Approved" + str(self.name), "Your " + str(frappe.get_desk_link("Travel Claim", self.name)) + " has been approved and sent to Accounts Section. Kindly follow up.")
-        notify_workflow_states(self)
-        # if self.for_maintenance_project:
-        #     self.update_project_and_maintenance()
-        #     self.update_project_and_maintenance_cost()
 
     def update_training_event(self, cancel = False):
         if not cancel:
@@ -123,167 +117,6 @@ class TravelClaim(Document):
                     update `tabTraining Event Employee` set travel_claim_id = NULL where name = '{}'
                     """.format(self.training_event_child_ref))
 
-    # added by phuntsho and kinley on oct 12,2021
-    def update_project_and_maintenance(self):
-        references = {}
-        for a in self.items:
-            if self.for_maintenance_project == 1 and not a.reference_name:
-                frappe.throw("Reference cannot be empty for Project/Maintenance Travel")
-            if a.reference_name:
-                if a.reference_name not in references:
-                    references.update({a.reference_name: {"reference_type": a.reference_type, "amount": flt(a.amount), "from_date": a.date, "to_date": None}})
-                else:
-                    references[a.reference_name]['amount'] += flt(a.amount)
-                    references[a.reference_name]['to_date'] = a.date
-            else:
-                if "no_ref" not in references:
-                    references.update({"no_ref": {"reference_type": "Travel Claim", "amount": flt(a.amount)}})
-                else:
-                    references["no_ref"]["amount"] += flt(a.amount)
-        for ref in references:
-            if ref != "no_ref" and references[ref]['reference_type']:
-                if references[ref]['reference_type'] in ("Project", "Maintenance Order"):
-                    query = """
-                        INSERT INTO {table}(name, parentfield, parenttype, employee, employee_name, 
-                                from_date, to_date,	total_claim_amount,	travel_claim, parent)
-                        VALUES('{name}','{parentfield}','{parenttype}',	'{emp}','{emp_name}',
-                                '{from_date}', '{to_date}', {amount},'{claim}',	'{parent}')
-                        """.format(
-                            table='`tabProject and Maintenance Travel Log`', 
-                            name=self.name+" "+ref, 
-                            parentfield = 'travel_log', 
-                            parenttype = references[ref]['reference_type'],
-                            emp=self.employee, 
-                            emp_name=self.employee_name, 
-                            from_date = references[ref]['from_date'], 
-                            to_date = references[ref]['to_date'] if references[ref]['to_date'] else references[ref]['from_date'],
-                            amount = flt(references[ref]['amount']), 
-                            claim = self.name, 
-                            parent=ref)
-                    frappe.db.sql(query)
-                elif references[ref]['reference_type'] == "Task":
-                    query_one = """
-                        INSERT INTO {table}(name, parentfield, parenttype, employee, employee_name, 
-                                from_date, to_date,	total_claim_amount,	travel_claim, parent)
-                        VALUES ('{name}', '{parentfield}', '{parenttype}', '{emp}', '{emp_name}',
-                                '{from_date}', '{to_date}', {amount}, '{claim}', '{parent}')
-                        """.format(
-                            table='`tabProject and Maintenance Travel Log`', 
-                            name=self.name+" "+ref, 
-                            parentfield = 'travel_log', 
-                            parenttype = "Project",
-                            emp=self.employee, 
-                            emp_name=self.employee_name, 
-                            from_date = references[ref]['from_date'], 
-                            to_date = references[ref]['to_date']  if references[ref]['to_date'] else references[ref]['from_date'],
-                            amount = flt(references[ref]['amount']), 
-                            claim = self.name, 
-                            parent=frappe.db.get_value("Task",ref,"project"))
-                    query_two = """
-                        INSERT INTO {table}(name, parentfield, parenttype, employee, employee_name, 
-                                from_date, to_date,	total_claim_amount,	travel_claim, parent)
-                        VALUES('{name}', '{parentfield}', '{parenttype}', '{emp}', '{emp_name}',
-                                '{from_date}', '{to_date}', {amount}, '{claim}', '{parent}')
-                        """.format(
-                            table='`tabProject and Maintenance Travel Log`', 
-                            name=str(self.name+" "+ref)+"_1", 
-                            parentfield = 'travel_log', 
-                            parenttype = references[ref]['reference_type'],
-                            emp=self.employee, 
-                            emp_name=self.employee_name, 
-                            from_date = references[ref]['from_date'], 
-                            to_date = references[ref]['to_date']  if references[ref]['to_date'] else references[ref]['from_date'],
-                            amount = flt(references[ref]['amount']), 
-                            claim = self.name, 
-                            parent=ref)
-                    frappe.db.sql(query_one)
-                    frappe.db.sql(query_two)
-
-    # added by phuntsho and kinley on oct 12,2021
-    def update_project_and_maintenance_cost(self):
-        """ update the cost on the specified project. """
-        references = {}
-        for a in self.items:
-            if self.for_maintenance_project == 1 and not a.reference_name:
-                frappe.throw("Reference cannot be empty for Project/Maintenance Travel")
-            if a.reference_name:
-                if a.reference_name not in references:
-                    references.update({a.reference_name: {"reference_type": a.reference_type, "amount": flt(a.amount)}})
-                else:
-                    references[a.reference_name]['amount'] += flt(a.amount)
-            else:
-                if "no_ref" not in references:
-                    references.update({"no_ref": {"reference_type": "Travel Claim", "amount": flt(a.amount)}})
-                else:
-                    references["no_ref"]["amount"] += flt(a.amount)
-        for ref in references:
-            if ref != "no_ref" and references[ref]['reference_type'] in ("Project", "Maintenance Order"):
-                previous_costs = frappe.db.get_value(references[ref]['reference_type'], ref, ['total_cost', 'travel_cost'],as_dict= 1)
-                # frappe.msgprint(str(previous_costs))
-                if self.docstatus == 1:
-                    overall_cost = previous_costs.total_cost + references[ref]['amount']
-                    total_travel_cost = previous_costs.travel_cost + references[ref]['amount']
-
-                elif self.docstatus == 2:
-                    overall_cost = previous_costs.total_cost - references[ref]['amount']
-                    total_travel_cost = previous_costs.travel_cost - references[ref]['amount']
-
-                if self.docstatus == 1 or self.docstatus == 2: 
-                    frappe.db.sql("""
-                        UPDATE 
-                            `tab{table}` 
-                        SET 
-                            total_cost={cost}, 
-                            travel_cost={travel_cost} 
-                        WHERE 
-                            name ='{ref}'""".format(
-                        table = references[ref]['reference_type'], 
-                        cost = overall_cost, 
-                        travel_cost = total_travel_cost, 
-                        ref = ref))
-            elif ref != "no_ref" and references[ref]['reference_type'] == "Task":	
-                task_previous_costs = frappe.db.get_value(references[ref]['reference_type'], ref, ['total_cost', 'travel_cost'],as_dict= 1)
-                project_previous_costs = frappe.db.get_value("Project", frappe.db.get_value(references[ref]['reference_type'],ref,"project"), ['total_cost', 'travel_cost'],as_dict= 1)
-                # frappe.msgprint(str(previous_costs))
-                if self.docstatus == 1:
-                    task_total_cost = task_previous_costs.total_cost + references[ref]['amount']
-                    project_total_cost = project_previous_costs.total_cost + references[ref]['amount']
-                    task_travel_cost = task_previous_costs.travel_cost + references[ref]['amount']
-                    project_travel_cost = project_previous_costs.travel_cost + references[ref]['amount']
-
-                elif self.docstatus == 2:
-                    task_total_cost = task_previous_costs.total_cost - references[ref]['amount']
-                    project_total_cost = project_previous_costs.total_cost - references[ref]['amount']
-                    task_travel_cost = task_previous_costs.travel_cost - references[ref]['amount']
-                    project_travel_cost = project_previous_costs.travel_cost - references[ref]['amount']
-
-                if self.docstatus == 1 or self.docstatus == 2: 
-                    frappe.db.sql("""
-                        UPDATE 
-                            `tab{table}` 
-                        SET 
-                            total_cost={cost}, 
-                            travel_cost={travel_cost} 
-                        WHERE 
-                            name ='{ref}'""".format(
-                        table = references[ref]['reference_type'], 
-                        cost = task_total_cost, 
-                        travel_cost = task_travel_cost, 
-                        ref = ref))
-
-                    frappe.db.sql("""
-                        UPDATE 
-                            `tab{table}` 
-                        SET 
-                            total_cost={cost}, 
-                            travel_cost={travel_cost} 
-                        WHERE 
-                            name ='{ref}'""".format(
-                        table = "Project", 
-                        cost = project_total_cost, 
-                        travel_cost = project_travel_cost, 
-                        ref = frappe.db.get_value("Task",ref,"project")))
-
     def before_cancel(self):
         self.unlink_travel_authorization()
 
@@ -293,20 +126,11 @@ class TravelClaim(Document):
 
     def on_cancel(self):
         self.check_journal_entry()
-        # Following line commented by SHIV on 2020/10/04
-        #self.sendmail(self.employee, "Travel Claim Cancelled by HR" + str(self.name), "Your travel claim " + str(self.name) + " has been cancelled by the user")
         notify_workflow_states(self)
-        # if self.for_maintenance_project:
-        #     self.cancel_project_maintenance()
-        #     self.update_project_and_maintenance_cost()
         if self.ta:
             self.ta = None
         if self.training_event:
             self.update_training_event(cancel=True)
-
-    def cancel_project_maintenance(self):
-        frappe.db.sql("DELETE FROM `tabProject and Maintenance Travel Log` WHERE travel_claim = '{}'".format(self.name))
-
 
     # Following method created by SHIV on 2020/09/22
     def check_journal_entry(self):
@@ -514,9 +338,7 @@ class TravelClaim(Document):
                             
                         if not within:
                             frappe.throw("Se DSA Within Same Locality Percent in HR Settings")
-                            
-                        
-                        
+  
                         if self.travel_type=="Training" or self.travel_type == "Meeting and Seminars" or self.travel_type == "Workshop":
                             
                             if self.within_same_locality==1:
@@ -686,19 +508,6 @@ class TravelClaim(Document):
             if a.mileage_rate and a.distance:
                 mileage_amount+=flt(a.mileage_rate)*flt(a.distance)
 
-            # if self.for_maintenance_project == 1 and not a.reference_name:
-            #     frappe.throw("Reference cannot be empty for Project/Maintenance Travel")
-            # if a.reference_name:
-            #     if a.reference_name not in references:
-            #         references.update({a.reference_name: {"reference_type": a.reference_type, "amount": flt(a.amount), "cost_center": frappe.db.get_value(a.reference_type, a.reference_name, "cost_center")}})
-            #     else:
-            #         references[a.reference_name]['amount'] += flt(a.amount)
-            # else:
-            #     if "no_ref" not in references:
-            #         references.update({"no_ref": {"reference_type": "Travel Claim", "amount": flt(a.amount)+flt(self.extra_claim_amount), "cost_center": cost_center}})
-            #     else:
-            #         references["no_ref"]["amount"] += flt(a.amount)
-
         if self.travel_type == "Training":
             if self.place_type == "Out Country":
                 mileage_acc_field = "training_out_country_mileage_account"
@@ -826,15 +635,6 @@ class TravelClaim(Document):
                 frappe.throw("A travel claim <b>" + str(ta.travel_claim) + "</b> has already been created for the authorization <b>" + str(i.travel_authorization) + "</b>")
             ta.db_set("travel_claim", self.name)
 
-            # for a in ta.items:
-            #     tai = frappe.get_doc("Travel Authorization Item", a.name)
-            #     idta = count_b
-            #     if idtc == idta:
-            #         tai.db_set("date",i.date)
-            #         tai.db_set("till_date",i.till_date)
-            #     count_b += 1
-            # count_a += 1
-
         auth_doc=frappe.get_doc("Travel Authorization", self.ta)
         
         travel_claim_limit = len(self.get("items"))
@@ -912,17 +712,6 @@ class TravelClaim(Document):
             self.ta_date = frappe.db.get_value("Travel Authorization", self.ta, "posting_date")
         if str(self.ta_date) > str(self.posting_date):
             frappe.throw("The Travel Claim Date cannot be earlier than Travel Authorization Date")
-
-    ##
-    # Send notification to the supervisor / employee
-    ##
-    def sendmail(self, to_email, subject, message):
-        email = frappe.db.get_value("Employee", to_email, "user_id")
-        if email:
-            try:
-                frappe.sendmail(recipients=email, sender=None, subject=subject, message=message)
-            except:
-                pass
 
 @frappe.whitelist()
 def get_travel_detail(employee, start_date, end_date, place_type, travel_type):
