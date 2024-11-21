@@ -8,7 +8,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt, nowdate
 from datetime import date
-from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
+from erpnext.custom_workflow import validate_workflow_states
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 from hrms.hr.hr_custom_functions import get_salary_tax
 from hrms.hr.doctype.leave_application.leave_application \
@@ -25,8 +25,8 @@ class EmployeeBenefits(Document):
 		self.check_duplicates()
 		self.validate_benefits()
 		self.set_netamount()
-		notify_workflow_states(self)
 		self.set_total()
+		self.workflow_action()
 
 	def on_submit(self):
 		if self.purpose == "Separation":
@@ -34,6 +34,48 @@ class EmployeeBenefits(Document):
 		self.post_journal()
 		self.check_leave_encashment()
 		self.update_reference()
+	
+	def workflow_action(self):
+		action = frappe.request.form.get('action') 
+		if action in ("Apply","Reapply"):
+			self.notify(self.benefit_approver)
+		elif action == "Approve" and self.workflow_state == "Approved":
+			#Get the user with Account User Role who are permitted to this selected branch
+			recipients=[]
+			for a in frappe.db.sql("""
+								select u.name from `tabUser` u inner join  `tabHas Role` r
+								on u.name = r.parent
+								where r.role in ("Accounts User","Accounts Manager") 
+								and u.name like "%bdb.bt"
+								and exists(
+									select 1 from `tabAssign Branch` b inner join `tabBranch Item` i 
+									on b.name = i.parent 
+									where branch="{branch}" and b.user = u.name
+								)
+								group by u.name
+							""".format(branch=self.branch), as_dict=True):
+				recipients.append(a.name)
+			self.notify(recipients)
+		elif self.workflow_state == "Claimed":
+			user_email = frappe.db.get_value("Employee", self.employee, "user_id")
+			self.notify(user_email)
+	
+	def notify(self, recipients):
+		parent_doc = frappe.get_doc(self.doctype, self.name)
+		args = parent_doc.as_dict()
+		args.workflow_state = self.workflow_state
+		try:
+			email_template = frappe.get_doc("Email Template", 'Employee Benefits Status Notification')
+			message = frappe.render_template(email_template.response, args)
+			subject = email_template.subject
+		
+			frappe.sendmail(
+				recipients=recipients,
+				subject=_(subject),
+				message= _(message), 
+			)
+		except :
+			frappe.msgprint(_("Employee Benefit Claim Status Notification is missing."))
 
 	def set_total(self):
 		''' validate amounts in benefits and deductions '''
@@ -173,7 +215,7 @@ class EmployeeBenefits(Document):
 				"account": a.gl_account,
 				"reference_type": "Employee Benefits",
 				"reference_name": self.name,
-				"cost_center": emp.cost_center,
+				"cost_center": self.cost_center,
 				"debit_in_account_currency": flt(a.amount),
 				"debit": flt(a.amount),
 				"party_type": party_type,
@@ -191,7 +233,7 @@ class EmployeeBenefits(Document):
 					"credit": flt(a.tax_amount,2),
 					"reference_type": "Employee Benefits",
 					"reference_name": self.name,
-					"cost_center": emp.cost_center,
+					"cost_center": self.cost_center,
 					"business_activity": emp.business_activity,
 				})
 				tax_amount += flt(a.tax_amount)
@@ -214,7 +256,7 @@ class EmployeeBenefits(Document):
 				"credit": flt(b.amount,2),
 				"party_type": party_type,
 				"party": party,
-				"cost_center": emp.cost_center,
+				"cost_center": self.cost_center,
 				"business_activity": emp.business_activity,
 				"reference_type": "Employee Benefits",
 				"reference_name": self.name,
@@ -226,7 +268,7 @@ class EmployeeBenefits(Document):
 		if flt(total_amount):
 			je.append("accounts", {
 				"account": payable_account,
-				"cost_center": emp.cost_center,
+				"cost_center": self.cost_center,
 				"credit_in_account_currency": flt(total_amount),
 				"credit": flt(total_amount),
 				"business_activity": emp.business_activity,
@@ -250,7 +292,7 @@ class EmployeeBenefits(Document):
 				"account": payable_account,
 				"reference_type": "Journal Entry",
 				"reference_name": je.name,
-				"cost_center": emp.cost_center,
+				"cost_center": self.cost_center,
 				"debit_in_account_currency": flt(total_amount),
 				"debit": flt(total_amount),
 				"business_activity": emp.business_activity,
@@ -260,7 +302,7 @@ class EmployeeBenefits(Document):
 
 			jeb.append("accounts", {
 				"account": expense_bank_account,
-				"cost_center": emp.cost_center,
+				"cost_center": self.cost_center,
 				"reference_type": "Employee Benefits",
 				"reference_name": self.name,
 				"credit_in_account_currency": flt(total_amount),
@@ -374,8 +416,24 @@ def get_permission_query_conditions(user):
 
 	if user == "Administrator":
 		return
+	
 	if "HR User" in user_roles or "HR Manager" in user_roles:
 		return
+	
+	if "Accounts User" in user_roles or "Accounts Master" in user_roles:
+		return """(
+			exists(select 1
+				from `tabEmployee` as e
+				where e.branch = `tabEmployee Benefits`.branch
+				and e.user_id = '{user}')
+			or
+			exists(select 1
+				from `tabEmployee` e, `tabAssign Branch` ab, `tabBranch Item` bi
+				where e.user_id = '{user}'
+				and ab.employee = e.name
+				and bi.parent = ab.name
+				and bi.branch = `tabEmployee Benefits`.branch)
+		)""".format(user=user)
 
 	return """(
 		`tabEmployee Benefits`.owner = '{user}'

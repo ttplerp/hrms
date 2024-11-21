@@ -8,6 +8,7 @@
  "field_order": [
   "workflow_state",
   "branch",
+  "cost_center",
   "column_break_2",
   "posting_date",
   "purpose",
@@ -305,11 +306,19 @@
   {
    "fieldname": "column_break_37",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "branch.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-02 15:49:06.553785",
+ "modified": "2024-11-21 13:00:10.473277",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Benefits",
