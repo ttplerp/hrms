@@ -45,9 +45,6 @@ class ExpenseClaim(AccountsController):
 		self.update_ref_doc()
 		self.send_notification()
 		self.validate_approver()
-		# self.calculate_grand_total()
-		if self.task and not self.project:
-			self.project = frappe.db.get_value("Task", self.task, "project")
 	
 	def validate_approver(self):
 		emp_user_id = frappe.db.get_value("Employee", self.employee, "user_id")
@@ -62,52 +59,50 @@ class ExpenseClaim(AccountsController):
 		action = frappe.request.form.get('action')  
 		if self.workflow_state == "Draft" or action == "Save":
 			return
-		elif self.workflow_state in ("Approved", "Rejected", "Verified", "Cancelled"):
-			self.notify_employee()
-		elif self.workflow_state not in ("Approved", "Rejected", "Cancelled"):
-			self.notify_approval()
+		elif action in ("Forward to Approver","Forward to Reviewer"):
+			self.notify(expense_approver)
+		elif self.workflow_state in ("Claimed", "Rejected") and action != "Save":
+			user_email = frappe.db.get_value("Employee", self.employee, "user_id")
+			self.notify(user_email)
+		elif action == "Approve" and self.workflow_state == "Approved":
+			#Get the user with Account User Role who are permitted to this selected branch
+			recipients=[]
+			for a in frappe.db.sql("""
+								select u.name from `tabUser` u inner join  `tabHas Role` r
+								on u.name = r.parent
+								where r.role in ("Accounts User","Accounts Manager") 
+								and u.name like "%bdb.bt"
+								and exists(
+									select 1 from `tabAssign Branch` b inner join `tabBranch Item` i 
+									on b.name = i.parent 
+									where branch="{branch}" and b.user = u.name
+								)
+								group by u.name
+							""".format(branch=self.branch), as_dict=True):
+				recipients.append(a.name)
+			self.notify(recipients)
 
 	#added by Thukten on 11-11-2024
-	def notify_approval(self):
+	def notify(self,recipients):
 		args = self.get_args()
-		email_template = frappe.get_doc("Email Template", "Expense Claim")
-		if not email_template:
-			frappe.msgprint(_("Please set Email Template for Expense Claim "))
-		message = frappe.render_template(email_template.response, args)
-		recipients = self.expense_approver
-		subject = email_template.subject
-		self.send_mail(recipients,message, subject)
-	
-	#added by Thukten on 11-11-2024
-	def notify_employee(self):
-		args = self.get_args()
-
-		doc_link = frappe.utils.get_url_to_form('Expense Claim', self.name)
-		message = """
-				The Expense Claim {name} is <b>{state}</b> <br/>
-				<a href='{link}'>Click to view</a>
-			""".format(name=self.name, state=self.workflow_state, link=doc_link)
-
-		doc = frappe.get_doc("Employee", self.employee)
-		recipients = doc.user_id if doc.user_id else self.owner
-		subject = "Expense Claim Notification"
-		self.send_mail(recipients,message, subject)
-
-	#added by Thukten on 11-11-2024
-	def send_mail(self, recipients, message, subject):
 		try:
+			email_template = frappe.get_doc("Email Template", 'Expense Claim')
+			message = frappe.render_template(email_template.response, args)
+			subject = email_template.subject
+
 			frappe.sendmail(
-					recipients=recipients,
-					subject=_(subject),
-					message= _(message),
-				)
-		except:
-			pass
+				recipients=recipients,
+				subject=_(subject), 
+				message= _(message), 
+			)
+		except :
+			frappe.msgprint(_("Expense Claim Status Notification is missing."))
 	
 	#Added by Thukten on 11-11-2024
 	def get_args(self):
 		parent_doc = frappe.get_doc(self.doctype, self.name)
 		args = parent_doc.as_dict()
+		args.workflow_state = self.workflow_state
 		return args
 	
 	def validate_references(self):
