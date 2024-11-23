@@ -32,7 +32,7 @@ def get_dashboard_for_employee(data):
 			},
 			{"label": _("Shift"), "items": ["Shift Request", "Shift Assignment"]},
 			{"label": _("Expense"), "items": ["Expense Claim", "Travel Request", "Employee Advance"]},
-			{"label": _("Benefit"), "items": ["Employee Benefit Application", "Employee Benefit Claim"]},
+			{"label": _("Benefit"), "items": ["Employee Benefits"]},
 			{
 				"label": _("Payroll"),
 				"items": [
