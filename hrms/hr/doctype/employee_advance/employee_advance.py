@@ -32,6 +32,7 @@ class EmployeeAdvance(Document):
         )
 
     def validate(self):
+        self.validate_loan_applier()
         # if self.advance_type == "Travel Advance" and not self.reference:
         #     frappe.msgprint(
         #         _("Travel Advance should route through Travel Request"),
@@ -55,6 +56,14 @@ class EmployeeAdvance(Document):
         if self.workflow_state != "Approved":
             notify_workflow_states(self)
 
+    def validate_loan_applier(self):
+        if self.advance_type not in ("Employee Loan"):
+            return
+        user = frappe.session.user
+        user_roles = frappe.get_roles(user)
+        if "HR GM" not in user_roles:
+            frappe.throw("Only HR GM can apply the employee loan.")
+        
     def validate_advance_amount(self):
         if self.advance_type == "Salary Advance" and flt(self.advance_amount) > 200000.00:
             frappe.throw(
