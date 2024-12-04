@@ -11,10 +11,12 @@
   "company",
   "branch",
   "employee",
+  "employee_name",
   "column_break_jtpc1",
   "posting_date",
   "cost_center",
-  "employee_name",
+  "employee_group",
+  "designation",
   "section_break_xlkyw",
   "loan_amount",
   "installment_no",
@@ -205,12 +207,28 @@
   {
    "fieldname": "column_break_ex9me",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.employee_group",
+   "fieldname": "employee_group",
+   "fieldtype": "Link",
+   "label": "Employee Group",
+   "options": "Employee Group",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-12-03 14:43:51.558504",
+ "modified": "2024-12-04 13:13:19.422798",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Loan",
