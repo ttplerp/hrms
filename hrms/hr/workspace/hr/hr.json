@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"iFG9HrHjy3\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":10}},{\"id\":\"m-3PhBra4q\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"p2Ez19MiQz\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":3}},{\"id\":\"j5x0uzt8n1\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"VS9k360xuP\",\"type\":\"card\",\"data\":{\"card_name\":\"Muster Roll Management\",\"col\":4}},{\"id\":\"GA0FvfSA3R\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"IS2rccOkpa\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"X-P6TgdR_7\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Employees\",\"col\":4}},{\"id\":\"CRAfvNWHdh\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"New Hires (This Year)\",\"col\":4}},{\"id\":\"X2kG3NvL37\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports &amp; Masters</b></span>\",\"col\":10}},{\"id\":\"e121l7PsdU\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"SpeVIsmull\",\"type\":\"card\",\"data\":{\"card_name\":\"Employee\",\"col\":3}},{\"id\":\"2iSSmP-aOQ\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"Du3Qr4ZSmN\",\"type\":\"card\",\"data\":{\"card_name\":\"Muster Roll Management\",\"col\":4}},{\"id\":\"Ol9hnLJceN\",\"type\":\"card\",\"data\":{\"card_name\":\"Key Reports\",\"col\":4}},{\"id\":\"fn2_XXMwID\",\"type\":\"card\",\"data\":{\"card_name\":\"Other Reports\",\"col\":4}}]",
  "creation": "2023-06-07 10:21:43.541768",
  "custom_blocks": [],
  "docstatus": 0,
@@ -86,104 +86,6 @@
    "label": "Employee Group",
    "link_count": 0,
    "link_to": "Employee Group",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee",
-   "link_count": 9,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee",
-   "link_count": 0,
-   "link_to": "Employee",
-   "link_type": "DocType",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Advance",
-   "link_count": 0,
-   "link_to": "Employee Advance",
-   "link_type": "DocType",
-   "onboard": 1,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Advance Settlement",
-   "link_count": 0,
-   "link_to": "Employee Advance Settlement",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Payroll Entry",
-   "link_count": 0,
-   "link_to": "Payroll Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Attendance Tool",
-   "link_count": 0,
-   "link_to": "Employee Attendance Tool",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Increment Entry",
-   "link_count": 0,
-   "link_to": "Increment Entry",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Disciplinary Record",
-   "link_count": 0,
-   "link_to": "Employee Disciplinary Record",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Transfer Request",
-   "link_count": 0,
-   "link_to": "Employee Transfer Request",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Employee Training Details",
-   "link_count": 0,
-   "link_to": "Employee Training Details",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -367,8 +269,36 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Settings",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "HR Settings",
+   "link_count": 0,
+   "link_to": "HR Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Supervisor And Approver Mapper",
+   "link_count": 0,
+   "link_to": "Supervisor And Approver Mapper",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Muster Roll Management",
-   "link_count": 8,
+   "link_count": 9,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -445,9 +375,9 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "MR Employee Advance",
+   "label": "Muster Roll Advance",
    "link_count": 0,
-   "link_to": "MR Employee Advance",
+   "link_to": "Muster Roll Advance",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -455,17 +385,47 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Settings",
-   "link_count": 2,
+   "label": "Overtime Application",
+   "link_count": 0,
+   "link_to": "Overtime Application",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee",
+   "link_count": 10,
    "onboard": 0,
    "type": "Card Break"
   },
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "HR Settings",
+   "label": "Employee",
    "link_count": 0,
-   "link_to": "HR Settings",
+   "link_to": "Employee",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Advance",
+   "link_count": 0,
+   "link_to": "Employee Advance",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Loan",
+   "link_count": 0,
+   "link_to": "Employee Loan",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
@@ -473,19 +433,88 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Supervisor And Approver Mapper",
+   "label": "Employee Advance Settlement",
    "link_count": 0,
-   "link_to": "Supervisor And Approver Mapper",
+   "link_to": "Employee Advance Settlement",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payroll Entry",
+   "link_count": 0,
+   "link_to": "Payroll Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Attendance Tool",
+   "link_count": 0,
+   "link_to": "Employee Attendance Tool",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Increment Entry",
+   "link_count": 0,
+   "link_to": "Increment Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Disciplinary Record",
+   "link_count": 0,
+   "link_to": "Employee Disciplinary Record",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Transfer Request",
+   "link_count": 0,
+   "link_to": "Employee Transfer Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Employee Training Details",
+   "link_count": 0,
+   "link_to": "Employee Training Details",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2023-12-21 11:53:38.498676",
+ "modified": "2024-12-03 14:46:38.413543",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",
- "number_cards": [],
+ "number_cards": [
+  {
+   "label": "Total Employees",
+   "number_card_name": "Total Employees"
+  },
+  {
+   "label": "New Hires (This Year)",
+   "number_card_name": "New Hires (This Year)"
+  }
+ ],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,

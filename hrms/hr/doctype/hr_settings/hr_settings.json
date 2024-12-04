@@ -60,12 +60,14 @@
   "project_gm",
   "hr_approver",
   "imprest_approver",
+  "loan_approver",
   "cb_01",
   "hrgm_name",
   "fd_name",
   "project_gm_name",
   "hr_approver_name",
   "imprest_approver_name",
+  "loan_approver_name",
   "separation_clearance_approvers_section",
   "fsa",
   "itsa",
@@ -972,13 +974,26 @@
    "fieldtype": "Link",
    "label": "Overtime Account",
    "options": "Account"
+  },
+  {
+   "fieldname": "loan_approver",
+   "fieldtype": "Link",
+   "label": "Loan Approver",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "loan_approver.employee_name",
+   "fieldname": "loan_approver_name",
+   "fieldtype": "Data",
+   "label": "Loan Approver Name",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-12-11 11:59:37.652902",
+ "modified": "2024-12-03 14:29:53.719174",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
