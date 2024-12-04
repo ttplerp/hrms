@@ -1,0 +1,260 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "EMPL.YYYY.MM.####",
+ "creation": "2024-12-03 10:56:59.691840",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "branch",
+  "employee",
+  "column_break_jtpc1",
+  "posting_date",
+  "cost_center",
+  "employee_name",
+  "section_break_xlkyw",
+  "loan_amount",
+  "installment_no",
+  "monthly_deduction",
+  "column_break_pzpqr",
+  "purpose",
+  "section_break_iuyw9",
+  "recovery_start_date",
+  "column_break_caqau",
+  "recovery_end_date",
+  "approver_details_section",
+  "loan_approver",
+  "column_break_oxtfw",
+  "loan_approver_name",
+  "column_break_ex9me",
+  "loan_approver_designation",
+  "section_break_e2f18",
+  "journal_entry_html",
+  "journal_entry",
+  "journal_entry_status",
+  "column_break_u6dqz",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_jtpc1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fetch_from": "branch.cost_center",
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_xlkyw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "loan_amount",
+   "fieldtype": "Currency",
+   "label": "Loan Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_pzpqr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Purpose",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_iuyw9",
+   "fieldtype": "Section Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "journal_entry",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "installment_no",
+   "fieldtype": "Int",
+   "label": "No. of Installment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "monthly_deduction",
+   "fieldtype": "Currency",
+   "label": "Monthly Deduction",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "recovery_start_date",
+   "fieldtype": "Date",
+   "label": "Recovery Start Date"
+  },
+  {
+   "fieldname": "column_break_caqau",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "recovery_end_date",
+   "fieldtype": "Date",
+   "label": "Recovery End Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_e2f18",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_u6dqz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Loan",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "journal_entry_html",
+   "fieldtype": "HTML",
+   "label": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "journal_entry_status",
+   "fieldtype": "Data",
+   "label": "Journal Entry Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approver_details_section",
+   "fieldtype": "Section Break",
+   "label": "Approver Details"
+  },
+  {
+   "fieldname": "loan_approver",
+   "fieldtype": "Link",
+   "label": "Loan Approver",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "loan_approver_name",
+   "fieldtype": "Data",
+   "label": "Loan Approver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "loan_approver_designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_oxtfw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ex9me",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-12-03 14:43:51.558504",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Loan",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR GM",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts GM",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
