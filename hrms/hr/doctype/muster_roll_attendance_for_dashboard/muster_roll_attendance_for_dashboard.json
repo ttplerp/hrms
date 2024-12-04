@@ -1,0 +1,126 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-12-02 13:25:31.499968",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "cost_center",
+  "column_break_fbjzj",
+  "posting_date",
+  "section_break_i5bsg",
+  "multiskilled_workers",
+  "foreign_workers",
+  "column_break_rpj3t",
+  "local_workers",
+  "ojt",
+  "internship",
+  "amended_from",
+  "leave",
+  "absent",
+  "present"
+ ],
+ "fields": [
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "section_break_i5bsg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "multiskilled_workers",
+   "fieldtype": "Int",
+   "label": "Multiskilled Workers"
+  },
+  {
+   "fieldname": "foreign_workers",
+   "fieldtype": "Int",
+   "label": "Foreign Workers"
+  },
+  {
+   "fieldname": "column_break_rpj3t",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "local_workers",
+   "fieldtype": "Int",
+   "label": "Local Workers"
+  },
+  {
+   "fieldname": "ojt",
+   "fieldtype": "Int",
+   "label": "OJT"
+  },
+  {
+   "fieldname": "internship",
+   "fieldtype": "Int",
+   "label": "Internship"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Muster Roll Attendance for Dashboard",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "leave",
+   "fieldtype": "Int",
+   "label": "Leave"
+  },
+  {
+   "fieldname": "absent",
+   "fieldtype": "Int",
+   "label": "Absent"
+  },
+  {
+   "fieldname": "present",
+   "fieldtype": "Int",
+   "label": "Present"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "column_break_fbjzj",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-12-02 17:22:30.917210",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Muster Roll Attendance for Dashboard",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1
+}
