@@ -92,19 +92,22 @@ def get_data(filters,designations):
     for i in regular_emp_att:
         if i.cost_center in result:
             
+            leave = int(msw_att.get(i.cost_center, {}).get('leave', 0))
+            absent = int(msw_att.get(i.cost_center, {}).get('absent', 0))
+            present = int(msw_att.get(i.cost_center, {}).get('present', 0))
+
+            # Add attendance counts
             if i.status == "On Leave":
-                result[i.cost_center]['leave'] = int(i.attendance_count) + int(msw_att[i.cost_center]['leave'])
-                
+                result[i.cost_center]['leave'] = int(i.attendance_count) + leave
             elif i.status == "Absent":
-                result[i.cost_center]['absent'] = int(i.attendance_count) + int(msw_att[i.cost_center]['absent'])
+                result[i.cost_center]['absent'] = int(i.attendance_count) + absent
             elif i.status == "Present":
-                result[i.cost_center]['present'] = int(i.attendance_count) + int(msw_att[i.cost_center]['present'])
-            if result[i.cost_center].get('leave') is None:
-                result[i.cost_center]['leave'] = int(msw_att.get(i.cost_center, {}).get('leave', 0))
-            if result[i.cost_center].get('absent') is None:
-                result[i.cost_center]['absent'] = int(msw_att.get(i.cost_center, {}).get('absent', 0))
-            if result[i.cost_center].get('present') is None:
-                result[i.cost_center]['present'] = int(msw_att.get(i.cost_center, {}).get('present', 0))   
+                result[i.cost_center]['present'] = int(i.attendance_count) + present
+            
+            # Ensure all keys are populated
+            result[i.cost_center]['leave'] = result[i.cost_center].get('leave', leave)
+            result[i.cost_center]['absent'] = result[i.cost_center].get('absent', absent)
+        result[i.cost_center]['present'] = result[i.cost_center].get('present', present)   
     
     for cost_center, data in result.items():
         if 'leave' not in data:
@@ -112,7 +115,8 @@ def get_data(filters,designations):
         if 'absent' not in data:
             data['absent'] = msw_att.get(cost_center, {}).get('absent', 0)
         if 'present' not in data:
-            data['present'] = msw_att.get(cost_center, {}).get('present', 0)     
+            data['present'] = msw_att.get(cost_center, {}).get('present', 0) 
+      
     return list(result.values())
     # for row in data:
     #     # Initialize the result row with the cost_center
