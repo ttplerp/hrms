@@ -116,7 +116,26 @@ def get_data(filters,designations):
             data['absent'] = msw_att.get(cost_center, {}).get('absent', 0)
         if 'present' not in data:
             data['present'] = msw_att.get(cost_center, {}).get('present', 0) 
-      
+    
+    total_emp = frappe.db.sql('''
+                              select count(name) as count, cost_center from `tabEmployee` where cost_center is not null and status="Active" group by cost_center;
+                              ''', as_dict=True)
+    muster_roll_total_emp= frappe.db.sql('''
+                                select count(name) as count, cost_center from `tabMuster Roll Employee` where status="Active"  group by cost_center;
+                                ''',as_dict=True)
+    # frappe.throw(str(total_emp))
+    for i in total_emp:
+        # frappe.throw(str(i.count))
+        if i.cost_center in result:
+            result[i.cost_center]['total'] = i.count
+        
+    for j in muster_roll_total_emp:
+        # frappe.throw(str(i.count))
+        if j.cost_center in result:
+            result[j.cost_center]['total'] += j.count
+        
+        
+    
     return list(result.values())
     # for row in data:
     #     # Initialize the result row with the cost_center
@@ -146,7 +165,11 @@ def get_columns(designations):
        { "label": _("Cost Center"),
             "fieldname": 'cost_center',
             "fieldtype": "Data",
-            "width": 120,}
+            "width": 120,},
+       { "label": _("Total"),
+            "fieldname": 'total',
+            "fieldtype": "Data",
+            "width": 65,}
     ]
     for designation in designations:
         columns.append({
