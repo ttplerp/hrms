@@ -9,7 +9,6 @@ from frappe import _
 from datetime import datetime
 
 class InternalClearance(Document):
-
     def validate(self):
         self.setAprovers()
         self.workflow_action()
@@ -19,25 +18,24 @@ class InternalClearance(Document):
         
     def on_submit(self):
         self.send_notification()
-        
-            
+
     def workflow_action(self):  
         action = frappe.request.form.get('action')
         
         if action == "Save":
-            if self.owner !=frappe.session.user and self.iad !=frappe.session.user and self.afd !=frappe.session.user and self.ceo !=frappe.session.user and self.ictcr !=frappe.session.user and self.icthr !=frappe.session.user:
+            if self.owner !=frappe.session.user and frappe.session.user not in self.iad and \
+                frappe.session.user not in self.afd and frappe.session.user and \
+                frappe.session.user not in self.ictcr and frappe.session.user not in self.icthr:
+                
                 frappe.throw("Only the Owner and Verifier and Approver can edit.")
     
-        if action == "Verify":
+        if action in ("Verify","Approve"):
             self.verifyUpdate()
             
             if self.icthr_clearance + self.ictcr_clearance + self.afd_clearance + self.iad_clearance == 4 :
-                self.workflow_state = "Waiting Approval"
+                self.workflow_state = "Approved"
             else:
                 self.workflow_state = "Waiting for Verification"
-        
-        if action == "Approve":
-            self.verifyUpdate()
         
         if action == "Reapply":
             em= frappe.db.sql("Select user_id from `tabEmployee` where name='{}'".format(self.employee), as_dict=True)
@@ -50,41 +48,36 @@ class InternalClearance(Document):
         self.afd_clearance = 0
         self.icthr_clearance = 0
         self.ictcr_clearance = 0
-        self.ceo_clearance = 0
-        self.ceo_date = None
         self.iad_remarks = ""
         self.afd_remarks = ""
         self.icthr_remarks = ""
         self.ictcr_remarks = ""
-        self.ceo_remarks = ""
-        
         
     def verifyUpdate(self):
         user = frappe.session.user
-        if user == self.iad:
+        if user in self.iad:
             self.iad_clearance=1
-        if user == self.icthr:
+            self.iad_u=user
+        if user in self.icthr:
             self.icthr_clearance=1
-        if user == self.afd:
+            self.icthr_u=user
+        if user in self.afd:
             self.afd_clearance=1
-        if user == self.ictcr:
+            self.afd_u=user
+        if user in self.ictcr:
             self.ictcr_clearance=1
-        if user == self.ceo:
-            self.ceo_clearance=1
-            self.ceo_date=datetime.now().strftime('%Y-%m-%d')
-    
+            self.ictcr_u=user
     
     def send_notification(self):
         action = frappe.request.form.get('action')  
-        
         if action == "Apply" or action == "Reapply":
             em= frappe.db.sql("Select user_id from `tabEmployee` where name='{}'".format(self.employee), as_dict=True)
             if frappe.session.user != em[0].user_id:
                 frappe.throw("You cannot apply for another employee.")
             if self.iad_clearance + self.afd_clearance + self.icthr_clearance + self.ictcr_clearance == 0:
-                recipients=[self.iad, self.ictcr, self.icthr, self.afd]
-                self.notify_reviewers(recipients)
-                
+                email_list=[eval(self.iad),eval(self.ictcr), eval(self.icthr), eval(self.afd)]
+                recipients = sum(email_list, [])
+                self.notify_reviewers(recipients)     
         if self.workflow_state == "Draft" or action == "Save":
             return
         elif self.workflow_state in ("Approved", "Rejected", "Cancelled"):
@@ -92,16 +85,11 @@ class InternalClearance(Document):
 
             if self.workflow_state == "Approved":
                 self.notify_audits()
-                
    
         elif self.workflow_state == "Waiting for Verification":
             if self.iad + self.afd + self.icthr + self.ictcr ==0:
                 recipients=[self.iad, self.ictcr, self.icthr, self.afd]
                 self.notify_reviewers(recipients)
-   
-        elif self.workflow_state == "Waiting Approval":
-            recipients=[self.ceo]
-            self.notify_reviewers(recipients)
    
     def notify_employee(self):
         self.doc = self
@@ -119,7 +107,6 @@ class InternalClearance(Document):
             self.send_mail(recipients, message, subject)
         except :
             frappe.msgprint(_("Internal Audit Clearance notification is missing."))
-        
         
     def notify_audits(self):
         audit=frappe.db.sql("select verifier_mail from `tabInternal Audit Clearance Verifier List` where parent ='Audit Settings' and parentfield='auditlist'", as_dict=True)
@@ -157,14 +144,11 @@ class InternalClearance(Document):
        
     
     def send_mail(self, recipients, message, subject):
-        
         frappe.sendmail(
                 recipients=recipients,
                 subject=_(subject),
-                message= _(message),
-                
+                message= _(message),  
             )
-            
 
     def setAprovers(self):
         subject_list=frappe.db.sql("""select verifier_mail, verifier_type 
@@ -172,22 +156,32 @@ class InternalClearance(Document):
                             where parent ='Audit Settings' 
                             and ( parentfield='verifier' or parentfield='approver' )
                         """, as_dict=True)
-
+        icthr = []
+        ictcr = []
+        afd = []
+        iad = []
         for subject in subject_list:
-            if subject.verifier_type=="CEO":
-                self.ceo= subject.verifier_mail  
             if subject.verifier_type=="HR":
-                self.icthr= subject.verifier_mail  
+                icthr.append(subject.verifier_mail)
             if subject.verifier_type=="Credit":
-                self.ictcr= subject.verifier_mail  
+                ictcr.append(subject.verifier_mail)
             if subject.verifier_type=="Finance":
-                self.afd= subject.verifier_mail  
+                afd.append(subject.verifier_mail)
             if subject.verifier_type=="Audit":
-                self.iad= subject.verifier_mail  
-        if not self.ceo and not self.icthr and not self.ictcr and not self.afd and not self.iad:
+                iad.append(subject.verifier_mail)
+                
+        if not self.afd_clearance:
+            self.afd = str(afd)
+        if not self.ictcr_clearance:
+            self.ictcr = str(ictcr)
+        if not self.icthr_clearance:
+            self.icthr = str(icthr)
+        if not self.iad_clearance:
+            self.iad = str(iad)
+
+        if not self.icthr and not self.ictcr and not self.afd and not self.iad:
             frappe.msgprint(_("Please set Verifier and Approver in Audit Settings."))
             
-  
 @frappe.whitelist()
 def sendemail(emails,  uname, designation, purpose, branch):
     arr=json.loads(emails)

@@ -21,43 +21,44 @@
   "sponsership",
   "sb_emp_details",
   "employee",
-  "grade",
-  "cid",
-  "phone_number",
-  "fixed_line_number",
-  "branch",
-  "unit",
-  "cb_01",
   "employee_name",
   "designation",
+  "grade",
+  "cid",
+  "column_break_egs41",
+  "branch",
   "division",
-  "region",
+  "unit",
+  "phone_number",
+  "fixed_line_number",
+  "cb_01",
   "village",
   "gewog",
   "dzongkhag",
   "sb_remarks",
   "afd",
   "afd_clearance",
+  "column_break_29",
   "afd_remarks",
+  "afd_u",
+  "credit_clearance_section",
   "ictcr",
   "ictcr_clearance",
+  "column_break_nugii",
   "ictcr_remarks",
-  "column_break_29",
+  "ictcr_u",
+  "hr_and_adm_clearance_section",
   "icthr",
   "icthr_clearance",
+  "column_break_mylcl",
   "icthr_remarks",
+  "icthr_u",
+  "iad_clearance_section",
   "iad",
   "iad_clearance",
+  "column_break_g482u",
   "iad_remarks",
-  "section_break_mmbjp",
-  "ceo",
-  "ceo_clearance",
-  "ceo_date",
-  "column_break_otlvd",
-  "ceo_remarks",
-  "sb_reference",
-  "reference_type",
-  "reference_name",
+  "iad_u",
   "workflow_state",
   "amended_from"
  ],
@@ -93,19 +94,22 @@
    "fieldname": "grade",
    "fieldtype": "Link",
    "label": "Grade",
-   "options": "Employee Grade"
+   "options": "Employee Grade",
+   "read_only": 1
   },
   {
    "fetch_from": "employee.passport_number",
    "fieldname": "cid",
    "fieldtype": "Data",
-   "label": "CID"
+   "label": "CID",
+   "read_only": 1
   },
   {
    "fetch_from": "employee.cell_number",
    "fieldname": "phone_number",
    "fieldtype": "Data",
-   "label": "Phone Number"
+   "label": "Phone Number",
+   "read_only": 1
   },
   {
    "fetch_if_empty": 1,
@@ -123,7 +127,8 @@
    "fieldname": "employee_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Employee Name"
+   "label": "Employee Name",
+   "read_only": 1
   },
   {
    "fetch_from": "employee.designation",
@@ -131,20 +136,15 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Designation",
-   "options": "Designation"
+   "options": "Designation",
+   "read_only": 1
   },
   {
    "fetch_from": "employee.division",
    "fieldname": "division",
    "fieldtype": "Link",
    "label": "Division",
-   "options": "Department"
-  },
-  {
-   "fieldname": "region",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Region",
+   "options": "Department",
    "read_only": 1
   },
   {
@@ -159,10 +159,10 @@
    "label": "Clearance Section"
   },
   {
+   "default": "[]",
    "fieldname": "afd",
-   "fieldtype": "Link",
-   "label": "Accounts & Finance Division",
-   "options": "User",
+   "fieldtype": "Data",
+   "label": "Accounts & Finance Division Approver",
    "read_only": 1
   },
   {
@@ -177,19 +177,19 @@
    "fieldname": "afd_remarks",
    "fieldtype": "Small Text",
    "label": "Accounts & Finance Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.afd",
+   "mandatory_depends_on": "eval:doc.afd.includes(frappe.session.user)",
    "no_copy": 1,
-   "read_only_depends_on": "eval:frappe.session.user != doc.afd"
+   "read_only_depends_on": "eval:!doc.afd.includes(frappe.session.user)"
   },
   {
    "fieldname": "column_break_29",
    "fieldtype": "Column Break"
   },
   {
+   "default": "[]",
    "fieldname": "icthr",
-   "fieldtype": "Link",
-   "label": "HR Division",
-   "options": "User",
+   "fieldtype": "Data",
+   "label": "HR Division Approver",
    "read_only": 1
   },
   {
@@ -204,15 +204,16 @@
    "fieldname": "icthr_remarks",
    "fieldtype": "Small Text",
    "label": "HR Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.icthr",
+   "mandatory_depends_on": "eval:doc.icthr!=\"\" && doc.icthr.includes(frappe.session.user)",
    "no_copy": 1,
-   "read_only_depends_on": "eval:frappe.session.user != doc.icthr"
+   "read_only_depends_on": "eval:!doc.icthr.includes(frappe.session.user)"
   },
   {
+   "default": "[]",
    "fieldname": "iad",
-   "fieldtype": "Link",
-   "label": "Internal Audit Division",
-   "options": "User",
+   "fieldtype": "Data",
+   "label": "Internal Audit Division Approver",
+   "options": "[]",
    "read_only": 1
   },
   {
@@ -227,28 +228,9 @@
    "fieldname": "iad_remarks",
    "fieldtype": "Small Text",
    "label": "Internal Audit Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.iad",
+   "mandatory_depends_on": "eval:doc.iad.includes(frappe.session.user)",
    "no_copy": 1,
-   "read_only_depends_on": "eval:frappe.session.user != doc.iad"
-  },
-  {
-   "fieldname": "sb_reference",
-   "fieldtype": "Section Break",
-   "label": "Reference"
-  },
-  {
-   "fieldname": "reference_type",
-   "fieldtype": "Link",
-   "label": "Reference Type",
-   "options": "DocType",
-   "read_only": 1
-  },
-  {
-   "fieldname": "reference_name",
-   "fieldtype": "Dynamic Link",
-   "label": "Reference Name",
-   "options": "reference_type",
-   "read_only": 1
+   "read_only_depends_on": "eval:!doc.iad.includes(frappe.session.user)"
   },
   {
    "fieldname": "workflow_state",
@@ -280,13 +262,15 @@
    "fetch_from": "employee.branch",
    "fieldname": "branch",
    "fieldtype": "Data",
-   "label": "Branch"
+   "label": "Branch",
+   "read_only": 1
   },
   {
    "fetch_from": "employee.unit",
    "fieldname": "unit",
    "fieldtype": "Data",
-   "label": "Unit"
+   "label": "Unit",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.purpose==\"Training\"",
@@ -301,10 +285,11 @@
    "label": "Period (Days)"
   },
   {
+   "bold": 1,
+   "default": "[]",
    "fieldname": "ictcr",
-   "fieldtype": "Link",
-   "label": "Credit Division",
-   "options": "User",
+   "fieldtype": "Data",
+   "label": "Credit Division Approver",
    "read_only": 1
   },
   {
@@ -319,9 +304,9 @@
    "fieldname": "ictcr_remarks",
    "fieldtype": "Small Text",
    "label": "Credit Division Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.ictcr",
+   "mandatory_depends_on": "eval:doc.ictcr.includes(frappe.session.user)",
    "no_copy": 1,
-   "read_only_depends_on": "eval:frappe.session.user != doc.ictcr"
+   "read_only_depends_on": "eval:!doc.ictcr.includes(frappe.session.user)"
   },
   {
    "depends_on": "eval:(doc.purpose==\"Promotion\" || doc.purpose==\"Service Regularization\")\n",
@@ -335,43 +320,6 @@
    "fieldname": "office_order",
    "fieldtype": "Data",
    "label": "Office Order No"
-  },
-  {
-   "fieldname": "section_break_mmbjp",
-   "fieldtype": "Section Break",
-   "label": "APPROVAL DETAIL"
-  },
-  {
-   "fieldname": "ceo",
-   "fieldtype": "Link",
-   "label": "CEO",
-   "options": "User",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "ceo_clearance",
-   "fieldtype": "Check",
-   "label": "Clerance Acquired (CEO)",
-   "no_copy": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "ceo_remarks",
-   "fieldtype": "Small Text",
-   "label": "Approval Remarks",
-   "mandatory_depends_on": "eval:frappe.session.user == doc.ceo",
-   "read_only_depends_on": "eval:frappe.session.user != doc.ceo"
-  },
-  {
-   "fieldname": "ceo_date",
-   "fieldtype": "Date",
-   "hidden": 1,
-   "label": "Approval Date"
-  },
-  {
-   "fieldname": "column_break_otlvd",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "column_break_erlwb",
@@ -407,11 +355,70 @@
    "fieldtype": "Data",
    "label": "Sponsorship",
    "mandatory_depends_on": "eval: doc.purpose=='Studies'"
+  },
+  {
+   "fieldname": "column_break_egs41",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "credit_clearance_section",
+   "fieldtype": "Section Break",
+   "label": "Credit Clearance"
+  },
+  {
+   "fieldname": "column_break_nugii",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hr_and_adm_clearance_section",
+   "fieldtype": "Section Break",
+   "label": "HR and Admin Clearance"
+  },
+  {
+   "fieldname": "column_break_mylcl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "iad_clearance_section",
+   "fieldtype": "Section Break",
+   "label": "Internal Audit Department Clearance"
+  },
+  {
+   "fieldname": "column_break_g482u",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "afd_u",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ictcr_u",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "icthr_u",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "iad_u",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-29 13:50:53.988148",
+ "modified": "2024-12-10 10:45:11.286893",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Internal Clearance",
