@@ -42,6 +42,9 @@ class InternalClearance(Document):
             if frappe.session.user != em[0].user_id:
                 frappe.throw("You cannot apply for another employee.")
             self.reApply()
+        
+        if action == "Approve" and self.workflow_state == "Approved" and frappe.session.user not in self.iad:
+            frappe.throw("Internal Clearance approval only permitted to {}".format(self.iad))
             
     def reApply(self):
         self.iad_clearance = 0
