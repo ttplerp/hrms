@@ -215,6 +215,7 @@ class SalarySlip(TransactionBase):
 							select count(a.name) from `tabAttendance` a where a.status = 'Absent'
 							and a.attendance_date between '{}' and '{}'
 							and a.employee = '{}'
+							and a.docstatus = 1
 						""".format(start_date, end_date, self.employee))[0][0]
 					payment_days = flt(working_days)-flt(lwp) - flt(attendance)
 
