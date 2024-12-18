@@ -232,18 +232,18 @@
    "depends_on": "eval:(doc.docstatus==1 || doc.employee)",
    "fieldname": "currency",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Currency",
-   "options": "Currency",
-   "reqd": 1
+   "options": "Currency"
   },
   {
    "depends_on": "currency",
    "fieldname": "exchange_rate",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Exchange Rate",
    "precision": "9",
-   "print_hide": 1,
-   "reqd": 1
+   "print_hide": 1
   },
   {
    "fetch_from": "employee.branch",
@@ -359,7 +359,7 @@
   {
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fieldname": "recovery_end_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Recovery End Date"
   },
   {
@@ -502,7 +502,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-05 16:17:01.300897",
+ "modified": "2024-12-04 11:32:52.944851",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",

@@ -165,6 +165,7 @@
   {
    "fieldname": "sb1",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "options": "Simple"
   },
   {
@@ -346,6 +347,7 @@
   {
    "fieldname": "taxes",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Expense Taxes and Charges",
    "options": "Expense Taxes and Charges"
   },
@@ -414,7 +416,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-11 09:52:04.722937",
+ "modified": "2024-11-29 14:47:39.932519",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",

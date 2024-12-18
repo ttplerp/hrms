@@ -59,10 +59,6 @@ class EmployeeAdvance(Document):
 			self.advance_account = frappe.db.get_value("Company", self.company, "salary_advance_account")
 		elif self.advance_type == "Travel Advance":
 			self.advance_account = frappe.db.get_value("Company", self.company, "travel_advance_account")
-		# elif self.advance_type == "Imprest Advance":
-		# 	self.advance_account = frappe.db.get_value("Company", self.company, "imprest_advance_account")
-		else:
-			account = ""
 			
 	def update_defaults(self):
 		self.salary_component = "Salary Advance Deductions"
@@ -88,31 +84,32 @@ class EmployeeAdvance(Document):
 	@frappe.whitelist()
 	def validate_employment_status(self):
 		if self.advance_type == "Salary Advance":
+			'''
 			employment_type = frappe.db.get_value("Employee",self.employee,"employment_status")
 			joining_date = frappe.db.get_value("Employee",self.employee,"date_of_joining")
 			working_days =date_diff(self.posting_date,joining_date)
 			if employment_type == "Probation":
 				frappe.throw("Employee who is in Probation Period is not eligible for Salary Advance.")
-			if working_days < 360 :
+			if working_days < 360:
 				frappe.throw("Employee who did not serve 1 year is not eligible for Salary Advance")
 			
-			# from_date = frappe.defaults.get_user_default("year_start_date")
-			# advance_status = frappe.db.sql("""
-			# 	select name 
-			# 	from `tabEmployee Advance`
-			# 	where name != '{0}'
-			# 	and advance_type = "Salary Advance"
-			# 	and employee = "{1}"
-			# 	and posting_date between "{2}" and "{3}"
-			# """.format(self.name,self.employee,from_date, today()))
-			# if advance_status:
-			# 	frappe.throw("Employee Advance for employee {} has been already claimed ".format(self.employee_name))
+			from_date = frappe.defaults.get_user_default("year_start_date")
+			advance_status = frappe.db.sql("""
+			 	select name 
+			 	from `tabEmployee Advance`
+			 	where name != '{0}'
+			 	and advance_type = "Salary Advance"
+			 	and employee = "{1}"
+			 	and posting_date between "{2}" and "{3}"
+			 """.format(self.name,self.employee,from_date, today()))
+			if advance_status:
+			 	frappe.throw("Employee Advance for employee {} has been already claimed ".format(self.employee_name))
+			'''
 
 			advance_comp=frappe.db.sql("select sum(sd.amount) as sum from `tabSalary Structure`as ss join `tabEmployee` as te on ss.employee=te.name join `tabSalary Detail` as sd on sd.parent=ss.name where sd.salary_component='Salary Advance Deductions' and te.name={}".format(self.employee), as_dict=True)
 			limit = frappe.get_value("Employee Group", self.employee_group, "salary_advance_max_months")
 			# self.total_eligible_amount=flt(self.total_eligible_amount)-flt(advance_comp[0].sum)*flt(limit)
 			self.total_advance=flt(advance_comp[0].sum)*flt(limit)
-
 			if self.total_eligible_amount<0:
 				frappe.throw("You are not eligible for Salary Advance as your eligible amount is less than 0")
 

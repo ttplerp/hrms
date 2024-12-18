@@ -34,20 +34,18 @@ class TravelAuthorization(Document):
             
     def workflow_action(self):
         action = frappe.request.form.get('action') 
-        if action == "Apply" and self.travel_type!="Travel":
-            self.workflow_state="Waiting for Verification"
-            rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
-            self.notify_reviewers(rcvpnt)
-        elif action== "Reject" and self.travel_type!="Travel":
-            if self.workflow_state == "Waiting for Verification":
-                if frappe.session.user!=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id"):
-                    frappe.throw(str("only {} can reject").format(frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")))
-            
+        if action in ("Apply","Reapply"):
+            if self.travel_type == "Travel":
+                self.notify_reviewers(self.supervisor)
+            else:
+                rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
+                self.notify_reviewers(rcvpnt)   
                 
     
     def notify_reviewers(self, recipients):
         parent_doc = frappe.get_doc(self.doctype, self.name)
         args = parent_doc.as_dict()
+        args.workflow_state = self.workflow_state
         
         try:
             email_template = frappe.get_doc("Email Template", 'Travel Authorization Status Notification')

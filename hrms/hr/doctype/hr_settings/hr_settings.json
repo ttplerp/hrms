@@ -57,10 +57,12 @@
   "hrgm",
   "hr_approver",
   "hr_verifier",
+  "sa_approver",
   "cb_01",
   "hrgm_name",
   "hr_approver_name",
   "hr_verifier_name",
+  "sa_approver_name",
   "separation_clearance_approver_section",
   "afd",
   "spd",
@@ -77,6 +79,7 @@
   "approver_name_rtc",
   "approver_name_ict",
   "approver_name_sws",
+  "section_break_u6ktn",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -1157,13 +1160,29 @@
    "fieldname": "hr_verifier_name",
    "fieldtype": "Data",
    "label": "HR Verifier Name"
+  },
+  {
+   "fieldname": "sa_approver",
+   "fieldtype": "Link",
+   "label": "Salary Advance Approver",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "sa_approver.employee_name",
+   "fieldname": "sa_approver_name",
+   "fieldtype": "Data",
+   "label": "Salary Advance Approver Name"
+  },
+  {
+   "fieldname": "section_break_u6ktn",
+   "fieldtype": "Section Break"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-10-14 12:18:31.698310",
+ "modified": "2024-12-15 00:28:43.549582",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

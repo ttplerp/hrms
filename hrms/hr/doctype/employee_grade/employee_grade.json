@@ -13,7 +13,7 @@
   "currency",
   "default_base_pay",
   "government_grade",
-  "column_break_6",
+  "column_break_gwoxa",
   "gis",
   "dsa",
   "security_deposit",
@@ -72,10 +72,6 @@
    "fieldname": "government_grade",
    "fieldtype": "Data",
    "label": "Government Grade "
-  },
-  {
-   "fieldname": "column_break_6",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "dsa",
@@ -180,11 +176,15 @@
    "fieldname": "ltc",
    "fieldtype": "Currency",
    "label": "LTC"
+  },
+  {
+   "fieldname": "column_break_gwoxa",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-13 11:52:23.443065",
+ "modified": "2024-10-01 12:14:12.404160",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Grade",

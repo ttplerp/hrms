@@ -255,11 +255,24 @@ frappe.ui.form.on("Expense Claim", {
 				frappe.set_route("query-report", "General Ledger");
 			}, __("View"));
 		}
-
+		var je = 0;
+		frappe.call({
+			method: "check_journal_entry",
+			doc: frm.doc,
+			async: false,
+			callback: function(r){
+				if(r.message){
+					if(r.message == 1){
+						je = 1;
+					}
+				}
+			}
+		})
 		if (
 			frm.doc.docstatus === 1
 			&& frm.doc.status !== "Paid"
 			&& frappe.model.can_create("Journal Entry")
+			&& je == 0
 		) {
 			frm.add_custom_button(__('Make Journal Entry'),
 				function() { frm.events.make_bank_entry(frm); }, __('Create'));

@@ -19,6 +19,9 @@ frappe.ui.form.on("Leave Application", {
 		frm.set_query("employee", erpnext.queries.employee);
 	},
 	onload: function(frm) {
+		const tour_name = 'Leave Application';
+		
+        frm.tour.init({ tour_name }).then(() => frm.tour.start());
 		// Ignore cancellation of doctype on cancel all.
 		frm.ignore_doctypes_on_cancel_all = ["Leave Ledger Entry"];
 
@@ -211,6 +214,7 @@ frappe.ui.form.on("Leave Application", {
 				},
 				callback: function(r) {
 					if (r && r.message) {
+						console.log(r.message)
 						frm.set_value('total_leave_days', r.message);
 						frm.trigger("get_leave_balance");
 					}

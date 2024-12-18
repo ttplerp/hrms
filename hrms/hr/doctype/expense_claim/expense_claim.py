@@ -436,6 +436,11 @@ class ExpenseClaim(AccountsController):
 			if not self.mode_of_payment:
 				frappe.throw(_("Mode of payment is required to make a payment").format(self.employee))
 
+	@frappe.whitelist()
+	def check_journal_entry(self):
+		if frappe.db.exists("Journal Entry Account", {"docstatus": ["<", 2], "reference_name": self.name}):
+			return 1
+
 	def calculate_total_amount(self):
 		self.total_claimed_amount = 0
 		self.total_sanctioned_amount = 0
@@ -596,6 +601,8 @@ def make_bank_entry(dt, dn):
 			"account": default_bank_cash_account.account,
 			"credit_in_account_currency": payable_amount,
 			"reference_type": "Expense Claim",
+			"party_type": "Employee",
+			"party": expense_claim.employee,
 			"reference_name": expense_claim.name,
 			"balance": default_bank_cash_account.balance,
 			"account_currency": default_bank_cash_account.account_currency,

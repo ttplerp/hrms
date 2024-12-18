@@ -25,19 +25,15 @@ class TravelClaim(Document):
             self.set_supervisor_manager()
         if self.training_event:
             self.update_training_event()
-        if self.workflow_state not in ("Claimed","Cancelled") and frappe.request.form.get('action')!="Save":
-            notify_workflow_states(self)
                 
     def workflow_action(self):
         action = frappe.request.form.get('action') 
-        if action == "Apply" and self.travel_type!="Travel":
-            self.workflow_state="Waiting for Verification"
-            rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
-            self.notify_reviewers(rcvpnt)
-        elif action== "Reapply" and self.travel_type!="Travel":
-            if self.workflow_state == "Waiting for Verification":
-                if frappe.session.user!=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id"):
-                    frappe.throw(str("only {} can reject").format(frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")))
+        if action in ("Apply","Reapply"):
+            if self.travel_type == "Travel":
+                self.notify_reviewers(self.supervisor)
+            else:
+                rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
+                self.notify_reviewers(rcvpnt)
         elif action == "Approve" and self.workflow_state == "Approved":
             #Get the user with Account User Role who are permitted to this selected branch
             recipients=[]
@@ -55,6 +51,9 @@ class TravelClaim(Document):
                             """.format(branch=self.branch), as_dict=True):
                 recipients.append(a.name)
             self.notify_reviewers(recipients)
+        elif self.workflow_state in ("Claimed","Rejected") and frappe.request.form.get('action')!="Save":
+            user_email = frappe.db.get_value("Employee", self.employee, "user_id")
+            self.notify_reviewers(user_email)
     
     def notify_reviewers(self, recipients):
         parent_doc = frappe.get_doc(self.doctype, self.name)
@@ -122,11 +121,9 @@ class TravelClaim(Document):
 
     def on_cancel_after_draft(self):
         validate_workflow_states(self)
-        notify_workflow_states(self)
 
     def on_cancel(self):
         self.check_journal_entry()
-        notify_workflow_states(self)
         if self.ta:
             self.ta = None
         if self.training_event:
