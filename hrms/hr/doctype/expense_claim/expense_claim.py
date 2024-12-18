@@ -60,7 +60,7 @@ class ExpenseClaim(AccountsController):
 		if self.workflow_state == "Draft" or action == "Save":
 			return
 		elif action in ("Forward to Approver","Forward to Reviewer"):
-			self.notify(expense_approver)
+			self.notify(self.expense_approver)
 		elif self.workflow_state in ("Claimed", "Rejected") and action != "Save":
 			user_email = frappe.db.get_value("Employee", self.employee, "user_id")
 			self.notify(user_email)
@@ -70,7 +70,7 @@ class ExpenseClaim(AccountsController):
 			for a in frappe.db.sql("""
 								select u.name from `tabUser` u inner join  `tabHas Role` r
 								on u.name = r.parent
-								where r.role in ("Accounts User","Accounts Manager") 
+								where r.role in ("Accounts User") 
 								and u.name like "%bdb.bt"
 								and exists(
 									select 1 from `tabAssign Branch` b inner join `tabBranch Item` i 

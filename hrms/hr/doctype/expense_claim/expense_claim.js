@@ -274,8 +274,8 @@ frappe.ui.form.on("Expense Claim", {
 			&& frappe.model.can_create("Journal Entry")
 			&& je == 0
 		) {
-			frm.add_custom_button(__('Make Journal Entry'),
-				function() { frm.events.make_bank_entry(frm); }, __('Create'));
+			//frm.add_custom_button(__('Make Journal Entry'),
+			//	function() { frm.events.make_bank_entry(frm); }, __('Create'));
 		}
 	},
 
