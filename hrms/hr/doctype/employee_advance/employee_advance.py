@@ -311,7 +311,10 @@ class EmployeeAdvance(Document):
 			if (flt(self.gross_pay)*flt(mulitplier))<((((flt(self.gross_pay)-flt(first_deduction))*0.65)-flt(second_deduction))*flt(self.max_months_limit)):
 				self.total_eligible_amount = (flt(self.gross_pay)*flt(mulitplier))
 			else:
-				self.total_eligible_amount = ((((flt(self.gross_pay)-flt(first_deduction))*0.65)-flt(second_deduction))*flt(self.max_months_limit))
+				# self.total_eligible_amount = ((((flt(self.gross_pay)-flt(first_deduction))*0.65)-flt(second_deduction))*flt(self.max_months_limit))
+				self.total_eligible_amount = ((((flt(self.gross_pay)-flt(first_deduction))*0.65)-flt(second_deduction))*(12-flt(str(self.recovery_start_date).split("-")[1])+1))
+				if self.total_eligible_amount < 0:
+					self.total_eligible_amount = 0
 				
 		self.monthly_deduction = ceil(flt(self.advance_amount)/ flt(self.deduction_month))
 

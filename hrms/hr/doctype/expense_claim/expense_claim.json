@@ -116,7 +116,7 @@
    "hidden": 1,
    "label": "Approval Status",
    "no_copy": 1,
-   "options": "Draft\nApproved\nRejected",
+   "options": "Draft\nApproved\nClaimed\nRejected",
    "search_index": 1
   },
   {
@@ -165,7 +165,6 @@
   {
    "fieldname": "sb1",
    "fieldtype": "Section Break",
-   "hidden": 1,
    "options": "Simple"
   },
   {
@@ -416,7 +415,7 @@
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-29 14:47:39.932519",
+ "modified": "2024-12-19 16:30:26.332528",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",

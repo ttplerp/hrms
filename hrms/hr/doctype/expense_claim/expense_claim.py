@@ -111,7 +111,7 @@ class ExpenseClaim(AccountsController):
 				frappe.throw("Cannot create Expense Claim for {} directly from Expense Claim.".format(a.expense_type),title="Invalid Operation")
 
 	def set_status(self, update=False):
-		status = {"0": "Draft", "1": "Submitted", "2": "Cancelled"}[cstr(self.docstatus or 0)]
+		status = {"0": "Draft", "1": "Submitted", "2": "Cancelled"}[cstr(self.docstatus)]
 
 		precision = self.precision("grand_total")
 
@@ -179,6 +179,7 @@ class ExpenseClaim(AccountsController):
 		self.update_claimed_amount_in_employee_advance()
 		self.set_travel_reference()
 		self.update_ref_doc()
+
 	
 	def check_for_total_sanctioned_amount(self):
 		if flt(self.total_sanctioned_amount) == 0:
