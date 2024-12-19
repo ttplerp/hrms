@@ -54,18 +54,18 @@ frappe.ui.form.on("Overtime Application Item", {
 	"rate":function(frm, cdt, cdn){
 		calculate_amount(frm, cdt, cdn)
 	},
-	"from_date": function(frm, cdt, cdn) {
+	"date": function(frm, cdt, cdn) {
 		var child = locals[cdt][cdn]
-		var hours = moment(child.to_date).diff(moment(child.from_date), "seconds") / 3600;
-		if(child.to_date && child.from_date) {
-			frappe.model.set_value(cdt, cdn, "number_of_hours", hours);
-		}
+		// var hours = moment(child.to_date).diff(moment(child.from_date), "seconds") / 3600;
+		// if(child.to_date && child.from_date) {
+		// 	frappe.model.set_value(cdt, cdn, "number_of_hours", hours);
+		// }
 		if (frm.doc.employee) {
 			frappe.call({
 				method: "erpnext.setup.doctype.employee.employee.get_overtime_rate",
 				args: {
 					employee: frm.doc.employee,
-					posting_date:child.from_date
+					posting_date:child.date
 				},
 				callback: function(r) {
 					if(r.message) {
@@ -77,13 +77,13 @@ frappe.ui.form.on("Overtime Application Item", {
 		}
 	},
 	
-	"to_date": function(frm, cdt, cdn) {
-        	var child = locals[cdt][cdn]
-        	var hours = moment(child.to_date).diff(moment(child.from_date), "seconds") / 3600;
-        	if(child.to_date && child.from_date) {
-				frappe.model.set_value(cdt, cdn, "number_of_hours", hours);
-				}
-        },
+	// "to_date": function(frm, cdt, cdn) {
+    //     	var child = locals[cdt][cdn]
+    //     	var hours = moment(child.to_date).diff(moment(child.from_date), "seconds") / 3600;
+    //     	if(child.to_date && child.from_date) {
+	// 			frappe.model.set_value(cdt, cdn, "number_of_hours", hours);
+	// 			}
+    //     },
 
 
 	items_remove: function(frm, cdt, cdn) {
