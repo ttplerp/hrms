@@ -21,7 +21,7 @@ frappe.ui.form.on("Leave Application", {
 	onload: function(frm) {
 		const tour_name = 'Leave Application';
 		
-        frm.tour.init({ tour_name }).then(() => frm.tour.start());
+        // frm.tour.init({ tour_name }).then(() => frm.tour.start());
 		// Ignore cancellation of doctype on cancel all.
 		frm.ignore_doctypes_on_cancel_all = ["Leave Ledger Entry"];
 
