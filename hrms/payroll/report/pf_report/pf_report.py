@@ -34,7 +34,6 @@ def get_columns(data):
 		_("Branch") + ":Link/Branch:120", 
 		_("Department") + ":Link/Department:120",
 		_("Division") + ":Link/Division:120", 
-		_("Section") + ":Link/Section:120", 
 		_("Year") + "::80", 
 		_("Month") + "::80"
 	]
@@ -48,7 +47,7 @@ def get_data(filters):
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employeepf,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employerpf,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0)*2 else 0 end) as total,
-					t1.company, t1.branch, t1.cost_center, t1.department, t1.division, t1.section,
+					t1.company, t1.branch, t1.cost_center, t1.department, t1.division,
 					t1.fiscal_year, t1.month
 			from `tabSalary Slip` t1, `tabSalary Detail` t2, `tabEmployee` t3
 			where t1.docstatus = 1 %s
@@ -56,7 +55,7 @@ def get_data(filters):
 			and t2.parent = t1.name
 			and t2.salary_component in ('Basic Pay','PF')
 			group by t1.employee, t3.employee_name, t1.designation, t3.passport_number,
-					t1.company, t1.branch, t1.department, t1.division, t1.section,
+					t1.company, t1.branch, t1.department, t1.division,
 					t1.fiscal_year, t1.month
 			""" % conditions, filters)
 	
