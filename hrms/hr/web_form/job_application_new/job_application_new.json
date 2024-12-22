@@ -17,12 +17,12 @@
  "docstatus": 0,
  "doctype": "Web Form",
  "idx": 0,
- "introduction_text": "<div class=\"ql-editor read-mode\"><p>Please complete the form according to the provided instructions and include a copy of your CID, CV (curriculum vitae) and any other Relevant Documents when submitting your job application. for support mail to <strong><a href=\"mailto:hr@rigsarbhutan.com\" rel=\"noopener noreferrer\">hr@rigsarbhutan.com</a></strong> or use whatsapp Portal from Homepage</p></div>",
+ "introduction_text": "<div class=\"ql-editor read-mode\"><p>Please complete the form according to the provided instructions and include a copy of your CID, CV (curriculum vitae) and any other Relevant Documents when submitting your job application, for support mail to hr@rigsar.bt &nbsp;or use whatsapp Portal&nbsp;from&nbsp;Homepage.</p></div>",
  "is_standard": 1,
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 50,
- "modified": "2024-11-15 17:47:26.420611",
+ "modified": "2024-12-21 12:49:25.503347",
  "modified_by": "narayanneopaney71@gmail.com",
  "module": "HR",
  "name": "job-application-new",
@@ -36,7 +36,7 @@
  "success_message": "Thank you for applying.",
  "success_title": "Successful",
  "success_url": "/jobs",
- "title": "Job Application For Office Staff",
+ "title": "Job Application",
  "web_form_fields": [
   {
    "allow_read_on_all_link_options": 0,
@@ -46,6 +46,18 @@
    "max_value": 0,
    "options": "<img alt=\"Image Description\" height=\"100\" src=\"/files/Final Rigsar Logo.png\" width=\"100\">",
    "read_only": 1,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "cover_letter",
+   "fieldtype": "Text",
+   "hidden": 0,
+   "label": "Cover Letter",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
    "reqd": 0,
    "show_in_filter": 0
   },
@@ -77,6 +89,7 @@
   },
   {
    "allow_read_on_all_link_options": 0,
+   "depends_on": "eval:doc.job_category!=\"Support Staff\"",
    "fieldname": "cover_letter",
    "fieldtype": "Text",
    "hidden": 0,
@@ -178,6 +191,7 @@
   },
   {
    "allow_read_on_all_link_options": 0,
+   "depends_on": "eval:doc.gender==\"Male\"",
    "fieldname": "secondary_phone_number",
    "fieldtype": "Data",
    "hidden": 0,
