@@ -1,0 +1,211 @@
+{
+ "actions": [],
+ "allow_copy": 1,
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "naming_series:{abbr}",
+ "creation": "2024-01-30 15:51:18.842912",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "file_name",
+  "documents_type",
+  "file_abbr",
+  "branch_name",
+  "branch_abbr",
+  "column_break_4",
+  "fiscal_year",
+  "company",
+  "company_abbr",
+  "data_9",
+  "department",
+  "abbr",
+  "file_custodian",
+  "custodian_name",
+  "data_5",
+  "lft",
+  "rgt",
+  "is_group",
+  "old_parent",
+  "parent_document_filing_index"
+ ],
+ "fields": [
+  {
+   "default": "branch_abbr /.abbr./.YY./.file_abbr./.###",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Series",
+   "options": "branch_abbr /.abbr./.YY./.file_abbr./.###",
+   "read_only": 1
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "label": "Fiscal Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "documents_type",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Documents Type",
+   "options": "Documents Type"
+  },
+  {
+   "fetch_from": "documents_type.doc_abbr",
+   "fieldname": "file_abbr",
+   "fieldtype": "Data",
+   "label": "File Abbr",
+   "length": 6,
+   "read_only": 1
+  },
+  {
+   "fieldname": "file_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "File Name"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "remember_last_selected_value": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "company.abbr",
+   "fieldname": "company_abbr",
+   "fieldtype": "Data",
+   "label": "Company Abbr",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "data_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "label": "Department",
+   "options": "Department"
+  },
+  {
+   "fetch_from": "department.abbr",
+   "fieldname": "abbr",
+   "fieldtype": "Data",
+   "label": "Abbr",
+   "read_only": 1
+  },
+  {
+   "fieldname": "file_custodian",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "label": "File Custodian",
+   "mandatory_depends_on": "//eval:!in_list([\"1\"], doc.is_group)",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "data_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "lft",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Left",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "rgt",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Right",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_group",
+   "fieldtype": "Check",
+   "label": "Is Group"
+  },
+  {
+   "fieldname": "old_parent",
+   "fieldtype": "Link",
+   "label": "Old Parent",
+   "options": "Document Filing Index"
+  },
+  {
+   "fieldname": "parent_document_filing_index",
+   "fieldtype": "Link",
+   "label": "Parent Document Filing Index",
+   "options": "Document Filing Index"
+  },
+  {
+   "fetch_from": "file_custodian.employee_name",
+   "fieldname": "custodian_name",
+   "fieldtype": "Data",
+   "label": "Custodian Name"
+  },
+  {
+   "fieldname": "branch_name",
+   "fieldtype": "Link",
+   "label": "Branch Name",
+   "options": "Branch"
+  },
+  {
+   "fetch_from": "branch_name.abbr",
+   "fieldname": "branch_abbr",
+   "fieldtype": "Data",
+   "label": "Branch Abbr",
+   "length": 3
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_tree": 1,
+ "links": [],
+ "modified": "2024-12-23 12:18:51.634708",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Document Filing Index",
+ "naming_rule": "By \"Naming Series\" field",
+ "nsm_parent_field": "parent_document_filing_index",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "show_name_in_global_search": 1,
+ "sort_field": "modified",
+ "sort_order": "ASC",
+ "states": [],
+ "title_field": "file_name",
+ "track_changes": 1
+}
