@@ -13,7 +13,7 @@ class MusterRollAttendanceforDashboard(Document):
 		check = frappe.db.sql('''
 			SELECT 1
 			FROM `tabMuster Roll Attendance for Dashboard`
-			WHERE cost_center = %s AND posting_date = %s 
+			WHERE cost_center = %s AND posting_date = %s  and docstatus=1
 		''', (self.cost_center, self.posting_date))
 
 		# Throw an error if a duplicate is found
