@@ -68,7 +68,7 @@ def get_data(filters,designations):
         result[i.cost_center]['ojt'] = i['ojt']
         result[i.cost_center]['internship'] = i['internship']
         
-        
+
         if i.cost_center not in msw_att:
             msw_att[i.cost_center] = {"cost_center":cost_center}
             
@@ -92,17 +92,22 @@ def get_data(filters,designations):
     for i in regular_emp_att:
         if i.cost_center in result:
             
+           
             leave = int(msw_att.get(i.cost_center, {}).get('leave', 0))
             absent = int(msw_att.get(i.cost_center, {}).get('absent', 0))
             present = int(msw_att.get(i.cost_center, {}).get('present', 0))
 
             # Add attendance counts
-            if i.status == "On Leave":
-                result[i.cost_center]['leave'] = int(i.attendance_count) + leave
+            if i.status in ["On Leave", "Half Day"]:
+                if 'leave' not in result[i.cost_center]:
+                    result[i.cost_center]['leave'] = 0
+                additional_leave = int(i.attendance_count) 
+                result[i.cost_center]['leave'] += additional_leave
             elif i.status == "Absent":
                 result[i.cost_center]['absent'] = int(i.attendance_count) + absent
             elif i.status == "Present":
                 result[i.cost_center]['present'] = int(i.attendance_count) + present
+            
             
             # Ensure all keys are populated
             result[i.cost_center]['leave'] = result[i.cost_center].get('leave', leave)
@@ -165,67 +170,67 @@ def get_columns(designations):
        { "label": _("Cost Center"),
             "fieldname": 'cost_center',
             "fieldtype": "Data",
-            "width": 120,},
+            "width": 112,},
        { "label": _("Total"),
             "fieldname": 'total',
             "fieldtype": "Data",
-            "width": 65,}
+            "width": 60,}
     ]
     for designation in designations:
         columns.append({
             "label": _(designation['name']),
             "fieldname": frappe.scrub(designation['name']),
             "fieldtype": "Data",
-            "width": 65,
+            "width": 60,
         })
         
     columns.append({
             "label": 'MSW',
             "fieldname": 'msw',
             "fieldtype": "Data",
-            "width": 65,
+            "width": 60,
         })
     columns.append({
             "label": 'FW',
             "fieldname": 'fw',
             "fieldtype": "Data",
-            "width": 65,
+            "width": 51,
         })
     columns.append({
             "label": 'LW',
             "fieldname": 'lw',
             "fieldtype": "Data",
-            "width": 65,
+            "width": 51,
         })
     columns.append({
             "label": 'OJT',
             "fieldname": 'ojt',
             "fieldtype": "Data",
-            "width": 65,
+            "width": 51,
         })
     columns.append({
             "label": 'Interns',
             "fieldname": 'internship',
             "fieldtype": "Data",
-            "width": 65,
+            "width": 55,
         })
     columns.append({
             "label": 'Leave',
             "fieldname": 'leave',
             "fieldtype": "Data",
-            "width": 65,
+            "width": 55,
         })
     columns.append({
             "label": 'Absent',
             "fieldname": 'absent',
             "fieldtype": "Data",
-            "width": 65,
+            "width": 55,
         })
     columns.append({
             "label": 'Present',
             "fieldname": 'present',
             "fieldtype": "Data",
-            "width": 65,
+            "width": 53,
         })
     # frappe.throw(str(columns))
     return columns
