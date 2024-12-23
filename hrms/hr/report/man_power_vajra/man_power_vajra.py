@@ -58,7 +58,7 @@ def get_data(filters,designations):
                                 present
                             FROM 
                                 `tabMuster Roll Attendance for Dashboard` where posting_date= CURDATE()
-                                where docstatus=1;
+                                and docstatus=1;
                              ''', as_dict=True)
     
     msw_att = {}
