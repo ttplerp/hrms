@@ -9,7 +9,8 @@
  "engine": "InnoDB",
  "field_order": [
   "name1",
-  "amended_from"
+  "amended_from",
+  "serial_number"
  ],
  "fields": [
   {
@@ -26,11 +27,16 @@
    "options": "Designation Group",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "serial_number",
+   "fieldtype": "Int",
+   "label": "Serial Number"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-19 15:46:57.238796",
+ "modified": "2024-12-23 17:31:54.009990",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Designation Group",
