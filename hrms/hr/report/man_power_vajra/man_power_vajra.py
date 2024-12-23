@@ -160,7 +160,7 @@ def get_data(filters,designations):
     
 def get_designation():
     return frappe.db.sql('''
-                         select name from `tabDesignation Group`;
+                         select name from `tabDesignation Group` order by serial_number asc;
                          ''', as_dict=True)
 		
 	
@@ -170,7 +170,7 @@ def get_columns(designations):
        { "label": _("Cost Center"),
             "fieldname": 'cost_center',
             "fieldtype": "Data",
-            "width": 112,},
+            "width": 100,},
        { "label": _("Total"),
             "fieldname": 'total',
             "fieldtype": "Data",
@@ -181,7 +181,7 @@ def get_columns(designations):
             "label": _(designation['name']),
             "fieldname": frappe.scrub(designation['name']),
             "fieldtype": "Data",
-            "width": 60,
+            "width": 55,
         })
         
     columns.append({
