@@ -4,6 +4,24 @@
 
 frappe.query_reports["Salary Advance Report"] = {
 	"filters": [
-
+		{
+			"fieldname":"company",
+			"label": __("Company"),
+			"fieldtype": "Link",
+			"options": "Company",
+			"default": frappe.defaults.get_user_default("Company")
+		},
+		{
+			"fieldname": "from_date",
+			"label": __("From Date"),
+			"fieldtype": "Date",
+			"default": frappe.defaults.get_user_default("year_start_date"),
+		},
+		{
+			"fieldname": "to_date",
+			"label": __("To Date"),
+			"fieldtype": "Date",
+			"default": frappe.defaults.get_user_default("year_end_date"),
+		},
 	]
 };
