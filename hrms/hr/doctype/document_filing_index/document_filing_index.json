@@ -3,7 +3,7 @@
  "allow_copy": 1,
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "naming_series:{abbr}",
+ "autoname": "naming_series:",
  "creation": "2024-01-30 15:51:18.842912",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -12,8 +12,8 @@
   "naming_series",
   "file_name",
   "documents_type",
-  "file_abbr",
-  "branch_name",
+  "document_abbr",
+  "branch",
   "branch_abbr",
   "column_break_4",
   "fiscal_year",
@@ -33,12 +33,12 @@
  ],
  "fields": [
   {
-   "default": "branch_abbr /.abbr./.YY./.file_abbr./.###",
+   "default": "company_abbr./.branch_abbr./.document_abbr./.YY./.###",
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "hidden": 1,
    "label": "Series",
-   "options": "branch_abbr /.abbr./.YY./.file_abbr./.###",
+   "options": "company_abbr./.branch_abbr./.document_abbr./.YY./.###",
    "read_only": 1
   },
   {
@@ -55,14 +55,6 @@
    "in_standard_filter": 1,
    "label": "Documents Type",
    "options": "Documents Type"
-  },
-  {
-   "fetch_from": "documents_type.doc_abbr",
-   "fieldname": "file_abbr",
-   "fieldtype": "Data",
-   "label": "File Abbr",
-   "length": 6,
-   "read_only": 1
   },
   {
    "fieldname": "file_name",
@@ -89,8 +81,7 @@
    "fieldname": "company_abbr",
    "fieldtype": "Data",
    "label": "Company Abbr",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "data_9",
@@ -109,6 +100,7 @@
    "fieldname": "abbr",
    "fieldtype": "Data",
    "label": "Abbr",
+   "length": 3,
    "read_only": 1
   },
   {
@@ -164,23 +156,31 @@
    "label": "Custodian Name"
   },
   {
-   "fieldname": "branch_name",
+   "fetch_from": "branch.abbr",
+   "fieldname": "branch_abbr",
+   "fieldtype": "Data",
+   "label": "Branch Abbr",
+   "length": 3,
+   "read_only": 1
+  },
+  {
+   "fieldname": "branch",
    "fieldtype": "Link",
    "label": "Branch Name",
    "options": "Branch"
   },
   {
-   "fetch_from": "branch_name.abbr",
-   "fieldname": "branch_abbr",
+   "fetch_from": "documents_type.doc_abbr",
+   "fieldname": "document_abbr",
    "fieldtype": "Data",
-   "label": "Branch Abbr",
-   "length": 3
+   "label": "Document Abbr",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2024-12-23 12:18:51.634708",
+ "modified": "2024-12-25 12:20:53.059040",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Document Filing Index",
