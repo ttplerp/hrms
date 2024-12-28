@@ -8,10 +8,12 @@
  "engine": "InnoDB",
  "field_order": [
   "from_date",
+  "company",
   "branch",
   "cb_01",
   "to_date",
   "salary_component",
+  "debit_account",
   "sb_employees",
   "get_employees",
   "employees",
@@ -75,12 +77,25 @@
    "fieldname": "employees",
    "fieldtype": "Table",
    "options": "Batch Data Communication Item"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "debit_account",
+   "fieldtype": "Link",
+   "label": "Debit Account",
+   "options": "Account"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-20 16:02:33.008755",
+ "modified": "2024-12-28 22:17:32.996244",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Batch Data Communication",
