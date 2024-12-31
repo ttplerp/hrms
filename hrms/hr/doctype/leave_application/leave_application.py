@@ -810,7 +810,6 @@ def get_leave_details(employee, date):
             employee, d, allocation.from_date, end_date
         )
         expired_leaves = allocation.total_leaves_allocated - (remaining_leaves + leaves_taken)
-
         leave_allocation[d] = {
             "total_leaves": allocation.total_leaves_allocated,
             "expired_leaves": expired_leaves if expired_leaves > 0 else 0,
@@ -865,7 +864,32 @@ def get_leave_balance_on(
     leaves_taken = get_leaves_for_period(employee, leave_type, allocation.from_date, end_date)
 
     remaining_leaves = get_remaining_leaves(allocation, leaves_taken, date, cf_expiry)
-
+    merged_leaves = frappe.db.sql("""
+                                  select sum(leaves) as leaves from `tabLeave Ledger Entry` where employee = '{0}'
+                                  and '{1}' between from_date and to_date and transaction_type = 'Merge CL To EL'
+                                  and leave_type = '{2}'
+                                  """.format(employee, date, leave_type), as_dict=1)
+    expired_leaves = frappe.db.sql("""
+                                  select sum(leaves) as leaves from `tabLeave Ledger Entry` where employee = '{0}'
+                                  and '{1}' between from_date and to_date and is_expired = 1
+                                  and leave_type = '{2}'
+                                  """.format(employee, date, leave_type), as_dict=1)
+    if len(merged_leaves) > 0:
+        merged_leaves = merged_leaves[0].leaves
+    else:
+        merged_leaves = 0
+    if len(expired_leaves) > 0:
+        expired_leaves = expired_leaves[0].leaves
+    else:
+        expired_leaves = 0
+    if not merged_leaves:
+        merged_leaves = 0
+    if not expired_leaves:
+        expired_leaves = 0
+    remaining_leaves["leave_balance"] += merged_leaves + expired_leaves
+    remaining_leaves["leave_balance_for_consumption"] += merged_leaves + expired_leaves
+    # if leave_type == "Earned Leave":
+    #     frappe.throw(str(remaining_leaves))
     if for_consumption:
         return remaining_leaves
     else:
@@ -983,7 +1007,8 @@ def get_leaves_for_period(
 ) -> float:
     leave_entries = get_leave_entries(employee, leave_type, from_date, to_date)
     leave_days = 0
-
+    # if frappe.session.user == "Administrator":
+    #     frappe.throw(str(leave_entries))
     for leave_entry in leave_entries:
         inclusive_period = leave_entry.from_date >= getdate(
             from_date
@@ -1000,7 +1025,7 @@ def get_leaves_for_period(
         ):
             leave_days += leave_entry.leaves
 
-        elif leave_entry.transaction_type == "Leave Application":
+        elif leave_entry.transaction_type in ("Leave Application"):
             if leave_entry.from_date < getdate(from_date):
                 leave_entry.from_date = from_date
             if leave_entry.to_date > getdate(to_date):
@@ -1016,19 +1041,21 @@ def get_leaves_for_period(
                 )
                 if half_day_date:
                     half_day = 1
-            
-            leave_days += (
-                get_number_of_leave_days(
-                    employee,
-                    leave_type,
-                    leave_entry.from_date,
-                    leave_entry.to_date,
-                    half_day,
-                    half_day_date,
-                    holiday_list=leave_entry.holiday_list,
-                )
-                * -1
-            )
+            leave_days += leave_entry.leaves
+            # leave_days += (
+            #     get_number_of_leave_days(
+            #         employee,
+            #         leave_type,
+            #         leave_entry.from_date,
+            #         leave_entry.to_date,
+            #         half_day,
+            #         half_day_date,
+            #         holiday_list=leave_entry.holiday_list,
+            #     )
+            #     * -1
+            # )
+    # if frappe.session.user == "Administrator":
+    #     frappe.throw(str(leave_days))
     return leave_days
 
 
