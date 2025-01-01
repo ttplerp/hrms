@@ -91,6 +91,7 @@ class LeavePolicyAssignment(Document):
 			self.db_set("leaves_allocated", 1)
 			return leave_allocations
 
+
 	def create_leave_allocation(
 		self, leave_type, new_leaves_allocated, leave_type_details, date_of_joining
 	):
