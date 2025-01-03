@@ -497,12 +497,13 @@
    "depends_on": "eval:doc.advance_type == 'Salary Advance'",
    "fieldname": "total_eligible_amount",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Total Eligible Amount"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-12-04 11:32:52.944851",
+ "modified": "2025-01-03 10:39:27.762263",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
