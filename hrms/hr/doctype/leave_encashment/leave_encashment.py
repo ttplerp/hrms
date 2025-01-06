@@ -21,6 +21,7 @@ class LeaveEncashment(Document):
 		validate_active_employee(self.employee)
 		self.get_leave_details_for_encashment()
 		self.check_duplicate_entry()
+		self.validate_encashment_days()
 		if not self.encashment_date:
 			self.encashment_date = getdate(nowdate())
 		if self.workflow_state != "Approved":
@@ -47,6 +48,12 @@ class LeaveEncashment(Document):
 				- self.encashable_days,
 			)
 		self.create_leave_ledger_entry(submit=False)
+
+	def validate_encashment_days(self):
+		if self.encashment_days != self.encashable_days:
+			frappe.throw(
+				"Insufficient leave balance. You need at least {} leave balance days to proceed with leave encashment.".format(frappe.bold(self.encashable_days))
+			)
 
 	def post_expense_claim(self):
 		cost_center = frappe.get_value("Employee", self.employee, "cost_center")
