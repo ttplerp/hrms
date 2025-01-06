@@ -136,33 +136,33 @@ class OTUpdateTools(Document):
 	@frappe.whitelist()
 	def post_overtime_entries(self):
 		for d in self.get("ot_details"):
-			if frappe.db.exists("Overtime Application", {"employee":d.employee, "ot_update_tool":self.name,"docstatus":1}):
-				frappe.throw("OT of Employee {} for {} is already recored in Overtime Application ".format(d.employee, self.posting_date))
+			if not frappe.db.exists("Overtime Application", {"employee":d.employee, "ot_update_tool":self.name}):
+				#frappe.throw("OT of Employee {} for {} is already recored in Overtime Application ".format(d.employee, self.posting_date))
 
-			doc = frappe.new_doc("Overtime Application")
-			doc.employee = d.employee
-			doc.company = self.company
-			doc.posting_date = self.posting_date
-			doc.purpose = self.memo
-			doc.ot_update_tool = self.name
-			if d.overtime_type == "Overtime (Normal Rate)":
-				rate = d.ot_rate
-			elif d.overtime_type == "Sunday Overtime (Half Day)":
-				rate = d.ot_rate_half_day
-			else:
-				rate = d.ot_rate_full_day
-			doc.append("items",{
-				"overtime_type":d.overtime_type,
-				"from_date": str(self.posting_date) + " " + str(d.from_date),
-				"to_date": str(self.posting_date) + " " + str(d.to_date),
-				"number_of_hours":d.number_of_hours,
-				"ot_rate": flt(rate,2),
-				"approved_ot_hrs":d.approved_ot_hrs,
-				"ot_amount":flt(d.ot_amount,2),
-				"remarks": d.remarks
-			})
-			doc.save()
-			doc.submit()
+				doc = frappe.new_doc("Overtime Application")
+				doc.employee = d.employee
+				doc.company = self.company
+				doc.posting_date = self.posting_date
+				doc.purpose = self.memo
+				doc.ot_update_tool = self.name
+				if d.overtime_type == "Overtime (Normal Rate)":
+					rate = d.ot_rate
+				elif d.overtime_type == "Sunday Overtime (Half Day)":
+					rate = d.ot_rate_half_day
+				else:
+					rate = d.ot_rate_full_day
+				doc.append("items",{
+					"overtime_type":d.overtime_type,
+					"from_date": str(self.posting_date) + " " + str(d.from_date),
+					"to_date": str(self.posting_date) + " " + str(d.to_date),
+					"number_of_hours":d.number_of_hours,
+					"ot_rate": flt(rate,2),
+					"approved_ot_hrs":d.approved_ot_hrs,
+					"ot_amount":flt(d.ot_amount,2),
+					"remarks": d.remarks
+				})
+				doc.save()
+				doc.submit()
 		
 		frappe.db.sql("Update `tabOT Update Tools` set workflow_state='Recorded' where name='{}'".format(self.name))
 		frappe.db.commit()
