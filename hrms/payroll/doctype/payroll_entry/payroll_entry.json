@@ -15,6 +15,7 @@
   "column_break_40",
   "processing_branch",
   "jv_entry_type",
+  "date",
   "section_break_8",
   "branch",
   "department",
@@ -55,30 +56,15 @@
   "amended_from",
   "column_break_33",
   "bank_account",
-  "section_break0",
   "column_break0",
-  "posting_date",
   "payroll_frequency",
   "accounting_entry"
  ],
  "fields": [
   {
-   "collapsible": 1,
-   "fieldname": "section_break0",
-   "fieldtype": "Section Break",
-   "label": "Additional Information"
-  },
-  {
    "fieldname": "column_break0",
    "fieldtype": "Column Break",
    "width": "50%"
-  },
-  {
-   "default": "Today",
-   "fieldname": "posting_date",
-   "fieldtype": "Date",
-   "label": "Posting Date",
-   "reqd": 1
   },
   {
    "depends_on": "eval:doc.salary_slip_based_on_timesheet == 0",
@@ -380,12 +366,21 @@
    "fieldtype": "Check",
    "label": "Accounting Entry",
    "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "options": "Posting Date",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-07 10:53:13.790561",
+ "modified": "2024-12-31 14:47:00.472273",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",
@@ -406,5 +401,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }
