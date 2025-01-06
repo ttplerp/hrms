@@ -10,7 +10,7 @@ class OTUpdateTools(Document):
 	def validate(self):
 		self.calculate_total_amount()
 		self.validate_duplicate()
-		if self.workflow_state!="Draft":
+		if self.workflow_state not in ("Draft","Recorded"):
 			self.send_notification()
 
 	def on_submit(self):
@@ -136,7 +136,7 @@ class OTUpdateTools(Document):
 	@frappe.whitelist()
 	def post_overtime_entries(self):
 		for d in self.get("ot_details"):
-			if not frappe.db.exists("Overtime Application", {"employee":d.employee, "ot_update_tool":self.name}):
+			if not frappe.db.exists("Overtime Application", {"employee":d.employee, "ot_update_tool":self.name,}):
 				#frappe.throw("OT of Employee {} for {} is already recored in Overtime Application ".format(d.employee, self.posting_date))
 
 				doc = frappe.new_doc("Overtime Application")
@@ -163,6 +163,7 @@ class OTUpdateTools(Document):
 				})
 				doc.save()
 				doc.submit()
+				frappe.db.commit()
 		
 		frappe.db.sql("Update `tabOT Update Tools` set workflow_state='Recorded' where name='{}'".format(self.name))
 		frappe.db.commit()
