@@ -113,8 +113,7 @@ class MusterRollAdvance(Document):
 				"party_check": 1,
 				"party_type": "Muster Roll Employee",
 				"party": self.mr_employee,
-				"account_type": adv_gl_det.account_type,
-				"is_advance": "Yes" if adv_gl_det.is_an_advance_account == 1 else None,
+				"is_advance": "Yes",
 				"reference_type": "Muster Roll Advance",
 				"reference_name": self.name,
 			})
@@ -127,7 +126,7 @@ class MusterRollAdvance(Document):
 					"party_type": "Muster Roll Employee",
 					"party": a.mr_employee,
 					"account_type": adv_gl_det.account_type,
-					"is_advance": "Yes" if adv_gl_det.is_an_advance_account == 1 else None,
+					"is_advance": "Yes",
 					"reference_type": "Muster Roll Advance",
 					"reference_name": self.name,
 				})
@@ -144,7 +143,6 @@ class MusterRollAdvance(Document):
 				"party_type": "Employee",
 				"party": self.imprest_party,
 				"account_type": exp_gl_det.account_type,
-				"is_advance": "Yes",
 			})
 		else:
 			accounts.append({"account": exp_gl,
@@ -152,7 +150,6 @@ class MusterRollAdvance(Document):
 				"cost_center": self.cost_center,
 				"party_check": 0,
 				"account_type": exp_gl_det.account_type,
-				# "is_advance": "Yes" if exp_gl_det.is_an_advance_account == 1 else "No",
 				"is_advance": "Yes",
 			})
 			
