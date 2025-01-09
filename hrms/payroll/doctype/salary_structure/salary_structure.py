@@ -336,7 +336,7 @@ class SalaryStructure(Document):
 						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
 					elif self.get(m['field_name']) and m['name'] == 'PF':
 						pf_amt = (flt(basic_pay)+flt(basic_pay_arrears))*flt(settings.get("employee_pf"))*0.01
-						calc_amt = roundoff(pf_amt)
+						calc_amt = flt(pf_amt,0)
 						calc_map.append({'salary_component': m['name'], 'amount': flt(calc_amt)})
 					elif self.get(m['field_name']) and m['name'] == 'Health Contribution':
 						health_cont_amt = flt(total_earning)*flt(settings.get("health_contribution"))*0.01
@@ -349,7 +349,7 @@ class SalaryStructure(Document):
 
 			# Calculating Salary Tax
 			if ed == 'deductions':
-				calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-flt(ltc_amt)-(comm_allowance*0.5)))
+				calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
 				calc_amt = flt(calc_amt,2)
 				total_deduction += calc_amt
 				calc_map.append({'salary_component': 'Salary Tax', 'amount': flt(calc_amt)})
@@ -566,7 +566,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				if d['salary_component'] == 'PF':
 					percent = flt(settings.get("employee_pf"))
 					pf_amt = (flt(basic_amt)+flt(basic_pay_arrears))*flt(percent)*0.01
-					calc_amt = roundoff(pf_amt)
+					calc_amt = flt(pf_amt,0)
 					# added by phuntsho on feb April 6th 2021
 					# calculate employer pf
 					employer_percent = flt(settings.get("employer_pf"))
@@ -592,7 +592,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 			else:
 				if d['salary_component'] == 'Salary Tax':
 					if not tax_included:
-						tax_amt = get_salary_tax(math.floor(flt(gross_amt) - flt(gis_amt) - flt(pf_amt) - (flt(comm_amt) * 0.5)))
+						tax_amt = get_salary_tax(math.floor(flt(gross_amt) - flt(gis_amt) - flt(pf_amt,0) - (flt(comm_amt) * 0.5)))
 						tax_amt = flt(tax_amt,2)
 						d['amount'] = flt(tax_amt)
 						tax_included = 1
