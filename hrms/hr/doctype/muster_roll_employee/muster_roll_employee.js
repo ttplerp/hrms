@@ -19,6 +19,14 @@ frappe.ui.form.on('Muster Roll Employee', {
 				}
 			};
 		});
+
+		frm.set_query('project', function(doc) {
+			return {
+				filters: {
+					"cost_center": doc.cost_center
+				}
+			};
+		});
 	},
 
 	bank_branch: function(frm){
