@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import _
+from datetime import datetime
 from frappe.utils import flt, getdate, formatdate, cstr
 from operator import itemgetter
 
@@ -185,44 +186,49 @@ def get_salary_arrer(filters):
 
 def get_bulk_leave_encashment(filters):
 	data = []
-	month_year="12-2023"
+	encashment_date = frappe.db.get_value("Bulk Leave Encashment",{"fiscal_year":filters.fiscal_year},"encashment_date")
+	month_year =encashment_date.strftime("%m-%Y")
+
+	from_date = frappe.db.get_value("Fiscal Year", filters.fiscal_year, "year_start_date")
+	to_date = frappe.db.get_value("Fiscal Year", filters.fiscal_year, "year_end_date")
+	
+	receipt_date = frappe.db.get_value("TDS Receipt Update",{"purpose":"Bulk Leave Encashment","from_date":from_date, "to_date":to_date},"tds_receipt_date")
+	receipt_number = frappe.db.get_value("TDS Receipt Update",{"purpose":"Bulk Leave Encashment","from_date":from_date, "to_date":to_date},"tds_receipt_number")
+
 	datas = frappe.db.sql("""
 			SELECT 
 			ble.encashment_date as date,
 			blei.payable_amount,
 			blei.encashment_amount,
-			blei.encashment_tax,
-			r.tds_receipt_number, 
-			r.tds_receipt_date 
+			blei.encashment_tax
 		FROM `tabBulk Leave Encashment` ble
 		INNER JOIN 
 			`tabBulk Leave Encashment Item` blei ON ble.name = blei.parent
-		INNER JOIN
-			`tabTDS Receipt Update` r ON ble.fiscal_year ='{fiscal_year}' AND r.purpose="Bulk Leave Encashment"
 		WHERE blei.employee = '{employee}' 
 		AND ble.leave_type = "Earned Leave"
 		AND ble.docstatus = 1 
 		AND ble.fiscal_year='{fiscal_year}'
 		limit 1
 		""".format(employee=filters.employee, fiscal_year=filters.fiscal_year), as_dict=True)
-	
+
 	for a in datas:
-		data.append({
-			"month_year":month_year, 
-			"type":"Bulk Leave Encashemnt", 
-			"basic":0, 
-			"others":a.encashment_amount, 
-			"total":a.encashment_amount,
-			"pf":0,
-			"gis":0,
-			"totalPfGis":0, 
-			"taxable":a.encashment_amount, 
-			"tds":a.encashment_tax, 
-			"health":0,
-			"receipt_number":a.tds_receipt_number, 
-			"receipt_date":a.tds_receipt_date,
-			"posting_date":a.date
-			})
+		if a.encashment_tax > 0:
+			data.append({
+				"month_year":month_year, 
+				"type":"Bulk Leave Encashemnt", 
+				"basic":0, 
+				"others":a.encashment_amount, 
+				"total":a.encashment_amount,
+				"pf":0,
+				"gis":0,
+				"totalPfGis":0, 
+				"taxable":a.encashment_amount, 
+				"tds":a.encashment_tax, 
+				"health":0,
+				"receipt_number":receipt_number, 
+				"receipt_date":receipt_date,
+				"posting_date":a.date
+				})
 	return data
 	
 def validate_filters(filters):
