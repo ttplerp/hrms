@@ -13,6 +13,7 @@
   "column_break_4",
   "encashment_date",
   "leave_type",
+  "minimum_balance_required",
   "get_employees",
   "encashment_details_section",
   "items",
@@ -207,12 +208,18 @@
    "label": "Workflow State",
    "options": "Workflow State",
    "read_only": 1
+  },
+  {
+   "fieldname": "minimum_balance_required",
+   "fieldtype": "Int",
+   "label": "Minimum Balance Required",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-01-15 10:22:22.242991",
+ "modified": "2025-01-10 13:29:13.608275",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Bulk Leave Encashment",

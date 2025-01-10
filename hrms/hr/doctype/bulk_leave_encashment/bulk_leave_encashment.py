@@ -21,6 +21,7 @@ class BulkLeaveEncashment(Document):
 		if not self.encashment_date:
 			self.encashment_date = getdate(nowdate())
 		self.get_leave_details_for_encashment()
+		self.validate_leave_balance()
 		self.calculate_amount()
 		# notify_workflow_states(self)
 
@@ -38,6 +39,15 @@ class BulkLeaveEncashment(Document):
 	def validate_items(self):
 		if not self.get("items"):
 			frappe.throw(_("Get Employees before saving this document."), title="No Employees Found")
+
+	def validate_leave_balance(self):
+		new_record = []
+		for d in self.get("items"):
+			if d.leave_balance > self.minimum_balance_required:
+				new_record.append(d)
+		for idx, record in enumerate(new_record, start=1):
+			record.idx = idx
+		self.set("items", new_record)
 	
 	def calculate_amount(self):
 		total_encashment_amount = net_payable = 0
@@ -86,7 +96,11 @@ class BulkLeaveEncashment(Document):
 			if not emp.employee_group:
 				emp.employee_group = frappe.db.get_value("Employee", emp.employee, "employee_group")
 			
-			emp.encashable_days = emp.leave_balance 
+			if self.minimum_balance_required < emp.leave_balance:
+				emp.encashable_days = 30
+			else:
+				emp.encashable_days = emp.leave_balance
+			 
 
 			if emp.encashable_days > emp.leave_balance:
 				frappe.throw("Encashable Days  cannot be more than Leave Balance")
@@ -94,7 +108,10 @@ class BulkLeaveEncashment(Document):
 			pay = get_basic_and_gross_pay(employee=emp.employee, effective_date=today())
 			if pay.get("basic_pay") is not None:
 				emp.current_basic_pay = pay.get("basic_pay")
-				emp.encashment_amount = flt((pay.get("basic_pay")/30) * flt(emp.encashable_days),2)
+				if flt(emp.encashable_days) == 30:
+					emp.encashment_amount = flt(pay.get("basic_pay"))
+				else:
+					emp.encashment_amount = flt((pay.get("basic_pay")/30) * flt(emp.encashable_days),2)
 				emp.salary_structure = pay.get("name")
 				emp.encashment_tax = get_salary_tax(emp.encashment_amount)
 				emp.payable_amount = flt((emp.encashment_amount) - flt(emp.encashment_tax),2)
@@ -150,12 +167,12 @@ class BulkLeaveEncashment(Document):
 			cost_center = frappe.db.get_value("Branch", det.branch, "cost_center")
 			if cost_center not in cc:
 				cc.update({
-        			cost_center: {
-               			"payable_amount": det.payable_amount,
-               			"encashment_amount": det.encashment_amount,
-               			"encashment_tax": det.encashment_tax,
-                    }
-           		})
+					cost_center: {
+			   			"payable_amount": det.payable_amount,
+			   			"encashment_amount": det.encashment_amount,
+			   			"encashment_tax": det.encashment_tax,
+					}
+		   		})
 			else:
 				cc[cost_center]['payable_amount'] += det.payable_amount
 				cc[cost_center]['encashment_amount'] += det.encashment_amount
