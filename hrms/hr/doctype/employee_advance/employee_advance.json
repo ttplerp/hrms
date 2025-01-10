@@ -447,6 +447,7 @@
    "description": "<i>accumulated advance amount in a given recovery start and end date</i>",
    "fieldname": "total_advance",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Total Advance Balance",
    "read_only": 1
   },
@@ -482,6 +483,7 @@
   {
    "fieldname": "retained_amount",
    "fieldtype": "Currency",
+   "hidden": 1,
    "label": "Retained Amount",
    "precision": "2",
    "read_only": 1
@@ -503,7 +505,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-03 10:39:27.762263",
+ "modified": "2025-01-10 11:32:03.807979",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance",
