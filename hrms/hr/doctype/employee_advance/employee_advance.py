@@ -53,50 +53,6 @@ class EmployeeAdvance(Document):
 			self.update_salary_structure()
 		self.make_bank_entry()
 		notify_workflow_states(self)
-	
-	def send_notification(self):
-		action = frappe.request.form.get('action')  
-		if self.workflow_state == "Draft" or action == "Save":
-			return
-		elif action in ("Forward to Approver","Forward to Reviewer"):
-			self.notify(self.expense_approver)
-		elif self.workflow_state in ("Claimed", "Rejected") and action != "Save":
-			user_email = frappe.db.get_value("Employee", self.employee, "user_id")
-			self.notify(user_email)
-		elif action == "Approve" and self.workflow_state == "Approved":
-			#Get the user with Account User Role who are permitted to this selected branch
-			recipients=[]
-			for a in frappe.db.sql("""
-								select u.name from `tabUser` u inner join  `tabHas Role` r
-								on u.name = r.parent
-								where r.role in ("Accounts User") 
-								and u.name like "%bdb.bt"
-								and exists(
-									select 1 from `tabAssign Branch` b inner join `tabBranch Item` i 
-									on b.name = i.parent 
-									where branch="{branch}" and b.user = u.name
-								)
-								group by u.name
-							""".format(branch=self.branch), as_dict=True):
-				recipients.append(a.name)
-			self.notify(recipients)
-
-	#added by Thukten on 11-11-2024
-	def notify(self,recipients):
-		args = self.get_args()
-		try:
-			email_template = frappe.get_doc("Email Template", 'Expense Claim')
-			message = frappe.render_template(email_template.response, args)
-			subject = email_template.subject
-
-			frappe.sendmail(
-				recipients=recipients,
-				subject=_(subject), 
-				message= _(message), 
-			)
-		except :
-			frappe.msgprint(_("Expense Claim Status Notification is missing."))
-
 
 	def select_advance_account(self):
 		if self.advance_type == "Salary Advance":
@@ -150,8 +106,14 @@ class EmployeeAdvance(Document):
 			 	frappe.throw("Employee Advance for employee {} has been already claimed ".format(self.employee_name))
 			'''
 
-			advance_comp=frappe.db.sql("select sum(sd.amount) as sum from `tabSalary Structure`as ss join `tabEmployee` as te on ss.employee=te.name join `tabSalary Detail` as sd on sd.parent=ss.name where sd.salary_component='Salary Advance Deductions' and te.name={}".format(self.employee), as_dict=True)
+			advance_comp=frappe.db.sql("""select sum(sd.amount) as sum 
+										from `tabSalary Structure`as ss join `tabEmployee` as te 
+										on ss.employee=te.name join `tabSalary Detail` as sd on sd.parent=ss.name 
+										where sd.salary_component='Salary Advance Deductions' 
+										and te.name={}
+									""".format(self.employee), as_dict=True)
 			limit = frappe.get_value("Employee Group", self.employee_group, "salary_advance_max_months")
+			#frappe.throw("{} and {}".format(advance_comp, limit))
 			# self.total_eligible_amount=flt(self.total_eligible_amount)-flt(advance_comp[0].sum)*flt(limit)
 			self.total_advance=flt(advance_comp[0].sum)*flt(limit)
 			if self.total_eligible_amount<0:
@@ -732,7 +694,7 @@ def get_permission_query_conditions(user):
 
 	if user == "Administrator":
 		return
-	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "System Manager" in user_roles:
+	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles or "System Manager" in user_roles:
 		return
 
 	return """(
