@@ -43,10 +43,12 @@ class BulkLeaveEncashment(Document):
 	def validate_leave_balance(self):
 		new_record = []
 		for d in self.get("items"):
-			if d.leave_balance > self.minimum_balance_required:
+			if d.leave_balance >= self.minimum_balance_required:
 				new_record.append(d)
+		new_record.sort(key=lambda x: x.employee_name)
 		for idx, record in enumerate(new_record, start=1):
 			record.idx = idx
+		
 		self.set("items", new_record)
 	
 	def calculate_amount(self):
@@ -57,6 +59,7 @@ class BulkLeaveEncashment(Document):
 		
 		self.total_encashment_amount = flt(total_encashment_amount,2)
 		self.net_payable_amount = flt(net_payable,2)
+		self.tax_payable_amount = sum(d.encashment_tax for d in self.get("items"))
 	
 	def update_encashed_in_leave_allocation(self, cancel=0):
 		if cint(cancel) == 0:
@@ -99,8 +102,7 @@ class BulkLeaveEncashment(Document):
 			if self.minimum_balance_required < emp.leave_balance:
 				emp.encashable_days = 30
 			else:
-				emp.encashable_days = emp.leave_balance
-			 
+				emp.encashable_days = emp.leave_balance			 
 
 			if emp.encashable_days > emp.leave_balance:
 				frappe.throw("Encashable Days  cannot be more than Leave Balance")

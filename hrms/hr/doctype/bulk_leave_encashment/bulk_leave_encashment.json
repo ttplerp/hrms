@@ -22,6 +22,8 @@
   "journal_entries_created",
   "column_break_13",
   "net_payable_amount",
+  "column_break_3xpqw",
+  "tax_payable_amount",
   "sb_approver",
   "approver_name",
   "column_break_15",
@@ -31,6 +33,8 @@
   "remarks",
   "sb_additional_information",
   "company",
+  "tds_receipt_number",
+  "tds_receipt_date",
   "column_break_12",
   "business_activity",
   "amended_from",
@@ -214,12 +218,37 @@
    "fieldtype": "Int",
    "label": "Minimum Balance Required",
    "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "tds_receipt_number",
+   "fieldtype": "Data",
+   "label": "TDS Receipt Number",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "tds_receipt_date",
+   "fieldtype": "Date",
+   "label": "TDS Receipt Date",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "tax_payable_amount",
+   "fieldtype": "Currency",
+   "label": "Tax Payable Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3xpqw",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-10 13:29:13.608275",
+ "modified": "2025-01-12 16:43:45.140847",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Bulk Leave Encashment",
