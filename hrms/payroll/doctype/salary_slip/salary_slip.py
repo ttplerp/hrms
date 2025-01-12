@@ -600,7 +600,7 @@ def has_record_permission(doc, user):
 	if not user: user = frappe.session.user
 	user_roles = frappe.get_roles(user)
 	
-	if "HR User" in user_roles or "HR Manager" in user_roles:
+	if "HR User" in user_roles or "Accounts User" in user_roles or "HR Manager" in user_roles:
 		return True
 	else:
 		if frappe.db.exists("Employee", {"name":doc.employee, "user_id": user}):
