@@ -22,8 +22,8 @@
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 50,
- "modified": "2025-01-09 14:26:19.227901",
- "modified_by": "narayanneopaney71@gmail.com",
+ "modified": "2025-01-13 10:03:38.239638",
+ "modified_by": "Administrator",
  "module": "HR",
  "name": "job-application-new",
  "owner": "narayanneopaney71@gmail.com",
@@ -159,10 +159,11 @@
    "fieldtype": "Data",
    "hidden": 0,
    "label": "CID No",
+   "mandatory_depends_on": "eval:doc.nationality==\"Bhutanese\"",
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -172,10 +173,11 @@
    "fieldtype": "Data",
    "hidden": 0,
    "label": "Voter ID No",
+   "mandatory_depends_on": "eval:doc.nationality==\"Indian\"",
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
