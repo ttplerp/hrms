@@ -67,12 +67,12 @@ class MREmployeeInvoice(AccountsController):
         )
     
     def on_submit(self):
-        self.update_advance_balance(cancel=self.docstatus==2)
+        self.update_advance_balance()
         self.make_gl_entries()
 
     def on_cancel(self):
         self.ignore_linked_doctypes = ("GL Entry", "Stock Ledger Entry", "Payment Ledger Entry")
-        self.update_advance_balance(cancel=self.docstatus==2)
+        self.update_advance_balance(cancel=True)
         self.make_gl_entries()
 
     def update_advance_balance(self, cancel=False):

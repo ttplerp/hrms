@@ -1,0 +1,95 @@
+{
+ "actions": [],
+ "allow_copy": 1,
+ "creation": "2025-01-14 22:08:10.297388",
+ "default_view": "List",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "branch",
+  "column_break_3",
+  "company",
+  "muster_roll_group",
+  "unmarked_attendance_section",
+  "mr_employees_html",
+  "marked_attendance_section",
+  "marked_attendance_html"
+ ],
+ "fields": [
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Branch",
+   "options": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "depends_on": "date",
+   "fieldname": "unmarked_attendance_section",
+   "fieldtype": "Section Break",
+   "label": "Unmarked Attendance"
+  },
+  {
+   "fieldname": "mr_employees_html",
+   "fieldtype": "HTML",
+   "label": "MR Employees HTML",
+   "read_only": 1
+  },
+  {
+   "depends_on": "date",
+   "fieldname": "marked_attendance_section",
+   "fieldtype": "Section Break",
+   "label": "Marked Attendance"
+  },
+  {
+   "fieldname": "marked_attendance_html",
+   "fieldtype": "HTML",
+   "label": "Marked Attendance HTML"
+  },
+  {
+   "fieldname": "muster_roll_group",
+   "fieldtype": "Select",
+   "label": "Muster Roll Group",
+   "options": "\nNational\nNon-National"
+  }
+ ],
+ "hide_toolbar": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-01-15 00:47:44.953118",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "MR Employee Attendance Tool",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "read": 1,
+   "role": "HR Manager",
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

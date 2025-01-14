@@ -104,7 +104,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Status",
-   "options": "Active\nLeft",
+   "options": "Active\nInactive\nLeft",
    "reqd": 1
   },
   {
@@ -451,7 +451,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-09 16:44:42.587437",
+ "modified": "2025-01-15 01:26:03.427358",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
