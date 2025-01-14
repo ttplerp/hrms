@@ -8,7 +8,8 @@ frappe.query_reports["Employee TDS Certificate"] = {
 			"label": __("Fiscal Year"),
 			"fieldtype": "Link",
 			"options": "Fiscal Year",
-			"default": frappe.defaults.get_user_default("fiscal_year"),
+			"reqd": 1,
+			// "default": frappe.defaults.get_user_default("fiscal_year"),
 		},
 		{
 			"fieldname":"employee",
