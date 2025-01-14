@@ -1,53 +1,63 @@
+<!-- Report Header -->
+<h4 class="text-center">Vajra Builders Private Limited</h4>
+<h5 class="text-center">{%= __(report.report_name) %} for the Year: {%= filters.fiscal_year %}</h5>
 
-<h3 class="text-center">Vajra Builders Private Limited</h3>
-<h4 class="text-center">{%= __(report.report_name) %} for the Year: {%= filters.fiscal_year %}</h4>
+<!-- Agency Details -->
+<table style="width: 100%; color: #000000; margin-bottom: -10px; font-size: 12px;">
+    <tr>
+        <td>Withholding Agency: <strong>Vajra Builders Private Limited</strong></td>
+        <td></td>
+        <td></td>
+        <td>Agency TPN: <strong>VAC00016</strong></td>
+    </tr>
+    <tr>
+        <td>Employee ID: <strong>{%= filters.employee %}</strong></td>
+        <td>Employee Name: <strong>{%= filters.e_name %}</strong></td>
+        <td>Citizen ID: <strong>{%= filters.cid %}</strong></td>
+        <td>TPN No: <strong>{%= filters.tpn %}</strong></td>
+    </tr>
+</table>
+<hr style="border: 1px solid #6E6969;">
 
-<table style="width: 100%;">
-	<tr>
-		<td>Widthholding Agency:</td><td colspan="3" style="text-align: left"><strong>Vajra Builders Private Limited</strong></td>
-		<td>Agency TPN: </td><td><strong>VAC00016</strong></td>
-	</tr>
-	<tr>
-		<td>Employee:</td><td><strong>{%= filters.employee %}:{%= filters.e_name %}</strong></td>
-		<td>Citizen ID: </td><td><strong>{%= filters.cid %}</strong></td>
-		<td>TPN No: </td><td><strong>{%= filters.tpn %}</strong></td>
-	</tr>
+<!-- Data Table -->
+<table style="color: #000000; border: 0.7px solid #383838; margin-top: -15px; font-size: 10px; width: 100%;">
+    <thead>
+        <tr style="border: 0.5px solid #383838;">
+            {% for(var i = 0, l = report.columns.length; i < l; i++) { %}
+                <th class="text-left" style="border: 0.5px solid #383838;">{%= report.columns[i].label %}</th>
+            {% } %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for(var j = 0, k = data.length; j < k; j++) { %}
+            {% var row = data[j]; %}
+            <tr style="border: 0.5px solid #383838;">
+                {% for(var i = 0, l = report.columns.length; i < l; i++) { %}
+                    {% var fieldname = report.columns[i].fieldname; %}
+                    <td class="{%= i > 1 && i < 11 ? 'text-right' : 'text-left' %}" style="border: 0.5px solid #383838;">
+                        {%= !is_null(row[fieldname]) 
+                            ? (i > 1 && i < 11 
+                                ? parseFloat(row[fieldname]).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") 
+                                : row[fieldname]) 
+                            : '' %}
+                    </td>
+                {% } %}
+            </tr>
+        {% } %}
+    </tbody>
 </table>
 
-<hr>
-<table class="table table-bordered">
-	<thead>
-		<tr>
-			{% for(var i=0, l=report.columns.length; i<l; i++) { %}
-				<th class="text-right">{%= report.columns[i].label %}</th>
-			{% } %}
-		</tr>
-	</thead>
-	<tbody>
-		{% for(var j=0, k=data.length; j<k; j++) { %}
-			{%
-				var row = data[j];
-			%}
-			<tr>
-				{% for(var i=0, l=report.columns.length; i<l; i++) { %}
-					<td class="text-right">
-						{% var fieldname = report.columns[i].fieldname; %}
-						{% if (!is_null(row[fieldname])) { %}
-							{% if (i > 1 && i < 10) { %}
-								{%= parseFloat(row[fieldname]).toFixed(2) %}
-							{% } else { %}
-								{%= row[fieldname] %}
-							{% } %}
-						{% } %}
-					</td>
-				{% } %}
-			</tr>
-		{% } %}
-	</tbody>
-</table>
-<div>
-I hereby certify that the information given in this certificate is true and correct to the best of my knowledge. In case any information is found untrue and false, I shall be liable for fines and penalities as per chapter 5, General Provisions of the Income Tax Act of the Kindom of Bhutan, 2001
+<!-- Certification Section -->
+<div style="color: #000000; font-size: 12px; margin-top: 10px;">
+    I hereby certify that the information given in this certificate is true and correct to the best of my knowledge. In case any information is found untrue or false, I shall be liable for fines and penalties as per Chapter 5, General Provisions of the Income Tax Act of the Kingdom of Bhutan 2001.
 </div>
-<div style="margin-top: 100px; float: right;">
-	Name and Signature of Disbursing Officer
+
+<!-- Authorized Officer Section -->
+<div style="margin-top: 20px; margin-right: 20px; float: left; color: #000000; font-size: 12px;">
+	<!-- <img src = "{{filters.seal}}" height = "130" width = "130" style="margin-left: 20px;transform: rotate(4deg)"></img><br> -->
+    Signature of Authorized Officer<br>
+    <!-- {%= filters.approver_name %}<br> -->
+    <!-- {%= filters.approver_designation %} -->
+    <!-- ( {%= filters.approver_designation %} ) -->
+    <!-- Name and Signature of Disbursing Officer -->
 </div>
