@@ -4,12 +4,19 @@
 frappe.query_reports["Employee TDS Certificate"] = {
 	"filters": [
 		{
+			"fieldname":"company",
+			"label": __("Company"),
+			"fieldtype": "Link",
+			"options": "Company",
+			"default": frappe.defaults.get_user_default("company"),
+			"reqd": 1,
+		},
+		{
 			"fieldname":"fiscal_year",
 			"label": __("Fiscal Year"),
 			"fieldtype": "Link",
 			"options": "Fiscal Year",
 			"reqd": 1,
-			// "default": frappe.defaults.get_user_default("fiscal_year"),
 		},
 		{
 			"fieldname":"employee",
@@ -27,6 +34,18 @@ frappe.query_reports["Employee TDS Certificate"] = {
 					frappe.query_report.set_filter_value("e_name", fy.employee_name);
 					frappe.query_report.set_filter_value("cid", fy.cid_no);
 					frappe.query_report.set_filter_value("tpn", fy.tpn_number);
+					frappe.query_report.refresh();
+				});
+
+				var com = query_report.get_values().company;
+				if (!com) {
+					return;
+				}
+				frappe.model.with_doc("Company", com, function(r) {
+					var c = frappe.model.get_doc("Company", com);
+					frappe.query_report.set_filter_value("seal", c.seal);
+					frappe.query_report.set_filter_value("signature", c.signature);
+					frappe.query_report.set_filter_value("authorizer_name", c.authorizer_name);
 					frappe.query_report.refresh();
 				});
 			}
@@ -49,12 +68,27 @@ frappe.query_reports["Employee TDS Certificate"] = {
 			"label": __("TPN"),
 			"read_only": 1
 		},
+		
 		{
-			"fieldname":"company",
-			"label": __("Company"),
-			"fieldtype": "Link",
-			"options": "Company",
-			"default": frappe.defaults.get_user_default("company"),
+			"fieldname":"signature",
+			"label":"Signature",
+			"fieldtype": "Data",
+			"read_only": 1,
+			"hidden": 1
+		},
+		{
+			"fieldname":"seal",
+			"label":"Seal",
+			"fieldtype": "Data",
+			"read_only": 1,
+			"hidden": 1
+		},
+		{
+			"fieldname":"authorizer_name",
+			"label":"Authorizer Name",
+			"fieldtype": "Data",
+			"read_only": 1,
+			"hidden": 1
 		},
 	]
 }

@@ -53,11 +53,17 @@
 </div>
 
 <!-- Authorized Officer Section -->
-<div style="margin-top: 20px; margin-right: 20px; float: left; color: #000000; font-size: 12px;">
-	<!-- <img src = "{{filters.seal}}" height = "130" width = "130" style="margin-left: 20px;transform: rotate(4deg)"></img><br> -->
-    Signature of Authorized Officer<br>
-    <!-- {%= filters.approver_name %}<br> -->
-    <!-- {%= filters.approver_designation %} -->
-    <!-- ( {%= filters.approver_designation %} ) -->
-    <!-- Name and Signature of Disbursing Officer -->
+<div>
+    <div style="margin-top: 10px; float: right; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 200px;">
+        <img src="{{filters.signature}}" height="140" width="180" style="margin-left: 20px; transform: rotate(4deg)"></img>
+        <div style="text-align: center; margin-top: 5px;">
+            (<span>{%= filters.authorizer_name %}</span>)<br>
+            <span>Signature of Authorized Officer</span>
+        </div>
+    </div>
+    
+    
+    <div style="margin-top: 20px; margin-left: auto; margin-right: auto; width: fit-content;">
+        <img src="{{filters.seal}}" height="140" width="140" style="margin-left: 20px; transform: rotate(4deg)"></img>
+    </div>
 </div>
