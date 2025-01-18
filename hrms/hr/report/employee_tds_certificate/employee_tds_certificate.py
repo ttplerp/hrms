@@ -64,7 +64,7 @@ def get_salary_data(filters):
 			"type": 		"Salary", 
 			"basic":		flt(d.basic_pay,2), 
 			"comm_all":		flt(d.comm_all), 
-			"others":		flt(d.gross_pay) - flt(d.basic_pay),
+			"others":		flt(d.gross_pay) - flt(d.basic_pay) - flt(d.comm_all),
 			"total":		flt(d.gross_pay),
 			"pf":			flt(d.nppf,2),
 			"gis":			flt(d.gis,2),
