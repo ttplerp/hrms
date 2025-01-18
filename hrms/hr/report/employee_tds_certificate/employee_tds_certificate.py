@@ -92,6 +92,7 @@ def get_bulk_leave_encashment(filters):
 			`tabBulk Leave Encashment Item` t2 ON t1.name = t2.parent
 		WHERE t2.employee = '{employee}' 
 		AND t1.leave_type = "Earned Leave"
+		AND t1.tds_receipt_number is not null or ""
 		AND t1.docstatus = 1 
 		AND t1.fiscal_year='{fiscal_year}'
 		limit 1
