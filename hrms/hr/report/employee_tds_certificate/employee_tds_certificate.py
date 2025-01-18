@@ -211,7 +211,7 @@ def get_columns():
         { "fieldname": "pf", "label": "PF", "fieldtype": "Currency", "width": 120 },
         { "fieldname": "gis", "label": "GIS", "fieldtype": "Currency", "width": 120 },
 		{ "fieldname": "sws", "label": "SWS", "fieldtype": "Currency", "width": 120 },
-        { "fieldname": "health", "label": "Health", "fieldtype": "Currency", "width": 120 },
+        { "fieldname": "health", "label": "Health Cont.", "fieldtype": "Currency", "width": 120 },
         { "fieldname": "taxable", "label": "Taxable Income", "fieldtype": "Currency", "width": 130 },
         { "fieldname": "tds", "label": "TDS Amount", "fieldtype": "Currency", "width": 120 },
         { "fieldname": "receipt_number", "label": "RRCO Receipt No.", "fieldtype": "Data", "width": 150 },
