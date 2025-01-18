@@ -36,6 +36,12 @@
   "deductions",
   "section_break_y7dgi",
   "arrears_and_allowance",
+  "tds_details_section",
+  "tds_percent",
+  "column_break_5trbj",
+  "tds_account",
+  "column_break_aicwo",
+  "tds_amount",
   "amount_details_section",
   "total_daily_wage_amount",
   "total_ot_amount",
@@ -339,12 +345,46 @@
   {
    "fieldname": "column_break_r7qob",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tds_details_section",
+   "fieldtype": "Section Break",
+   "label": "TDS Details"
+  },
+  {
+   "fieldname": "tds_percent",
+   "fieldtype": "Select",
+   "label": "TDS Percent",
+   "options": "\n2\n3\n5"
+  },
+  {
+   "fieldname": "column_break_5trbj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.tds_percent",
+   "fieldname": "tds_account",
+   "fieldtype": "Link",
+   "label": "TDS Account",
+   "options": "Account",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_aicwo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.tds_percent",
+   "fieldname": "tds_amount",
+   "fieldtype": "Currency",
+   "label": "TDS Amount",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-20 09:47:57.638033",
+ "modified": "2025-01-18 17:01:27.168109",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Employee Invoice",
