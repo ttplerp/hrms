@@ -215,5 +215,5 @@ def get_columns():
         { "fieldname": "taxable", "label": "Taxable Income", "fieldtype": "Currency", "width": 130 },
         { "fieldname": "tds", "label": "TDS Amount", "fieldtype": "Currency", "width": 120 },
         { "fieldname": "receipt_number", "label": "RRCO Receipt No.", "fieldtype": "Data", "width": 150 },
-        { "fieldname": "receipt_date", "label": "RRCO Receipt Date", "fieldtype": "Date", "width": 130 },
+        { "fieldname": "receipt_date", "label": "RRCO Rt. Date", "fieldtype": "Date", "width": 130 },
     ]
