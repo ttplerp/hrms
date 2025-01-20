@@ -14,6 +14,7 @@ class BatchDataCommunication(Document):
         
 	def on_submit(self):
 		self.submit_bdc()
+		self.make_journal_entry()
 
 	def validate_existing(self):
 		doc = []
@@ -22,6 +23,14 @@ class BatchDataCommunication(Document):
                       """.format(self.from_date,self.to_date, self.name, self.branch),as_dict=True)
 		if doc != [] and doc != None and doc != "":
 			frappe.throw("BDC for branch {3}, from date {0} and to date {1} already exists.".format(self.from_date, self.to_date, self.name, self.branch,))
+		total = 0.00
+		for a in self.get("employees"):
+			total += flt(a.amount,2)
+		self.total_amount=flt(total,2)
+		if not self.debit_account:
+			self.debit_account = frappe.db.get_value("Company", self.company,"salary_advance_account")
+		if not self.credit_account:
+			self.credit_account = frappe.db.get_value("Branch", self.branch,"expense_bank_account")
 
 	@frappe.whitelist()
 	def get_employees(self, branch = None):
@@ -50,6 +59,36 @@ class BatchDataCommunication(Document):
 		field_name = frappe.db.get_value("Salary Component",self.salary_component,"field_name")
 		self.remove_salary_structure_components(field_name)
 		self.update_salary_structure(field_name)
+	
+	def make_journal_entry(self):
+		doc = frappe.new_doc("Journal Entry")
+		doc.branch = self.branch
+		doc.posting_date = self.from_date
+		doc.entry_type = "Journal Entry"
+		doc.company = self.company
+		doc.remarks = "Batch Data Communication " + str(self.name)
+		cost_center = frappe.db.get_value("Branch",self.branch, "cost_center")
+		for a in self.get('employees'):
+			doc.append("accounts", {
+						"account": self.debit_account,
+						"debit_in_account_currency": flt(a.amount,2),
+						"debit" : flt(a.amount,2),
+						"reference_type": "Batch Data Communication",
+						"reference_no": self.name,
+						"cost_center": cost_center,
+						"party_type": "Employee",
+						"party": a.employee
+				})
+
+		doc.append("accounts", {
+			"account": self.credit_account,
+			"credit_in_account_currency": flt(self.total_amount,2),
+			"credit": flt(self.total_amount,2),
+			"cost_center": cost_center,
+		})
+			
+		doc.save()
+		self.db_set("journal_entry", doc.name)
 
 	# def get_house_rent_rate(self, place, town):
 	# 	return frappe.db.get_value("House Rent Deduction Details",{"parent":place,"town":town},"rate")

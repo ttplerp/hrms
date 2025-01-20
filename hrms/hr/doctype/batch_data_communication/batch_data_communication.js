@@ -2,6 +2,29 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Batch Data Communication', {
+	refresh: function(frm) {
+		cur_frm.set_query("branch", function() {
+			return {
+				"filters": {
+					"company": frm.doc.company,
+				}
+			}
+		 });
+		 cur_frm.set_query("credit_account", function() {
+			return {
+				"filters": {
+					"company": frm.doc.company,
+				}
+			}
+		 });
+		cur_frm.set_query("debit_account", function() {
+			return {
+				"filters": {
+					"company": frm.doc.company,
+				}
+			}
+		 });
+	},
 	get_employees: function(frm){
 		frm.clear_table("items");
 		frappe.call({

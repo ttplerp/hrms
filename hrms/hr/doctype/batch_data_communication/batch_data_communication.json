@@ -7,13 +7,16 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "from_date",
   "company",
-  "branch",
-  "cb_01",
-  "to_date",
+  "from_date",
   "salary_component",
+  "journal_entry",
+  "cb_01",
+  "branch",
+  "to_date",
   "debit_account",
+  "credit_account",
+  "total_amount",
   "sb_employees",
   "get_employees",
   "employees",
@@ -32,7 +35,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Branch",
-   "options": "Branch"
+   "options": "Branch",
+   "reqd": 1
   },
   {
    "fieldname": "cb_01",
@@ -83,19 +87,40 @@
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "debit_account",
    "fieldtype": "Link",
    "label": "Debit Account",
    "options": "Account"
+  },
+  {
+   "fieldname": "journal_entry",
+   "fieldtype": "Link",
+   "label": "Journal Entry",
+   "no_copy": 1,
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "credit_account",
+   "fieldtype": "Link",
+   "label": "Credit Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-12-28 22:17:32.996244",
+ "modified": "2025-01-05 14:50:59.518635",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Batch Data Communication",
