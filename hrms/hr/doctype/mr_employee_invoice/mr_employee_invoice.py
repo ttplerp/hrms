@@ -238,6 +238,8 @@ class MREmployeeInvoice(AccountsController):
             )
 
     def make_tds_gl_entries(self, gl_entries):
+        if not self.tds_percent:
+            return
         account = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "tds_account")
         if flt(self.total_tds_amount) > 0:
             gl_entries.append(
