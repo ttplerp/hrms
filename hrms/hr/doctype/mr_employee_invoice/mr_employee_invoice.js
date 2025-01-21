@@ -53,6 +53,26 @@ frappe.ui.form.on('MR Employee Invoice', {
             })
         }
     },
+    
+    tds_percent:function(frm){
+		if (frm.doc.tds_percent){
+			frappe.call({
+				method: "erpnext.accounts.utils.get_tds_account",
+				args: {
+					percent:frm.doc.tds_percent,
+					company:frm.doc.company
+				},
+				callback: function(r) {
+					if(r.message) {
+						frm.set_value("tds_account", r.message)
+						frm.refresh_fields("tds_account")
+						// frm.set_value("tds_amount", parseFloat(frm.doc.total_amount) * (parseFloat(frm.doc.tds_percent) / 100));
+						// frm.set_value("outstanding_amount", parseFloat(frm.doc.outstanding_amount) - parseFloat(frm.doc.tds_amount));
+					}
+				}
+			});
+		}
+	},
     fiscal_year:function(frm){
         frm.events.reset_child_tables(frm)
     },
