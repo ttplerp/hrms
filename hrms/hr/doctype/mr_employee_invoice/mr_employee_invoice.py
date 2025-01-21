@@ -241,6 +241,9 @@ class MREmployeeInvoice(AccountsController):
         if not self.tds_percent:
             return
         account = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "tds_account")
+        if not account:
+            frappe.throw("Please set TDS account in {}".format(frappe.get_desk_link("Muster Roll Employee", self.mr_employee)))
+
         if flt(self.total_tds_amount) > 0:
             gl_entries.append(
                 self.get_gl_dict({
