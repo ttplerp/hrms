@@ -52,17 +52,16 @@ class MREmployeeInvoice(AccountsController):
         self.total_advance = flt(total_advances, 0)
 
         has_tds_deduction = frappe.db.get_value("Muster Roll Employee", self.mr_employee, "has_tds_deduction")
-        total_tds_amount = 0.0
-        tds_percent = ""
-        tds_account = ""
+        self.total_tds_amount = 0.0
         if has_tds_deduction:
             tds_percent, tds_account = frappe.db.get_value("Muster Roll Employee", self.mr_employee, ["tds_percent", "tds_account"])
             if not tds_percent:
                 frappe.throw("Set TDS percent in Muster Roll Employee {}".format(self.mr_employee))
             total_tds_amount = flt(tds_percent)/100 * flt(self.grand_total)
             tds_account = tds_account
-        self.total_tds_amount = self.tds_amount = flt(total_tds_amount, 0)
-        self.tds_account = flt(tds_account)
+            self.total_tds_amount = self.tds_amount = flt(total_tds_amount, 0)
+            self.tds_percent = flt(tds_percent)
+            self.tds_account = flt(tds_account)
 
         total_deductions = flt(flt(self.other_deduction) + flt(self.total_advance) + flt(self.total_tds_amount))
         self.grand_total = flt(flt(total_daily_wage_amount) + flt(total_ot_amount) + flt(total_arrears_and_allowance), 0)
