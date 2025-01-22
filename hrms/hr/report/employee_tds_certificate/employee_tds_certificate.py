@@ -133,7 +133,7 @@ def get_pbva(filters):
 									r.receipt_number,
 									b.posting_date
 								FROM tabPBVA b
-								INNER JOIN `tabTDS Receipt Entry` r ON b.fiscal_year = r.fiscal_year AND r.purpose = 'PBVA'
+								INNER JOIN `tabTDS Receipt Entry` r ON b.fiscal_year+1 = r.fiscal_year AND r.purpose = 'PBVA'
 								LEFT JOIN `tabPBVA Details` bd ON b.name = bd.parent AND bd.employee = '{employee}'
 								WHERE b.docstatus = 1 AND bd.amount > 0 
 								AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
