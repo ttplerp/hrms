@@ -24,7 +24,8 @@ def get_data( filters=None):
 	#PVBA
 	data += get_pbva(filters)
 	#Salary Arrear
-	data += get_salary_arrer(filters)
+	if filters.fiscal_year =="2023":
+		data += get_salary_arrer(filters)
 
 	return data
 def get_salary_data(filters):
