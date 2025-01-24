@@ -27,6 +27,7 @@
   "column_break_8",
   "project",
   "unit",
+  "holiday_list",
   "sec_break_12",
   "joining_date",
   "separation_date",
@@ -447,11 +448,17 @@
    "fieldtype": "Link",
    "label": "Team Lead",
    "options": "Team Lead"
+  },
+  {
+   "fieldname": "holiday_list",
+   "fieldtype": "Link",
+   "label": "Holiday List",
+   "options": "Holiday List"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-15 01:26:03.427358",
+ "modified": "2025-01-15 20:01:02.277058",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
