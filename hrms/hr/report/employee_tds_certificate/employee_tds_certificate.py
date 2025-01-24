@@ -49,11 +49,11 @@ def get_journal_entry(filters):
 								0 AS others,
 								0 AS health
 								FROM `tabJournal Entry` a
-								INNER JOIN `tabJournal Entry Account` b ON a.name=b.parent
-								JOIN `tabTDS Receipt Entry` r ON a.name = r.invoice_no
-								WHERE b.party = '{employee}'
-								AND a.docstatus = 1
-								AND a.posting_date BETWEEN '{from_date}' AND '{to_date}'
+								INNER JOIN `tabJournal Entry Account` b ON a.name=b.parent AND b.party = '{employee}'
+								JOIN `tabTDS Receipt Entry` r ON a.name = r.invoice_no AND r.purpose='Other Invoice'
+								WHERE a.docstatus = 1
+								AND b.tax_amount_in_account_currency > 0
+								AND a.posting_date BETWEEN '{from_date}' AND '{to_date}' group by r.invoice_no
 						""".format(employee=filters.employee,from_date = getdate(str(filters.fiscal_year) + "-01-01"),
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=True) 
 def get_salary_data(filters):
