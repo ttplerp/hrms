@@ -26,8 +26,36 @@ def get_data( filters=None):
 	#Salary Arrear
 	if filters.fiscal_year =="2023":
 		data += get_salary_arrer(filters)
+	#Others
+	data += get_journal_entry(filters)
 
 	return data
+def get_journal_entry(filters):
+	return frappe.db.sql("""SELECT 
+								a.posting_date,
+								r.receipt_number,
+								'OTHERS' as type,
+								CONCAT(MONTH(a.posting_date),'-', YEAR(a.posting_date)) AS month_year,
+								ROUND(b.taxable_amount_in_account_currency, 2) AS total,
+								ROUND(b.taxable_amount_in_account_currency, 2) AS taxable,
+								ROUND(b.tax_amount_in_account_currency, 2) AS tds,
+								r.receipt_number,
+								r.receipt_date,
+								0 AS basic,
+								0 AS other,
+								0 AS pf,
+								0 AS gis,
+								0 AS totalPfGis,
+								0 AS others,
+								0 AS health
+								FROM `tabJournal Entry` a
+								INNER JOIN `tabJournal Entry Account` b ON a.name=b.parent
+								JOIN `tabTDS Receipt Entry` r ON a.name = r.invoice_no
+								WHERE b.party = '{employee}'
+								AND a.docstatus = 1
+								AND a.posting_date BETWEEN '{from_date}' AND '{to_date}'
+						""".format(employee=filters.employee,from_date = getdate(str(filters.fiscal_year) + "-01-01"),
+					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=True) 
 def get_salary_data(filters):
 	data = []
 	for d in frappe.db.sql('''SELECT 
