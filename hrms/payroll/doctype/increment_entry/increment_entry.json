@@ -8,10 +8,10 @@
  "engine": "InnoDB",
  "field_order": [
   "sb_payroll_period",
-  "probation",
   "fiscal_year",
   "month_name",
   "month",
+  "column_break_coso4",
   "posting_date",
   "section_break_8",
   "branch",
@@ -43,11 +43,12 @@
    "reqd": 1
   },
   {
+   "default": "January",
    "fieldname": "month_name",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Month",
-   "options": "\nJanuary\nFebruary\nMarch\nApril\nMarch\nApril\nMay\nJune\nJuly\nAugust\nSeptember\nOctober\nNovember\nDecember",
+   "options": "\nJanuary\nJuly",
    "reqd": 1
   },
   {
@@ -55,7 +56,7 @@
    "fieldtype": "Select",
    "hidden": 1,
    "label": "Month",
-   "options": "\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12"
+   "options": "\n01\n07"
   },
   {
    "fieldname": "section_break_8",
@@ -152,16 +153,14 @@
    "read_only": 1
   },
   {
-   "default": "0",
-   "fieldname": "probation",
-   "fieldtype": "Check",
-   "label": "For Probation Ending Employees"
+   "fieldname": "column_break_coso4",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-07-31 11:44:55.437962",
+ "modified": "2025-01-25 14:14:55.090690",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Increment Entry",

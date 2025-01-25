@@ -6,10 +6,9 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "test",
   "employee",
   "employee_name",
-  "grade",
+  "employee_group",
   "column_break_3",
   "department",
   "designation",
@@ -23,11 +22,6 @@
  ],
  "fields": [
   {
-   "fieldname": "test",
-   "fieldtype": "Data",
-   "label": "Test"
-  },
-  {
    "fieldname": "employee",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -39,6 +33,7 @@
    "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Employee Name",
    "read_only": 1
   },
@@ -103,18 +98,17 @@
    "read_only": 1
   },
   {
-   "fieldname": "grade",
+   "fieldname": "employee_group",
    "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Grade",
-   "options": "Employee Grade",
+   "label": "Employee Group",
+   "options": "Employee Group",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-07-31 13:00:02.813550",
+ "modified": "2025-01-25 16:21:01.403078",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Increment Employee Detail",

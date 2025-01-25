@@ -377,14 +377,14 @@ def get_payroll_settings(employee=None):
 						select
 								e.education_level,
 								et.sws_contribution,
-								el.gis,
-								el.health_contribution,
-								el.employee_pf,
-								el.employer_pf
-						from `tabEmployee` e, `tabEducation Level` el, `tabEmployment Type` et
+								eq.gis,
+								eq.health_contribution,
+								eq.employee_pf,
+								eq.employer_pf
+						from `tabEmployee` e, `tabEmployee Qualification` eq, `tabEmployment Type` et
 						where e.name = '{}'
 						and et.name = e.employment_type
-						and el.name = e.education_level
+						and eq.name = e.employee_qualification
 				""".format(employee), as_dict=True)
 		settings = settings[0] if settings else frappe._dict()
 		# sws_type = frappe.db.get_single_value('HR Settings', 'sws_type')

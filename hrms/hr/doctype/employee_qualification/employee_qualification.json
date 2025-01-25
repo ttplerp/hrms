@@ -1,34 +1,24 @@
 {
  "actions": [],
- "autoname": "field:level",
- "creation": "2023-06-08 14:33:02.956571",
+ "allow_rename": 1,
+ "autoname": "field:employee_qualification",
+ "creation": "2025-01-25 15:22:18.257525",
+ "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "level",
+  "employee_qualification",
   "default_leave_policy",
   "column_break_3",
   "gis",
-  "dsa_per_day",
   "eligible_for_overtime",
   "pf_contribution_section",
   "employee_pf",
   "employer_pf",
   "column_break_11",
   "health_contribution",
-  "salary_increment_section",
-  "lower_limit",
-  "column_break_2lebs",
-  "increment_method",
-  "column_break_15",
-  "increment",
-  "column_break_vfuoa",
-  "upper_limit",
-  "salary_advance_settings_section",
-  "salary_advance_type",
-  "default_salary_structure",
-  "leave_encashment_settings_section",
+  "section_break_khqyf",
   "min_encashment_days",
   "max_encashment_days",
   "encashment_min",
@@ -37,26 +27,9 @@
   "leave_encashment_type",
   "leave_encashment_amount",
   "leave_encashment_months",
-  "encashment_frequency",
-  "leave_credits_section",
-  "leave_credit"
+  "encashment_frequency"
  ],
  "fields": [
-  {
-   "fieldname": "level",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Level",
-   "reqd": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "gis",
-   "fieldtype": "Currency",
-   "hidden": 1,
-   "label": "GIS",
-   "precision": "2"
-  },
   {
    "fieldname": "default_leave_policy",
    "fieldtype": "Link",
@@ -68,9 +41,10 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "dsa_per_day",
+   "fieldname": "gis",
    "fieldtype": "Currency",
-   "label": "DSA Per Day",
+   "hidden": 1,
+   "label": "GIS",
    "precision": "2"
   },
   {
@@ -106,62 +80,10 @@
    "precision": "2"
   },
   {
-   "fieldname": "leave_credits_section",
-   "fieldtype": "Section Break",
-   "label": "Leave Credits"
-  },
-  {
-   "fieldname": "default_salary_structure",
-   "fieldtype": "Link",
-   "label": "Default Salary Structure",
-   "options": "Salary Structure"
-  },
-  {
-   "fieldname": "salary_increment_section",
-   "fieldtype": "Section Break",
-   "label": "Salary Increment"
-  },
-  {
-   "fieldname": "increment_method",
-   "fieldtype": "Select",
-   "label": "Increment Method",
-   "options": "\nLumpsum\nPercent"
-  },
-  {
-   "fieldname": "column_break_15",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "salary_advance_settings_section",
-   "fieldtype": "Section Break",
-   "label": "Salary Advance Settings"
-  },
-  {
-   "fieldname": "salary_advance_type",
-   "fieldtype": "Select",
-   "label": "Salary Advance Type",
-   "options": "\nFlat Amount\nBasic Pay\nNet Pay\nGross Pay"
-  },
-  {
-   "fieldname": "leave_encashment_settings_section",
-   "fieldtype": "Section Break",
-   "label": "Leave Encashment Settings"
-  },
-  {
    "fieldname": "min_encashment_days",
    "fieldtype": "Float",
    "label": "Minimum No. of Days Entitled For Encashment",
    "precision": "2"
-  },
-  {
-   "fieldname": "leave_encashment_type",
-   "fieldtype": "Select",
-   "label": "Leave Encashment Type",
-   "options": "\nFlat Amount\nBasic Pay\nGross Pay"
-  },
-  {
-   "fieldname": "column_break_22",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "max_encashment_days",
@@ -182,6 +104,16 @@
    "precision": "2"
   },
   {
+   "fieldname": "column_break_22",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "leave_encashment_type",
+   "fieldtype": "Select",
+   "label": "Leave Encashment Type",
+   "options": "\nFlat Amount\nBasic Pay\nGross Pay"
+  },
+  {
    "fieldname": "leave_encashment_amount",
    "fieldtype": "Currency",
    "label": "Entitled Amount"
@@ -198,41 +130,24 @@
    "label": "Encashment Frequency ( No. of times permitted per Year)"
   },
   {
-   "fieldname": "leave_credit",
-   "fieldtype": "Table",
-   "label": "Leave Credits",
-   "options": "Leave Credit"
+   "fieldname": "employee_qualification",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Qualification",
+   "reqd": 1,
+   "unique": 1
   },
   {
-   "fieldname": "lower_limit",
-   "fieldtype": "Currency",
-   "label": "Lower Limit"
-  },
-  {
-   "fieldname": "column_break_2lebs",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_vfuoa",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "upper_limit",
-   "fieldtype": "Currency",
-   "label": "Upper Limit"
-  },
-  {
-   "fieldname": "increment",
-   "fieldtype": "Currency",
-   "label": "Increment Value"
+   "fieldname": "section_break_khqyf",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-23 10:29:06.943966",
+ "modified": "2025-01-25 15:53:33.308776",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Education Level",
+ "name": "Employee Qualification",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -245,6 +160,30 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
    "share": 1,
    "write": 1
   }

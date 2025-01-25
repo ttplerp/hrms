@@ -71,13 +71,10 @@ class SalaryIncrement(Document):
 		self.employee_name      = doc.employee_name
 		self.employment_type    = doc.employment_type
 		self.employee_group     = doc.employee_group
-		# self.grade  = doc.grade
 		self.date_of_reference  = doc.date_of_joining
 		self.company            = doc.company
 		self.branch             = doc.branch
 		self.department         = doc.department
-		# self.division           = doc.division
-		# self.section            = doc.section
 		self.designation		= doc.designation
 
 	# Following method created by SHIV on 2018/10/10
@@ -122,7 +119,6 @@ class SalaryIncrement(Document):
 								) as no_of_months
 				""".format(str(date_of_reference),str(effective_date)))[0][0]
 				
-				# Fetching Payscale from employee grade
 				employee_group= frappe.get_doc("Employee Group", frappe.db.get_value("Employee",employee,"employee_group"))
 				self.payscale_minimum   = employee_group.lower_limit
 				self.payscale_increment = employee_group.increment

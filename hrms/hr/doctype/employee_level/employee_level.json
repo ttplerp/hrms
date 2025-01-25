@@ -1,0 +1,103 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:employee_level",
+ "creation": "2025-01-25 12:37:42.619234",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee_level",
+  "description",
+  "column_break_fv5na",
+  "disabled",
+  "annual_increment_details_section",
+  "increment"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee_level",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Employee Level",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "column_break_fv5na",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "annual_increment_details_section",
+   "fieldtype": "Section Break",
+   "label": "Annual Increment"
+  },
+  {
+   "fieldname": "increment",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Increment"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-01-25 15:52:17.301780",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Level",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "description",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
