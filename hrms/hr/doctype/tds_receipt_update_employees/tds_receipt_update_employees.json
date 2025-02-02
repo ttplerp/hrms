@@ -10,7 +10,8 @@
   "employee_name",
   "cb_01",
   "salary_slip",
-  "tax_amount"
+  "tax_amount",
+  "tds_remittance"
  ],
  "fields": [
   {
@@ -44,14 +45,20 @@
    "fieldname": "tax_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "Tax Amount",
+   "label": "Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tds_remittance",
+   "fieldtype": "Data",
+   "label": "TDS Remittance",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-07-28 08:40:07.210172",
+ "modified": "2025-02-02 16:30:08.553949",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "TDS Receipt Update Employees",
