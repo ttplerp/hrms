@@ -37,7 +37,7 @@ def get_salary_data(filters):
 	for d in frappe.db.sql('''SELECT 
 								CONCAT(a.month,'-', a.fiscal_year) month_year, 
 								a.gross_pay, 
-								(SELECT b.amount FROM `tabSalary Detail` b WHERE b.parent = a.name AND b.salary_component = 'Basic Pay') AS basic_pay, 
+								(SELECT b.amount FROM `tabSalary Detail` b WHERE b.parent = a.name AND b.salary_component = 'Basic Pay') AS basic_pay,
 								(SELECT b.amount FROM `tabSalary Detail` b WHERE b.parent = a.name AND b.salary_component = 'Salary Tax') AS tds, 
 								(SELECT b.amount FROM `tabSalary Detail` b WHERE b.parent = a.name AND b.salary_component = 'PF') AS nppf, 
 								COALESCE((SELECT b.amount FROM `tabSalary Detail` b WHERE b.parent = a.name AND b.salary_component = 'GIS'), 0) AS gis, 
@@ -57,8 +57,11 @@ def get_salary_data(filters):
 			"month_year":d.month_year, 
 			"type":"Salary", 
 			"basic":flt(d.basic_pay,2), 
-			"others":flt(flt(d.gross_pay) - flt(d.basic_pay) - (flt(d.comm_all) / 2), 2), 
-			"total":flt(flt(d.gross_pay)-(flt(d.comm_all) / 2),2), 
+			# "others":flt(flt(d.gross_pay) - flt(d.basic_pay) - (flt(d.comm_all) / 2), 2), 
+			"others":flt(flt(d.gross_pay) - flt(d.basic_pay), 2), 
+			"com_all":flt(d.comm_all,2),
+			 "total":flt(flt(d.gross_pay),2),
+			
 			"pf":flt(d.nppf,2),
 			"gis":flt(d.gis,2),
 			"totalPfGis":flt(flt(d.nppf)+flt(d.gis),2), 
@@ -144,7 +147,7 @@ def get_pbva(filters):
 								LEFT JOIN `tabPBVA Details` bd ON b.name = bd.parent AND bd.employee = '{employee}'
 								WHERE b.docstatus = 1 AND bd.amount > 0 
 								AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
-				      """.format( employee = filters.employee, fiscal_year=filters.fiscal_year, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
+					  """.format( employee = filters.employee, fiscal_year=filters.fiscal_year, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=1)
  
 def get_salary_arrer(filters):
@@ -187,7 +190,10 @@ def get_salary_arrer(filters):
 def get_bulk_leave_encashment(filters):
 	data = []
 	encashment_date = frappe.db.get_value("Bulk Leave Encashment",{"fiscal_year":filters.fiscal_year},"encashment_date")
-	month_year =encashment_date.strftime("%m-%Y")
+	if encashment_date:
+		month_year = encashment_date.strftime("%m-%Y")
+	else:
+		month_year = "N/A"
 
 	from_date = frappe.db.get_value("Fiscal Year", filters.fiscal_year, "year_start_date")
 	to_date = frappe.db.get_value("Fiscal Year", filters.fiscal_year, "year_end_date")
@@ -262,6 +268,12 @@ def get_columns():
 		{
 		  "fieldname": "others",
 		  "label": "Allowances",
+		  "fieldtype": "Currency",
+		  "width": 120
+		},
+		{
+		  "fieldname": "com_all",
+		  "label": "Communication Allowances",
 		  "fieldtype": "Currency",
 		  "width": 120
 		},
