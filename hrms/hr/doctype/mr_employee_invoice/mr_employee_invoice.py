@@ -23,19 +23,21 @@ from erpnext.controllers.accounts_controller import AccountsController
 class MREmployeeInvoice(AccountsController):
     def validate(self):
         check_future_date(self.posting_date)
-        self.calculate_amount()
         self.set_status()
+
+    def before_save(self):
+        self.calculate_amount()
 
     def calculate_amount(self):
         other_deductions = total_ot_amount = total_daily_wage_amount = total_arrears_and_allowance = total_advances = total_deductions = total_tds_amount = 0
         for a in self.attendance:
             if a.status == "Present":
-                total_daily_wage_amount += flt(a.daily_wage,2)
+                total_daily_wage_amount += flt(a.daily_wage, 2)
             elif a.status == "Half Day":
-                total_daily_wage_amount += flt(flt(a.daily_wage,2)/2,2)
-                a.daily_wage = flt(flt(a.daily_wage,2)/2,2)
+                total_daily_wage_amount += flt(flt(a.daily_wage, 2)/2, 2)
+                a.daily_wage = flt(flt(a.daily_wage, 2)/2, 2)
             else:
-                total_daily_wage_amount += flt(a.daily_wage,2)
+                total_daily_wage_amount += flt(a.daily_wage, 2)
         for a in self.ot:
             total_ot_amount += flt(a.amount, 2)
         for adv in self.advances:
