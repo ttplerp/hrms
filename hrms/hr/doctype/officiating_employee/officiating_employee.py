@@ -61,7 +61,7 @@ class OfficiatingEmployee(Document):
 		return frappe.get_value("Employee", self.officiate, "employee_name")
 
 
-
+	@frappe.whitellist()
 	def revoke_perm(self):
 		#for a in self.items:	
 		#	emp = frappe.get_doc("Employee", a.employee)
@@ -92,3 +92,4 @@ def check_off_exp():
 		print(str(a))
 		doc = frappe.get_doc("Officiating Employee", a)
 		doc.revoke_perm()
+
