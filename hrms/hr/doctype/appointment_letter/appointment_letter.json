@@ -2,7 +2,6 @@
  "actions": [],
  "autoname": "HR-APP-LETTER-.#####",
  "creation": "2019-12-26 12:35:49.574828",
- "default_print_format": "Standard Appointment Letter",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -81,12 +80,11 @@
    "fieldname": "terms",
    "fieldtype": "Table",
    "label": "Terms",
-   "options": "Appointment Letter content",
-   "reqd": 1
+   "options": "Appointment Letter content"
   }
  ],
  "links": [],
- "modified": "2022-01-18 19:27:35.649424",
+ "modified": "2025-02-13 07:05:28.080600",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Appointment Letter",
