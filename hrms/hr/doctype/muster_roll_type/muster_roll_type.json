@@ -10,7 +10,12 @@
  "field_order": [
   "muster_roll_type",
   "description",
-  "amended_from"
+  "column_break_tiowf",
+  "disabled",
+  "daily_wage",
+  "overtime_rate",
+  "section_break_pfnra",
+  "items"
  ],
  "fields": [
   {
@@ -27,18 +32,38 @@
    "label": "Description"
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Muster Roll Type",
-   "print_hide": 1,
-   "read_only": 1
+   "fieldname": "column_break_tiowf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "fieldname": "daily_wage",
+   "fieldtype": "Currency",
+   "label": "Daily Wage"
+  },
+  {
+   "fieldname": "overtime_rate",
+   "fieldtype": "Currency",
+   "label": "Overtime Rate"
+  },
+  {
+   "fieldname": "section_break_pfnra",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "MR Daily Wage"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-12-26 10:23:52.986864",
+ "modified": "2025-02-15 12:03:36.160506",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Type",
@@ -114,6 +139,7 @@
    "write": 1
   }
  ],
+ "search_fields": "description",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
