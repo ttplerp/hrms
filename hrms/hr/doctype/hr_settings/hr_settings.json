@@ -67,6 +67,7 @@
   "rtc",
   "ict",
   "sws",
+  "acc",
   "column_break_60",
   "approver_name_afd",
   "approver_name_spd",
@@ -75,6 +76,7 @@
   "approver_name_rtc",
   "approver_name_ict",
   "approver_name_sws",
+  "approver_nameacc",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -1023,13 +1025,26 @@
    "fieldname": "seal",
    "fieldtype": "Attach Image",
    "label": "Finance Focal Seal"
+  },
+  {
+   "fieldname": "acc",
+   "fieldtype": "Link",
+   "label": "ACC",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "acc.employee_name",
+   "fieldname": "approver_nameacc",
+   "fieldtype": "Data",
+   "label": "Approver Name(ACC)"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-07 16:27:14.959027",
+ "modified": "2025-02-14 20:01:28.339993",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

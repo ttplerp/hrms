@@ -15,7 +15,7 @@ class EmployeeSeparationClearance(Document):
 		self.check_duplicates()
 		self.check_reference()
 		if self.approvers_set == 0:
-			self.set_approvers()
+			self.set_approverpers()
 
 	@frappe.whitelist()
 	def apply(self):
@@ -48,6 +48,8 @@ class EmployeeSeparationClearance(Document):
 			frappe.throw("Rental and Tenancy has not granted clearance.")
 		if self.clearance == 0:
 			frappe.throw("ICT Division has not granted clearance.")
+		if self.acc_clearance == 0:
+			frappe.throw("ACC has not granted clearance.")
 		# if self.sws_clearance == 0:
 		# 	frappe.throw("SWS Treasurer has not granted clearance.")
 
@@ -82,6 +84,8 @@ class EmployeeSeparationClearance(Document):
 		if self.rtc:
 			receipients.append(self.rtc)
 		if self.ict:
+			receipients.append(self.ict)
+		if self.acc:
 			receipients.append(self.ict)
 		# if self.sws:
 		# 	receipients.append(self.sws)
@@ -207,13 +211,12 @@ class EmployeeSeparationClearance(Document):
 		else:
 			self.ict = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "ict"),"user_id")
 		
-		#--------------------------- SWS Treasurer-----------------------------------------------------------------------------------------------------------------------------------------------------|
-		# sws_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ict"))
-		# if sws_officiate:
-		# 	self.sws = frappe.db.get_value("Employee",sws_officiate[0].officiate,"user_id")
-		# else:
-		# 	self.sws = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "sws"),"user_id")
-
+		#--------------------------- ACC Clearance-----------------------------------------------------------------------------------------------------------------------------------------------------|
+		acc_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "acc"))
+		if acc_officiate:
+			self.acc = frappe.db.get_value("Employee",acc_officiate[0].officiate,"user_id")
+		else:
+			self.acc = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "acc"),"user_id")
 		self.db_set("approvers_set",1)
 
 # Following code added by SHIV on 2020/09/21

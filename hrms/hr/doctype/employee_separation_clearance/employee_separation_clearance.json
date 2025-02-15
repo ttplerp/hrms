@@ -45,6 +45,9 @@
   "ict",
   "clearance",
   "ict_remarks",
+  "acc_clearance",
+  "clearance_acquiredacc",
+  "acc_remarks",
   "sb_reference",
   "mail_sent",
   "approvers_set",
@@ -355,11 +358,28 @@
    "label": "Clearance Acquired(ICT Division)",
    "mandatory_depends_on": "eval:frappe.session.user == doc.ict",
    "read_only_depends_on": "eval:frappe.session.user != doc.ict"
+  },
+  {
+   "fieldname": "acc_clearance",
+   "fieldtype": "Link",
+   "label": "ACC Clearance",
+   "options": "User"
+  },
+  {
+   "default": "0",
+   "fieldname": "clearance_acquiredacc",
+   "fieldtype": "Check",
+   "label": "Clearance Acquired(ACC)"
+  },
+  {
+   "fieldname": "acc_remarks",
+   "fieldtype": "Data",
+   "label": "ACC Remarks"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-15 12:34:02.915653",
+ "modified": "2025-02-14 19:50:50.729520",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",
