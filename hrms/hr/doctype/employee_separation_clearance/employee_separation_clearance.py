@@ -14,6 +14,7 @@ class EmployeeSeparationClearance(Document):
 		# validate_workflow_states(self)
 		self.check_duplicates()
 		self.check_reference()
+		self.set_approvers()
 		if self.approvers_set == 0:
 			self.set_approverpers()
 
