@@ -25,7 +25,7 @@ class EmployeeAdvanceSettlement(AccountsController):
 		self.get_credit_account()
 		self.validate_expense_branch()
 		self.calculate_amounts()
-		# validate_workflow_states(self)
+		validate_workflow_states(self)
 	
 	def on_submit(self):
 		# self.validate_settlement_amounts()
