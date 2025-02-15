@@ -1,6 +1,5 @@
 {
  "actions": [],
- "allow_rename": 1,
  "autoname": "AT.-.YY.-.MM.-.DD.-.###",
  "creation": "2023-05-31 15:47:18.409543",
  "doctype": "DocType",
@@ -127,7 +126,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-15 15:38:13.689238",
+ "modified": "2025-02-15 16:16:08.068245",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Attendance",
@@ -201,5 +200,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "mr_employee_name"
 }
