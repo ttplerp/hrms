@@ -32,10 +32,10 @@
   "rtc",
   "rtc_clearance",
   "rtc_remarks",
-  "column_break_29",
   "spd",
   "spd_clearance",
   "spd_remarks",
+  "column_break_29",
   "icthr",
   "icthr_clearance",
   "icthr_remarks",
@@ -45,12 +45,12 @@
   "ict",
   "clearance",
   "ict_remarks",
-  "acc_clearance",
-  "clearance_acquiredacc",
+  "acc",
+  "acc_clear",
   "acc_remarks",
   "sb_reference",
-  "mail_sent",
   "approvers_set",
+  "mail_sent",
   "employee_separation_id",
   "workflow_state",
   "amended_from"
@@ -360,26 +360,31 @@
    "read_only_depends_on": "eval:frappe.session.user != doc.ict"
   },
   {
-   "fieldname": "acc_clearance",
+   "fieldname": "acc_remarks",
+   "fieldtype": "Data",
+   "label": "ACC Remarks",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.acc",
+   "read_only_depends_on": "eval:frappe.session.user != doc.acc"
+  },
+  {
+   "fieldname": "acc",
    "fieldtype": "Link",
-   "label": "ACC Clearance",
-   "options": "User"
+   "label": "Acc",
+   "options": "User",
+   "read_only": 1
   },
   {
    "default": "0",
-   "fieldname": "clearance_acquiredacc",
+   "fieldname": "acc_clear",
    "fieldtype": "Check",
-   "label": "Clearance Acquired(ACC)"
-  },
-  {
-   "fieldname": "acc_remarks",
-   "fieldtype": "Data",
-   "label": "ACC Remarks"
+   "label": "Clearance Acc",
+   "mandatory_depends_on": "eval:frappe.session.user == doc.acc",
+   "read_only_depends_on": "eval:frappe.session.user != doc.acc"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-14 19:50:50.729520",
+ "modified": "2025-02-15 12:08:12.132153",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",
