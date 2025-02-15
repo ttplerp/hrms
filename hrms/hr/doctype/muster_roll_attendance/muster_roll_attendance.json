@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "date",
+  "muster_roll_group",
   "mr_employee",
   "mr_employee_name",
   "status",
@@ -112,12 +113,19 @@
   {
    "fieldname": "section_break_wq2hy",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "muster_roll_group",
+   "fieldtype": "Select",
+   "label": "Muster Roll Group",
+   "options": "\nNational\nNon-National",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-15 19:59:00.048905",
+ "modified": "2025-02-15 15:36:55.379431",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Attendance",

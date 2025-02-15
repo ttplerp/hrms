@@ -94,6 +94,9 @@ def mark_mr_employee_attendance(mr_employee_list, status, date, company=None):
         employee_company = frappe.db.get_value(
             "Muster Roll Employee", mr_employee["mr_employee"], "company", cache=True
         )
+        muster_roll_group = frappe.db.get_value(
+            "Muster Roll Employee", mr_employee["mr_employee"], "muster_roll_group", cache=True
+        )
         attendance_docs.append(
             {
                 "doctype": "Muster Roll Attendance",
@@ -102,6 +105,7 @@ def mark_mr_employee_attendance(mr_employee_list, status, date, company=None):
                 "date": getdate(date),
                 "status": status,
                 "company": employee_company or company,
+                "muster_roll_group": muster_roll_group,
             }
         )
 
