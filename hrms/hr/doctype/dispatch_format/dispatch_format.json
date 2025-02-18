@@ -7,6 +7,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "company",
   "dispatch_format",
   "department"
  ],
@@ -22,11 +23,19 @@
    "fieldtype": "Link",
    "label": "Department",
    "options": "Department"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-11-18 11:55:12.163151",
+ "modified": "2025-02-18 12:12:58.907102",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dispatch Format",

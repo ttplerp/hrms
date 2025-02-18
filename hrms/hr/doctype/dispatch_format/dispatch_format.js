@@ -5,4 +5,26 @@ frappe.ui.form.on('Dispatch Format', {
 	// refresh: function(frm) {
 
 	// }
+	onload: function (frm) {
+		// Ver 2.0 Begins, following code added by SHIV on 28/11/2017
+		if(frm.is_new()) {
+			frappe.call({
+				method: "erpnext.custom_utils.get_user_info",
+				args: {"user": frappe.session.user},
+				callback(r) {
+					cur_frm.set_value("company", r.message.company);
+				}
+			});
+		}
+	},
+	setup: function (frm) {
+		frm.set_query("department", function () {
+			if (!frm.doc.company) return
+			return {
+				"filters": {
+					"company": frm.doc.company
+				}
+			};
+		});
+	}
 });

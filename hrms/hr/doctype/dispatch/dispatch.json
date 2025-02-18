@@ -7,6 +7,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "company",
   "dispatch_type",
   "amended_from",
   "date",
@@ -168,12 +169,19 @@
    "fieldname": "mobile",
    "fieldtype": "Data",
    "label": "Mobile No."
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-18 14:06:55.114631",
+ "modified": "2025-02-18 12:13:14.365973",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dispatch",
