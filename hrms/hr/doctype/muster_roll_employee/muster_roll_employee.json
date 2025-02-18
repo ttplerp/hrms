@@ -12,8 +12,8 @@
   "section_break_1",
   "person_name",
   "designation",
-  "muster_roll_type",
   "muster_roll_group",
+  "muster_roll_type",
   "pms_employee_group",
   "list_in_job_card",
   "column_break_4",
@@ -190,7 +190,8 @@
   {
    "fieldname": "rate_per_day",
    "fieldtype": "Currency",
-   "label": "Rate Per Day"
+   "label": "Rate Per Day",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_14",
@@ -359,7 +360,8 @@
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
    "label": "Muster Roll Type",
-   "options": "Muster Roll Type"
+   "options": "Muster Roll Type",
+   "reqd": 1
   },
   {
    "fieldname": "evaluators",
@@ -377,7 +379,8 @@
    "fieldname": "muster_roll_group",
    "fieldtype": "Select",
    "label": "Muster Roll Group",
-   "options": "\nNational\nNon-National"
+   "options": "\nNational\nNon-National",
+   "reqd": 1
   },
   {
    "default": "0",
@@ -458,7 +461,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-15 20:01:02.277058",
+ "modified": "2025-01-25 18:10:57.228302",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

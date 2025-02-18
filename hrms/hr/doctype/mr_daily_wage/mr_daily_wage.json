@@ -1,0 +1,48 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-01-25 17:33:14.891782",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "muster_roll_group",
+  "daily_wage",
+  "overtime_rate"
+ ],
+ "fields": [
+  {
+   "fieldname": "muster_roll_group",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Muster Roll Group",
+   "options": "\nNational\nNon-National",
+   "reqd": 1
+  },
+  {
+   "fieldname": "daily_wage",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Daily Wage",
+   "reqd": 1
+  },
+  {
+   "fieldname": "overtime_rate",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Overtime Rate"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-01-25 17:33:28.769433",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "MR Daily Wage",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
