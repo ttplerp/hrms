@@ -19,6 +19,7 @@ frappe.ui.form.on('Dispatch', {
 	},
 	setup: function (frm) {
 		frm.set_query("dispatch_format", function () {
+			if (!frm.doc.company) return
 			return {
 				"filters": {
 					"company": frm.doc.company
