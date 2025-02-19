@@ -753,11 +753,12 @@ def get_number_of_leave_days(
     
     final=float(no_days)
 
-    if leave_type not in ("Earned Leave", "Casual Leave"):
+    if leave_type not in ("Earned Leave", "Casual Leave","Preparatory leave"):
         return final 
         
     total_days=0
     is_sat=frappe.db.get_value("Holiday List", get_holiday_list_for_employee(employee), "saturday_half")
+ 
     cur_date=from_date
     # print(f"inital: {no_days}")
 
