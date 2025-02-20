@@ -17,10 +17,12 @@
   "pms_employee_group",
   "list_in_job_card",
   "column_break_4",
-  "status",
   "gender",
   "qualification",
   "team_lead",
+  "column_break_c3xn1",
+  "status",
+  "grade",
   "section_break_8",
   "branch",
   "cost_center",
@@ -190,8 +192,7 @@
   {
    "fieldname": "rate_per_day",
    "fieldtype": "Currency",
-   "label": "Rate Per Day",
-   "read_only": 1
+   "label": "Rate Per Day"
   },
   {
    "fieldname": "column_break_14",
@@ -457,11 +458,21 @@
    "fieldtype": "Link",
    "label": "Holiday List",
    "options": "Holiday List"
+  },
+  {
+   "fieldname": "column_break_c3xn1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "grade",
+   "fieldtype": "Link",
+   "label": "Grade",
+   "options": "Muster Roll Grade"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-25 18:10:57.228302",
+ "modified": "2025-02-20 12:48:35.946504",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

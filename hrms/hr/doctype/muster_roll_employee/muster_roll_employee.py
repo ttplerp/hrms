@@ -10,7 +10,7 @@ from frappe.utils.data import get_first_day, get_last_day, add_days
 
 class MusterRollEmployee(Document):
     def validate(self):
-        self.set_daily_wage()
+        # self.set_daily_wage()
         self.cal_rates()
         if len(self.musterroll) > 1:
             for a in range(len(self.musterroll)-1):
