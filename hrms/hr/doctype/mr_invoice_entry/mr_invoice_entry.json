@@ -12,7 +12,6 @@
   "credit_account",
   "currency",
   "posting_date",
-  "muster_roll_type",
   "muster_roll_group",
   "column_break_4",
   "fiscal_year",
@@ -176,12 +175,6 @@
    "options": "Muster Roll Employee"
   },
   {
-   "fieldname": "muster_roll_type",
-   "fieldtype": "Select",
-   "label": "Muster Roll Type",
-   "options": "\nSkilled\nSemiskilled\nUnskilled\nObservation\nTrainee"
-  },
-  {
    "fieldname": "muster_roll_group",
    "fieldtype": "Select",
    "in_list_view": 1,
@@ -256,7 +249,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-03-18 09:50:34.965771",
+ "modified": "2025-02-20 13:14:29.142529",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Invoice Entry",

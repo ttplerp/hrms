@@ -15,7 +15,6 @@
   "column_break_4",
   "mr_employee_name",
   "cost_center",
-  "unit",
   "company",
   "payment_status",
   "section_break_7",
@@ -94,14 +93,6 @@
    "fieldtype": "Link",
    "label": "Cost Center",
    "options": "Cost Center",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "mr_employee.unit",
-   "fieldname": "unit",
-   "fieldtype": "Link",
-   "label": "Unit",
-   "options": "Department",
    "read_only": 1
   },
   {
@@ -384,7 +375,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-18 17:01:27.168109",
+ "modified": "2025-02-20 13:17:13.443266",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Employee Invoice",

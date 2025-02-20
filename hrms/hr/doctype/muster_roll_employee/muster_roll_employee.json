@@ -28,7 +28,6 @@
   "cost_center",
   "column_break_8",
   "project",
-  "unit",
   "holiday_list",
   "sec_break_12",
   "joining_date",
@@ -351,18 +350,12 @@
    "label": "Qualification"
   },
   {
-   "fieldname": "unit",
-   "fieldtype": "Link",
-   "label": "Unit",
-   "options": "Unit"
-  },
-  {
    "fieldname": "muster_roll_type",
    "fieldtype": "Link",
+   "hidden": 1,
    "ignore_user_permissions": 1,
    "label": "Muster Roll Type",
-   "options": "Muster Roll Type",
-   "reqd": 1
+   "options": "Muster Roll Type"
   },
   {
    "fieldname": "evaluators",
@@ -467,12 +460,13 @@
    "fieldname": "grade",
    "fieldtype": "Link",
    "label": "Grade",
-   "options": "Muster Roll Grade"
+   "options": "Muster Roll Grade",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-20 12:48:35.946504",
+ "modified": "2025-02-20 13:18:46.149687",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

@@ -357,8 +357,8 @@ class MRInvoiceEntry(Document):
             cond = "and name = '{}'".format(self.mr_employee)
         self.set("items", [])
         mr_cond = ""
-        if self.muster_roll_type:
-            mr_cond += " and muster_roll_type = '{}'".format(self.muster_roll_type)
+        # if self.muster_roll_type:
+        #     mr_cond += " and muster_roll_type = '{}'".format(self.muster_roll_type)
         if self.muster_roll_group:
             mr_cond += " and muster_roll_group = '{}'".format(self.muster_roll_group)
         if self.team_lead:
