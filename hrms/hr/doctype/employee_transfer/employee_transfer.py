@@ -31,11 +31,13 @@ class EmployeeTransfer(Document):
 
 	def on_submit(self):
 		self.update_employee_master()
+		self.update_employee_salary_structure()
 		if self.transfer_type == "Personal Request":
 			validate_workflow_states(self)
 
 	def on_cancel(self):
-		self.update_employee_master(cancel=True)
+		self.update_employee_master()
+		self.update_employee_salary_structure(cancel=True)
 	
 	def validate_transfer_type(self):
 		# if not user: user = frappe.session.user
@@ -73,6 +75,8 @@ class EmployeeTransfer(Document):
 			for t in frappe.db.get_all("Employee Transfer", {"employee": self.employee, "name": ("!=", self.name),
 					"transfer_date": (">", self.transfer_date), "docstatus": ("!=", 2)}):
 				frappe.throw(_("You cannot cancel as there is another transfer record {} following this entry").format(frappe.get_desk_link(self.doctype, t.name)), title="Not Permitted")
+			
+			# delete row from Employee Work History
 			frappe.db.sql("""delete from `tabEmployee Internal Work History` 
 				where reference_doctype = "{}" and reference_docname = "{}"
 				""".format(self.doctype, self.name))
@@ -90,6 +94,18 @@ class EmployeeTransfer(Document):
 			}
 			employee.append("internal_work_history", internal_work_history)
 		employee.save(ignore_permissions=True)
+
+	def update_employee_salary_structure(self, cancel=False):
+		ss = frappe.db.sql("select name from `tabSalary Structure` where is_active = 'Yes' and employee = %s", (self.employee,))
+		if ss:
+			doc = frappe.get_doc("Salary Structure", ss[0][0])
+			doc.branch			= self.new_branch if not cancel and self.new_branch else self.old_branch
+			doc.cost_center		= self.new_cost_center if not cancel and self.new_cost_center else self.old_cost_center
+			doc.department 		= self.new_department if not cancel and self.new_department else self.old_department
+			doc.division		= self.new_division if not cancel and self.new_division else self.old_division
+			doc.section			= self.new_section if not cancel and self. new_section else self.old_section
+			doc.designation		= self.new_designation if not cancel and self.new_designation else self.old_designation
+			doc.save(ignore_permissions=True)
   
 	def validate_employee_eligibility(self):
 		if self.transfer_type == "Personal Request":
@@ -122,9 +138,9 @@ class EmployeeTransfer(Document):
 			d1 = datetime.strptime(str(date1),'%Y-%m-%d')
 			d2 = datetime.strptime(self.transfer_date, '%Y-%m-%d')
 
-			datediff = relativedelta(d2,d1).years
-			if datediff < 4:
-    				frappe.throw("You are not eligble for transfer since you have not served in your current branch for at least 4 years")
+			# datediff = relativedelta(d2,d1).years
+			# if datediff < 1:
+    		# 		frappe.throw("You are not eligble for transfer since you have not served in your current branch for at least 1 years")
     
 	# def validate_user_in_details(self):
 	# 	for item in self.transfer_details:

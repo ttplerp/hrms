@@ -4,13 +4,20 @@
 
 frappe.ui.form.on('Employee Transfer', {
 	onload:function(frm) {
+		frm.set_query("employee", () => {
+			return {
+				filters: {
+					'status': 'Active'
+				}
+			}
+		});
+
 		frm.set_query("new_department", function() {
 			return {
 				"filters": {
 					"company": frm.doc.company,
 					"is_section":0,
 					"is_division": 0,
-					"is_unit":0
 				}
 			};
 		});
@@ -33,18 +40,6 @@ frappe.ui.form.on('Employee Transfer', {
 					"disabled":0,
 					"is_division":0,
 					"is_section":1
-				}
-			};
-		});
-		frm.set_query("new_unit", function() {
-			return {
-				"filters": {
-					"company": frm.doc.company,
-					"parent_department":frm.doc.new_section,
-					"disabled":0,
-					"is_division":0,
-					"is_section":0,
-					"is_unit": 1
 				}
 			};
 		});

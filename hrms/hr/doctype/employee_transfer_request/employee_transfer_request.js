@@ -11,6 +11,15 @@ frappe.ui.form.on('Employee Transfer Request', {
 		// 		}
 		// 	}
 		// });
+
+		frm.set_query("employee", () => {
+			return {
+				filters: {
+					'status': 'Active'
+				}
+			}
+		});
+
 		if (frm.doc.docstatus == 1) {
 			frappe.call({
 				method:"check_employee_transfer",

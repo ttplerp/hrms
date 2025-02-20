@@ -8,10 +8,9 @@ from frappe.model.mapper import get_mapped_doc
 
 class EmployeeTransferRequest(Document):
 	def validate(self):
+		pass
 		validate_workflow_states(self)
 		self.validate_requested_by()
-		if self.workflow_state != "Approved":
-			notify_workflow_states(self)
 
 	@frappe.whitelist()
 	def get_employee_details(self):
