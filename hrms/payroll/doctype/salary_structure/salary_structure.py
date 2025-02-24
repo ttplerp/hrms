@@ -522,7 +522,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				'payment_days': flt(payment_days)
 				})
 		#ends ot logic
-		if cint(target.deduct_semso) == 1 and flt(target.semso_percent) > 0:
+		if cint(target.deduct_semso) == 1 and flt(target.semso_percent) > 0 and flt(source.semso_deduction) ==1:
 			if 'earnings' in calc_map.keys():
 				for e in calc_map['earnings']:
 					if e['salary_component'] == 'Basic Pay':

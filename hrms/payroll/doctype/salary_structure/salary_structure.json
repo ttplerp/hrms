@@ -97,12 +97,16 @@
   "eligible_for_deployment",
   "deployment_method",
   "deployment",
+  "eligible_for_project_allowance",
+  "project_allowance_method",
+  "project_allowance",
   "sb_other_benefits",
   "eligible_for_gis",
   "eligible_for_pf",
   "eligible_for_health_contribution",
   "eligible_for_tax",
   "study_leave",
+  "semso_deduction",
   "cb_16",
   "eligible_for_leave_encashment",
   "eligible_for_overtime_and_payment",
@@ -949,12 +953,37 @@
    "fieldname": "study_leave",
    "fieldtype": "Check",
    "label": "Eligible for Study Leave Deduction"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_project_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Project Allowance"
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_project_allowance",
+   "fieldname": "project_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Project Allowance",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_project_allowance",
+   "fieldname": "project_allowance",
+   "fieldtype": "Data",
+   "label": "Value(Project Allowance)"
+  },
+  {
+   "default": "0",
+   "fieldname": "semso_deduction",
+   "fieldtype": "Check",
+   "label": "Semso Deduction"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2024-08-13 15:03:15.292396",
+ "modified": "2025-02-24 13:20:12.747567",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
