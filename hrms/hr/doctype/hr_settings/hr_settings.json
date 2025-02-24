@@ -907,7 +907,7 @@
    "fetch_from": "rtc.employee_name",
    "fieldname": "approver_name_rtc",
    "fieldtype": "Data",
-   "label": "Approver Name (Rental & Tenancy)"
+   "label": "Approver Name (Credit Division)"
   },
   {
    "fieldname": "travel_request_supervisor_notification_template",
@@ -1183,7 +1183,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-24 17:09:15.222262",
+ "modified": "2025-02-24 19:08:17.370946",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
