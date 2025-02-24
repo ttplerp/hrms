@@ -827,7 +827,7 @@
   {
    "fieldname": "iad",
    "fieldtype": "Link",
-   "label": "Internal Audit Division",
+   "label": "Internal Audit Division 1",
    "options": "Employee"
   },
   {
@@ -900,7 +900,7 @@
   {
    "fieldname": "rtc",
    "fieldtype": "Link",
-   "label": "Rental & Tenancy",
+   "label": "Credit Division",
    "options": "Employee"
   },
   {
@@ -936,12 +936,13 @@
   {
    "fieldname": "ict",
    "fieldtype": "Link",
-   "label": "ICT Division",
+   "label": "Internal Audit Division 2",
    "options": "Employee"
   },
   {
    "fieldname": "sws",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "SWS Treasurer",
    "options": "Employee"
   },
@@ -1182,7 +1183,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-12-15 00:28:43.549582",
+ "modified": "2025-02-24 17:09:15.222262",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
