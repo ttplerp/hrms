@@ -277,7 +277,7 @@
   {
    "fieldname": "icthr",
    "fieldtype": "Link",
-   "label": "HR Division",
+   "label": "ADM & HR Division",
    "options": "User",
    "read_only": 1
   },
@@ -389,7 +389,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-24 18:16:50.673134",
+ "modified": "2025-02-24 19:13:01.255764",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Separation Clearance",
