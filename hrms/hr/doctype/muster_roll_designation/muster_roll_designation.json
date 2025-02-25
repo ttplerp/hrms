@@ -1,30 +1,35 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:grade",
- "creation": "2025-02-20 12:43:46.240188",
+ "autoname": "field:designation",
+ "creation": "2025-02-25 13:21:00.364584",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "grade",
+  "designation",
   "description",
-  "column_break_qaqce",
-  "disabled",
-  "daily_rate"
+  "column_break_c1g5g",
+  "disabled"
  ],
  "fields": [
   {
-   "fieldname": "grade",
+   "fieldname": "designation",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Grade",
+   "label": "Designation",
    "reqd": 1,
    "unique": 1
   },
   {
-   "fieldname": "column_break_qaqce",
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Description"
+  },
+  {
+   "fieldname": "column_break_c1g5g",
    "fieldtype": "Column Break"
   },
   {
@@ -33,25 +38,14 @@
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "Disabled"
-  },
-  {
-   "fieldname": "daily_rate",
-   "fieldtype": "Currency",
-   "label": "Daily Rate"
-  },
-  {
-   "fieldname": "description",
-   "fieldtype": "Small Text",
-   "in_list_view": 1,
-   "label": "Description"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-25 13:10:07.349572",
+ "modified": "2025-02-25 13:22:30.472066",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Muster Roll Grade",
+ "name": "Muster Roll Designation",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -69,6 +63,7 @@
   },
   {
    "create": 1,
+   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -80,6 +75,7 @@
   },
   {
    "create": 1,
+   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -96,7 +92,7 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "MR Manager",
+   "role": "MR User",
    "share": 1,
    "write": 1
   },
@@ -107,7 +103,7 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "MR User",
+   "role": "MR Manager",
    "share": 1,
    "write": 1
   },

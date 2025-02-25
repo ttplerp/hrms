@@ -11,8 +11,8 @@
   "id_card",
   "section_break_1",
   "person_name",
-  "designation",
   "muster_roll_group",
+  "designation",
   "muster_roll_type",
   "pms_employee_group",
   "list_in_job_card",
@@ -39,6 +39,7 @@
   "section_break_12",
   "salary",
   "rate_per_day",
+  "set_manually",
   "column_break_14",
   "rate_per_hour",
   "sb_bank_info",
@@ -191,7 +192,8 @@
   {
    "fieldname": "rate_per_day",
    "fieldtype": "Currency",
-   "label": "Rate Per Day"
+   "label": "Rate Per Day",
+   "read_only_depends_on": "eval:!doc.set_manually"
   },
   {
    "fieldname": "column_break_14",
@@ -336,7 +338,7 @@
    "fieldname": "designation",
    "fieldtype": "Link",
    "label": "Designation",
-   "options": "Designation"
+   "options": "Muster Roll Designation"
   },
   {
    "fieldname": "gender",
@@ -462,11 +464,17 @@
    "label": "Grade",
    "options": "Muster Roll Grade",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "set_manually",
+   "fieldtype": "Check",
+   "label": "Set Manually"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-20 13:18:46.149687",
+ "modified": "2025-02-25 13:23:08.138508",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

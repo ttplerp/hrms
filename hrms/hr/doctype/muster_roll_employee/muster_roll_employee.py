@@ -10,7 +10,7 @@ from frappe.utils.data import get_first_day, get_last_day, add_days
 
 class MusterRollEmployee(Document):
     def validate(self):
-        # self.set_daily_wage()
+        self.set_daily_wage()
         self.cal_rates()
         if len(self.musterroll) > 1:
             for a in range(len(self.musterroll)-1):
@@ -43,6 +43,14 @@ class MusterRollEmployee(Document):
             frappe.permissions.add_user_permission("Branch", self.branch, self.user_id)
 
     def set_daily_wage(self):
+        if not self.set_manually:
+            daily_rate = frappe.db.get_value("Muster Roll Grade", self.grade, "daily_rate")
+            if not daily_rate:
+                frappe.throw("please set daily rate in {}".format(
+                    frappe.get_desk_link("Muster Roll Grade", self.grade)
+                ))
+            self.rate_per_day = flt(daily_rate)
+        '''
         Type = frappe.qb.DocType("Muster Roll Type")
         DailyWage = frappe.qb.DocType("MR Daily Wage")
         
@@ -68,6 +76,7 @@ class MusterRollEmployee(Document):
             # self.overtime_rate = result[0]["overtime_rate"]
         else:
             frappe.throw("No daily wage found for the selected Muster Roll Group")
+        '''
 
     def calculate_rates(self):
         if not self.rate_per_hour:
