@@ -118,6 +118,15 @@ class TravelClaim(Document):
 
     def before_cancel(self):
         self.unlink_travel_authorization()
+        for a in str(self.claim_journal).split(", "):
+            je_doc = frappe.get_doc("Journal Entry", a)
+            if je_doc.docstatus == 1:
+                je_doc.cancel()
+        frappe.db.sql("update `tabGL Entry` set voucher_no = NULL where voucher_no = '{}'".format(self.name))
+        frappe.db.sql("update `tabGL Entry` set against_voucher = NULL where against_voucher = '{}'".format(self.name))
+        frappe.db.sql("update `tabPayment Ledger Entry` set voucher_no = NULL where voucher_no = '{}'".format(self.name))
+        frappe.db.sql("update `tabPayment Ledger Entry` set against_voucher_no = NULL where against_voucher_no = '{}'".format(self.name))
+
 
     def on_cancel_after_draft(self):
         validate_workflow_states(self)
@@ -128,6 +137,7 @@ class TravelClaim(Document):
             self.ta = None
         if self.training_event:
             self.update_training_event(cancel=True)
+        self.db_set("workflow_state", 'Cancelled')
 
     # Following method created by SHIV on 2020/09/22
     def check_journal_entry(self):
@@ -143,10 +153,10 @@ class TravelClaim(Document):
         if cl_status and cl_status != 2:
             frappe.throw("You need to cancel the claim journal entry first!")
 
-        tas = frappe.db.sql("select distinct(travel_authorization) as ta from `tabTravel Claim Item` where parent = %s", str(self.name), as_dict=True)
-        for a in tas:
-            ta = frappe.get_doc("Travel Authorization", a.ta)
-            ta.db_set("travel_claim", "")
+        # tas = frappe.db.sql("select distinct(travel_authorization) as ta from `tabTravel Claim Item` where parent = %s", str(self.name), as_dict=True)
+        # for a in tas:
+        #     ta = frappe.get_doc("Travel Authorization", a.ta)
+        #     ta.db_set("travel_claim", "")
 
         if self.ta:
             travel_a = frappe.get_doc("Travel Authorization", self.ta)

@@ -59,6 +59,7 @@ frappe.ui.form.on('Travel Claim', {
 		}
 	},
 	onload: function (frm) {
+		frm.ignore_doctypes_on_cancel_all = ['Travel Authorization', 'GL Entry', 'Payment Ledger Entry']
 		if (frm.doc.reference_type && frm.doc.reference_name) {
 			get_project_or_maintenance_cost_center(frm);
 		}
