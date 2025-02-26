@@ -63,6 +63,18 @@ frappe.ui.form.on('Muster Roll Employee', {
 				frm.refresh_field("tds_account");
 			}
 		})
+	},
+	grade: function (frm) {
+		if (!frm.doc.set_manually){
+			frappe.call({
+				method: "set_daily_wage",
+				doc: frm.doc,
+				callback: function(r) {
+					frm.set_value("rate_per_day", r.message);
+					frm.refresh_field("rate_per_day");
+				}
+			})
+		}
 	}
 });
 

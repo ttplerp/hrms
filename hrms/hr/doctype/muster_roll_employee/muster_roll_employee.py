@@ -41,7 +41,7 @@ class MusterRollEmployee(Document):
             frappe.permissions.add_user_permission("Muster Roll Employee", self.name, self.user_id)
             frappe.permissions.add_user_permission("Company", self.company, self.user_id)
             frappe.permissions.add_user_permission("Branch", self.branch, self.user_id)
-
+    @frappe.whitelist()
     def set_daily_wage(self):
         if not self.set_manually:
             daily_rate = frappe.db.get_value("Muster Roll Grade", self.grade, "daily_rate")
@@ -50,6 +50,8 @@ class MusterRollEmployee(Document):
                     frappe.get_desk_link("Muster Roll Grade", self.grade)
                 ))
             self.rate_per_day = flt(daily_rate)
+
+            return daily_rate
         '''
         Type = frappe.qb.DocType("Muster Roll Type")
         DailyWage = frappe.qb.DocType("MR Daily Wage")
