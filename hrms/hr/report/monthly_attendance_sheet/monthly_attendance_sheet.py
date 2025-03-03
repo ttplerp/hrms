@@ -112,6 +112,7 @@ def get_columns(filters: Filters) -> List[Dict]:
 				"width": 135,
 			},
 			{"label": _("Employee Name"), "fieldname": "employee_name", "fieldtype": "Data", "width": 120},
+			{"label": _("Branch"), "fieldname": "branch", "fieldtype": "Data", "width": 150},
 		]
 	)
 
@@ -368,7 +369,7 @@ def get_rows(
 			leave_summary = get_leave_summary(employee, filters)
 			entry_exits_summary = get_entry_exits_summary(employee, filters)
 
-			row = {"employee": employee, "employee_name": details.employee_name}
+			row = {"employee": employee, "employee_name": details.employee_name, "branch": details.branch}
 			set_defaults_for_summarized_view(filters, row)
 			row.update(attendance)
 			row.update(leave_summary)
@@ -385,7 +386,7 @@ def get_rows(
 			)
 			# set employee details in the first row
 			attendance_for_employee[0].update(
-				{"employee": employee, "employee_name": details.employee_name}
+				{"employee": employee, "employee_name": details.employee_name, "branch": details.branch}
 			)
 
 			records.extend(attendance_for_employee)
