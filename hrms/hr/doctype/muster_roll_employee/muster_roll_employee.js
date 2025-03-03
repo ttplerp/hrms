@@ -64,19 +64,32 @@ frappe.ui.form.on('Muster Roll Employee', {
 			}
 		})
 	},
-	grade: function (frm) {
-		if (!frm.doc.set_manually){
-			frappe.call({
-				method: "set_daily_wage",
-				doc: frm.doc,
-				callback: function(r) {
-					frm.set_value("rate_per_day", r.message);
-					frm.refresh_field("rate_per_day");
-				}
-			})
-		}
-	}
+
+	grade: function(frm) {
+        set_daily_wage(frm);
+    },
+    
+    set_manually: function(frm) {
+        set_daily_wage(frm);
+    }
 });
+
+const set_daily_wage = (frm) => {
+    if (!frm.doc.set_manually) {
+        frappe.call({
+            method: "set_daily_wage",
+            doc: frm.doc,
+            callback: function(r) {
+                if (r.message) {
+                    frm.set_value("rate_per_day", r.message.rate_per_day);
+                    frm.set_value("rate_per_hour", r.message.rate_per_hour);
+					frm.refresh_field("rate_per_day")
+					frm.refresh_field("rate_per_hour")
+                }
+            }
+        });
+    }
+};
 
 frappe.ui.form.on("Muster Roll Employee", "refresh", function(frm) {
     frm.set_query("cost_center", function() {

@@ -11,11 +11,6 @@ from frappe.utils.data import get_first_day, get_last_day, add_days
 class MusterRollEmployee(Document):
     def validate(self):
         self.set_daily_wage()
-        self.cal_rates()
-        if len(self.musterroll) > 1:
-            for a in range(len(self.musterroll)-1):
-                self.musterroll[a].to_date = frappe.utils.data.add_days(getdate(self.musterroll[a + 1].from_date), -1)
-
         # self.check_status()
         self.populate_work_history()
         self.update_user_permissions()
@@ -41,54 +36,24 @@ class MusterRollEmployee(Document):
             frappe.permissions.add_user_permission("Muster Roll Employee", self.name, self.user_id)
             frappe.permissions.add_user_permission("Company", self.company, self.user_id)
             frappe.permissions.add_user_permission("Branch", self.branch, self.user_id)
+    
     @frappe.whitelist()
     def set_daily_wage(self):
         if not self.set_manually:
             daily_rate = frappe.db.get_value("Muster Roll Grade", self.grade, "daily_rate")
             if not daily_rate:
-                frappe.throw("please set daily rate in {}".format(
+                frappe.throw("Please set the daily rate in {}".format(
                     frappe.get_desk_link("Muster Roll Grade", self.grade)
                 ))
+            
             self.rate_per_day = flt(daily_rate)
+            self.rate_per_hour = flt(daily_rate) / 5
 
-            return daily_rate
-        '''
-        Type = frappe.qb.DocType("Muster Roll Type")
-        DailyWage = frappe.qb.DocType("MR Daily Wage")
-        
-        query = (
-            frappe.qb.from_(Type)
-            .join(DailyWage)
-            .on(Type.name == DailyWage.parent)
-            .where(
-                (Type.disabled == 0)
-                & (DailyWage.muster_roll_group == self.muster_roll_group)
-                & (Type.name == self.muster_roll_type)
-            )
-            .select(
-                DailyWage.daily_wage,
-                DailyWage.overtime_rate,
-            )
-        )
-        
-        result = query.run(as_dict=True)
-        
-        if result:
-            self.rate_per_day = result[0]["daily_wage"]
-            # self.overtime_rate = result[0]["overtime_rate"]
-        else:
-            frappe.throw("No daily wage found for the selected Muster Roll Group")
-        '''
-
-    def calculate_rates(self):
-        if not self.rate_per_hour:
-            self.rate_per_hour = (flt(self.rate_per_day) * 1.5) / 8
-
-    def cal_rates(self):
-        for a in self.get('musterroll'):
-            if a.rate_per_day:
-                a.rate_per_hour = (flt(a.rate_per_day) * 1.5) / 8	
-
+            return {
+                "rate_per_day": self.rate_per_day,
+                "rate_per_hour": self.rate_per_hour
+            }
+       
     def check_status(self):
         if self.status == "Left" and self.separation_date:
             self.docstatus = 1
