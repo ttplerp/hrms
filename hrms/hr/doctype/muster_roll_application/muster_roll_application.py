@@ -105,7 +105,7 @@ class MusterRollApplication(Document):
 			cond += " and branch = '{0}'".format(self.from_branch)
 		
 
-		query = f"select name as existing_cid, person_name, cost_center, gender, bank_name as bank, bank_ac_no as account_no, bank_account_type, bank_branch, rate_per_day, rate_per_hour, business_activity, qualification, muster_roll_type, designation from `tabMuster Roll Employee` where {cond} and status = 'Active'"
+		query = f"select name as existing_cid, person_name, cost_center, gender, bank_name as bank, bank_ac_no as account_no, bank_account_type, bank_branch, rate_per_day, rate_per_hour, business_activity, qualification, muster_roll_type, designation, joining_date from `tabMuster Roll Employee` where {cond} and status = 'Active'"
 
 		entries = frappe.db.sql(query, as_dict=True)
 		self.set('items', [])
