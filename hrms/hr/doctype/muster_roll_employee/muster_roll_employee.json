@@ -365,7 +365,6 @@
    "options": "Performance Evaluator"
   },
   {
-   "depends_on": "eval: (doc.muster_roll_type == \"Observation\" || doc.muster_roll_type == \"Trainee\")",
    "fieldname": "pms_employee_group",
    "fieldtype": "Link",
    "label": "PMS Employee Group",
@@ -474,7 +473,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-25 13:23:08.138508",
+ "modified": "2025-03-04 11:00:30.336217",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
