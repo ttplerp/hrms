@@ -8,6 +8,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import flt, nowdate
 from datetime import date
+from datetime import datetime
 from erpnext.custom_workflow import validate_workflow_states
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 from hrms.hr.hr_custom_functions import get_salary_tax
@@ -124,7 +125,7 @@ class EmployeeBenefits(Document):
 	def validate_benefits(self):
 		for a in self.items:
 			a.payable_amount = flt(a.amount) - flt(a.tax_amount)
-			if a.benefit_type == "Provision for Leave Encashment":
+			if a.benefit_type == "Leave Encashment( Resignation)":
 				if self.purpose != "Separation" and self.purpose != "Upgradation":
 					frappe.throw("Leave Encashment cannot be claimed for {}".format(self.purpose))
 
@@ -148,19 +149,22 @@ class EmployeeBenefits(Document):
 		# self.total_amount = 0
 		for a in self.items:
 			# self.total_amount = self.total_amount + a.amount 
-			if a.benefit_type=="Provision for Employee Gratuity Fund":
+			if a.benefit_type=="Gratuity (Resignation)":
 				date_of_joining = frappe.db.get_value("Employee", self.employee, "date_of_joining")
 				employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
-				today_date = date.today()
+				today_date = self.separation_date
 				years_in_service = flt(((today_date - date_of_joining).days)/364)
 				years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
 				if frappe.db.get_value("Employee", self.employee, "employment_type") != "Contract":
-					if years_in_service < 5:
+					if years_in_service < 5 and datetime.strptime(str(date_of_joining),"%Y-%m-%d").date() <= datetime.strptime("2023-09-30", "%Y-%m-%d").date():
 						frappe.throw("Should have minimum of 5 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
+					if years_in_service < 10 and datetime.strptime(str(date_of_joining),"%Y-%m-%d").date() > datetime.strptime("2023-09-30", "%Y-%m-%d").date():
+						frappe.throw("Should have minimum of 10 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
+
 	
 	def check_leave_encashment(self):
 		for a in self.items:
-			if a.benefit_type == "Provision for Leave Encashment":
+			if a.benefit_type == "Leave Encashment( Resignation)":
 				balance = 0
 				le = frappe.get_doc("Employee Group",frappe.db.get_value("Employee",self.employee,"employee_group")) # Line added by SHIV on 2018/10/16
 				las = frappe.db.sql("select name from `tabLeave Allocation` where employee = %s and leave_type = %s and to_date >= %s and YEAR(from_date) = %s and docstatus = 1", (self.employee, "Earned Leave", nowdate(), nowdate()), as_dict=True)
@@ -182,6 +186,21 @@ class EmployeeBenefits(Document):
 		allocation.from_date = date
 		allocation.unused_leaves = 0
 		allocation.create_leave_ledger_entry()
+
+	@frappe.whitelist()
+	def get_leave_encashment_amount(self, employee, date):
+		basic_pay = amount = 0
+		query = "select d.amount from `tabSalary Structure` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and s.is_active='Yes'"
+		data = frappe.db.sql(query, as_dict=True)
+		if not data:
+			frappe.throw("Basic Salary is not been assigned to the employee.")
+		else:
+			for a in data:
+				basic_pay += a.amount
+		leave_balance = get_leave_balance_on(employee, "Earned Leave", date)
+		amount = (flt(basic_pay)/30.0) * flt(leave_balance)
+		encashment_tax = get_salary_tax(amount)
+		return amount, leave_balance, encashment_tax
 
 	def post_journal(self):
 		emp = frappe.get_doc("Employee", self.employee)
@@ -365,47 +384,43 @@ def get_basic_salary(employee):
 			amount += a.amount
 	return amount
 
-@frappe.whitelist()
-def get_leave_encashment_amount(employee, date):
-	basic_pay = amount = 0
-	query = "select d.amount from `tabSalary Structure` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and s.is_active='Yes'"
-	data = frappe.db.sql(query, as_dict=True)
-	if not data:
-		frappe.throw("Basic Salary is not been assigned to the employee.")
-	else:
-		for a in data:
-			basic_pay += a.amount
-	leave_balance = get_leave_balance_on(employee, "Earned Leave", date)
-	amount = (flt(basic_pay)/30.0) * flt(leave_balance)
-	encashment_tax = get_salary_tax(amount)
-	return amount, leave_balance, encashment_tax
+
 
 @frappe.whitelist()
 def get_leave_encashment_tax(amount, benefit_type):
-	if benefit_type == "Provision for Leave Encashment":
+	if benefit_type == "Leave Encashment( Resignation)":
 		encashment_tax = get_salary_tax(amount)
 		return encashment_tax
 
 @frappe.whitelist()
-def get_gratuity_amount(employee):
+def get_gratuity_amount(employee, separation_date):
 	basic_pay = amount = 0
-	query = "select amount from `tabSalary Structure` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and is_active='Yes'"
+	query = "select amount from `tabSalary Slip` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and s.docstatus = 1 order by s.creation desc limit 1"
 	data = frappe.db.sql(query, as_dict=True)
 	if not data:
-		frappe.throw("Basic Salary is not been assigned to the employee.")
+		frappe.throw("No Latest Payslip Found for Employee {}")
 	else:
 		for a in data:
 			basic_pay += a.amount
 	date_of_joining = frappe.db.get_value("Employee", employee, "date_of_joining")
 	employee_group = frappe.db.get_value("Employee", employee, "employee_group")
-	today_date = date.today()
-	years_in_service = flt(((today_date - date_of_joining).days)/365)
-	years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
+	today_date = separation_date
+	contract_end_date = frappe.db.get_value("Employee", employee, "contract_end_date")
 	if frappe.db.get_value("Employee", employee, "employment_type") != "Contract":
-		if years_in_service < 5 and employee_group != "ESP":
+		years_in_service = math.floor(flt(((today_date - date_of_joining).days)/365))
+	else:
+		if not contract_end_date:
+			frappe.throw("Contract End Date not set for Employee {}".format(employee))
+		if datetime.strptime(str(today_date).split(" ")[0], "%Y-%m-%d") <= datetime.strptime(str(contract_end_date), "%Y-%m-%d"):
+			years_in_service = math.floor(flt(((datetime.strptime(str(today_date), "%Y-%m-%d").date() - date_of_joining).days)/365))
+		else:
+			years_in_service = math.floor(flt(((contract_end_date - date_of_joining).days)/365))
+	# years_in_service = math.floor(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
+	if frappe.db.get_value("Employee", employee, "employment_type") != "Contract":
+		if years_in_service < 5 and datetime.strptime(str(date_of_joining),"%Y-%m-%d").date() <= datetime.strptime("2023-09-30", "%Y-%m-%d").date():
 			frappe.throw("Should have minimum of 5 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
-	elif employee_group == "ESP" and years_in_service < 1:
-		frappe.throw("ESP Employee should have minimum of 1 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
+		if years_in_service < 10 and datetime.strptime(str(date_of_joining),"%Y-%m-%d").date() > datetime.strptime("2023-09-30", "%Y-%m-%d").date():
+			frappe.throw("Should have minimum of 10 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
 	if years_in_service > 0:
 		amount = flt(basic_pay) * years_in_service
 	return amount
