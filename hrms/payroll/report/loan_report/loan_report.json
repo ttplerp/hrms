@@ -9,8 +9,8 @@
  "filters": [],
  "idx": 0,
  "is_standard": "Yes",
- "letter_head": "Sales",
- "modified": "2023-01-30 15:52:11.915825",
+ "letter_head": "SMCL Letter Head",
+ "modified": "2025-03-06 11:52:00.788347",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Loan Report",
@@ -24,16 +24,10 @@
    "role": "Administrator"
   },
   {
-   "role": "Employee"
-  },
-  {
    "role": "HR User"
   },
   {
    "role": "HR Manager"
-  },
-  {
-   "role": "Employee Self Service"
   },
   {
    "role": "Accounts Manager"

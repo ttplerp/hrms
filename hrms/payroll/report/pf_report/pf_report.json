@@ -9,8 +9,8 @@
  "filters": [],
  "idx": 0,
  "is_standard": "Yes",
- "letter_head": "Sales",
- "modified": "2023-01-30 15:51:53.024968",
+ "letter_head": "SMCL Letter Head",
+ "modified": "2025-03-06 11:48:16.022965",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "PF Report",
@@ -28,12 +28,6 @@
   },
   {
    "role": "HR User"
-  },
-  {
-   "role": "Employee"
-  },
-  {
-   "role": "Employee Self Service"
   },
   {
    "role": "Accounts Master"
