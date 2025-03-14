@@ -301,8 +301,7 @@
    "depends_on": "eval:doc.need_advance",
    "fieldname": "estimated_amount",
    "fieldtype": "Currency",
-   "label": "Estimated Total Amount",
-   "read_only": 1
+   "label": "Estimated Total Amount"
   },
   {
    "depends_on": "eval:doc.need_advance",
@@ -515,7 +514,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-10 18:04:31.836865",
+ "modified": "2025-03-14 15:08:42.107968",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Authorization",
