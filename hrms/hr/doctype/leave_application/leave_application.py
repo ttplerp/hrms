@@ -234,9 +234,6 @@ class LeaveApplication(Document):
 			)
 
 	def update_attendance(self):
-		if self.status != "Approved":
-			return
-
 		holiday_dates = []
 		if not frappe.db.get_value("Leave Type", self.leave_type, "include_holiday"):
 			holiday_dates = get_holiday_dates_for_employee(self.employee, self.from_date, self.to_date)
