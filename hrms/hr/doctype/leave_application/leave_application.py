@@ -66,7 +66,7 @@ class LeaveApplication(Document):
 
 	def validate(self):
 		validate_active_employee(self.employee)
-		validate_workflow_states(self)
+		# validate_workflow_states(self)
 		set_employee_name(self)
 		self.validate_dates()
 		self.validate_balance_leaves()
@@ -80,8 +80,6 @@ class LeaveApplication(Document):
 		if frappe.db.get_value("Leave Type", self.leave_type, "is_optional_leave"):
 			self.validate_optional_leave()
 		self.validate_applicable_after()
-		if self.workflow_state != "Approved":
-			notify_workflow_states(self)
 
 	def on_update(self):
 		if self.status == "Open" and self.docstatus < 1:
@@ -94,11 +92,11 @@ class LeaveApplication(Document):
 
 	def on_submit(self):
 		#Added by Kinley 2022/11/16
-		notify_workflow_states(self)
-		if self.status in ["Open", "Cancelled"]:
-			frappe.throw(
-				_("Only Leave Applications with status 'Approved' and 'Rejected' can be submitted")
-			)
+		# notify_workflow_states(self)
+		# if self.status in ["Open", "Cancelled"]:
+		# 	frappe.throw(
+		# 		_("Only Leave Applications with status 'Approved' and 'Rejected' can be submitted")
+		# 	)
 
 		self.validate_back_dated_application()
 		self.update_attendance()
@@ -575,9 +573,6 @@ class LeaveApplication(Document):
 				pass
 
 	def create_leave_ledger_entry(self, submit=True):
-		if self.status != "Approved" and submit:
-			return
-
 		expiry_date = get_allocation_expiry_for_cf_leaves(
 			self.employee, self.leave_type, self.to_date, self.from_date
 		)
