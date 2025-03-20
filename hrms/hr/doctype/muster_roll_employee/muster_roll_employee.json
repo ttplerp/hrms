@@ -368,7 +368,8 @@
    "fieldtype": "Select",
    "label": "Muster Roll Group",
    "options": "\nNational\nNon-National",
-   "reqd": 1
+   "reqd": 1,
+   "set_only_once": 1
   },
   {
    "default": "0",
@@ -486,7 +487,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-14 17:20:18.573289",
+ "modified": "2025-03-20 08:24:21.831386",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
