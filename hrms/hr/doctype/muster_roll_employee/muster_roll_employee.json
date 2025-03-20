@@ -10,30 +10,27 @@
   "muster_roll_group",
   "passport_number",
   "cid_number",
-  "section_break_1",
   "person_name",
+  "column_break_brsat",
+  "status",
+  "joining_date",
+  "separation_date",
+  "section_break_1",
   "designation",
+  "grade",
   "muster_roll_type",
-  "pms_employee_group",
-  "list_in_job_card",
+  "qualification",
   "column_break_4",
   "gender",
-  "qualification",
+  "blood_group",
   "team_lead",
-  "column_break_c3xn1",
-  "status",
-  "grade",
+  "list_in_job_card",
   "section_break_8",
   "branch",
   "cost_center",
   "column_break_8",
   "project",
   "holiday_list",
-  "sec_break_12",
-  "joining_date",
-  "separation_date",
-  "column_break_18",
-  "blood_group",
   "wage_detail_section",
   "musterroll",
   "section_break_12",
@@ -72,6 +69,7 @@
   "temp_doctype",
   "temp_docname",
   "performance_evaluation_section",
+  "pms_employee_group",
   "include_in_performance_evaluation",
   "evaluators"
  ],
@@ -86,7 +84,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "MR Employee Name",
+   "label": "Full Name",
    "reqd": 1
   },
   {
@@ -106,6 +104,7 @@
    "default": "0",
    "fieldname": "list_in_job_card",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "List in Job Card"
   },
   {
@@ -143,10 +142,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "sec_break_12",
-   "fieldtype": "Section Break"
-  },
-  {
    "fieldname": "joining_date",
    "fieldtype": "Date",
    "label": "Joining Date",
@@ -158,10 +153,6 @@
    "fieldtype": "Date",
    "label": "Separation Date",
    "mandatory_depends_on": "eval:doc.status == 'Left'"
-  },
-  {
-   "fieldname": "column_break_18",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "blood_group",
@@ -330,19 +321,22 @@
    "fieldname": "designation",
    "fieldtype": "Link",
    "label": "Designation",
-   "options": "Muster Roll Designation"
+   "options": "Muster Roll Designation",
+   "reqd": 1
   },
   {
    "fieldname": "gender",
    "fieldtype": "Select",
    "label": "Gender",
-   "options": "\nMale\nFemale\nOther"
+   "options": "\nMale\nFemale\nOther",
+   "reqd": 1
   },
   {
    "fieldname": "qualification",
    "fieldtype": "Link",
    "label": "Qualification",
-   "options": "Muster Roll Qualification"
+   "options": "Muster Roll Qualification",
+   "reqd": 1
   },
   {
    "fieldname": "muster_roll_type",
@@ -448,10 +442,6 @@
    "options": "Holiday List"
   },
   {
-   "fieldname": "column_break_c3xn1",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "grade",
    "fieldtype": "Link",
    "label": "Grade",
@@ -483,11 +473,15 @@
    "no_copy": 1,
    "set_only_once": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "column_break_brsat",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-20 08:24:21.831386",
+ "modified": "2025-03-20 08:37:53.998276",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
