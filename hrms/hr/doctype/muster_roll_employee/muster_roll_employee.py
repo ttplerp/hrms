@@ -9,119 +9,135 @@ from frappe.utils import flt, getdate, cint, today, add_years, date_diff, nowdat
 from frappe.utils.data import get_first_day, get_last_day, add_days
 
 class MusterRollEmployee(Document):
-    def validate(self):
-        self.set_daily_wage()
-        # self.check_status()
-        self.populate_work_history()
-        self.update_user_permissions()
-        self.check_for_duplicate_entry()
-        self.get_tds_account()
-    
-    def check_for_duplicate_entry(self):
-        if self.get("__islocal"):
-            if frappe.db.exists("Muster Roll Employee", {"name": self.name, "status": "Active"}):
-                frappe.throw("Muster Roll Emplloyee Already Exist with CID No. <b>{}</b>".format(self.id_card))
+	def autoname(self):
+		if self.muster_roll_group == "National":
+			if not self.cid_number:
+				frappe.throw(_("CID Number is required for National employees."))
+			self.name = self.cid_number
+		else:
+			if not self.passport_number:
+				frappe.throw(_("Passport/Work Permit Number is required for International employees."))
+			self.name = self.passport_number
+		
+		if frappe.db.exists("Muster Roll Employee", self.name):
+			frappe.throw(_("A Muster Roll Employee with the {} already exists: {}.").format(
+				"CID Number" if self.muster_roll_group == "National" else "Passport/Work Permit Number", 
+				frappe.get_desk_link("Muster Roll Employee", self.name),
+			))
+			   
+	def validate(self):
+		self.set_daily_wage()
+		# self.check_status()
+		self.populate_work_history()
+		self.update_user_permissions()
+		self.check_for_duplicate_entry()
+		self.get_tds_account()
+	
+	def check_for_duplicate_entry(self):
+		if self.get("__islocal"):
+			if frappe.db.exists("Muster Roll Employee", {"name": self.name, "status": "Active"}):
+				frappe.throw("Muster Roll Emplloyee Already Exist with CID No. <b>{}</b>".format(self.id_card))
 
-    def update_user_permissions(self):
-        prev_branch  = self.get_db_value("branch")
-        prev_company = self.get_db_value("company")
-        prev_user_id = self.get_db_value("user_id")
+	def update_user_permissions(self):
+		prev_branch  = self.get_db_value("branch")
+		prev_company = self.get_db_value("company")
+		prev_user_id = self.get_db_value("user_id")
 
-        if prev_user_id:
-            frappe.permissions.remove_user_permission("Muster Roll Employee", self.name, prev_user_id)
-            frappe.permissions.remove_user_permission("Company", prev_company, prev_user_id)
-            frappe.permissions.remove_user_permission("Branch", prev_branch, prev_user_id)
+		if prev_user_id:
+			frappe.permissions.remove_user_permission("Muster Roll Employee", self.name, prev_user_id)
+			frappe.permissions.remove_user_permission("Company", prev_company, prev_user_id)
+			frappe.permissions.remove_user_permission("Branch", prev_branch, prev_user_id)
 
-        if self.user_id:
-            frappe.permissions.add_user_permission("Muster Roll Employee", self.name, self.user_id)
-            frappe.permissions.add_user_permission("Company", self.company, self.user_id)
-            frappe.permissions.add_user_permission("Branch", self.branch, self.user_id)
-    
-    @frappe.whitelist()
-    def set_daily_wage(self):
-        if not self.set_manually:
-            daily_rate = frappe.db.get_value("Muster Roll Grade", self.grade, "daily_rate")
-            if not daily_rate:
-                frappe.throw("Please set the daily rate in {}".format(
-                    frappe.get_desk_link("Muster Roll Grade", self.grade)
-                ))
-            
-            self.rate_per_day = flt(daily_rate)
-            self.rate_per_hour = flt(daily_rate) / 5
+		if self.user_id:
+			frappe.permissions.add_user_permission("Muster Roll Employee", self.name, self.user_id)
+			frappe.permissions.add_user_permission("Company", self.company, self.user_id)
+			frappe.permissions.add_user_permission("Branch", self.branch, self.user_id)
+	
+	@frappe.whitelist()
+	def set_daily_wage(self):
+		if not self.set_manually:
+			daily_rate = frappe.db.get_value("Muster Roll Grade", self.grade, "daily_rate")
+			if not daily_rate:
+				frappe.throw("Please set the daily rate in {}".format(
+					frappe.get_desk_link("Muster Roll Grade", self.grade)
+				))
+			
+			self.rate_per_day = flt(daily_rate)
+			self.rate_per_hour = flt(daily_rate) / 5
 
-            return {
-                "rate_per_day": self.rate_per_day,
-                "rate_per_hour": self.rate_per_hour
-            }
-       
-    def check_status(self):
-        if self.status == "Left" and self.separation_date:
-            self.docstatus = 1
+			return {
+				"rate_per_day": self.rate_per_day,
+				"rate_per_hour": self.rate_per_hour
+			}
+	   
+	def check_status(self):
+		if self.status == "Left" and self.separation_date:
+			self.docstatus = 1
 
-    @frappe.whitelist()
-    def get_tds_account(self):
-        account = ""
-        for a in frappe.db.sql("""select * from `tabTDS Account Item`""", as_dict=True):
-            if self.tds_percent == a.tds_percent:
-                self.tds_account = a.account
-                account = a.account
-        return account
-        # frappe.throw(self.tds_account)
+	@frappe.whitelist()
+	def get_tds_account(self):
+		account = ""
+		for a in frappe.db.sql("""select * from `tabTDS Account Item`""", as_dict=True):
+			if self.tds_percent == a.tds_percent:
+				self.tds_account = a.account
+				account = a.account
+		return account
+		# frappe.throw(self.tds_account)
 
-    def populate_work_history(self):
-        if not self.internal_work_history:
-            self.append("internal_work_history",{
-                "branch": self.branch,
-                "cost_center": self.cost_center,
-                "from_date": self.joining_date,
-                "owner": frappe.session.user,
-                "creation": nowdate(),
-                "modified_by": frappe.session.user,
-                "modified": nowdate(),
-                "reference_doctype": self.temp_doctype,
-                "reference_docname": self.temp_docname
-            })
-        else:
-            # Fetching previous document from db
-            prev_doc = frappe.get_doc(self.doctype,self.name)
-            self.date_of_transfer = self.date_of_transfer if self.date_of_transfer else today()
-            
-            if (getdate(self.joining_date) != prev_doc.joining_date) or \
-                (self.status == 'Left' and self.separation_date) or \
-                (self.cost_center != prev_doc.cost_center):
-                for wh in self.internal_work_history:
-                    # For change in joining_date
-                    if (getdate(self.joining_date) != prev_doc.joining_date):
-                        if (getdate(prev_doc.joining_date) == getdate(wh.from_date)):
-                            wh.from_date = self.joining_date
+	def populate_work_history(self):
+		if not self.internal_work_history:
+			self.append("internal_work_history",{
+				"branch": self.branch,
+				"cost_center": self.cost_center,
+				"from_date": self.joining_date,
+				"owner": frappe.session.user,
+				"creation": nowdate(),
+				"modified_by": frappe.session.user,
+				"modified": nowdate(),
+				"reference_doctype": self.temp_doctype,
+				"reference_docname": self.temp_docname
+			})
+		else:
+			# Fetching previous document from db
+			prev_doc = frappe.get_doc(self.doctype,self.name)
+			self.date_of_transfer = self.date_of_transfer if self.date_of_transfer else today()
+			
+			if (getdate(self.joining_date) != prev_doc.joining_date) or \
+				(self.status == 'Left' and self.separation_date) or \
+				(self.cost_center != prev_doc.cost_center):
+				for wh in self.internal_work_history:
+					# For change in joining_date
+					if (getdate(self.joining_date) != prev_doc.joining_date):
+						if (getdate(prev_doc.joining_date) == getdate(wh.from_date)):
+							wh.from_date = self.joining_date
 
-                        # For change in separation_date, cost_center
-                        if (self.status == 'Left' and self.separation_date):
-                            if not wh.to_date:
-                                wh.to_date = self.separation_date
-                            elif prev_doc.separation_date:
-                                if (getdate(prev_doc.separation_date) == getdate(wh.to_date)):
-                                    wh.to_date = self.separation_date
-                                                
-                    #     elif (self.cost_center != prev_doc.cost_center):
-                    #         if getdate(self.date_of_transfer) > getdate(today()):
-                    #             frappe.throw(_("Date of transfer cannot be a future date."),title="Invalid Date")      
-                    #         elif not wh.to_date:
-                    #             if getdate(self.date_of_transfer) < getdate(wh.from_date):
-                    #                 frappe.throw(_("Row#{0} : Date of transfer({1}) cannot be beyond current effective entry.").format(wh.idx,self.date_of_transfer),title="Invalid Date")
-                                                
-                    #             wh.to_date = wh.from_date if add_days(getdate(self.date_of_transfer),-1) < getdate(wh.from_date) else add_days(self.date_of_transfer,-1)
-                                            
-                    # if (self.cost_center != prev_doc.cost_center):
-                    #     self.append("internal_work_history",{
-                    #         "branch": self.branch,
-                    #         "cost_center": self.cost_center,
-                    #         "from_date": self.date_of_transfer,
-                    #         "owner": frappe.session.user,
-                    #         "creation": nowdate(),
-                    #         "modified_by": frappe.session.user,
-                    #         "modified": nowdate(),
-                    #         "reference_doctype": self.temp_doctype,
-                    #         "reference_docname": self.temp_docname
-                    #     })
+						# For change in separation_date, cost_center
+						if (self.status == 'Left' and self.separation_date):
+							if not wh.to_date:
+								wh.to_date = self.separation_date
+							elif prev_doc.separation_date:
+								if (getdate(prev_doc.separation_date) == getdate(wh.to_date)):
+									wh.to_date = self.separation_date
+												
+					#     elif (self.cost_center != prev_doc.cost_center):
+					#         if getdate(self.date_of_transfer) > getdate(today()):
+					#             frappe.throw(_("Date of transfer cannot be a future date."),title="Invalid Date")      
+					#         elif not wh.to_date:
+					#             if getdate(self.date_of_transfer) < getdate(wh.from_date):
+					#                 frappe.throw(_("Row#{0} : Date of transfer({1}) cannot be beyond current effective entry.").format(wh.idx,self.date_of_transfer),title="Invalid Date")
+												
+					#             wh.to_date = wh.from_date if add_days(getdate(self.date_of_transfer),-1) < getdate(wh.from_date) else add_days(self.date_of_transfer,-1)
+											
+					# if (self.cost_center != prev_doc.cost_center):
+					#     self.append("internal_work_history",{
+					#         "branch": self.branch,
+					#         "cost_center": self.cost_center,
+					#         "from_date": self.date_of_transfer,
+					#         "owner": frappe.session.user,
+					#         "creation": nowdate(),
+					#         "modified_by": frappe.session.user,
+					#         "modified": nowdate(),
+					#         "reference_doctype": self.temp_doctype,
+					#         "reference_docname": self.temp_docname
+					#     })
 

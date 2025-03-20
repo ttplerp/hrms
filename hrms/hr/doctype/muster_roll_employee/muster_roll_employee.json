@@ -2,16 +2,16 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:id_card",
  "creation": "2022-11-29 22:18:01.153560",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "id_card",
+  "muster_roll_group",
+  "passport_number",
+  "cid_number",
   "section_break_1",
   "person_name",
-  "muster_roll_group",
   "designation",
   "muster_roll_type",
   "pms_employee_group",
@@ -88,14 +88,6 @@
    "in_standard_filter": 1,
    "label": "MR Employee Name",
    "reqd": 1
-  },
-  {
-   "fieldname": "id_card",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "CID/Passport/Work Permit",
-   "reqd": 1,
-   "unique": 1
   },
   {
    "fieldname": "column_break_4",
@@ -348,8 +340,9 @@
   },
   {
    "fieldname": "qualification",
-   "fieldtype": "Data",
-   "label": "Qualification"
+   "fieldtype": "Link",
+   "label": "Qualification",
+   "options": "Muster Roll Qualification"
   },
   {
    "fieldname": "muster_roll_type",
@@ -469,15 +462,34 @@
    "fieldname": "set_manually",
    "fieldtype": "Check",
    "label": "Set Manually"
+  },
+  {
+   "depends_on": "eval:doc.muster_roll_group == \"Non-National\"",
+   "fieldname": "passport_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Passport/Work Permit Number",
+   "mandatory_depends_on": "eval:doc.muster_roll_group == \"Non-National\"",
+   "set_only_once": 1,
+   "unique": 1
+  },
+  {
+   "depends_on": "eval:doc.muster_roll_group == \"National\"",
+   "fieldname": "cid_number",
+   "fieldtype": "Data",
+   "label": "CID Number",
+   "mandatory_depends_on": "eval:doc.muster_roll_group == \"National\"",
+   "no_copy": 1,
+   "set_only_once": 1,
+   "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-04 11:00:30.336217",
+ "modified": "2025-03-14 17:20:18.573289",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
- "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -549,10 +561,9 @@
    "write": 1
   }
  ],
- "search_fields": "person_name,branch",
+ "search_fields": "person_name, branch",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "id_card",
  "track_changes": 1
 }
