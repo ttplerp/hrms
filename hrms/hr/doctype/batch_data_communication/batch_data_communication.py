@@ -36,18 +36,24 @@ class BatchDataCommunication(Document):
 	def get_employees(self, branch = None):
 		data = []
 		self.set("employees", [])
+		cond=""
+		if self.company:
+			cond = " and a.company = '{}' ".format(self.company)
+
 		if branch:
 			employee_list = frappe.db.sql("""
 				select a.name as employee, a.employee_name
 				from `tabEmployee` a
 				where a.branch = '{}' and a.status = 'Active'
-			""".format(branch),as_dict=True)
+                {}
+			""".format(branch, cond),as_dict=True)
 		else:
 			employee_list = frappe.db.sql("""
 				select a.name as employee, a.employee_name
 				from `tabEmployee` a
 				where a.status = 'Active'
-			""",as_dict=True)
+                {}
+			""".format(cond),as_dict=True)
 		if employee_list:
 			for a in employee_list:
 				row = self.append("employees", {})
