@@ -22,7 +22,7 @@ from frappe.utils import (
 import datetime
 from erpnext.buying.doctype.supplier_scorecard.supplier_scorecard import daterange
 from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
-
+from hrms.hr.hr_custom_functions import get_officiating_employee
 from hrms.hr.doctype.leave_block_list.leave_block_list import get_applicable_block_dates
 from hrms.hr.doctype.leave_ledger_entry.leave_ledger_entry import create_leave_ledger_entry
 from hrms.hr.utils import (
@@ -1315,7 +1315,9 @@ def get_leave_approver(employee):
             {"parent": department, "parentfield": "leave_approvers", "idx": 1},
             "approver",
         )
-
+    officiating = get_officiating_employee(frappe.db.get_value("Employee", {"user_id":leave_approver}))
+    if officiating:
+        leave_approver = frappe.db.get_value("Employee", officiating[0].officiate, "user_id")
     return leave_approver
 
 def get_permission_query_conditions(user):

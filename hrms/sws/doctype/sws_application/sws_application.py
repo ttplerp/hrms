@@ -43,8 +43,8 @@ class SWSApplication(Document):
 		salary_structure.save(ignore_permissions = True)
 
 	def update_status(self,cancel =False):
-		if cancel:
-			frappe.throw("Cannot Update or Cancel, This Document is Linked With Journal Entry")
+		# if cancel:
+		# 	frappe.throw("Cannot Update or Cancel, This Document is Linked With Journal Entry")
 		for a in self.items:
 			if frappe.db.get_value("SWS Event", a.sws_event, "deceased"):
 				doc = frappe.get_doc("Employee Family Details", a.reference_document)
@@ -67,42 +67,42 @@ class SWSApplication(Document):
 			row.save(ignore_permissions = True)
 
 	def create_journal_entry(self):
-		je = frappe.new_doc("Journal Entry")
-		je_ref = ""
-		je.flags.ignore_permissions = 1 
+		# je = frappe.new_doc("Journal Entry")
+		# je_ref = ""
+		# je.flags.ignore_permissions = 1 
 		cost_center = frappe.db.get_value("Branch",self.branch,"cost_center")
 		expense_bank_account = get_bank_account(self.branch)
-		je.update({
-			"voucher_type": "Journal Entry",
-			"company": self.company,
-			"remark": self.name,
-			"posting_date": self.posting_date,
-			"branch": self.branch
-			})
+		# je.update({
+		# 	"voucher_type": "Journal Entry",
+		# 	"company": self.company,
+		# 	"remark": self.name,
+		# 	"posting_date": self.posting_date,
+		# 	"branch": self.branch
+		# 	})
 
-		#credit account update
-		je.append("accounts", {
-			"account": self.credit_account,
-			"credit_in_account_currency": self.total_amount,
-			"reference_type": self.doctype,
-			"reference_name": self.name,
-			"business_activity": "Common",
-			"cost_center": cost_center
-			})
-		#debit account update
-		je.append("accounts", {
-			"account": self.debit_account,
-			"debit_in_account_currency": self.total_amount,
-			"reference_type": self.doctype,
-			"reference_name": self.name,
-			"business_activity": "Common",
-			"party_type": "Employee",
-			"party": self.employee,
-			"cost_center": cost_center
-			})
-		je.save(ignore_permissions = True)
-		je.submit()
-		je_ref = je.name
+		# #credit account update
+		# je.append("accounts", {
+		# 	"account": self.credit_account,
+		# 	"credit_in_account_currency": self.total_amount,
+		# 	"reference_type": self.doctype,
+		# 	"reference_name": self.name,
+		# 	"business_activity": "Common",
+		# 	"cost_center": cost_center
+		# 	})
+		# #debit account update
+		# je.append("accounts", {
+		# 	"account": self.debit_account,
+		# 	"debit_in_account_currency": self.total_amount,
+		# 	"reference_type": self.doctype,
+		# 	"reference_name": self.name,
+		# 	"business_activity": "Common",
+		# 	"party_type": "Employee",
+		# 	"party": self.employee,
+		# 	"cost_center": cost_center
+		# 	})
+		# je.save(ignore_permissions = True)
+		# je.submit()
+		# je_ref = je.name
 		jebp = frappe.new_doc("Journal Entry")
 		jebp.flags.ignore_permissions = 1 
 		cost_center = frappe.db.get_value("Branch",self.branch,"cost_center")
@@ -137,7 +137,7 @@ class SWSApplication(Document):
 			"cost_center": cost_center
 			})
 		jebp.insert()
-		je_ref += ", "+jebp.name
+		je_ref = jebp.name
 		self.db_set("je_ref", je_ref)
 
 
@@ -186,7 +186,7 @@ class SWSApplication(Document):
 				doc = frappe.get_doc("SWS Contribution", {"employee": self.employee})
 				for a in doc.contributions:
 					if a.reference_name == self.name:
-						doc.delete(a)
+						frappe.db.sql("delete from `tabSWS Contribution Item` where name = '{}'".format(a.name))
 				doc.save(ignore_permissions=1)
 				
 
@@ -194,7 +194,29 @@ class SWSApplication(Document):
 		self.reset_status()
 
 	def on_cancel(self):
-		self.update_status(cancel = True)
+		# self.update_status(cancel = True)
+		for a in str(self.je_ref).split(", "):
+			if frappe.db.exists("Journal Entry", a):
+				jv_doc = frappe.get_doc("Journal Entry", a)
+				if jv_doc.docstatus == 1:
+					jv_doc.cancel()
+
+		frappe.db.sql("""
+						update `tabJournal Entry Account` set reference_type = NULL, reference_name = NUll where reference_name = '{}'
+						""".format(self.name))
+		frappe.db.sql("""
+						update `tabGL Entry` set voucher_type = NULL, voucher_no = NUll where voucher_no = '{}'
+						""".format(self.name))
+		frappe.db.sql("""
+					update `tabGL Entry` set against_voucher_type = NULL, against_voucher = NUll where against_voucher = '{}'
+					""".format(self.name))
+		frappe.db.sql("""
+					delete from `tabPayment Ledger Entry` where voucher_no = '{}'
+					""".format(self.name))
+		frappe.db.sql("""
+					delete from `tabPayment Ledger Entry` where against_voucher_no = '{}'
+					""".format(self.name))
+		self.workflow_state = "Cancelled"
 		self.post_sws_contribution(cancel=True)
 		self.delete_sws_entry()
 

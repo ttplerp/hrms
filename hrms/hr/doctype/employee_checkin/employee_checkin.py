@@ -122,6 +122,8 @@ class EmployeeCheckin(Document):
 				
 				#change
 				if half_day != 1:
+					if not att:
+						frappe.throw("Not allowed as you have either applied for Leave or Travel")
 					doc = frappe.get_doc("Attendance",att[0].name)
 					in_time = frappe.db.get_value("Attendance",att[0].name,"in_time")
 					if self.reason:

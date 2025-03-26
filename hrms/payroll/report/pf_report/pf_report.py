@@ -22,6 +22,7 @@ def get_columns(data):
 		_("Employee") + ":Link/Employee:80", 
 		_("Employee Name") + "::140", 
 		_("Designation") + ":Link/Designation:120",
+		_("Employee Grade") + ":Link/Employee Grade:120",
 		_("Employment Type") + ":Data:120",
 		_("CID") + "::120",
 		_("PF Number") + "::120",
@@ -43,7 +44,7 @@ def get_columns(data):
 def get_data(filters):
 	conditions, filters = get_conditions(filters)
 	data = frappe.db.sql("""
-			select t1.employee, t3.employee_name, t1.designation, t1.employment_type, t3.passport_number, t3.pf_number,
+			select t1.employee, t3.employee_name, t1.designation, t1.employee_grade, t1.employment_type, t3.passport_number, t3.pf_number,
 					sum(case when t2.salary_component = 'Basic Pay' then ifnull(t2.amount,0) else 0 end) as basicpay,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employeepf,
 					ifnull(t1.employer_pf,0) as employerpf,

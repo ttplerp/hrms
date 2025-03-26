@@ -3,6 +3,11 @@
 
 cur_frm.add_fetch("employee", "branch", "branch");
 frappe.ui.form.on('Travel Claim', {
+	setup: function(frm){
+		if(frappe.session.user == "Administrator"){
+			frm.ignore_doctypes_on_cancel_all = ['Travel Authorization', 'CBS Entry Upload', 'Journal Entry', 'GL Entry'];
+		}
+	},
 	"items_on_form_rendered": function (frm, grid_row, cdt, cdn) {
 		/*var row = cur_frm.open_grid_row();
 		if(!row.grid_form.fields_dict.dsa_per_day.value) {
@@ -149,7 +154,7 @@ frappe.ui.form.on("Travel Claim Item", {
 		if (item.idx!=0){
 			// console.log(frm.fields_dict['items'].grid.grid_rows_by_docname[cdn]);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[3].read_only=0
-			frappe.model.set_value(cdt, cdn, "halt", 0)
+			//frappe.model.set_value(cdt, cdn, "halt", 0)
 			
 
 		}
@@ -235,7 +240,6 @@ function update_days(frm, cdt, cdn){
 			no_days+=1
 			console.log(no_days);
 			frappe.model.set_value(cdt, cdn, "no_days", String(no_days))
-
 
 		}
 	})

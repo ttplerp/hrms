@@ -52,7 +52,7 @@ class Attendance(Document):
 			self.employee, self.attendance_date, self.shift, self.name
 		)
 
-		if duplicate:
+		if duplicate and self.status!="Tour":
 			frappe.throw(
 				_("Attendance for employee {0} is already marked for the date {1}: {2}").format(
 					frappe.bold(self.employee),

@@ -1051,8 +1051,47 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Daily Activity",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Daily Actiivty Log",
+   "link_count": 0,
+   "link_to": "Daily Activity Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Dispatch",
+   "link_count": 0,
+   "link_to": "Dispatch",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Dispatch Format",
+   "link_count": 0,
+   "link_to": "Dispatch Format",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Key Reports",
-   "link_count": 8,
+   "link_count": 9,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -1135,7 +1174,7 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
+   "is_query_report": 1,
    "label": "Daily Actiivity Log Report",
    "link_count": 0,
    "link_to": "Daily Activity Log Report",
@@ -1145,45 +1184,16 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Daily Activity",
-   "link_count": 3,
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Daily Actiivty Log",
+   "is_query_report": 1,
+   "label": "Employee checkin Report",
    "link_count": 0,
-   "link_to": "Daily Activity Log",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Dispatch",
-   "link_count": 0,
-   "link_to": "Dispatch",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Dispatch Format",
-   "link_count": 0,
-   "link_to": "Dispatch Format",
-   "link_type": "DocType",
+   "link_to": "Employee Checkin Report",
+   "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2024-09-04 12:44:13.726642",
+ "modified": "2025-02-07 15:06:27.407062",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR",

@@ -3,6 +3,7 @@
 
 frappe.ui.form.on('SWS Application', {
 	refresh: function(frm) {
+		frm.ignore_doctypes_on_cancel_all = ['SWS Membership'];
 		if(!frm.doc.posting_date) {
 			frm.set_value("posting_date", get_today())
 		}

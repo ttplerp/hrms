@@ -5,11 +5,11 @@ def get_data():
 	return {
 	'fieldname': 'name',
 		'non_standard_fieldnames': {
-			'Travel Claim': 'ta',
+			'Travel Authorization': 'travel_claim',
 			'Journal Entry': 'reference_name',
 		},
 		'transactions': [
-			{"label": _("Travel Claim"), "items": ["Travel Claim"]},
+			{"label": _("Travel Authorization"), "items": ["Travel Authorization"]},
 			{"label": _("Payments"), "items": ["Journal Entry"]},
 		]
 	}

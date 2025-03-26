@@ -47,6 +47,12 @@ class SalarySlip(TransactionBase):
 			self.total_in_words = money_in_words(self.net_pay, company_currency)
 
 		self.check_house_rent_deduction()
+		self.remove_with_zero_value()
+	
+	def remove_with_zero_value(self):
+		for a in self.get("deductions"):
+			if a.amount == 0:
+				self.remove(a)
 
 	def validate_dates(self):
 		if date_diff(self.end_date, self.start_date) < 0:
@@ -463,8 +469,7 @@ class SalarySlip(TransactionBase):
 					amount = flt(a.amount,2)
 			if not amount:
 				return
-			sws_contribution = frappe.get_doc("SWS Contribution", {"employee": self.employee})
-			if not sws_contribution:
+			if not frappe.db.exists("SWS Contribution", {"employee": self.employee}):
 				doc = frappe.new_doc("SWS Contribution")
 				doc.flags.ignore_permissions = 1
 				# doc.posting_date = nowdate()
@@ -479,20 +484,21 @@ class SalarySlip(TransactionBase):
 				row.month = self.month
 				doc.insert()
 			else:
-				row = sws_contribution.append("contributions", {})
-				row.reference_type = "Salary Slip"
-				row.reference_name = self.name
-				row.contribution_amount = amount
-				row.fiscal_year = self.fiscal_year
-				row.month = self.month
-				sws_contribution.save()
+				doc = frappe.get_doc("SWS Contribution", {"employee": self.employee})
+				doc.append("contributions", {
+					"reference_type":"Salary Slip",
+					"reference_name": self.name,
+					"contribution_amount":flt(amount,2),
+					"fiscal_year": self.fiscal_year,
+					"month":self.month
+				})
+				doc.save()
 		else:
 			if frappe.db.exists("SWS Contribution", {"employee": self.employee}):
 				doc = frappe.get_doc("SWS Contribution", {"employee": self.employee})
 				for a in doc.contributions:
 					if a.reference_name == self.name:
-						doc.delete(a)
-				doc.save(ignore_permissions=1)
+						frappe.db.sql("""delete from `tabSWS Contribution Item` where name = '{}'""".format(a.name))
 				
 	def on_cancel(self):
 		self.update_status()
@@ -565,7 +571,7 @@ def get_permission_query_conditions(user):
 	if not user: user = frappe.session.user
 	user_roles = frappe.get_roles(user)
 
-	if "HR User" in user_roles or "HR Manager" in user_roles:
+	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles:
 		return
 	else:
 		return """(
@@ -580,7 +586,7 @@ def has_record_permission(doc, user):
 	if not user: user = frappe.session.user
 	user_roles = frappe.get_roles(user)
 	
-	if "HR User" in user_roles or "HR Manager" in user_roles:
+	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles:
 		return True
 	else:
 		if frappe.db.exists("Employee", {"name":doc.employee, "user_id": user}):

@@ -13,6 +13,8 @@ from hrms.hr.utils import set_employee_name, validate_active_employee
 from hrms.payroll.doctype.salary_structure.salary_structure import get_basic_and_gross_pay, get_salary_tax
 from hrms.hr.hr_custom_functions import get_salary_tax
 from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
+from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
+
 
 class LeaveEncashment(Document):
 	def validate(self):
@@ -51,6 +53,8 @@ class LeaveEncashment(Document):
 			frappe.throw("Setup Default Expense Bank Account for your Branch")
 		if not tax_account:
 			frappe.throw("Setup Tax Account in Company")
+
+		'''
 		# Journal Entry		
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions = 1 
@@ -101,6 +105,8 @@ class LeaveEncashment(Document):
 		je.insert()
 		je.submit()
 		je_references = str(je.name)
+		'''
+
 		#Bank Entry		
 		jebp = frappe.new_doc("Journal Entry")
 		jebp.flags.ignore_permissions = 1 
@@ -113,6 +119,8 @@ class LeaveEncashment(Document):
 		jebp.user_remark = 'Leave Encashment Payment - ' + str(self.employee_name) + "(" + str(self.employee) + ")"
 		jebp.posting_date = today()
 		jebp.total_amount_in_words =  money_in_words(flt(self.payable_amount,2))
+		
+		'''
 		jebp.append("accounts", {
 				"account": payable_account,
 				"debit_in_account_currency": flt(self.payable_amount,2),
@@ -124,25 +132,50 @@ class LeaveEncashment(Document):
 				"party_type": "Employee",
 				"party": self.employee,
 		})
+		'''
 
-		payable_account = frappe.db.get_value("Company",self.company, "default_expense_claim_payable_account") #Added by Thukten
-		if flt(self.payable_amount) > 0:
+		jebp.append("accounts", {
+				"account": expense_account,
+				"debit_in_account_currency": flt(self.encashment_amount,2),
+				"debit": flt(self.encashment_amount,2),
+				"reference_type": "Leave Encashment",
+				"reference_name": self.name,
+				"cost_center": self.cost_center,
+				"business_activity": self.business_activity,
+				"party_type": "Employee",
+				"party": self.employee,
+		})
+
+		jebp.append("accounts", {
+				"account": expense_bank_account,
+				"reference_type": "Leave Encashment",
+				"reference_name": self.name,
+				"cost_center": self.cost_center,
+				"credit_in_account_currency": flt(self.payable_amount,2),
+				"credit": flt(self.payable_amount,2),
+				"business_activity": self.business_activity,
+				"party_type": "Employee",
+				"party": self.employee,
+			})
+		
+		if flt(self.encashment_tax):
 			jebp.append("accounts", {
-					"account": expense_bank_account,
+					"account": tax_account,
+					"credit_in_account_currency": flt(self.encashment_tax,2),
+					"credit": flt(self.encashment_tax,2),
 					"reference_type": "Leave Encashment",
 					"reference_name": self.name,
 					"cost_center": self.cost_center,
-					"credit_in_account_currency": flt(self.payable_amount,2),
-					"credit": flt(self.payable_amount,2),
 					"business_activity": self.business_activity,
-					"party_type": "Employee",
-					"party": self.employee,
-				})
+			})
+
 		jebp.insert()
-		je_references += ", "+jebp.name
+		je_references = jebp.name
 		self.db_set("journal_entry", je_references)
 
 		# self.create_leave_ledger_entry()
+	def before_cancel(self):
+		self.check_journal_entry()
 	def on_cancel(self):
 		if self.leave_allocation:
 			frappe.db.set_value(
@@ -155,11 +188,32 @@ class LeaveEncashment(Document):
 		self.create_leave_ledger_entry(submit=False)
 		self.check_journal_entry()
 
-	def check_journal_entry():
+	def check_journal_entry(self):
 		if self.journal_entry:
 			for je in str(self.journal_entry).split(", "):
-				if frappe.db.get_value("Journal Entry", je, "docstatus") < 2:
-					frappe.throw("Please cancel/delete Journal Entry {} first".format(frappe.get_desk("Journal Entry", je)))
+				if frappe.db.exists("Journal Entry", je):
+					if frappe.db.get_value("Journal Entry", je, "docstatus") == 0:
+						frappe.db.sql("""
+                    delete from `tabJournal Entry` where name = '{0}'
+					""".format(je))
+						frappe.db.sql("""
+                    delete from `tabJournal Entry Account` where parent = '{0}'
+					""".format(je))
+					elif frappe.db.get_value("Journal Entry", je, "docstatus") < 2:
+						frappe.throw("Please cancel/delete Journal Entry {} first".format(frappe.get_desk_link("Journal Entry", je)))
+					else:
+						frappe.db.sql("""
+                    delete from `tabJournal Entry` where name = '{0}'
+					""".format(je))
+						frappe.db.sql("""
+                    delete from `tabJournal Entry Account` where parent = '{0}'
+					""".format(je))
+						frappe.db.sql("""
+					delete from `tabGL Entry` where voucher_no = '{0}'
+					""".format(je))
+						frappe.db.sql("""
+					delete from `tabPayment Ledger Entry` where voucher_no = '{0}'
+					""".format(je))
 
 	def post_expense_claim(self):
 		cost_center = frappe.get_value("Employee", self.employee, "cost_center")
@@ -371,7 +425,8 @@ def get_permission_query_conditions(user):
 
 	if user == "Administrator":
 		return
-	if "HR User" in user_roles or "HR Manager" in user_roles:
+
+	if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles:
 		return
 
 	return """(

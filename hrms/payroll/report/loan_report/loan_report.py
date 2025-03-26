@@ -51,7 +51,7 @@ def get_data(filters):
 		and t3.employee = t1.employee
 		and t2.parent = t1.name
 		and t2.parentfield = 'deductions'
-		and t2.institution_name != 'RICBL'
+		and case when t2.institution_name = 'RICBL' then (select sc.is_loan_component = 1 from `tabSalary Component` sc where sc.name = t2.salary_component ) = 1 else 1 = 1 end
 		and exists
 			(select 1
 				from `tabSalary Component` sc

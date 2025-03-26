@@ -10,9 +10,6 @@
    "card": "Employee Exits (This Year)"
   },
   {
-   "card": "Employees Joining (Next Quarter)"
-  },
-  {
    "card": "Employees Relieving (Next Quarter)"
   },
   {
@@ -68,7 +65,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2023-07-10 12:29:44.606664",
+ "modified": "2025-02-26 18:54:21.565402",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Human Resource",

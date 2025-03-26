@@ -46,10 +46,10 @@ frappe.ui.form.on('Payroll Entry', {
 						});
 					});
 				}
-			} else if(frm.doc.salary_slips_created){
+			} else if(frm.doc.salary_slips_created == 1){
 				frm.page.clear_actions_menu();
 				frm.page.clear_primary_action();
-				if(!frm.doc.salary_slips_submitted){
+				if(frm.doc.salary_slips_submitted == 0){
 					// Submit salary slips
 					frm.page.add_action_item(__('Submit Salary Slips'), function() {
 						frm.save('Submit').then(()=>{
@@ -71,7 +71,7 @@ frappe.ui.form.on('Payroll Entry', {
 					});
 				}
 			}
-		} else if(frm.doc.docstatus == 1){
+		} else if(frm.doc.docstatus == 1 && frm.doc.salary_slips_submitted == 1){
 			// cur_frm.page.clear_actions();
 			// if(frm.doc.salary_slips_submitted || (frm.doc.__onload && frm.doc.__onload.submitted_ss)) {
 			// 	frm.events.add_bank_entry_button(frm);
@@ -89,10 +89,10 @@ frappe.ui.form.on('Payroll Entry', {
 				window.open(file_url);
 			}, "fa fa-download");
 		}
-		// if (frm.doc.docstatus == 1) {
-		// 	if (frm.custom_buttons) frm.clear_custom_buttons();
-		// 	frm.events.add_context_buttons(frm);
-		// }
+		if (frm.doc.docstatus == 1 && frm.doc.salary_slips_submitted == 0 && frm.doc.salary_slips_created == 1) {
+			if (frm.custom_buttons) frm.clear_custom_buttons();
+			frm.events.add_context_buttons(frm);
+		}
 		
 	},
 	
@@ -144,9 +144,9 @@ frappe.ui.form.on('Payroll Entry', {
 	},
 
 	add_context_buttons: function(frm) {
-		if(frm.doc.salary_slips_submitted || (frm.doc.__onload && frm.doc.__onload.submitted_ss)) {
+		if(frm.doc.salary_slips_submitted == 1) {
 			frm.events.add_bank_entry_button(frm);
-		} else if(frm.doc.salary_slips_created) {
+		} else if(frm.doc.salary_slips_created == 1) {
 			frm.add_custom_button(__("Submit Salary Slip"), function() {
 				submit_salary_slip(frm);
 			}).addClass("btn-primary");

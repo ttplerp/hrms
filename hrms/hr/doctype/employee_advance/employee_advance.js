@@ -55,21 +55,6 @@ frappe.ui.form.on('Employee Advance', {
 	},
 
 	refresh: function(frm) {
-		if(frm.doc.employee){
-			frappe.call({
-				method:"validate_employment_status",
-				doc: frm.doc
-			})
-		}
-		// commanted by rinzin on 4/01/2023
-		// if (frm.doc.docstatus === 1 &&
-		// 	(flt(frm.doc.paid_amount) < flt(frm.doc.advance_amount)) &&
-		// 	frappe.model.can_create("Payment Entry")) {
-		// 	frm.add_custom_button(__('Payment'),
-		// 		function () {
-		// 			frm.events.make_payment_entry(frm);
-		// 		}, __('Create'));
-		// } 
 		if (
 			frm.doc.docstatus === 1 &&
 			frm.doc.advance_type === "Imprest Advance" &&
@@ -84,20 +69,6 @@ frappe.ui.form.on('Employee Advance', {
 				__('Create')
 			);
 		}
-		// if (
-		// 	frm.doc.docstatus === 1
-		// 	&& (flt(frm.doc.claimed_amount) < flt(frm.doc.paid_amount) - flt(frm.doc.return_amount))
-		// ) {
-		// 	if (frm.doc.repay_unclaimed_amount_from_salary == 0 && frappe.model.can_create("Journal Entry")) {
-		// 		frm.add_custom_button(__("Return"), function() {
-		// 			frm.trigger('make_return_entry');
-		// 		}, __('Create'));
-		// 	} else if (frm.doc.repay_unclaimed_amount_from_salary == 1 && frappe.model.can_create("Additional Salary")) {
-		// 		frm.add_custom_button(__("Deduction from Salary"), function() {
-		// 			frm.events.make_deduction_via_additional_salary(frm);
-		// 		}, __('Create'));
-		// 	}
-		// }
 		if (
 			frm.doc.docstatus === 1 && frm.doc.advance_type === "Salary Advance" 
 			&& frm.doc.status == "Paid" && frm.doc.advance_settled === 0 && 
@@ -125,25 +96,6 @@ frappe.ui.form.on('Employee Advance', {
 			}
 		});
 	},
-
-	// commanted by rinzin on 4/01/2023
-	// make_payment_entry: function(frm) {
-	// 	let method = "hrms.overrides.employee_payment_entry.get_payment_entry_for_employee";
-	// 	if (frm.doc.__onload && frm.doc.__onload.make_payment_via_journal_entry) {
-	// 		method = "hrms.hr.doctype.employee_advance.employee_advance.make_bank_entry";
-	// 	}
-	// 	return frappe.call({
-	// 		method: method,
-	// 		args: {
-	// 			"dt": frm.doc.doctype,
-	// 			"dn": frm.doc.name
-	// 		},
-	// 		callback: function(r) {
-	// 			var doclist = frappe.model.sync(r.message);
-	// 			frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
-	// 		}
-	// 	});
-	// },
 
 	make_expense_claim: function(frm) {
 		return frappe.call({
@@ -197,17 +149,22 @@ frappe.ui.form.on('Employee Advance', {
 	employee: function(frm, cdt, cdn) {
 		if (frm.doc.employee) {
 			frappe.call({
-				method:"validate_employment_status",
-				doc: frm.doc
+				method: "set_pay_details",
+				doc: frm.doc,
+				callback: function(r){
+					frm.refresh_field("basic_pay");
+					frm.refresh_field("gross_pay");
+					frm.refresh_field("net_pay");
+					frm.refresh_field("deduction_month");
+					frm.refresh_field("max_advance_limit");
+					frm.refresh_field("monthly_deduction");
+					
+				}
 			})
-			frappe.run_serially([
-				() => frm.trigger('get_pending_amount'),
-				() => frm.trigger('set_pay_details'),
-				//() => frm.trigger('get_accumulated_advance_amount_from_employee_advance')
-			]);
 		}
 	},
 	advance_type: function(frm, cdt, cdn) {
+		/*
 		if (frm.doc.employee) {
 			frappe.call({
 				method:"validate_employment_status",
@@ -218,7 +175,12 @@ frappe.ui.form.on('Employee Advance', {
 				frm.set_value("reference_type", frm.doc.advance_type == "Travel Advance" ? "Travel Request" : null)
 			]);
 
-		}
+		} */
+		frm.toggle_display("total_advance_balance", frm.doc.advance_type != "Other Advance" && frm.doc.advance_type != "Medical Advance")
+		frm.toggle_display("paid_amount", frm.doc.advance_type != "Other Advance" && frm.doc.advance_type != "Medical Advance")
+		frm.toggle_display("claimed_amount", frm.doc.advance_type != "Other Advance" && frm.doc.advance_type != "Medical Advance")
+		frm.toggle_display("return_amount", frm.doc.advance_type != "Other Advance" && frm.doc.advance_type != "Medical Advance")
+		frm.toggle_display("retained_amount", frm.doc.advance_type != "Other Advance" && frm.doc.advance_type != "Medical Advance")
 		frappe.call({
 			method: "hrms.hr.doctype.employee_advance.employee_advance.select_account",
 			args: {
@@ -276,27 +238,6 @@ frappe.ui.form.on('Employee Advance', {
 				
 			}
 		})
-	},
-	get_accumulated_advance_amount_from_employee_advance: function(frm){
-		frappe.call({
-			method: "get_accumulated_advance_amount",
-			doc: frm.doc,
-			callback: function(r){
-				frm.refresh_field("total_advance")
-			}
-		})
-	},
-	get_pending_amount: function(frm) {
-		frappe.call({
-			method: "hrms.hr.doctype.employee_advance.employee_advance.get_pending_amount",
-			args: {
-				"employee": frm.doc.employee,
-				"posting_date": frm.doc.posting_date
-			},
-			callback: function(r) {
-				frm.set_value("pending_amount", r.message);
-			}
-		});
 	},
 
 	get_employee_currency: function(frm) {

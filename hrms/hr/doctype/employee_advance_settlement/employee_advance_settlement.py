@@ -25,9 +25,9 @@ class EmployeeAdvanceSettlement(AccountsController):
 	def validate(self):
 		self.check_for_duplicate_entry()
 		self.get_advance_details()
+		self.validate_settlement_amounts()
 	
 	def on_submit(self):
-		self.validate_settlement_amounts()
 		self.make_gl_entry()
 		self.post_amount_to_salary_detail()
 		self.update_salary_structure()
@@ -54,6 +54,8 @@ class EmployeeAdvanceSettlement(AccountsController):
 			frappe.throw("Advance Settlement already exists for Employee <b>{}</b> and Employee Advance <b>{}</b>".format(self.employee, self.employee_advance_id))
 
 	def validate_settlement_amounts(self):
+		self.balance_amount = flt(self.advance_amount - self.total_deducted_amount,2)
+		self.settlement_amount = self.balance_amount
 		settlement_amount = flt(self.settlement_amount)
 		balance_amount = flt(self.balance_amount)
 

@@ -37,15 +37,34 @@ def get_data(filters):
 	enc_gl = frappe.db.get_value(doctype="HR Accounts Settings",fieldname="leave_encashment_account")
 	tax_gl = frappe.db.get_value(doctype="HR Accounts Settings",fieldname="salary_tax_account")
 
+	# data = frappe.db.sql("""
+	# 	select t1.employee, t1.employee_name, t1.name, min(t1.encashment_date) as transactiondt,
+	# 	min(t3.tpn_number) as tpn_number, t2.parent voucherno,
+	# 	sum(case when t2.account = '%(enc_gl)s' then ifnull(debit_in_account_currency,0) else 0 end) grossamount,
+	# 	sum(case when t2.account = '%(tax_gl)s' then ifnull(credit_in_account_currency,0) else 0 end) taxamount,
+	# 	sum(case
+	# 		when t2.account = '%(enc_gl)s' then ifnull(debit_in_account_currency,0)
+	# 		when t2.account = '%(tax_gl)s' then -1*ifnull(credit_in_account_currency,0)
+	# 		else 0 end) as netamount,
+	# 	t1.remarks,
+	# 	min(t1.leave_balance) as balance_before, min(t1.encashable_days) as encashed_days, 
+	# 	min(t1.leave_balance-t1.encashable_days) as balance_after,
+	# 	t3.company, t1.branch, t1.department, t1.division, t1.section
+	# 	from `tabLeave Encashment` t1
+	# 	left join `tabJournal Entry Account` t2
+	# 	on t2.reference_name = t1.name
+	# 	and t2.reference_type = 'Leave Encashment'
+	# 	left join `tabEmployee` t3
+	# 	on t3.employee = t1.employee                
+	# 	where t1.docstatus = 1 %(cond)s
+	# 	group by t1.employee, t1.employee_name, t1.name, t2.parent, t1.remarks
+	# 	""" % ({"enc_gl": enc_gl, "tax_gl": tax_gl, "cond": conditions}), filters)
 	data = frappe.db.sql("""
 		select t1.employee, t1.employee_name, t1.name, min(t1.encashment_date) as transactiondt,
 		min(t3.tpn_number) as tpn_number, t2.parent voucherno,
-		sum(case when t2.account = '%(enc_gl)s' then ifnull(debit_in_account_currency,0) else 0 end) grossamount,
-		sum(case when t2.account = '%(tax_gl)s' then ifnull(credit_in_account_currency,0) else 0 end) taxamount,
-		sum(case
-			when t2.account = '%(enc_gl)s' then ifnull(debit_in_account_currency,0)
-			when t2.account = '%(tax_gl)s' then -1*ifnull(credit_in_account_currency,0)
-			else 0 end) as netamount,
+		t1.encashment_amount grossamount,
+		t1.encashment_tax taxamount,
+		t1.payable_amount as netamount,
 		t1.remarks,
 		min(t1.leave_balance) as balance_before, min(t1.encashable_days) as encashed_days, 
 		min(t1.leave_balance-t1.encashable_days) as balance_after,

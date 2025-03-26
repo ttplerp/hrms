@@ -87,6 +87,7 @@
   {
    "fieldname": "employee",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Employee",
    "options": "Employee",
    "reqd": 1
@@ -318,7 +319,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-21 13:00:10.473277",
+ "modified": "2025-03-10 15:59:17.995606",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Benefits",

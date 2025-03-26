@@ -75,6 +75,7 @@ class TravelAuthorization(Document):
         self.validate_travel_dates(update=True)
         self.check_status()
         self.create_attendance()
+        self.check_advance()
         notify_workflow_states(self)
 
     def before_cancel(self):
@@ -86,7 +87,10 @@ class TravelAuthorization(Document):
             select name from `tabTravel Claim` where ta = '{}' and docstatus != 2
         """.format(self.name))
         if ta:
-            frappe.throw("""There is Travel Claim <a href="#Form/Travel%20Claim/{0}"><b>{0}</b></a> linked to this Travel Authorization""".format(ta[0][0]))
+            ta_doc = frappe.get_doc("Travel Claim", ta[0][0])
+            # ta_doc.cacnel()
+            if frappe.session.user != "Administrator":
+                frappe.throw("""There is Travel Claim <a href="#Form/Travel%20Claim/{0}"><b>{0}</b></a> linked to this Travel Authorization""".format(ta[0][0]))
 
     def on_cancel_after_draft(self):
         validate_workflow_states(self)
@@ -94,7 +98,8 @@ class TravelAuthorization(Document):
 
     def on_cancel(self):
         if self.travel_claim:
-            frappe.throw("Cancel the Travel Claim before cancelling Authorization")
+            if frappe.session.user != "Administrator":
+                frappe.throw("Cancel the Travel Claim before cancelling Authorization")
         #if not self.cancellation_reason:
         #	frappe.throw("Cancellation Reason is Mandatory when Cancelling Travel Authorization")
         self.cancel_attendance()	
@@ -141,8 +146,9 @@ class TravelAuthorization(Document):
 
     def validate_advance(self):
         self.advance_amount     = 0 if not self.need_advance else self.advance_amount
-        if self.advance_amount > self.estimated_amount * 0.75:
-            frappe.throw("Advance Amount cannot be greater than 75% of Total Estimated Amount")
+        if self.place_type != "Out-Country":
+            if self.advance_amount > self.estimated_amount * 0.75:
+                frappe.throw("Advance Amount cannot be greater than 75% of Total Estimated Amount")
         self.advance_amount_nu  = 0 if not self.need_advance else self.advance_amount_nu
         self.advance_journal    = None if self.docstatus == 0 else self.advance_journal
 
@@ -251,6 +257,8 @@ class TravelAuthorization(Document):
 
                 je.append("accounts", {
                     "account": expense_bank_account,
+                    "party_type": "Employee",
+                    "party": self.employee,
                     "cost_center": cost_center,
                     "business_activity": self.business_activity,
                     "credit_in_account_currency": flt(self.advance_amount_nu),
@@ -665,7 +673,7 @@ def get_permission_query_conditions(user):
     if user == "Administrator":
         return
         
-    if "HR User" in user_roles or "HR Manager" in user_roles:
+    if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles:
         return
 
     return """(

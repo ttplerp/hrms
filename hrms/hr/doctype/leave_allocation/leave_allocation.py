@@ -186,11 +186,10 @@ class LeaveAllocation(Document):
 				)
 			)
 
-			frappe.throw(
-				_("Reference")
-				+ ': <a href="/app/Form/Leave Allocation/{0}">{0}</a>'.format(leave_allocation[0][0]),
-				OverlapError,
-			)
+			
+			
+
+			
 
 	def validate_back_dated_allocation(self):
 		future_allocation = frappe.db.sql(

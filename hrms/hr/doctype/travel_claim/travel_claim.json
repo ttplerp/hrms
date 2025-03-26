@@ -177,6 +177,7 @@
   {
    "fieldname": "employee",
    "fieldtype": "Link",
+   "in_standard_filter": 1,
    "label": "Employee",
    "options": "Employee",
    "reqd": 1
@@ -490,6 +491,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "fetch_from": "employee.cost_center",
    "fieldname": "cost_center",
    "fieldtype": "Link",
    "label": "Cost Center",
@@ -608,7 +610,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-05 10:59:52.450309",
+ "modified": "2025-03-14 15:08:17.261023",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim",
@@ -653,6 +655,8 @@
    "share": 1
   },
   {
+   "cancel": 1,
+   "create": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -750,17 +754,6 @@
    "read": 1,
    "report": 1,
    "role": "Employee",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "email": 1,
-   "export": 1,
-   "permlevel": 2,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "HR User",
    "share": 1,
    "write": 1
   },

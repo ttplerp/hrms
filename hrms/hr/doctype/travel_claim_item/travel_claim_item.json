@@ -47,6 +47,7 @@
   "cb_25",
   "remarks",
   "travel_authorization",
+  "cost_center",
   "sb_project_maintenance",
   "reference_type",
   "reference_name"
@@ -68,8 +69,7 @@
    "depends_on": "eval:doc.date",
    "fieldname": "halt",
    "fieldtype": "Check",
-   "label": "Halt?",
-   "read_only": 1
+   "label": "Halt?"
   },
   {
    "fieldname": "column_break_4",
@@ -83,12 +83,11 @@
    "label": "Till Date"
   },
   {
-   "depends_on": "eval:doc.halt==0 && doc.date",
+   "depends_on": "eval:!doc.halt",
    "fieldname": "from_place",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "From Place",
-   "read_only": 1
+   "label": "From Place"
   },
   {
    "fieldname": "column_break_9",
@@ -102,12 +101,11 @@
    "label": "Halt At"
   },
   {
-   "depends_on": "eval:doc.halt==0 && doc.date",
+   "depends_on": "eval:!doc.halt",
    "fieldname": "to_place",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "To Place",
-   "read_only": 1
+   "label": "To Place"
   },
   {
    "fieldname": "section_break_10",
@@ -292,8 +290,7 @@
    "fieldname": "country",
    "fieldtype": "Link",
    "label": "Country",
-   "options": "Country",
-   "read_only": 1
+   "options": "Country"
   },
   {
    "fieldname": "sb_project_maintenance",
@@ -333,11 +330,18 @@
    "fieldname": "fare_amount",
    "fieldtype": "Currency",
    "label": "Fare Amount"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "reqd": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2024-10-04 14:30:00.000296",
+ "modified": "2025-03-26 09:27:53.747533",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim Item",

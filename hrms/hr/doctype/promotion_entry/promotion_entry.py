@@ -296,7 +296,7 @@ class PromotionEntry(Document):
 		ep_list = frappe.db.sql("""
 			select t2.name from `tabEmployee Promotion` t2, `tabEmployee` t1
 			where t2.employee = t1.name and t1.promotion_cycle = %s and t2.docstatus = %s %s
-			and t2.promotion_entry = %s
+			and t2.promotion_entry = %s limit 15
 		""" % ('%s', '%s', cond, '%s'), (self.month_name, ep_status, self.name), as_dict=as_dict)
 		return ep_list
 

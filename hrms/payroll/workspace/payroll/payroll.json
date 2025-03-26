@@ -363,7 +363,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Reports",
-   "link_count": 8,
+   "link_count": 9,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -447,10 +447,20 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Salary Saving Scheme Report",
+   "link_count": 0,
+   "link_to": "Salary Saving Scheme Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-08-15 15:24:05.344007",
- "modified_by": "sonam.zangmo@thimphutechpark.bt",
+ "modified": "2025-01-28 15:24:37.024703",
+ "modified_by": "pralad.rai@thimphutechpark.bt",
  "module": "Payroll",
  "name": "Payroll",
  "number_cards": [],

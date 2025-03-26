@@ -318,11 +318,20 @@ def update_previous_leave_allocation(allocation, annual_allocation, e_leave_type
 	)
 
 	allocation = frappe.get_doc("Leave Allocation", allocation.name)
-	new_allocation = flt(allocation.total_leaves_allocated) + flt(earned_leaves)
-
+	balance = frappe.db.sql("""
+                         select sum(ifnull(leaves,0)) leaves from `tabLeave Ledger Entry` where employee = '{}'
+                         and leave_type = '{}'
+                         """.format(allocation.employee, allocation.leave_type), as_dict = 1)[0].leaves
+	if not balance:
+		balance = 0
+	# new_allocation = flt(allocation.total_leaves_allocated) + flt(earned_leaves)
+	
+	if flt(balance) + flt(earned_leaves) > e_leave_type.max_leaves_allowed and balance < e_leave_type.max_leaves_allowed:
+		earned_leaves = (flt(balance) + flt(earned_leaves)) - e_leave_type.max_leaves_allowed
+	new_allocation = flt(balance) + flt(earned_leaves)
 	if new_allocation > e_leave_type.max_leaves_allowed and e_leave_type.max_leaves_allowed > 0:
 		new_allocation = e_leave_type.max_leaves_allowed
-
+	
 	if new_allocation != allocation.total_leaves_allocated:
 		today_date = today()
 

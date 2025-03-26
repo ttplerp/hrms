@@ -56,6 +56,8 @@ class ExpenseClaim(AccountsController):
 			frappe.throw(_("Not allowed to <b>Forward To</b> yourself. Change the <b>Expense Approver</b> Field value before forwarding."))
 
 	def send_notification(self):
+		# if not frappe.db.exists("ToDo", {"reference_name": self.name}):
+		# 	frappe.throw("Please assign this Document to a User.")
 		action = frappe.request.form.get('action')  
 		if self.workflow_state == "Draft" or action == "Save":
 			return
@@ -80,11 +82,23 @@ class ExpenseClaim(AccountsController):
 								group by u.name
 							""".format(branch=self.branch), as_dict=True):
 				recipients.append(a.name)
+			# for a in frappe.db.sql("""
+			# 					select r.allocated_to as name from `tabToDo` r, `tabExpense Claim` ec
+			# 					where ec.name = r.reference_name
+			# 					group by r.allocated_to
+			# 				""".format(branch=self.branch), as_dict=True):
+			# 	recipients.append(a.name)
 			self.notify(recipients)
 
 	#added by Thukten on 11-11-2024
 	def notify(self,recipients):
 		args = self.get_args()
+		args.workflow_state = self.workflow_state
+		description = []
+		for a in self.expenses:
+			description.append(a.description)
+		args.description = description
+		
 		try:
 			email_template = frappe.get_doc("Email Template", 'Expense Claim')
 			message = frappe.render_template(email_template.response, args)
@@ -111,7 +125,7 @@ class ExpenseClaim(AccountsController):
 				frappe.throw("Cannot create Expense Claim for {} directly from Expense Claim.".format(a.expense_type),title="Invalid Operation")
 
 	def set_status(self, update=False):
-		status = {"0": "Draft", "1": "Submitted", "2": "Cancelled"}[cstr(self.docstatus)]
+		status = {"0": "Draft", "1": "Submitted", "2": "Cancelled"}[cstr(self.docstatus or 0)]
 
 		precision = self.precision("grand_total")
 
@@ -179,7 +193,6 @@ class ExpenseClaim(AccountsController):
 		self.update_claimed_amount_in_employee_advance()
 		self.set_travel_reference()
 		self.update_ref_doc()
-
 	
 	def check_for_total_sanctioned_amount(self):
 		if flt(self.total_sanctioned_amount) == 0:
@@ -272,7 +285,7 @@ class ExpenseClaim(AccountsController):
 				"reference_name": self.name,
 				"party_type": "Employee",
 				"party": self.employee,
-				"party_name":self.employee_name,
+				# "party_name":self.employee_name,
 				"credit_in_account_currency": self.grand_total,
 				"credit": self.grand_total,
 				"user_remark": 'Payment against Expense Claim('+expense_claim_type+') : ' + self.name,
@@ -437,11 +450,6 @@ class ExpenseClaim(AccountsController):
 			if not self.mode_of_payment:
 				frappe.throw(_("Mode of payment is required to make a payment").format(self.employee))
 
-	@frappe.whitelist()
-	def check_journal_entry(self):
-		if frappe.db.exists("Journal Entry Account", {"docstatus": ["<", 2], "reference_name": self.name}):
-			return 1
-
 	def calculate_total_amount(self):
 		self.total_claimed_amount = 0
 		self.total_sanctioned_amount = 0
@@ -602,8 +610,6 @@ def make_bank_entry(dt, dn):
 			"account": default_bank_cash_account.account,
 			"credit_in_account_currency": payable_amount,
 			"reference_type": "Expense Claim",
-			"party_type": "Employee",
-			"party": expense_claim.employee,
 			"reference_name": expense_claim.name,
 			"balance": default_bank_cash_account.balance,
 			"account_currency": default_bank_cash_account.account_currency,
@@ -758,24 +764,26 @@ def get_permission_query_conditions(user):
 				from `tabEmployee` as e
 				where e.branch = `tabExpense Claim`.branch
 				and e.user_id = '{user}')
-			or
+			
+			or  
+			(`tabExpense Claim`.expense_approver = '{user}' 
+			and 
+			`tabExpense Claim`.workflow_state not in ('Draft','Cancelled')
+			)or
 			exists(select 1
 				from `tabEmployee` e, `tabAssign Branch` ab, `tabBranch Item` bi
 				where e.user_id = '{user}'
 				and ab.employee = e.name
 				and bi.parent = ab.name
 				and bi.branch = `tabExpense Claim`.branch)
-			or
-			(`tabExpense Claim`.expense_approver = '{user}' and `tabExpense Claim`.workflow_state not in ('Draft','Cancelled'))
 		)""".format(user=user)
 
 	return """(
 		`tabExpense Claim`.owner = '{user}'
 		or
-		(`tabExpense Claim`.expense_approver = '{user}' and `tabExpense Claim`.workflow_state not in ('Draft','Cancelled'))
-		or
 		exists(select 1
 				from `tabEmployee`
 				where `tabEmployee`.name = `tabExpense Claim`.employee
 				and `tabEmployee`.user_id = '{user}')
+		
 	)""".format(user=user)

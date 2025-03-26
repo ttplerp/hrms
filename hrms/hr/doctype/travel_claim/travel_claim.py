@@ -133,7 +133,41 @@ class TravelClaim(Document):
     def check_journal_entry(self):
         if self.claim_journal and frappe.db.exists("Journal Entry", {"name": self.claim_journal, "docstatus": ("<","2")}):
             frappe.throw(_("You need to cancel {} first").format(frappe.get_desk_link("Journal Entry", self.claim_journal)))
-
+        if frappe.session.user == "Administrator":
+            for jvd in str(self.claim_journal).split(", "):
+                for cbs in frappe.db.sql("""
+                                        select distinct cbs_entry from `tabCBS Entry Upload` where voucher_no = '{}' and docstatus = 1
+                                        """.format(jvd), as_dict=1):
+                    cbs_entry = frappe.get_doc("CBS Entry", cbs.cbs_entry)
+                    cbs_entry.cancel()
+                for cbsu in frappe.db.sql("""
+                                        select name from `tabCBS Entry Upload` where voucher_no = '{}' and docstatus = 1
+                                        """.format(jvd), as_dict=1):
+                    # frappe.throw("here")
+                    cbs_entry_upload = frappe.get_doc("CBS Entry Upload", cbsu.name)
+                    cbs_entry_upload.cancel()
+                # for jv in frappe.db.sql("""
+                #                         select distinct parent from `tabJournal Entry Account` where reference_name = '{}' and docstatus = 1
+                #                         """.format(jvd), as_dict=1):
+                jv_doc = frappe.get_doc("Journal Entry", jvd)
+                jv_doc.cancel()
+                frappe.db.sql("""
+                              update `tabJournal Entry Account` set reference_type = NULL, reference_name = NUll where reference_name = '{}'
+                              """.format(self.name))
+                frappe.db.sql("""
+                              update `tabGL Entry` set voucher_type = NULL, voucher_no = NUll where voucher_no = '{}'
+                              """.format(self.name))
+                frappe.db.sql("""
+                            update `tabGL Entry` set against_voucher_type = NULL, against_voucher = NUll where against_voucher = '{}'
+                            """.format(self.name))
+                frappe.db.sql("""
+                            delete from `tabPayment Ledger Entry` where voucher_no = '{}'
+                            """.format(self.name))
+                frappe.db.sql("""
+                            delete from `tabPayment Ledger Entry` where against_voucher_no = '{}'
+                            """.format(self.name))
+                self.workflow_state = "Cancelled"
+        
     # Following method added by SHIV on 2020/09/22
     def before_cancel_after_draft(self):
         self.unlink_travel_authorization()
@@ -517,7 +551,7 @@ class TravelClaim(Document):
                 mileage_acc_field = "wms_in_country_mileage_account"
         else:
             mileage_acc_field = "travel_mileage_account"
-        mileage_acc = frappe.db.get_value("Company", self.company, "travel_mileage_account")
+        mileage_acc = frappe.db.get_value("Company", self.company, mileage_acc_field)
         if not mileage_acc:
             frappe.throw("Please set the {} mileage account in company settings".format(self.travel_type))
 

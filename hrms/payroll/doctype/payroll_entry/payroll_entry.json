@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_copy": 1,
- "autoname": "HR-PRUN-.YYYY.-.#####",
+ "autoname": "HR-PRUN-.{fiscal_year}.-.#####",
  "creation": "2017-10-23 15:22:29.291323",
  "doctype": "DocType",
  "document_type": "Other",
@@ -378,7 +378,7 @@
  "icon": "fa fa-cog",
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-18 17:36:32.084259",
+ "modified": "2025-01-11 18:07:44.320066",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Payroll Entry",

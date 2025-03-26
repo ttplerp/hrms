@@ -436,8 +436,9 @@ var highlight_rows = function(frm, earn_ded_tbl){
 	let highlight = 0;
 	(frm.doc[earn_ded_tbl] || []).forEach(function(rec, i){
 		highlight = 0;
+		console.log(rec.to_date+" "+frappe.datetime.month_end())
 		if(rec.from_date || rec.to_date){
-			if (!((rec.to_date && rec.to_date >= frappe.datetime.month_start()) ||
+			if ((!(rec.to_date && rec.to_date >= frappe.datetime.month_start()) ||
 				(rec.from_date && rec.from_date <= frappe.datetime.month_end()))) {
 				highlight = 1;
 			}
@@ -448,7 +449,7 @@ var highlight_rows = function(frm, earn_ded_tbl){
 			highlight = 1;
 		}
 
-		if(highlight){
+		if(highlight==1){
 			$(`div.grid-row[data-name='${rec.name}']`).find("div[data-fieldname='amount']").css({"color": "red"});
 		} else {
 			$(`div.grid-row[data-name='${rec.name}']`).find("div[data-fieldname='amount']").css({"color": "#555"});

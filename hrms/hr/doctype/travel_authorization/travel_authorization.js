@@ -70,6 +70,7 @@ frappe.ui.form.on('Travel Authorization', {
 				}
 			}).addClass((frm.doc.end_date_auth < frappe.datetime.get_today()) ? "btn-success" : "btn-danger");
 		}
+		/*
 		if(frm.doc.workflow_state == "Approved" && frm.doc.docstatus == 1 && frm.doc.need_advance == 1 && !frm.doc.travel_claim && frm.doc.advance_journal == null && (frappe.user.has_role(["HR User","Accounts User"]))){
 			frm.add_custom_button(__('Post To Accounts'), () => {
 				frappe.call({
@@ -80,7 +81,7 @@ frappe.ui.form.on('Travel Authorization', {
 					}
 			})
 			}, __('Accounts'));
-		}
+		}*/
 		if (frm.doc.docstatus == 1) {
 			frm.toggle_display("document_status", 1);
 		}
@@ -151,7 +152,7 @@ frappe.ui.form.on('Travel Authorization', {
 		frm.toggle_reqd("estimated_amount", frm.doc.need_advance == 1);
 		frm.toggle_reqd("currency", frm.doc.need_advance == 1);
 		frm.toggle_reqd("advance_amount", frm.doc.need_advance == 1);
-		calculate_advance(frm);
+		// calculate_advance(frm);
 	},
 	"advance_amount": function (frm) {
 		// if (frm.doc.advance_amount > frm.doc.estimated_amount * 0.9) {

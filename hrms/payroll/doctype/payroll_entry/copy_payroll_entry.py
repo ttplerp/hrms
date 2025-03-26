@@ -207,17 +207,13 @@ class PayrollEntry(Document):
 		else:
 			remove_salary_slips_for_employees(self, ss_list, publish_progress=False)
 
-	@frappe.whitelist()
 	def submit_salary_slips(self):
 		self.check_permission('write')
 		ss_list = self.get_sal_slip_list(ss_status=0)
-		# if len(ss_list) > 300:
-		# 	try:
-		# 		frappe.enqueue(submit_salary_slips_for_employees, timeout=600, payroll_entry=self, salary_slips=ss_list)
-		# 	except Exception as e:
-		# 		frappe.throw(str(e))
-		# else:
-		submit_salary_slips_for_employees(self, ss_list, publish_progress=False)
+		if len(ss_list) > 300:
+			frappe.enqueue(submit_salary_slips_for_employees, timeout=600, payroll_entry=self, salary_slips=ss_list)
+		else:
+			submit_salary_slips_for_employees(self, ss_list, publish_progress=False)
 
 	def email_salary_slip(self, submitted_ss):
 		if frappe.db.get_single_value("Payroll Settings", "email_salary_slip_to_employee"):
@@ -947,7 +943,7 @@ def get_emp_component_amount(payroll_entry, salary_component, party=None):
 				group by ss.employee""".format(payroll_entry=payroll_entry, salary_component=salary_component, employee=party), as_dict=True)
 			else:
 				return frappe.db.sql("""select ss.employee, sum(sd.amount) amount, ss.branch, sd.salary_component,
-							sd.institution_name bank_name, (select case when a.gl_type = "CASA" then a.bank_account_no else a.account_number end from `tabAccount` a, `tabSalary Component` sc where sc.name = sd.salary_component and sc.gl_head = a.name) account_number,
+							sd.institution_name bank_name, (select e.salary_advance_account from `tabEmployee` e where e.name = ss.employee) account_number,
 							1 as recovery_account,
 							concat_ws(' ', ss.employee, ss.employee_name) remarks
 						from `tabSalary Slip` ss, `tabSalary Detail` sd
@@ -1040,17 +1036,6 @@ def get_pf_emp_details(payroll_entry, salary_component=None):
 	""".format(payroll_entry=payroll_entry, salary_component = salary_component), as_dict=True)
 
 def get_sss_emp_details(payroll_entry, salary_component=None):
-	return frappe.db.sql("""select '' as employee, sum(sd.amount) amount, ss.branch, sd.salary_component,
-					sd.institution_name bank_name, (select case when a.gl_type = "CASA" then a.bank_account_no else a.account_number end from `tabAccount` a, `tabSalary Component` sc where sc.name = sd.salary_component and sc.gl_head = a.name) account_number,
-					1 as recovery_account,
-					sd.salary_component remarks
-				from `tabSalary Slip` ss, `tabSalary Detail` sd
-				where ss.payroll_entry = "{payroll_entry}"
-				and ss.docstatus = 1
-				and sd.parent = ss.name
-				and sd.salary_component = "{salary_component}"
-	""".format(payroll_entry=payroll_entry, salary_component = salary_component), as_dict=True)
-def get_annuity_emp_details(payroll_entry, salary_component=None):
 	return frappe.db.sql("""select '' as employee, sum(sd.amount) amount, ss.branch, sd.salary_component,
 					sd.institution_name bank_name, (select case when a.gl_type = "CASA" then a.bank_account_no else a.account_number end from `tabAccount` a, `tabSalary Component` sc where sc.name = sd.salary_component and sc.gl_head = a.name) account_number,
 					1 as recovery_account,
