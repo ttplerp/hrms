@@ -161,7 +161,6 @@ class EmployeeBenefits(Document):
 		for a in self.items:
 			# self.total_amount = self.total_amount + a.amount 
 			if a.benefit_type=="Gratuity (Resignation)":
-			if a.benefit_type=="Gratuity (Resignation)":
 				date_of_joining = frappe.db.get_value("Employee", self.employee, "date_of_joining")
 				employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
 				today_date = self.separation_date
