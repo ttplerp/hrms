@@ -135,7 +135,7 @@ class EmployeeBenefits(Document):
 		for a in self.items:
 			a.payable_amount = flt(a.amount) - flt(a.tax_amount)
 			if a.benefit_type == "Leave Encashment( Resignation)":
-			a.net_amount = flt(a.amount) - flt(a.tax_amount)
+				a.net_amount = flt(a.amount) - flt(a.tax_amount)
 			if a.benefit_type == "Provision for Leave Encashment":
 				if self.purpose != "Separation" and self.purpose != "Upgradation":
 					frappe.throw("Leave Encashment cannot be claimed for {}".format(self.purpose))
