@@ -212,9 +212,9 @@ frappe.ui.form.on("Separation Item", {
 		}
 	},
 
-	"amount": function(frm, cdt, cdn) {
-		set_tax_amount(frm, cdt, cdn);
-	},
+	// "amount": function(frm, cdt, cdn) {
+	// 	set_tax_amount(frm, cdt, cdn);
+	// },
 
 	"payable_amount": function(frm,cdt,cdn){
 		set_total(frm);
