@@ -12,7 +12,7 @@ from datetime import datetime
 from erpnext.custom_workflow import validate_workflow_states
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 from hrms.hr.hr_custom_functions import get_salary_tax
-from hrms.hr.doctype.leave_application.leave_application
+from hrms.hr.doctype.leave_application.leave_application \
 	import get_leave_balance_on, get_leaves_for_period
 import math
 from datetime import datetime
