@@ -101,6 +101,12 @@
    "label": "Halt At"
   },
   {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
    "depends_on": "eval:!doc.halt",
    "fieldname": "to_place",
    "fieldtype": "Data",
@@ -112,10 +118,33 @@
    "fieldtype": "Section Break"
   },
   {
+   "fieldname": "mode_of_travel",
+   "fieldtype": "Select",
+   "label": "Mode of Travel",
+   "options": "\nFlight\nTrain\nTaxi\nBus\nRented Car\nPersonal Car\nOffice Car"
+  },
+  {
+   "fieldname": "fare_amount",
+   "fieldtype": "Currency",
+   "label": "Fare Amount"
+  },
+  {
    "fieldname": "currency",
    "fieldtype": "Link",
    "label": "Currency",
    "options": "Currency"
+  },
+  {
+   "depends_on": "eval:doc.currency != \"BTN\";",
+   "fieldname": "currency_exchange_date",
+   "fieldtype": "Date",
+   "label": "Currency Exchange Date"
+  },
+  {
+   "depends_on": "eval:parent.place_type == \"In-Country\"",
+   "fieldname": "porter_pony_charges",
+   "fieldtype": "Currency",
+   "label": "Porter and Pony Charges"
   },
   {
    "fieldname": "col_break_currency",
@@ -128,6 +157,21 @@
    "options": "\n16"
   },
   {
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "visa_fees",
+   "fieldtype": "Currency",
+   "label": "Visa Fees",
+   "options": "visa_fees_currency"
+  },
+  {
+   "default": "BTN",
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "visa_fees_currency",
+   "fieldtype": "Link",
+   "label": "Visa Fees Currency",
+   "options": "Currency"
+  },
+  {
    "fieldname": "column_break_12",
    "fieldtype": "Column Break"
   },
@@ -136,6 +180,21 @@
    "fieldname": "distance",
    "fieldtype": "Data",
    "label": "Distance (in KM)"
+  },
+  {
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "passport_fees",
+   "fieldtype": "Currency",
+   "label": "Passport Fees",
+   "options": "passport_fees_currency"
+  },
+  {
+   "default": "BTN",
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "passport_fees_currency",
+   "fieldtype": "Link",
+   "label": "Passport Fees Currency",
+   "options": "Currency"
   },
   {
    "fieldname": "column_break_14",
@@ -147,6 +206,21 @@
    "label": " DSA Amount (Per Day)",
    "options": "currency",
    "reqd": 1
+  },
+  {
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "incidental_fees",
+   "fieldtype": "Currency",
+   "label": "Incidental Expenses",
+   "options": "incidental_fees_currency"
+  },
+  {
+   "default": "BTN",
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "incidental_fees_currency",
+   "fieldtype": "Link",
+   "label": "Incidental Expenses Currency",
+   "options": "Currency"
   },
   {
    "fieldname": "section_break_18",
@@ -236,61 +310,11 @@
    "reqd": 1
   },
   {
-   "depends_on": "eval:parent.place_type == \"In-Country\"",
-   "fieldname": "porter_pony_charges",
-   "fieldtype": "Currency",
-   "label": "Porter and Pony Charges"
-  },
-  {
-   "depends_on": "eval:parent.place_type == \"Out-Country\";",
-   "fieldname": "visa_fees",
-   "fieldtype": "Currency",
-   "label": "Visa Fees",
-   "options": "visa_fees_currency"
-  },
-  {
-   "depends_on": "eval:parent.place_type == \"Out-Country\";",
-   "fieldname": "passport_fees",
-   "fieldtype": "Currency",
-   "label": "Passport Fees",
-   "options": "passport_fees_currency"
-  },
-  {
-   "depends_on": "eval:parent.place_type == \"Out-Country\";",
-   "fieldname": "incidental_fees",
-   "fieldtype": "Currency",
-   "label": "Incidental Expenses",
-   "options": "incidental_fees_currency"
-  },
-  {
-   "default": "BTN",
-   "depends_on": "eval:parent.place_type == \"Out-Country\";",
-   "fieldname": "visa_fees_currency",
+   "fieldname": "cost_center",
    "fieldtype": "Link",
-   "label": "Visa Fees Currency",
-   "options": "Currency"
-  },
-  {
-   "default": "BTN",
-   "depends_on": "eval:parent.place_type == \"Out-Country\";",
-   "fieldname": "passport_fees_currency",
-   "fieldtype": "Link",
-   "label": "Passport Fees Currency",
-   "options": "Currency"
-  },
-  {
-   "default": "BTN",
-   "depends_on": "eval:parent.place_type == \"Out-Country\";",
-   "fieldname": "incidental_fees_currency",
-   "fieldtype": "Link",
-   "label": "Incidental Expenses Currency",
-   "options": "Currency"
-  },
-  {
-   "fieldname": "country",
-   "fieldtype": "Link",
-   "label": "Country",
-   "options": "Country"
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "reqd": 1
   },
   {
    "fieldname": "sb_project_maintenance",
@@ -312,40 +336,11 @@
    "label": "Reference Name",
    "options": "reference_type",
    "read_only": 1
-  },
-  {
-   "depends_on": "eval:doc.currency != \"BTN\";",
-   "fieldname": "currency_exchange_date",
-   "fieldtype": "Date",
-   "label": "Currency Exchange Date"
-  },
-  {
-   "fieldname": "mode_of_travel",
-   "fieldtype": "Select",
-   "label": "Mode of Travel",
-   "options": "\nFlight\nTrain\nTaxi\nBus\nRented Car\nPersonal Car\nOffice Car"
-  },
-  {
-   "depends_on": "eval:(!in_list([\"\", \"Personal Car\", \"Office Car\"], doc.mode_of_travel)) && doc.halt==0;",
-   "fieldname": "fare_amount",
-   "fieldtype": "Currency",
-   "label": "Fare Amount"
-  },
-  {
-   "fieldname": "cost_center",
-   "fieldtype": "Link",
-   "label": "Cost Center",
-   "options": "Cost Center",
-   "reqd": 1
   }
  ],
  "istable": 1,
  "links": [],
-<<<<<<< HEAD
- "modified": "2025-03-26 09:27:53.747533",
-=======
- "modified": "2025-02-06 12:21:25.513261",
->>>>>>> ec893e76cc6c6e680f04468849e44569b8283348
+ "modified": "2025-03-28 16:44:42.980332",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim Item",
