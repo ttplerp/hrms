@@ -118,15 +118,6 @@ class TravelClaim(Document):
 
     def before_cancel(self):
         self.unlink_travel_authorization()
-        for a in str(self.claim_journal).split(", "):
-            je_doc = frappe.get_doc("Journal Entry", a)
-            if je_doc.docstatus == 1:
-                je_doc.cancel()
-        frappe.db.sql("update `tabGL Entry` set voucher_no = NULL where voucher_no = '{}'".format(self.name))
-        frappe.db.sql("update `tabGL Entry` set against_voucher = NULL where against_voucher = '{}'".format(self.name))
-        frappe.db.sql("update `tabPayment Ledger Entry` set voucher_no = NULL where voucher_no = '{}'".format(self.name))
-        frappe.db.sql("update `tabPayment Ledger Entry` set against_voucher_no = NULL where against_voucher_no = '{}'".format(self.name))
-
 
     def on_cancel_after_draft(self):
         validate_workflow_states(self)
@@ -137,7 +128,6 @@ class TravelClaim(Document):
             self.ta = None
         if self.training_event:
             self.update_training_event(cancel=True)
-        self.db_set("workflow_state", 'Cancelled')
 
     # Following method created by SHIV on 2020/09/22
     def check_journal_entry(self):
@@ -187,10 +177,10 @@ class TravelClaim(Document):
         if cl_status and cl_status != 2:
             frappe.throw("You need to cancel the claim journal entry first!")
 
-        # tas = frappe.db.sql("select distinct(travel_authorization) as ta from `tabTravel Claim Item` where parent = %s", str(self.name), as_dict=True)
-        # for a in tas:
-        #     ta = frappe.get_doc("Travel Authorization", a.ta)
-        #     ta.db_set("travel_claim", "")
+        tas = frappe.db.sql("select distinct(travel_authorization) as ta from `tabTravel Claim Item` where parent = %s", str(self.name), as_dict=True)
+        for a in tas:
+            ta = frappe.get_doc("Travel Authorization", a.ta)
+            ta.db_set("travel_claim", "")
 
         if self.ta:
             travel_a = frappe.get_doc("Travel Authorization", self.ta)
@@ -564,16 +554,34 @@ class TravelClaim(Document):
         mileage_acc = frappe.db.get_value("Company", self.company, mileage_acc_field)
         if not mileage_acc:
             frappe.throw("Please set the {} mileage account in company settings".format(self.travel_type))
-
-        je.append("accounts", {
-                "account": expense_account,
-                "reference_type": "Travel Claim",
-                "reference_name": self.name,
-                "cost_center": self.cost_center,
-                "debit_in_account_currency": (flt(total_amt,2)-flt(mileage_amount, 2)),
-                "debit": (flt(total_amt,2)-flt(mileage_amount, 2)),
-                "business_activity": self.business_activity,
+        
+        for a in frappe.db.sql("""
+                            select cost_center, sum(amount), sum(distance), 
+                                sum(distance)*mileage_rate as milleage_amt, 
+                                sum(amount)-sum(distance)*mileage_rate as dsa_amt
+                               from `tabTravel Claim Item` 
+                            where parent="{}" 
+                            group by cost_center;
+                            """.format(self.name), as_dict=True):
+            je.append("accounts", {
+                    "account": expense_account,
+                    "reference_type": "Travel Claim",
+                    "reference_name": self.name,
+                    "cost_center": a.cost_center,
+                    "debit_in_account_currency": flt(a.dsa_amt,2),
+                    "debit": flt(a.dsa_amt,2),
+                    "business_activity": self.business_activity,
             })
+            if a.milleage_amt > 0:      
+                je.append("accounts", {
+                    "account": mileage_acc,
+                    "reference_type": "Travel Claim",
+                    "reference_name": self.name,
+                    "cost_center": a.cost_center,
+                    "debit_in_account_currency": flt(a.milleage_amt,2),
+                    "debit": flt(a.milleage_amt,2),
+                    "business_activity": self.business_activity,
+                })
 
         je.append("accounts", {
                 "account": payable_account,
@@ -589,17 +597,6 @@ class TravelClaim(Document):
         
         advance_amt = flt(self.advance_amount)
         bank_amt = flt(self.balance_amount)
-
-        if mileage_amount>0:      
-            je.append("accounts", {
-                "account": mileage_acc,
-                "reference_type": "Travel Claim",
-                "reference_name": self.name,
-                "cost_center": self.cost_center,
-                "debit_in_account_currency": flt(mileage_amount,2),
-                "debit": flt(mileage_amount,2),
-                "business_activity": self.business_activity,
-            })
 
         if (self.advance_amount) > 0:
             advance_account = frappe.db.get_value("Company", self.company,  "travel_advance_account")
