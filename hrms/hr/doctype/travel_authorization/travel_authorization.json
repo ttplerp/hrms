@@ -303,7 +303,6 @@
    "fieldname": "estimated_amount",
    "fieldtype": "Currency",
    "label": "Estimated Total Amount"
-   "label": "Estimated Total Amount"
   },
   {
    "depends_on": "eval:doc.need_advance",
