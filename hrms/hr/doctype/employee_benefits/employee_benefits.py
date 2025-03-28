@@ -163,7 +163,7 @@ class EmployeeBenefits(Document):
 			if a.benefit_type=="Gratuity (Resignation)":
 				date_of_joining = frappe.db.get_value("Employee", self.employee, "date_of_joining")
 				employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
-				today_date = self.separation_date
+				today_date = datetime.strptime(self.separation_date, "%Y-%m-%d").date()
 				years_in_service = flt(((today_date - date_of_joining).days)/364)
 				years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
 				if frappe.db.get_value("Employee", self.employee, "employment_type") != "Contract":
