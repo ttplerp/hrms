@@ -303,7 +303,6 @@ function get_travel_detail(form) {
 	} else {
 		frappe.msgprint("Start Date, End Date, Place Type and Travel Purpose not be selected before");
 	}
-
 }
 
 function do_update(frm, cdt, cdn) {
@@ -478,6 +477,15 @@ frappe.ui.form.on("Travel Claim", "after_save", function (frm, cdt, cdn) {
 		}
 	}
 });
+
+cur_frm.fields_dict['items'].grid.get_field("cost_center").get_query = function(doc, cdt, cdn) {
+	return {
+		filters: [
+			["Cost Center", "is_group", "=",0],
+			["Cost Center", "disabled", "=",0],
+		]
+	}
+}
 
 // frappe.ui.form.on('Travel Claim Item',{
 // 	date: function(frm, cdt, cdn){
