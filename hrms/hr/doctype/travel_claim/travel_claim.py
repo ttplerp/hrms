@@ -463,6 +463,7 @@ class TravelClaim(Document):
         	for j in self.get('items'):
         		if i.name != j.name and str(i.date) <= str(j.till_date) and str(i.till_date) >= str(j.date):
         			frappe.throw(_("Row#{}: Dates are overlapping with Row#{}").format(i.idx, j.idx))
+    
     def check_double_dates(self):
         if self.items:
             # check if the travel dates are already used in other travel authorization
@@ -557,8 +558,8 @@ class TravelClaim(Document):
         
         for a in frappe.db.sql("""
                             select cost_center, sum(amount), sum(distance), 
-                                sum(distance)*mileage_rate as milleage_amt, 
-                                sum(amount)-sum(distance)*mileage_rate as dsa_amt
+                                sum(distance)*16 as milleage_amt, 
+                                sum(amount) - sum(distance)*16 as dsa_amt
                                from `tabTravel Claim Item` 
                             where parent="{}" 
                             group by cost_center;
