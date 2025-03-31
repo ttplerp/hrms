@@ -201,10 +201,16 @@ class EmployeeBenefits(Document):
 	@frappe.whitelist()
 	def get_leave_encashment_amount(self, employee, date):
 		basic_pay = amount = 0
-		query = "select d.amount from `tabSalary Structure` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and s.is_active='Yes'"
+		query = """select d.amount from `tabSalary Slip` s, 
+					`tabSalary Detail` d where s.name = d.parent 
+					and s.employee=\'" + str(employee) + "\' 
+					and d.salary_component in ('Basic Pay')
+					and s.docstatus=1 
+					order by s.creation desc limit 1
+				"""
 		data = frappe.db.sql(query, as_dict=True)
 		if not data:
-			frappe.throw("Basic Salary is not been assigned to the employee.")
+			frappe.throw("Basic Salary not available with salary structure.")
 		else:
 			for a in data:
 				basic_pay += a.amount
