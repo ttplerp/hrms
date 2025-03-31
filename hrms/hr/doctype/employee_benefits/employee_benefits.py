@@ -203,11 +203,11 @@ class EmployeeBenefits(Document):
 		basic_pay = amount = 0
 		query = """select d.amount from `tabSalary Slip` s, 
 					`tabSalary Detail` d where s.name = d.parent 
-					and s.employee=\'" + str(employee) + "\' 
+					and s.employee='{0}' 
 					and d.salary_component in ('Basic Pay')
 					and s.docstatus=1 
 					order by s.creation desc limit 1
-				"""
+				""".format(employee)
 		data = frappe.db.sql(query, as_dict=True)
 		if not data:
 			frappe.throw("Basic Salary not available with salary structure.")
