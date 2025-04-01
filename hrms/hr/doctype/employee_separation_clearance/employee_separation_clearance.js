@@ -31,6 +31,12 @@ frappe.ui.form.on('Employee Separation Clearance', {
 			})
 			}, __('Action'));
 		}
+		frm.add_custom_button(__('Employee Separation'), function () {
+			frappe.route_options = {
+				"Employee Separation.name": frm.doc.employee_separation_id,
+			};
+			frappe.set_route("List", "Employee Separation");
+		}, __("View"));
 	},
 	onload: function(frm){
 		if(frm.doc.approvers_set == 0){
