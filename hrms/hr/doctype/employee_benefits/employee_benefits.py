@@ -163,7 +163,7 @@ class EmployeeBenefits(Document):
 			if a.benefit_type=="Gratuity (Resignation)":
 				date_of_joining = frappe.db.get_value("Employee", self.employee, "date_of_joining")
 				employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
-				today_date = datetime.strptime(self.separation_date, "%Y-%m-%d").date()
+				today_date = self.separation_date #datetime.strptime(self.separation_date, "%Y-%m-%d").date()
 				years_in_service = flt(((today_date - date_of_joining).days)/364)
 				years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
 				if frappe.db.get_value("Employee", self.employee, "employment_type") != "Contract":
@@ -201,12 +201,11 @@ class EmployeeBenefits(Document):
 	@frappe.whitelist()
 	def get_leave_encashment_amount(self, employee, date):
 		basic_pay = amount = 0
-		query = """select d.amount from `tabSalary Slip` s, 
+		query = """select d.amount from `tabSalary Structure` s, 
 					`tabSalary Detail` d where s.name = d.parent 
 					and s.employee='{0}' 
 					and d.salary_component in ('Basic Pay')
-					and s.docstatus=1 
-					order by s.creation desc limit 1
+					limit 1
 				""".format(employee)
 		data = frappe.db.sql(query, as_dict=True)
 		if not data:
