@@ -105,7 +105,7 @@ class BulkPayment(Document):
 
 		payables_je.flags.ignore_permissions = 1
 		payables_je.insert()
-		# payables_je.submit()
+		payables_je.submit()
 		
 		#Payables JE End -----------------------------------------------------
 		sthc_je = frappe.new_doc("Journal Entry")

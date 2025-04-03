@@ -59,8 +59,7 @@
   {
    "fieldname": "items",
    "fieldtype": "Table",
-   "options": "Bulk Payment Item",
-   "read_only": 1
+   "options": "Bulk Payment Item"
   },
   {
    "fieldname": "column_break_domsb",
@@ -107,7 +106,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-03 15:37:02.538508",
+ "modified": "2025-04-03 15:41:13.328057",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Bulk Payment",

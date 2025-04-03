@@ -3,6 +3,9 @@
 
 frappe.ui.form.on('Bulk Payment', {
 	onload: function(frm) {
+		let grid = frm.fields_dict['items'].grid;
+        grid.cannot_add_rows = true;
+
 		frm.doc.from_date = frappe.datetime.add_days(frappe.datetime.nowdate(), -30);
 		frm.refresh_field('from_date');
 	},
