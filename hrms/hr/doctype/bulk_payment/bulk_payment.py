@@ -5,7 +5,7 @@ import frappe
 from frappe.model.document import Document
 
 from frappe import _
-from frappe.utils import flt
+from frappe.utils import flt, get_link_to_form
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
 
 class BulkPayment(Document):
@@ -40,8 +40,16 @@ class BulkPayment(Document):
 		if not tax_account:
 			frappe.throw("Setup Tax Account in HR Accounts Settings")
 		
-		default_payable_account = frappe.db.get_value("Company", self.company, "salary_payable_account")
+		default_payable_account = frappe.db.get_value("Company", self.company, "leave_encashment_payable")
 		company_cc              = frappe.db.get_value("Company", self.company, "company_cost_center")
+
+		if not default_payable_account:
+			frappe.throw(
+				_("Please set encashment payable account Company {0}").format(
+					get_link_to_form("Company", self.company)
+				),
+				title=_("Missing Account"),
+			)
 
 		cc = {}
 		tax_amount = net_amount = 0 
@@ -81,7 +89,7 @@ class BulkPayment(Document):
 					"debit": flt(cc[rec]['total_amount']),
 				})
 		
-		#Salary Tax
+		#Encashment Tax
 		if tax_amount > 0:
 			payables_je.append("accounts", {
 					"account": tax_account,
@@ -92,7 +100,7 @@ class BulkPayment(Document):
 					"party_check": 0,
 					"credit": flt(tax_amount),
 				})
-		#Salary Payble
+		#Encashment Payble
 		payables_je.append("accounts", {
 				"account": default_payable_account,
 				"reference_type": self.doctype,
