@@ -5,8 +5,10 @@ import frappe
 from frappe.model.document import Document
 
 from frappe import _
-from frappe.utils import flt, get_link_to_form
+from frappe.utils import flt, get_link_to_form, get_datetime
 from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_bank_account
+from frappe.model.mapper import get_mapped_doc
+
 
 class BulkPayment(Document):
 	def validate(self):
@@ -227,3 +229,36 @@ def get_transaction_list(filters, as_dict=True) -> list:
                     AND bp.docstatus != 2
             )
     """, filters, as_dict=as_dict)
+
+# ePayment Begins
+
+
+@frappe.whitelist()
+def make_bank_payment(source_name, target_doc=None):
+    def set_missing_values(obj, target, source_parent):
+        target.transaction_type = "Bulk Payment"
+        target.posting_date = get_datetime()
+        target.from_date = None
+        target.to_date = None
+        target.paid_from = frappe.db.get_value("Branch", target.branch, "expense_bank_account")
+        target.get_entries()
+
+    doc = get_mapped_doc(
+        "Bulk Payment",
+        source_name,
+        {
+            "Bulk Payment": {
+                "doctype": "Bank Payment",
+                "field_map": {
+                    "name": "transaction_no",
+                },
+                "postprocess": set_missing_values,
+            },
+        },
+        target_doc,
+        ignore_permissions=True,
+    )
+    return doc
+
+
+# ePayment Ends

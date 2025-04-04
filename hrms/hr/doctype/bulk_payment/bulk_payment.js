@@ -8,6 +8,9 @@ frappe.ui.form.on('Bulk Payment', {
 
 		frm.doc.from_date = frappe.datetime.add_days(frappe.datetime.nowdate(), -30);
 		frm.refresh_field('from_date');
+
+		create_custom_buttons(frm);
+
 	},
 
 	refresh: function(frm) {
@@ -16,6 +19,9 @@ frappe.ui.form.on('Bulk Payment', {
 				frm.events.get_reference_details(frm);
 			}).toggleClass("btn-primary", !(frm.doc.employees || []).length);
 		}
+
+		create_custom_buttons(frm);
+
 	},
 
 	from_date: function(frm) {
@@ -49,3 +55,18 @@ frappe.ui.form.on('Bulk Payment', {
 		frm.refresh();
 	},
 });
+
+/* ePayment Begins */
+var create_custom_buttons = function(frm){
+	if(frm.doc.docstatus == 1){
+		if(!frm.doc.payment_status || frm.doc.payment_status == 'Failed' || frm.doc.payment_status == 'Payment Failed'){
+			frm.page.set_primary_action(__('Process Payment'), () => {
+				frappe.model.open_mapped_doc({
+					method: "hrms.hr.doctype.bulk_payment.bulk_payment.make_bank_payment",
+					frm: cur_frm
+				});
+			});
+		}
+	}
+}
+/* ePayment Ends */
