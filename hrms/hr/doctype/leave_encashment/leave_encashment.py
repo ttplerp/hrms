@@ -315,7 +315,7 @@ class LeaveEncashment(Document):
 					self.employee, self.leave_type
 				)
 			)
-
+		''' Commented and replaced with below code
 		self.leave_balance = (
 			allocation.total_leaves_allocated
 			- allocation.carry_forwarded_leaves_count
@@ -324,6 +324,13 @@ class LeaveEncashment(Document):
 				self.employee, self.leave_type, allocation.from_date, self.encashment_date
 			)
 		)
+		'''
+
+		self.leave_balance = (
+			allocation.total_leaves_allocated
+			- allocation.carry_forwarded_leaves_count
+		)
+
 		employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
 		encashable_days = frappe.db.get_value("Employee Group", employee_group, "encashment_min")
 
