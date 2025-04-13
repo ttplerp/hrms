@@ -24,6 +24,7 @@
   "column_break_4",
   "gender",
   "blood_group",
+  "care_of",
   "team_lead",
   "list_in_job_card",
   "section_break_8",
@@ -169,8 +170,10 @@
   },
   {
    "fieldname": "blood_group",
-   "fieldtype": "Data",
-   "label": "Blood Group"
+   "fieldtype": "Link",
+   "label": "Blood Group",
+   "options": "Blood Group",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_12",
@@ -564,11 +567,18 @@
   {
    "fieldname": "section_break_z68ni",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "care_of",
+   "fieldtype": "Link",
+   "label": "Care of (Thrikhadar)",
+   "options": "Muster Roll Employee",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-13 14:13:29.539098",
+ "modified": "2025-04-13 15:47:31.370758",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

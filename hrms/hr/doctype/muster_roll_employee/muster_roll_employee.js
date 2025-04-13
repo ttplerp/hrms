@@ -43,6 +43,14 @@ frappe.ui.form.on('Muster Roll Employee', {
 				}
 			}
 		});
+
+		frm.set_query("care_of", function(){
+			return {
+				filters: {
+					status: 'Active'
+				}
+			}
+		});		
 	},
 
 	bank_branch: function(frm){
