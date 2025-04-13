@@ -27,11 +27,7 @@
   "team_lead",
   "list_in_job_card",
   "section_break_8",
-  "branch",
-  "cost_center",
   "column_break_8",
-  "project",
-  "holiday_list",
   "wage_detail_section",
   "musterroll",
   "section_break_12",
@@ -40,10 +36,20 @@
   "set_manually",
   "column_break_14",
   "rate_per_hour",
-  "section_break_26",
+  "user_details_section",
   "user_id",
-  "column_break_26",
+  "section_break_z68ni",
   "company",
+  "holiday_list",
+  "column_break_26",
+  "branch",
+  "cost_center",
+  "project",
+  "tds_details_section",
+  "has_tds_deduction",
+  "column_break_mbbrj",
+  "tds_percent",
+  "tds_account",
   "payments_tab",
   "sb_bank_info",
   "salary_mode",
@@ -57,18 +63,13 @@
   "column_break_ymchb",
   "email",
   "address_section",
-  "village",
-  "gewog",
-  "column_break_5fsyg",
   "dzongkhag",
+  "column_break_5fsyg",
+  "gewog",
+  "village",
   "section_break_16",
   "internal_work_history",
   "date_of_transfer",
-  "tds_details_section",
-  "has_tds_deduction",
-  "column_break_mbbrj",
-  "tds_percent",
-  "tds_account",
   "sb_additional_info",
   "reference_doctype",
   "column_break_30",
@@ -76,8 +77,8 @@
   "temp_doctype",
   "temp_docname",
   "pms_tab",
-  "pms_employee_group",
   "include_in_performance_evaluation",
+  "pms_employee_group",
   "evaluators",
   "profile_tab",
   "is_desuup",
@@ -89,7 +90,7 @@
   {
    "fieldname": "section_break_1",
    "fieldtype": "Section Break",
-   "label": "Personal Details"
+   "label": "Employee Details"
   },
   {
    "fieldname": "person_name",
@@ -255,10 +256,6 @@
    "fieldtype": "Table",
    "options": "Employee Internal Work History",
    "read_only": 1
-  },
-  {
-   "fieldname": "section_break_26",
-   "fieldtype": "Section Break"
   },
   {
    "fieldname": "user_id",
@@ -538,27 +535,40 @@
   },
   {
    "fieldname": "village",
-   "fieldtype": "Data",
-   "label": "Village"
+   "fieldtype": "Link",
+   "label": "Village",
+   "options": "Village"
   },
   {
    "fieldname": "gewog",
-   "fieldtype": "Data",
-   "label": "Gewog/Block"
+   "fieldtype": "Link",
+   "label": "Gewog/Block",
+   "options": "Gewog"
   },
   {
    "fieldname": "dzongkhag",
-   "fieldtype": "Data",
-   "label": "Dzongkhag/District"
+   "fieldtype": "Link",
+   "label": "Dzongkhag/District",
+   "options": "Dzongkhag"
   },
   {
    "fieldname": "column_break_5fsyg",
    "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "user_details_section",
+   "fieldtype": "Section Break",
+   "label": "User Details"
+  },
+  {
+   "fieldname": "section_break_z68ni",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-13 12:19:17.323263",
+ "modified": "2025-04-13 14:13:29.539098",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

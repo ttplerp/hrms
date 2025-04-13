@@ -1,35 +1,45 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:dzongkhag_name",
- "creation": "2022-11-15 11:48:00.706785",
+ "autoname": "field:gewog_name",
+ "creation": "2025-04-13 14:01:15.173556",
+ "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "dzongkhag_name",
-  "description",
-  "section_break_12",
-  "disabled"
+  "gewog_name",
+  "dzongkhag",
+  "column_break_fs9ho",
+  "disabled",
+  "description"
  ],
  "fields": [
   {
-   "fieldname": "dzongkhag_name",
+   "fieldname": "gewog_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Dzongkhag Name",
+   "label": "Gewog Name",
    "reqd": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "dzongkhag",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Dzongkhag",
+   "options": "Dzongkhag",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_fs9ho",
+   "fieldtype": "Column Break"
   },
   {
    "default": "0",
    "fieldname": "disabled",
    "fieldtype": "Check",
    "label": "Disabled"
-  },
-  {
-   "fieldname": "section_break_12",
-   "fieldtype": "Section Break"
   },
   {
    "fieldname": "description",
@@ -39,12 +49,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-13 13:59:33.523599",
+ "modified": "2025-04-13 14:02:58.502776",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Dzongkhag",
+ "name": "Gewog",
  "naming_rule": "By fieldname",
- "nsm_parent_field": "parent_dzongkhag",
  "owner": "Administrator",
  "permissions": [
   {
@@ -70,7 +79,6 @@
   },
   {
    "create": 1,
-   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
@@ -79,10 +87,21 @@
    "role": "HR User",
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
   }
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_views": 1
+ "states": []
 }
