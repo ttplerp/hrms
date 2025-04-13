@@ -14,8 +14,8 @@ def execute(filters=None):
 def get_columns():
     return [
         {
-            "fieldname": "muster_roll_type",
-            "label": "Muster Roll Type",
+            "fieldname": "muster_roll_designation",
+            "label": "Muster Roll Designation",
             "fieldtype": "Data",
             "width": 160
         },
@@ -30,7 +30,7 @@ def get_columns():
 def get_data(filters):
     conditions = get_conditions(filters)
     query = '''
-        select count(name) as count, muster_roll_type from `tabMuster Roll Employee` where status="Active" group by muster_roll_type;
+        select designation as muster_roll_designation, count(name)as count from `tabMuster Roll Employee` where status="Active" group by designation;
     '''.format(conditions=conditions)
     data = frappe.db.sql(query, as_dict=1)
     return data
