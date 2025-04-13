@@ -34,24 +34,15 @@ def execute(filters=None):
         else:
             status = str(ss.docstatus)
 
-        cid, joining_date, tpn_number = frappe.db.get_value(
-            "Employee", ss.employee, ["passport_number", "date_of_joining", "tpn_number"]
+        tpn_number = frappe.db.get_value(
+            "Employee", ss.employee, ["tpn_number"]
         )
 
         row = [
             ss.employee,
             ss.employee_name,
-            ss.employment_type,
-            cid,
-            joining_date,
-            ss.bank_name,
-            ss.bank_account_no,
-            ss.cost_center,
             ss.branch,
-            ss.department,
-            ss.division,
             tpn_number,
-            # ss.employee_grade,
             ss.designation,
             ss.fiscal_year,
             ss.month,
@@ -79,21 +70,12 @@ def get_columns(salary_slips):
     columns = [
         _("Employee") + ":Link/Employee:120",
         _("Employee Name") + "::140",
-        _("Employment Type") + ":Link/Employment Type:120",
-        _("CID No") + "::120",
-        _("Joining Date") + ":Date:100",
-        _("Bank Name") + "::80",
-        _("Bank A/C#") + "::100",
-        _("Cost Center") + ":Link/Cost Center:120",
         _("Branch") + ":Link/Branch:120",
-        _("Department") + ":Link/Department:120",
-        _("Division") + ":Link/Division:120",
         _("TPN") + ":Data:120",
-        # _("Grade") + ":Link/Employee Grade:120",
         _("Designation") + ":Link/Designation:120",
         _("Year") + "::80",
         _("Month") + "::80",
-        _("Leave Without Pay") + ":Float:130",
+        _("Leave Without Pay") + ":Float:140",
         _("Payment Days") + ":Float:120",
         _("Status") + "::100",
     ]
@@ -130,7 +112,7 @@ def get_columns(salary_slips):
             "Gross Pay:Currency:120",
         ]
         + [(d + ":Currency:120") for d in ded_types]
-        + ["Total Deduction:Currency:120", "Net Pay:Currency:120"]
+        + ["Total Deduction:Currency:120", "Net Pay:Currency:130"]
     )
 
     return columns, earning_types, ded_types
