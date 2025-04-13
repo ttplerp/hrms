@@ -156,7 +156,7 @@ def get_data(filters,designations):
 	#adding leaves status such as present, absent, leave starts here for msw and fw
 	msw_fw_emp_att = frappe.db.sql('''
 							 select count(status) as count, muster_roll_group,status,cost_center from 
-							 `tabMuster Roll Attendance` where date=CURDATE() 
+							 `tabMuster Roll Attendance` where date=CURDATE() and docstatus=1
 							 group by cost_center,status;
 							 ''', as_dict=True)
 	for msw in msw_fw_emp_att:
