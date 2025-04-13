@@ -36,11 +36,13 @@
   {
    "fieldname": "multiskilled_workers",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "Multiskilled Workers"
   },
   {
    "fieldname": "foreign_workers",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "Foreign Workers"
   },
   {
@@ -55,11 +57,13 @@
   {
    "fieldname": "ojt",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "OJT"
   },
   {
    "fieldname": "internship",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "Internship"
   },
   {
@@ -99,7 +103,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-12-02 17:22:30.917210",
+ "modified": "2025-04-13 14:15:30.934682",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Attendance for Dashboard",

@@ -47,12 +47,11 @@ def get_data(filters,designations):
 	
 	msw_data = frappe.db.sql('''
 							 SELECT 
-								multiskilled_workers AS msw, 
+								
 								cost_center, 
-								foreign_workers AS fw, 
+								
 								local_workers AS lw,
-								ojt, 
-								internship, 
+								
 								`leave`, 
 								absent, 
 								present
@@ -65,6 +64,8 @@ def get_data(filters,designations):
 	for i in msw_data:
 		# result[i.cost_center]['msw'] = i['msw']
 		# result[i.cost_center]['fw'] = i['fw']
+		if i.cost_center not in result:
+			result[i.cost_center] = {"cost_center": i.cost_center}
 		result[i.cost_center]['lw'] = i['lw']
 		# result[i.cost_center]['ojt'] = i['ojt']
 		# result[i.cost_center]['internship'] = i['internship']
