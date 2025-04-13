@@ -77,7 +77,7 @@ def get_data(filters,designations):
 		msw_att[i.cost_center]['absent'] = i['absent']
 		msw_att[i.cost_center]['present'] = i['present']
 	
-	#The data to be pulled from MR starts here
+	#The data to be pulled from MR starts here to find total number of msw and fw
 	data2 =  frappe.db.sql(""" 
 			select count(muster_roll_group) as count, 
 			muster_roll_group, cost_center from `tabMuster Roll Employee` 
@@ -103,6 +103,10 @@ def get_data(filters,designations):
 		result[cost_center][employee_group] = employee_count
 	# frappe.throw(str(result))
 	#MR data ends here
+
+
+
+	
 		
 	regular_emp_att = frappe.db.sql('''
 							 SELECT COUNT(a.name) AS attendance_count, a.status, e.cost_center as cost_center
@@ -147,6 +151,26 @@ def get_data(filters,designations):
 			data['absent'] = msw_att.get(cost_center, {}).get('absent', 0)
 		if 'present' not in data:
 			data['present'] = msw_att.get(cost_center, {}).get('present', 0) 
+
+
+	#adding leaves status such as present, absent, leave starts here for msw and fw
+	msw_fw_emp_att = frappe.db.sql('''
+							 select count(status) as count, muster_roll_group,status,cost_center from 
+							 `tabMuster Roll Attendance` where date=CURDATE() 
+							 group by cost_center,status;
+							 ''', as_dict=True)
+	for msw in msw_fw_emp_att:
+		if msw.status in ["Half Day", "Present"]:
+			if 'present' not in result[msw.cost_center]:
+				result[msw.cost_center]['present'] = 0
+			additional_leave = int(msw.count) 
+			result[msw.cost_center]['present'] += additional_leave
+		elif msw.status == "Absent":
+			if 'absent' not in result[msw.cost_center]:
+				result[msw.cost_center]['absent'] = 0
+			result[msw.cost_center]['absent'] += int(msw.count) 
+
+	#leaves addition for msw and fw ends here
 	
 	total_emp = frappe.db.sql('''
 							  select count(name) as count, cost_center from `tabEmployee` where cost_center is not null and status="Active" group by cost_center;
@@ -154,6 +178,7 @@ def get_data(filters,designations):
 	muster_roll_total_emp= frappe.db.sql('''
 								select count(name) as count, cost_center from `tabMuster Roll Employee` where status="Active"  group by cost_center;
 								''',as_dict=True)
+	# frappe.throw(str(result))
 	# frappe.throw(str(total_emp))
 	for i in total_emp:
 		# frappe.throw(str(i.count))
