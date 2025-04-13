@@ -27,6 +27,22 @@ frappe.ui.form.on('Muster Roll Employee', {
 				}
 			};
 		});
+
+		frm.set_query("gewog", function(){
+			return {
+				filters: {
+					dzongkhag: frm.doc.dzongkhag
+				}
+			}
+		});
+
+		frm.set_query("village", function(){
+			return {
+				filters: {
+					gewog: frm.doc.gewog
+				}
+			}
+		});
 	},
 
 	bank_branch: function(frm){
