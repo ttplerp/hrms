@@ -66,8 +66,8 @@ def get_data(filters,designations):
 		# result[i.cost_center]['msw'] = i['msw']
 		# result[i.cost_center]['fw'] = i['fw']
 		result[i.cost_center]['lw'] = i['lw']
-		result[i.cost_center]['ojt'] = i['ojt']
-		result[i.cost_center]['internship'] = i['internship']
+		# result[i.cost_center]['ojt'] = i['ojt']
+		# result[i.cost_center]['internship'] = i['internship']
 		
 
 		if i.cost_center not in msw_att:
@@ -79,9 +79,9 @@ def get_data(filters,designations):
 	
 	#The data to be pulled from MR starts here to find total number of msw and fw
 	data2 =  frappe.db.sql(""" 
-			select count(muster_roll_group) as count, 
-			muster_roll_group, cost_center from `tabMuster Roll Employee` 
-			where status="Active" group by muster_roll_group ,cost_center;
+			select count(muster_roll_group) as count,  muster_roll_group, cost_center from 
+			`tabMuster Roll Employee`  where status="Active" and designation not in ('On Job Training (OJT)','Internship') 
+			group by muster_roll_group ,cost_center;
 			""", as_dict=True)
 		
 	
@@ -104,7 +104,33 @@ def get_data(filters,designations):
 	# frappe.throw(str(result))
 	#MR data ends here
 
+	#the total number for ojt and intern starts here
+	data3 =  frappe.db.sql(""" 
+			select count(muster_roll_group) as count,  designation, cost_center from `tabMuster Roll Employee`  
+			where status="Active" and designation in ('On Job Training (OJT)','Internship') group by 
+			designation,cost_center;
+			""", as_dict=True)
+		
+	
+		
+		
+	for row in data3:
+		cost_center = row['cost_center']
+		designation = row['designation']
+		# Map to custom group keys
+		if designation == 'On Job Training (OJT)':
+			designation = 'ojt'
+		elif designation == 'Internship':
+			designation = 'internship'
+		employee_count = row['count']
+			
+		if cost_center not in result:
+			result[cost_center] = {"cost_center":cost_center}
+				
+		result[cost_center][designation] = employee_count
+	#the total number for ojt and intern ends here
 
+	# frappe.throw(str(result))
 
 	
 		
