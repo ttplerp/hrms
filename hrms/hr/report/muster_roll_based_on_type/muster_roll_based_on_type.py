@@ -32,6 +32,7 @@ def get_data(filters):
     query = '''
         select designation as muster_roll_designation, count(name)as count from `tabMuster Roll Employee` where status="Active" group by designation;
     '''.format(conditions=conditions)
+    
     data = frappe.db.sql(query, as_dict=1)
     return data
 
