@@ -572,13 +572,13 @@
    "fieldname": "care_of",
    "fieldtype": "Link",
    "label": "Care of (Thrikhadar)",
-   "options": "Muster Roll Employee",
-   "reqd": 1
+   "mandatory_depends_on": "eval:doc.muster_roll_group != 'National';",
+   "options": "Muster Roll Employee"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-13 15:47:31.370758",
+ "modified": "2025-04-13 16:14:54.891747",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
