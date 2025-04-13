@@ -1,6 +1,5 @@
 {
  "actions": [],
- "allow_rename": 1,
  "autoname": "ETD.YY.####",
  "creation": "2023-08-01 14:08:29.937717",
  "default_view": "List",
@@ -43,6 +42,7 @@
    "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Employee Name",
    "read_only": 1
   },
@@ -92,19 +92,19 @@
   },
   {
    "fieldname": "sb_details",
-   "fieldtype": "Section Break",
-   "label": "Details"
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "details",
    "fieldtype": "Table",
+   "label": "Training Details",
    "options": "Employee Training Detail Item",
    "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-08-01 16:17:31.873963",
+ "modified": "2025-04-13 12:25:50.380825",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Training Details",
@@ -151,6 +151,6 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "title_field": "employee",
+ "title_field": "employee_name",
  "track_changes": 1
 }

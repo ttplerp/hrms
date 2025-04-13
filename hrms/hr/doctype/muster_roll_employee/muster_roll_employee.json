@@ -15,6 +15,7 @@
   "status",
   "joining_date",
   "separation_date",
+  "remarks",
   "section_break_1",
   "designation",
   "grade",
@@ -39,23 +40,29 @@
   "set_manually",
   "column_break_14",
   "rate_per_hour",
-  "sb_bank_info",
-  "salary_mode",
-  "bank_branch",
-  "column_break_32",
-  "bank_name",
-  "bank_ac_no",
-  "bank_account_type",
-  "contact_details_section",
-  "phone_no",
-  "column_break_ymchb",
-  "email",
-  "section_break_16",
-  "internal_work_history",
   "section_break_26",
   "user_id",
   "column_break_26",
   "company",
+  "payments_tab",
+  "sb_bank_info",
+  "salary_mode",
+  "bank_name",
+  "bank_branch",
+  "column_break_32",
+  "bank_account_type",
+  "bank_ac_no",
+  "personal_details_tab",
+  "phone_no",
+  "column_break_ymchb",
+  "email",
+  "address_section",
+  "village",
+  "gewog",
+  "column_break_5fsyg",
+  "dzongkhag",
+  "section_break_16",
+  "internal_work_history",
   "date_of_transfer",
   "tds_details_section",
   "has_tds_deduction",
@@ -68,10 +75,15 @@
   "reference_docname",
   "temp_doctype",
   "temp_docname",
-  "performance_evaluation_section",
+  "pms_tab",
   "pms_employee_group",
   "include_in_performance_evaluation",
-  "evaluators"
+  "evaluators",
+  "profile_tab",
+  "is_desuup",
+  "desuup_id",
+  "column_break_a4awx",
+  "batch_number"
  ],
  "fields": [
   {
@@ -372,11 +384,6 @@
    "label": " Include in Performance Evaluation"
   },
   {
-   "fieldname": "performance_evaluation_section",
-   "fieldtype": "Section Break",
-   "label": "Performance Evaluation"
-  },
-  {
    "default": "0",
    "fieldname": "has_tds_deduction",
    "fieldtype": "Check",
@@ -408,11 +415,6 @@
    "mandatory_depends_on": "has_tds_deduction",
    "options": "Account",
    "read_only": 1
-  },
-  {
-   "fieldname": "contact_details_section",
-   "fieldtype": "Section Break",
-   "label": "Contact Details"
   },
   {
    "fieldname": "phone_no",
@@ -477,11 +479,86 @@
   {
    "fieldname": "column_break_brsat",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "profile_tab",
+   "fieldtype": "Tab Break",
+   "label": "Profile"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_desuup",
+   "fieldtype": "Check",
+   "label": "Is Desuup"
+  },
+  {
+   "depends_on": "eval:doc.is_desuup",
+   "fieldname": "desuup_id",
+   "fieldtype": "Data",
+   "label": "Desuup ID",
+   "mandatory_depends_on": "eval:doc.is_desuup"
+  },
+  {
+   "fieldname": "column_break_a4awx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.is_desuup",
+   "fieldname": "batch_number",
+   "fieldtype": "Data",
+   "label": "Batch Number",
+   "mandatory_depends_on": "eval:doc.is_desuup"
+  },
+  {
+   "depends_on": "eval:doc.status != 'Active';",
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks",
+   "mandatory_depends_on": "eval:doc.status != 'Active';"
+  },
+  {
+   "fieldname": "personal_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Personal Details"
+  },
+  {
+   "fieldname": "pms_tab",
+   "fieldtype": "Tab Break",
+   "label": "PMS"
+  },
+  {
+   "fieldname": "payments_tab",
+   "fieldtype": "Tab Break",
+   "label": "Payments"
+  },
+  {
+   "fieldname": "address_section",
+   "fieldtype": "Section Break",
+   "label": "Address"
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "label": "Village"
+  },
+  {
+   "fieldname": "gewog",
+   "fieldtype": "Data",
+   "label": "Gewog/Block"
+  },
+  {
+   "fieldname": "dzongkhag",
+   "fieldtype": "Data",
+   "label": "Dzongkhag/District"
+  },
+  {
+   "fieldname": "column_break_5fsyg",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-20 08:37:53.998276",
+ "modified": "2025-04-13 12:19:17.323263",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
