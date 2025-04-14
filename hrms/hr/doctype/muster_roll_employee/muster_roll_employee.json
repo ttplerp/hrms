@@ -359,14 +359,18 @@
    "options": "Muster Roll Type"
   },
   {
+   "depends_on": "eval:doc.include_in_performance_evaluation",
    "fieldname": "evaluators",
    "fieldtype": "Table",
-   "options": "Performance Evaluator"
+   "options": "Performance Evaluator",
+   "read_only": 1
   },
   {
+   "depends_on": "eval:doc.include_in_performance_evaluation",
    "fieldname": "pms_employee_group",
    "fieldtype": "Link",
    "label": "PMS Employee Group",
+   "mandatory_depends_on": "eval:doc.include_in_performance_evaluation",
    "options": "Employee Group"
   },
   {
@@ -578,7 +582,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-13 16:14:54.891747",
+ "modified": "2025-04-14 11:42:59.583134",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",

@@ -2,6 +2,16 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Employee PMS Evaluator Mapper', {
+	refresh: function(frm) {
+		frm.set_query("muster_roll_employee", "mr_employees", function(){
+			return {
+				filters: {
+					include_in_performance_evaluation: 1
+				}
+			}
+		});
+	},
+
 	get_all_employees: function(frm){
 		frappe.call({
 			method: "get_employees",
