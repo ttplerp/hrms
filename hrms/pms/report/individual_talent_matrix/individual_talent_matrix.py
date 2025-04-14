@@ -169,7 +169,7 @@ def determine_pot_per(potential, performance):
 	total_score = 0.0
 	return_value = ''
 	total_score = flt(performance + potential)
-	if is_between(5.5, total_score, 6.4) and potential >= performance:
+	if is_between(5.5, total_score, 6.4) and potential > performance:
 		return_value = "Unrealized Performer"
 	elif is_between(6.5, total_score, 7.4) and potential >= performance:
 		return_value = "Growth Employee"
