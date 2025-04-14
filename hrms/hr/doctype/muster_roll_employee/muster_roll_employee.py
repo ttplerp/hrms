@@ -141,3 +141,8 @@ class MusterRollEmployee(Document):
 					#         "reference_docname": self.temp_docname
 					#     })
 
+@frappe.whitelist()
+@frappe.validate_and_sanitize_search_inputs
+def get_grade(doctype, txt, searchfield, start, page_len, filters):
+	grade_list = frappe.get_all("Designation Grade", filters=filters, fields=["grade"], as_list=1)
+	return [c for c in grade_list]

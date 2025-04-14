@@ -20,6 +20,13 @@ frappe.ui.form.on('Muster Roll Employee', {
 			};
 		});
 
+		frm.set_query("grade", function (doc) {
+			return {
+				query: "hrms.hr.doctype.muster_roll_employee.muster_roll_employee.get_grade",
+				filters: { parent: doc.designation },
+			};
+		});
+
 		frm.set_query('project', function(doc) {
 			return {
 				filters: {

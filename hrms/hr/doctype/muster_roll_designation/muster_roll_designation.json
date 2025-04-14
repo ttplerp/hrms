@@ -11,7 +11,9 @@
   "designation",
   "description",
   "column_break_c1g5g",
-  "disabled"
+  "disabled",
+  "section_break_jnblp",
+  "items"
  ],
  "fields": [
   {
@@ -38,11 +40,20 @@
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "Disabled"
+  },
+  {
+   "fieldname": "section_break_jnblp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "options": "Designation Grade"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-02-25 13:22:30.472066",
+ "modified": "2025-04-14 15:59:43.620633",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Designation",
