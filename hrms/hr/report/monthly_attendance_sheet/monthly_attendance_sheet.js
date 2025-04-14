@@ -46,6 +46,12 @@ frappe.query_reports["Monthly Attendance Sheet"] = {
 			}
 		},
 		{
+			"fieldname":"branch",
+			"label": __("Branch"),
+			"fieldtype": "Link",
+			"options": "Branch",
+		},
+		{
 			"fieldname":"company",
 			"label": __("Company"),
 			"fieldtype": "Link",
