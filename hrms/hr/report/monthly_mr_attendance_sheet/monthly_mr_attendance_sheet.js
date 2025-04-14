@@ -45,6 +45,12 @@ frappe.query_reports["Monthly MR Attendance Sheet"] = {
 				};
 			}
 		},
+		{
+			"fieldname":"branch",
+			"label": __("Branch"),
+			"fieldtype": "Link",
+			"options": "Branch",
+		},
 		// {
 		// 	"fieldname":"group_by",
 		// 	"label": __("Group By"),
