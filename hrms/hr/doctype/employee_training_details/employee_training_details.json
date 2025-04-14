@@ -83,7 +83,6 @@
    "read_only": 1
   },
   {
-   "fetch_from": "employee.education_level",
    "fieldname": "education_level",
    "fieldtype": "Link",
    "label": "Education Level",
@@ -104,7 +103,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-13 12:25:50.380825",
+ "modified": "2025-04-14 14:59:07.737743",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Training Details",
