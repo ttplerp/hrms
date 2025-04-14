@@ -67,7 +67,7 @@ def get_data(filters):
         FROM 
             `tabEmployee` 
         WHERE 
-            designation IN ('Electrician', 'Painter','Mechanic','Plumber','Welder') 
+            designation IN ('Electrician', 'Painter','Mechanic','Plumber','Welder') and status='Active'
         GROUP BY 
             designation
     ''', as_dict=True)
