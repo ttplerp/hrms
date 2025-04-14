@@ -169,9 +169,9 @@ def determine_pot_per(potential, performance):
 	total_score = 0.0
 	return_value = ''
 	total_score = flt(performance + potential)
-	if is_between(5.5, total_score, 6.4) and potential > performance:
+	if is_between(5.5, total_score, 6.4) and potential >= performance:
 		return_value = "Unrealized Performer"
-	elif is_between(6.5, total_score, 7.4) and potential > performance:
+	elif is_between(6.5, total_score, 7.4) and potential >= performance:
 		return_value = "Growth Employee"
 	elif is_between(7.5, total_score, 8):
 		return_value = "Future Senior Leader"
@@ -195,7 +195,7 @@ def get_columns(data, filters):
 		{"label": _("Employee Name"), "fieldname": "emp_name", "fieldtype": "Data", "width": 150},
 		{"label": _("Designation"), "fieldname": "designation", "fieldtype": "Link", "options": "Designation", "width": 150},
 		{"label": _("Branch"), "fieldname": "branch", "fieldtype": "Link", "options": "Branch", "width": 150},
-		{"label": _("Perfromacne"), "fieldname": "performance", "fieldtype": "Data", "width": 120},
+		{"label": _("Performance"), "fieldname": "performance", "fieldtype": "Data", "width": 120},
 		{"label": _("Potential"), "fieldname": "potential", "fieldtype": "Data", "width": 120},
 		{"label": _("Total Score"), "fieldname": "total_score", "fieldtype": "Data", "width": 120},
 		{"label": _("Joining Date"), "fieldname": "date_of_joining", "fieldtype": "Date", "width": 120},
