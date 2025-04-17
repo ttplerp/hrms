@@ -5,15 +5,44 @@ import frappe
 from frappe.model.document import Document
 from frappe.utils import getdate ,cint, flt
 from hrms.hr.hr_custom_functions import get_salary_tax
-from frappe.utils import flt, cint, getdate, money_in_words
+from frappe.utils import flt, cint, getdate, money_in_words, date_diff, add_months, add_days
 from collections import defaultdict
+from datetime import datetime
 
 class PBVI(Document):
 	def validate(self):
 		self.calculate_values()
 		self.remove_zero_rows()
 
+	def validate_amount(self):
+		for d in self.items:
+			if flt(d.deduction_amount) < 0:
+				frappe.throw(_("Row#{}: <b>Deductions</b> cannot be less than zero").format(d.idx))
+			elif flt(d.balance_amount) < 0:
+				frappe.throw(_("Row#{}: <b>PBVI After Tax</b> cannot be less than zero").format(d.idx))
+
 	def on_submit(self):
+		self.validate_amount()
+		# cc_amount = {}
+		# for a in self.items:
+		# 	# tax = get_salary_tax(a.amount)
+		# 	cost_center, ba = frappe.db.get_value("Employee", a.employee, ["cost_center", "business_activity"])
+		# 	cc = str(str(cost_center) + ":" + str(ba))
+		# 	if cc in cc_amount:
+		# 		cc_amount[cc]['amount'] = flt(cc_amount[cc]['amount'],2) + flt(a.amount,2)
+		# 		cc_amount[cc]['tax'] = flt(cc_amount[cc]['tax'],2) + flt(a.tax_amount,2)
+		# 		cc_amount[cc]['deduction'] = flt(cc_amount[cc]['deduction'],2) + flt(a.deduction_amount,2)
+		# 		cc_amount[cc]['balance_amount'] = flt(cc_amount[cc]['balance_amount'],2) + flt(a.balance_amount,2)
+		# 	else:
+		# 		row = {"amount": flt(a.amount,2), "tax": flt(a.tax_amount,2), \
+		# 			"deduction": flt(a.deduction_amount,2), "balance_amount": flt(a.balance_amount,2)}
+		# 		cc_amount[cc] = row
+		# for b in self.deductions:
+		# 	cost_center, ba = frappe.db.get_value("Employee", b.employee, ["cost_center", "business_activity"])
+		# 	cc = str(str(cost_center) + ":" + str(ba))
+		# 	if cc in cc_amount:
+		# 		cc_amount[cc]['deduction'] = flt(cc_amount[cc]['deduction'],2) + flt(b.amount,2)
+
 		self.post_journal_entry()
 
 	def on_cancel(self):
@@ -26,22 +55,44 @@ class PBVI(Document):
 			if doc.docstatus != 2:
 				frappe.throw("Cannot cancel this document as there exists journal entry against this document")
 
+	def validate_duplicate(self):
+		doc = frappe.db.sql("select name from tabPBVI where docstatus != 2 and fiscal_year = \'"+str(self.fiscal_year)+"\' and name != \'"+str(self.name)+"\'")		
+		if doc:
+			frappe.throw("Can not create multiple PBVI for the same year")
+
 	def calculate_values(self):
+		deductions = self.get_deductions()
+		start = str(self.fiscal_year)+'-01-01'
+		end   = str(self.fiscal_year)+'-12-31'
+		days_in_year = date_diff(end, start)+1
 		if self.items:
-			tot = tax = net = 0
+			tot = tax = net = ded = 0
 			for a in self.items:
-				a.amount	= flt(a.total_basic_pay)*flt(self.pbvi_percent)/100
+				
+				# a.amount	= flt(a.total_basic_pay)*flt(self.pbvi_percent)/100
+				a.amount = flt((flt(flt(a.pbvi_percent/100)*a.total_basic_pay)/days_in_year)*a.days_worked,2)
 				a.tax_amount = flt(get_salary_tax(a.amount),2)
-				a.balance_amount = flt(flt(a.amount,2) - flt(a.tax_amount,2),2)
+				a.deduction_amount = flt(deductions.get(a.employee))
+				a.balance_amount = flt(a.amount,2) - flt(a.tax_amount,2) - flt(a.deduction_amount,2)
 				tot += flt(a.amount,2)
 				tax += flt(a.tax_amount,2)
 				net += flt(a.balance_amount,2)
+				ded += flt(a.deduction_amount,2)
 
 			self.total_amount = tot
 			self.tax_amount   = tax
 			self.net_amount   = net
+			self.total_deductions = ded
+
 		else:
 			frappe.throw("Cannot save without employee details")
+
+
+	def get_deductions(self):
+		deductions = {}
+		for d in self.deductions:
+			deductions[d.employee] = flt(d.amount) if d.employee not in deductions else deductions[d.employee] + flt(d.amount)
+		return deductions
 
 	def remove_zero_rows(self):
 		if self.items:
@@ -205,6 +256,7 @@ class PBVI(Document):
 			frappe.throw("PBVI percent cannot be 0 or less than 0")
 		start = str(self.fiscal_year)+'-01-01'
 		end   = str(self.fiscal_year)+'-12-31'
+		days_in_year = date_diff(end, start)+1
 		# query = """select
 		# 		e.name as employee,
 		# 		e.employee_name,
@@ -317,6 +369,7 @@ class PBVI(Document):
 						e.date_of_joining,
 						e.relieving_date,
 						e.salary_mode,
+						e.division,
 						e.bank_name,
 						e.bank_ac_no,
 						e.cost_center,
@@ -367,5 +420,93 @@ class PBVI(Document):
 		for d in entries:
 			# d.amount = 0
 			row = self.append('items', {})
+			total_leave_days = 0
+			d.unit_rating = frappe.db.get_value(
+       				"Performance Evaluation",
+           			{
+                  		"employee": frappe.db.get_value("Department", d.division, "approver"),
+						"pms_calendar": self.fiscal_year
+                    },
+					"final_score_percent"
+           )
+			# 	d.employee_rating =frappe.db.get_value(
+			# 			"Performance Evaluation",
+			#    			{
+			#           		"employee": d.employee,
+			# 				"pms_calendar": self.fiscal_year
+			#             },
+			# 			"final_score_percent"
+			#    )
+			employee_rating =frappe.db.sql("""
+                                    select count(name) as nos, sum(final_score_percent) as final_score
+                                    from `tabPerformance Evaluation` where docstatus = 1 and employee = '{}'
+                                    and pms_calendar = '{}'
+                                    """.format(d.employee, self.fiscal_year), as_dict = 1)
+			if frappe.db.get_value("Employee", d.employee, "pbvi_percent") == 0 or not frappe.db.get_value("Employee", d.employee, "pbvi_percent"):
+				if not d.unit_rating or d.unit_rating == 0:
+					d.unit_rating = flt(frappe.db.get_value("Department", d.department, "unit_rating"))
+				d.unit_rating = 0 if not d.unit_rating else d.unit_rating * 0.5
+				d.employee_rating = 0
+				if employee_rating:
+					d.employee_rating = employee_rating[0].final_score
+				if not d.employee_rating:
+					d.employee_rating = 0
+				d.employee_rating = d.employee_rating * 0.5
+				d.total_rating = d.unit_rating+d.employee_rating
+				if frappe.db.get_single_value("HR Settings", "use_flat_pbvi") == 0:
+					if self.company_achievement < 95:
+						if d.total_rating < self.company_achievement:
+							d.pbvi_percent = flt((d.total_rating/self.company_achievement)*(self.pbvi_percent),3)
+						else:
+							d.pbvi_percent = self.pbvi_percent
+					else:
+						if d.total_rating < 95:
+							d.pbvi_percent = flt((d.total_rating/95)*(self.pbvi_percent),3)
+						else:
+							d.pbvi_percent = self.pbvi_percent
+				else:
+					d.pbvi_percent = flt(self.pbvi_percent, 3)
+			else:
+				d.pbvi_percent = flt(frappe.db.get_value("Employee", d.employee, "pbvi_percent"),3)
+
+			d.total_basic_pay = 0 if not d.total_basic_pay else d.total_basic_pay
+			days_in_year = date_diff(end, start)+1
+			total_leave_days = frappe.db.sql("select sum(ifnull(total_leave_days,0)) as leaves from `tabLeave Application` where docstatus = 1 and employee = '{}' and year(from_date) = '{}' and leave_type not in ('Maternity Leave', 'Study Leave', 'EOL')".format(d.employee, self.fiscal_year), as_dict=1)
+
+			if len(total_leave_days) > 0:
+				total_leave_days = total_leave_days[0].leaves
+			else:
+				total_leave_days = 0
+			if not total_leave_days:
+				total_leave_days = 0
+			if flt(total_leave_days) > 30:
+				total_leave_days -= 30
+			else:
+				total_leave_days = 0
+			if str(d.date_of_joining).split("-")[0] == str(self.fiscal_year) and flt(str(d.date_of_joining).split("-")[1]) < 10:
+				d.days_worked = date_diff(datetime.strptime(str(self.fiscal_year)+"-12-31", "%Y-%m-%d").date(), add_days(datetime.strptime(str(self.fiscal_year)+"-"+str(int(str(d.date_of_joining).split("-")[1])+3)+"-"+str(d.date_of_joining).split("-")[2], "%Y-%m-%d").date(), 15))+1
+				days_in_year = flt(date_diff(datetime.strptime(str(self.fiscal_year)+"-12-31", "%Y-%m-%d").date(), datetime.strptime(str(d.date_of_joining), "%Y-%m-%d").date()))
+				d.no_probation = 0
+			elif str(d.date_of_joining).split("-")[0] == str(self.fiscal_year) and flt(str(d.date_of_joining).split("-")[1]) >= 10:
+				d.days_worked = 0
+				d.no_probation = 0
+			if str(d.date_of_joining).split("-")[0] == str(int(self.fiscal_year)-1) and flt(str(d.date_of_joining).split("-")[1]) > 9 and d.no_probation == 0:
+				d.days_worked = date_diff(datetime.strptime(str(self.fiscal_year)+"-12-31", "%Y-%m-%d").date(), add_days(datetime.strptime(str(add_months(d.date_of_joining,3)), "%Y-%m-%d").date(), 15))+1
+				days_in_year = flt(date_diff(datetime.strptime(str(self.fiscal_year)+"-12-31", "%Y-%m-%d").date(), datetime.strptime(str(self.fiscal_year)+"-01-01", "%Y-%m-%d").date()))+1
+				if d.no_probation != 1:
+					d.no_probation = 0
+			if str(d.date_of_joining).split("-")[0] != str(int(self.fiscal_year)-1) and str(d.date_of_joining).split("-")[0] != str(self.fiscal_year):
+				d.no_probation = 1
+
+			d.days_worked = d.days_worked - total_leave_days
+			if d.days_worked < 0:
+				d.days_worked = 0
+			# if d.status == 'Active':
+				# if d.no_probation == 0:
+				# else:
+				# 	d.amount = flt(flt(flt(d.pbvi_percent/100)*d.total_basic_pay),2)
+			d.amount = flt((flt(flt(d.pbvi_percent/100)*d.total_basic_pay)/days_in_year)*d.days_worked,2)
+			# else:
+			# 	d.amount = flt(flt(flt(d.pbvi_percent/100)*d.total_basic_pay),2)
 			row.update(d)
 			

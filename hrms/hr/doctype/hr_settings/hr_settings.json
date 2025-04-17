@@ -178,6 +178,8 @@
   "add_semso",
   "column_break_8shme",
   "remove_semso",
+  "tb_pbvi",
+  "use_flat_pbvi",
   "tb_travel",
   "return_day_dsa",
   "training_dsa",
@@ -1177,13 +1179,24 @@
   {
    "fieldname": "section_break_u6ktn",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "tb_pbvi",
+   "fieldtype": "Tab Break",
+   "label": "PBVI Settings"
+  },
+  {
+   "default": "0",
+   "fieldname": "use_flat_pbvi",
+   "fieldtype": "Check",
+   "label": "Use Flat PBVI Percent"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-24 19:08:17.370946",
+ "modified": "2025-04-15 15:01:43.359996",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

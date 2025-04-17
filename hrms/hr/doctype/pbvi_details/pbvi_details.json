@@ -11,17 +11,23 @@
   "employment_type",
   "leaving_type",
   "branch",
+  "pbvi_percent",
+  "unit_rating",
   "column_break_6",
   "basic_pay",
   "total_basic_pay",
   "date_of_joining",
   "relieving_date",
   "cost_center",
+  "days_worked",
+  "employee_rating",
   "data_12",
   "amount",
   "tax_amount",
+  "tpn_number",
   "balance_amount",
-  "days_worked",
+  "deduction_amount",
+  "total_rating",
   "column_break_16",
   "salary_mode",
   "bank_name",
@@ -143,12 +149,50 @@
    "label": "Cost Center",
    "options": "Cost Center",
    "read_only": 1
+  },
+  {
+   "fieldname": "pbvi_percent",
+   "fieldtype": "Float",
+   "label": "PBVI Percent",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "unit_rating",
+   "fieldtype": "Float",
+   "label": "Unit Rating(50%)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_rating",
+   "fieldtype": "Data",
+   "label": "Employee Rating(50%)"
+  },
+  {
+   "fieldname": "total_rating",
+   "fieldtype": "Float",
+   "label": "Total Rating"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "tpn_number",
+   "fieldtype": "Data",
+   "label": "TPN Number",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "deduction_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Deductions",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-19 14:28:47.300937",
+ "modified": "2025-04-14 13:22:07.077872",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PBVI Details",

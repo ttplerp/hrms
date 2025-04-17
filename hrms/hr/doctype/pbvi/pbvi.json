@@ -19,6 +19,7 @@
   "below",
   "amount_details",
   "pbvi_percent",
+  "company_achievement",
   "get_pbva",
   "column_break_14",
   "total_amount",
@@ -31,6 +32,9 @@
   "section_break_21",
   "company",
   "column_break_23",
+  "journal_entry",
+  "sb_deductions",
+  "deductions",
   "amended_from"
  ],
  "fields": [
@@ -177,16 +181,40 @@
    "read_only": 1
   },
   {
+   "description": "Note: <b>PBVA percent for particular employee should be set in Employee master data.</b>",
    "fieldname": "pbvi_percent",
    "fieldtype": "Percent",
    "label": "PBVI percent",
+   "reqd": 1
+  },
+  {
+   "fieldname": "journal_entry",
+   "fieldtype": "Data",
+   "label": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_deductions",
+   "fieldtype": "Section Break",
+   "label": "Deductions"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "deductions",
+   "fieldtype": "Table",
+   "options": "PBVI Deductions"
+  },
+  {
+   "fieldname": "company_achievement",
+   "fieldtype": "Float",
+   "label": "Company Achievement",
    "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-07 16:17:06.486726",
+ "modified": "2025-04-14 15:33:12.766917",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PBVI",

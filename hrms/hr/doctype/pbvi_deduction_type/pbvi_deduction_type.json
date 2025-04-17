@@ -1,0 +1,56 @@
+{
+ "actions": [],
+ "autoname": "field:deduction_type",
+ "creation": "2025-04-14 13:55:42.614390",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "deduction_type",
+  "gl_head"
+ ],
+ "fields": [
+  {
+   "fieldname": "deduction_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Deduction Type",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "gl_head",
+   "fieldtype": "Link",
+   "label": "GL Head",
+   "options": "Account"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-04-14 14:06:55.861144",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "PBVI Deduction Type",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

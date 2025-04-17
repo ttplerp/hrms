@@ -1,0 +1,72 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-04-14 14:20:16.257262",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "employee",
+  "employee_name",
+  "cb_01",
+  "deduction_type",
+  "amount",
+  "sb_01",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name"
+  },
+  {
+   "fieldname": "cb_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "deduction_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Deduction Type",
+   "options": "PBVI Deduction Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb_01",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-04-14 14:20:16.257262",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "PBVI Deductions",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
