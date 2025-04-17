@@ -65,12 +65,21 @@ class PBVI(Document):
 		start = str(self.fiscal_year)+'-01-01'
 		end   = str(self.fiscal_year)+'-12-31'
 		days_in_year = date_diff(end, start)+1
+		row = 1
 		if self.items:
 			tot = tax = net = ded = 0
 			for a in self.items:
-				
+				if a.returning == 1:
+					if str(a.date_of_joining).split("-")[0] != str(self.fiscal_year):
+						frappe.throw("Employees returning from leave joining date for Employee {}({}) at row {} should be during fiscal year {}.".format(a.employee_name, a.employee, row, self.fiscal_year))
+					a.days_worked = date_diff(getdate(str(self.fiscal_year)+"-12-31"), a.date_of_joining)+1
+					if a.days_worked < 0:
+						a.days_worked = 0
 				# a.amount	= flt(a.total_basic_pay)*flt(self.pbvi_percent)/100
-				a.amount = flt((flt(flt(a.pbvi_percent/100)*a.total_basic_pay)/days_in_year)*a.days_worked,2)
+				if flt(days_in_year) != flt(a.days_worked):
+					a.amount = flt(flt(flt(flt(flt(a.pbvi_percent,2)/100)*a.total_basic_pay,2)/days_in_year,2)*a.days_worked,2)
+				else:
+					a.amount = flt(flt(flt(a.pbvi_percent,2)/100)*a.total_basic_pay,2)
 				a.tax_amount = flt(get_salary_tax(a.amount),2)
 				a.deduction_amount = flt(deductions.get(a.employee))
 				a.balance_amount = flt(a.amount,2) - flt(a.tax_amount,2) - flt(a.deduction_amount,2)
@@ -78,6 +87,7 @@ class PBVI(Document):
 				tax += flt(a.tax_amount,2)
 				net += flt(a.balance_amount,2)
 				ded += flt(a.deduction_amount,2)
+				row += 1
 
 			self.total_amount = tot
 			self.tax_amount   = tax
@@ -257,114 +267,11 @@ class PBVI(Document):
 		start = str(self.fiscal_year)+'-01-01'
 		end   = str(self.fiscal_year)+'-12-31'
 		days_in_year = date_diff(end, start)+1
-		# query = """select
-		# 		e.name as employee,
-		# 		e.employee_name,
-		# 		e.employment_type,
-		# 		e.branch,
-		# 		e.date_of_joining,
-		# 		e.relieving_date,
-		# 		# e.reason_for_resignation as leaving_type,
-		# 		e.salary_mode,
-		# 		e.bank_name,
-		# 		e.bank_ac_no,
-		# 		e.cost_center,
-		# 		datediff(least(ifnull(e.relieving_date,'9999-12-31'),'{2}'),
-		# 		greatest(e.date_of_joining,'{1}'))+1 days_worked,
-		# 		(select
-		# 			sd.amount
-		# 			from
-		# 				`tabSalary Detail` sd,
-		# 				`tabSalary Slip` sl
-		# 			where sd.parent = sl.name
-		# 			and sl.employee = e.name
-		# 			and sd.salary_component = 'Basic Pay'
-		# 			and sl.docstatus = 1
-		# 			and sl.fiscal_year = {0}
-		# 			and (sd.salary_component = 'Basic Pay'
-		# 			or exists(select 1 from `tabSalary Component` sc
-		# 				where sc.name = sd.salary_component
-		# 				and sc.is_pf_deductible = 1
-		# 				and sc.type = 'Earning')
-		# 				)
-		# 				and exists(select 1
-		# 					from `tabSalary Slip Item` ssi, `tabSalary Structure` ss
-		# 					where ssi.parent = sl.name
-		# 					and ss.name = ssi.salary_structure
-		# 					and ss.eligible_for_pbvi = 1)
-		# 				order by sl.month desc limit 1
-		# 		) as basic_pay,
-		# 		(select
-		# 			sum(sd.amount)
-		# 			from
-		# 				`tabSalary Detail` sd,
-		# 				`tabSalary Slip` sl
-		# 			where sd.parent = sl.name
-		# 			and sl.employee = e.name
-		# 			and sd.salary_component = 'Basic Pay'
-		# 			and sl.docstatus = 1
-		# 			and sl.fiscal_year = {0}
-		# 			and (sd.salary_component = 'Basic Pay'
-		# 			or exists(select 1 from `tabSalary Component` sc
-		# 				where sc.name = sd.salary_component
-		# 				and sc.is_pf_deductible = 1
-		# 				and sc.type = 'Earning')
-		# 		)
-		# 		and exists(select 1
-		# 			from 
-		# 				`tabSalary Slip Item` ssi,
-		# 				 `tabSalary Structure` ss
-		# 			where ssi.parent = sl.name
-		# 			and ss.name = ssi.salary_structure
-		# 			and ss.eligible_for_pbvi = 1)
-		# 		) as total_basic_pay,
-		# 		((select
-		# 			sum(sd.amount)
-		# 			from
-		# 				`tabSalary Detail` sd,
-		# 				`tabSalary Slip` sl
-		# 			where sd.parent = sl.name
-		# 			and sl.employee = e.name
-		# 			and sd.salary_component = 'Basic Pay'
-		# 			and sl.docstatus = 1
-		# 			and sl.fiscal_year = {0}
-		# 			and (sd.salary_component = 'Basic Pay'
-		# 		or exists(select 1 from `tabSalary Component` sc
-		# 			where sc.name = sd.salary_component
-		# 			and sc.is_pf_deductible = 1
-		# 			and sc.type = 'Earning')
-		# 		)
-		# 		and exists(select 1
-		# 			from 
-		# 				`tabSalary Slip Item` ssi, 
-		# 				`tabSalary Structure` ss
-		# 			where ssi.parent = sl.name
-		# 			and ss.name = ssi.salary_structure
-		# 			and ss.eligible_for_pbvi = 1)
-		# 		)/100*{5}) as amount
-		# 		from tabEmployee e
-		# 		where (
-		# 				('{3}' = 'Active' and e.date_of_joining <= '{2}' and ifnull(e.relieving_date,'9999-12-31') > '{2}')
-		# 				or
-		# 				('{3}' = 'Left' and ifnull(e.relieving_date,'9999-12-31') between '{1}' and '{2}')
-		# 				or
-		# 				('{3}' = 'All' and e.date_of_joining <= '{2}' and ifnull(e.relieving_date,'9999-12-31') >= '{1}')
-		# 			)
-		# 		and not exists(select 1
-		# 			from 
-		# 				`tabPBVI Details` bd,
-		# 				 `tabPBVI` b
-		# 			where b.fiscal_year = '{0}'
-		# 			and b.name <> '{4}'
-		# 			and bd.parent = b.name
-		# 			and bd.employee = e.employee
-		# 			and b.docstatus in (0,1))
-		# 		order by e.branch
-		# 				""".format(self.fiscal_year, start, end, self.employee_status, self.name, self.pbvi_percent)
 		query = """SELECT
 						e.name as employee,
 						e.employee_name,
 						e.employment_type,
+						e.designation,
 						e.branch,
 						e.date_of_joining,
 						e.relieving_date,
@@ -373,14 +280,11 @@ class PBVI(Document):
 						e.bank_name,
 						e.bank_ac_no,
 						e.cost_center,
+						e.reports_to,
 						datediff(least(ifnull(e.relieving_date, '9999-12-31'), '{2}'), greatest(e.date_of_joining, '{1}')) + 1 AS days_worked,
-						sd.amount AS basic_pay,
-						SUM(sd.amount) AS total_basic_pay,
-						(SUM(sd.amount)/100*{5}) AS amount
+						0 AS total_basic_pay
 					FROM
 						tabEmployee e
-						LEFT JOIN `tabSalary Slip` sl ON sl.employee = e.name AND sl.docstatus = 1 AND sl.fiscal_year = {0}
-						LEFT JOIN `tabSalary Detail` sd ON sd.parent = sl.name AND sd.salary_component = 'Basic Pay'
 					WHERE
 						(
 							('{3}' = 'Active' AND e.date_of_joining <= '{2}' AND IFNULL(e.relieving_date, '9999-12-31') > '{2}')
@@ -406,8 +310,7 @@ class PBVI(Document):
 						e.bank_name,
 						e.bank_ac_no,
 						e.cost_center,
-						days_worked,
-						basic_pay
+						days_worked
 					ORDER BY
 						e.branch;
 		""".format(self.fiscal_year, start, end, self.employee_status, self.name, self.pbvi_percent)
@@ -419,16 +322,37 @@ class PBVI(Document):
 		end = getdate(end)
 		for d in entries:
 			# d.amount = 0
+			d.basic_pay = 0
 			row = self.append('items', {})
-			total_leave_days = 0
-			d.unit_rating = frappe.db.get_value(
-       				"Performance Evaluation",
-           			{
-                  		"employee": frappe.db.get_value("Department", d.division, "approver"),
-						"pms_calendar": self.fiscal_year
-                    },
-					"final_score_percent"
-           )
+			total_leave_days = basic_pay = 0
+
+			if frappe.db.get_value("Department", d.division, "approver") == d.employee and d.designation != "Chief Executive Officer":
+				d.unit_rating = frappe.db.get_value(
+						"Performance Evaluation",
+						{
+							"employee": d.reports_to,
+							"pms_calendar": self.fiscal_year
+						},
+						"form_i_total_rating_100"
+				)
+			elif frappe.db.get_value("Department", d.division, "approver") == d.employee and d.designation == "Chief Executive Officer":
+				d.unit_rating = frappe.db.get_value(
+						"Performance Evaluation",
+						{
+							"employee": d.employee,
+							"pms_calendar": self.fiscal_year
+						},
+						"form_i_total_rating_100"
+				)	
+			else:
+				d.unit_rating = frappe.db.get_value(
+						"Performance Evaluation",
+						{
+							"employee": frappe.db.get_value("Department", d.division, "approver"),
+							"pms_calendar": self.fiscal_year
+						},
+						"form_i_total_rating_100"
+				)
 			# 	d.employee_rating =frappe.db.get_value(
 			# 			"Performance Evaluation",
 			#    			{
@@ -437,6 +361,12 @@ class PBVI(Document):
 			#             },
 			# 			"final_score_percent"
 			#    )
+			if frappe.db.exists("Salary Slip", {"employee":d.employee, "fiscal_year": self.fiscal_year}):
+				basic_pay = frappe.db.sql("""select sd.amount as basic_pay from `tabSalary Slip` ss, `tabSalary Detail` sd
+							  where sd.parent = ss.name and sd.salary_component = 'Basic Pay' and ss.docstatus = 1
+							  and ss.fiscal_year = '{}' and ss.employee = '{}' order by month desc limit 1""".format(self.fiscal_year, d.employee),as_dict=1)
+				if len(basic_pay) > 0:
+					d.basic_pay = flt(basic_pay[0].basic_pay,2)
 			employee_rating =frappe.db.sql("""
                                     select count(name) as nos, sum(final_score_percent) as final_score
                                     from `tabPerformance Evaluation` where docstatus = 1 and employee = '{}'
@@ -445,18 +375,21 @@ class PBVI(Document):
 			if frappe.db.get_value("Employee", d.employee, "pbvi_percent") == 0 or not frappe.db.get_value("Employee", d.employee, "pbvi_percent"):
 				if not d.unit_rating or d.unit_rating == 0:
 					d.unit_rating = flt(frappe.db.get_value("Department", d.department, "unit_rating"))
-				d.unit_rating = 0 if not d.unit_rating else d.unit_rating * 0.5
+				d.unit_rating = 0 if not d.unit_rating else flt(d.unit_rating * 0.5,2)
 				d.employee_rating = 0
 				if employee_rating:
 					d.employee_rating = employee_rating[0].final_score
 				if not d.employee_rating:
 					d.employee_rating = 0
-				d.employee_rating = d.employee_rating * 0.5
-				d.total_rating = d.unit_rating+d.employee_rating
+				if d.employee_rating < flt(75):
+					d.employee_rating = 0
+					d.unit_rating = 0
+				d.employee_rating = flt(d.employee_rating * 0.5,2)
+				d.total_rating = flt(d.unit_rating+d.employee_rating,2)
 				if frappe.db.get_single_value("HR Settings", "use_flat_pbvi") == 0:
 					if self.company_achievement < 95:
-						if d.total_rating < self.company_achievement:
-							d.pbvi_percent = flt((d.total_rating/self.company_achievement)*(self.pbvi_percent),3)
+						if d.total_rating < 95:
+							d.pbvi_percent = flt((d.total_rating/95)*(self.pbvi_percent),3)
 						else:
 							d.pbvi_percent = self.pbvi_percent
 					else:
@@ -468,24 +401,36 @@ class PBVI(Document):
 					d.pbvi_percent = flt(self.pbvi_percent, 3)
 			else:
 				d.pbvi_percent = flt(frappe.db.get_value("Employee", d.employee, "pbvi_percent"),3)
-
-			d.total_basic_pay = 0 if not d.total_basic_pay else d.total_basic_pay
+			
+			no_months = 0
+			if str(d.date_of_joining).split("-")[0] == self.fiscal_year:
+				if d.relieving_date:
+					if str(d.relieving_date).split("-")[0] == self.fiscal_year:
+						no_months = int(str(d.relieving_date).split("-")[1])-int(str(d.date_of_joining).split("-")[1])+1
+					elif str(d.relieving_date).split("-")[0] > self.fiscal_year:
+						no_months = 12 - int(str(d.date_of_joining).split("-")[1])+1
+				else:
+					no_months = 12 - int(str(d.date_of_joining).split("-")[1])+1
+			else:
+				no_months = 12
+			# d.total_basic_pay = 0 if not d.total_basic_pay else d.total_basic_pay
+			d.total_basic_pay = d.basic_pay * no_months
 			days_in_year = date_diff(end, start)+1
-			total_leave_days = frappe.db.sql("select sum(ifnull(total_leave_days,0)) as leaves from `tabLeave Application` where docstatus = 1 and employee = '{}' and year(from_date) = '{}' and leave_type not in ('Maternity Leave', 'Study Leave', 'EOL')".format(d.employee, self.fiscal_year), as_dict=1)
+			total_leave_days = frappe.db.sql("select sum(ifnull(total_leave_days,0)) as leaves from `tabLeave Application` where docstatus = 1 and employee = '{}' and year(from_date) = '{}' and leave_type not in ('Study Leave', 'EOL')".format(d.employee, self.fiscal_year), as_dict=1)
 
-			if len(total_leave_days) > 0:
-				total_leave_days = total_leave_days[0].leaves
-			else:
-				total_leave_days = 0
-			if not total_leave_days:
-				total_leave_days = 0
-			if flt(total_leave_days) > 30:
-				total_leave_days -= 30
-			else:
-				total_leave_days = 0
+			# if len(total_leave_days) > 0:
+			# 	total_leave_days = total_leave_days[0].leaves
+			# else:
+			# 	total_leave_days = 0
+			# if not total_leave_days:
+			# 	total_leave_days = 0
+			# if flt(total_leave_days) > 30:
+			# 	total_leave_days -= 30
+			# else:
+			total_leave_days = 0
 			if str(d.date_of_joining).split("-")[0] == str(self.fiscal_year) and flt(str(d.date_of_joining).split("-")[1]) < 10:
 				d.days_worked = date_diff(datetime.strptime(str(self.fiscal_year)+"-12-31", "%Y-%m-%d").date(), add_days(datetime.strptime(str(self.fiscal_year)+"-"+str(int(str(d.date_of_joining).split("-")[1])+3)+"-"+str(d.date_of_joining).split("-")[2], "%Y-%m-%d").date(), 15))+1
-				days_in_year = flt(date_diff(datetime.strptime(str(self.fiscal_year)+"-12-31", "%Y-%m-%d").date(), datetime.strptime(str(d.date_of_joining), "%Y-%m-%d").date()))
+				days_in_year = flt(date_diff(datetime.strptime(str(self.fiscal_year)+"-12-31", "%Y-%m-%d").date(), datetime.strptime(str(d.date_of_joining), "%Y-%m-%d").date()))+1
 				d.no_probation = 0
 			elif str(d.date_of_joining).split("-")[0] == str(self.fiscal_year) and flt(str(d.date_of_joining).split("-")[1]) >= 10:
 				d.days_worked = 0
@@ -505,7 +450,14 @@ class PBVI(Document):
 				# if d.no_probation == 0:
 				# else:
 				# 	d.amount = flt(flt(flt(d.pbvi_percent/100)*d.total_basic_pay),2)
-			d.amount = flt((flt(flt(d.pbvi_percent/100)*d.total_basic_pay)/days_in_year)*d.days_worked,2)
+			# if d.employee == "1041":
+			# 	frappe.throw("Days in Year: "+str(days_in_year)+" Days Worked"+str(d.days_worked)+" Total Basic Pay: "+str(d.total_basic_pay)+" PBVA Amount: "+str(flt((flt(flt(d.pbvi_percent/100)*d.total_basic_pay)/days_in_year)*d.days_worked,2)))
+			if flt(days_in_year) != flt(d.days_worked):
+				d.amount = flt(flt(flt(flt(flt(d.pbvi_percent,2)/100)*d.total_basic_pay,2)/days_in_year,2)*d.days_worked,2)
+			else:
+				d.amount = flt(flt(flt(d.pbvi_percent,2)/100)*d.total_basic_pay,2)
+			# if d.employee == "1041":
+			# 	frappe.throw(str(d.amount)+" "+str(flt(d.pbvi_percent,2)))
 			# else:
 			# 	d.amount = flt(flt(flt(d.pbvi_percent/100)*d.total_basic_pay),2)
 			row.update(d)
