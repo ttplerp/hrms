@@ -92,6 +92,7 @@
   {
    "fieldname": "employee",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Employee",
    "options": "Employee",
    "reqd": 1
@@ -335,7 +336,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-11 11:52:27.335779",
+ "modified": "2025-04-18 15:00:12.795046",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Overtime Application",
