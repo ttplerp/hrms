@@ -20,6 +20,7 @@
   "column_break_10",
   "total_mpi_amount",
   "total_deduction",
+  "total_tax_amount",
   "net_amount",
   "section_break_14",
   "get_mpi_details",
@@ -183,12 +184,19 @@
    "label": "Process Branch",
    "options": "Branch",
    "reqd": 1
+  },
+  {
+   "fieldname": "total_tax_amount",
+   "fieldtype": "Currency",
+   "label": "Total Tax Amount",
+   "precision": "2",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-31 15:05:55.353180",
+ "modified": "2025-04-18 16:28:56.433692",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MPI Transaction",

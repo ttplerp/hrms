@@ -4,6 +4,7 @@
 import frappe
 from frappe.model.document import Document
 from frappe.utils import flt, cint, getdate, money_in_words
+from hrms.hr.hr_custom_functions import get_salary_tax
 from collections import defaultdict
 class MPITransaction(Document):
 	def validate(self):
@@ -14,6 +15,7 @@ class MPITransaction(Document):
 		self.mpi_expense_account = frappe.db.get_value("Salary Component",{"name":"MPI","enabled":1},"gl_head")
 		self.payable_account =  frappe.db.get_value("Company", self.company,"employee_payable_account")
 		self.health_contribution_account = frappe.db.get_value("Salary Component",{"name":"Health Contribution","enabled":1},"gl_head")
+		self.tax_account = frappe.db.get_value("Salary Component",{"name":"Salary Tax","enabled":1},"gl_head")
 
 	def on_submit(self):
 		self.post_journal_entry()
@@ -95,20 +97,28 @@ class MPITransaction(Document):
 						"reference_type": self.doctype,            
 						"reference_name": self.name        
 					})
+		accounts.append({
+						"account": self.tax_account,
+						"debit_in_account_currency": flt(self.total_tax_amount),
+						"credit_in_account_currency": 0,            
+						"cost_center": self.cost_center,            
+						"reference_type": self.doctype,            
+						"reference_name": self.name        
+					})
 		accounts.append({            
 						"account": bank_account,            
-						"credit_in_account_currency": flt(self.total_deduction,2),            
+						"credit_in_account_currency": flt(self.total_deduction,2)+flt(self.total_tax_amount),            
 						"debit_in_account_currency": 0,            
 						"cost_center": self.cost_center     
 					})
 		je.update({
 			"doctype": "Journal Entry",
 			"voucher_type": "Bank Entry",
-			"title": "Health Contribution from Employee MPI",
-			"user_remark": "Note: health contribution from employee mpi",
+			"title": "Tax and Health Contribution from Employee MPI",
+			"user_remark": "Note: tax and health contribution from employee mpi",
 			"posting_date": self.posting_date,
 			"company": self.company,
-			"total_amount_in_words": money_in_words(self.total_deduction),
+			"total_amount_in_words": money_in_words(flt(self.total_deduction)+flt(self.total_tax_amount)),
 			"branch": self.branch,
 			"accounts":accounts
 		})
@@ -125,6 +135,7 @@ class MPITransaction(Document):
 		cost_center = self.cost_center
 		payable_account = self.payable_account
 		health_contribution_account = self.health_contribution_account
+		tax_account = self.tax_account
 		for d in self.items:
 			accounts.append({
 				"account": payable_account,
@@ -151,13 +162,21 @@ class MPITransaction(Document):
 				"reference_type": self.doctype,
 				"reference_name": self.name
 			})
+		accounts.append({
+				"account": tax_account,
+				"credit_in_account_currency": flt(self.total_tax_amount),
+				"cost_center": self.cost_center,
+				"reference_type": self.doctype,
+				"reference_name": self.name
+			})
+
 		total_amount_in_words = money_in_words(self.total_mpi_amount)
 
 		je.update({
 			"doctype": "Journal Entry",
 			"voucher_type": "Journal Entry",
-			"title": "MPI Payment to Employee",
-			"user_remark": "Note: MPI Payment to Employee",
+			"title": "MPI Payable to Employee",
+			"user_remark": "Note: MPI Payable to Employee",
 			"posting_date": self.posting_date,
 			"company": self.company,
 			"total_amount_in_words": total_amount_in_words,
@@ -169,19 +188,22 @@ class MPITransaction(Document):
 		return je.name
 
 	def calculate_total(self):
-		total_amount = total_mpi_amount = total_deduction = net_amount = 0
+		total_amount = total_mpi_amount = total_deduction = total_tax = net_amount = 0
 		for d in self.items:
 			d.mpi_amount = flt(flt(d.gross_basic_pay) * flt(self.mpi_percent) / 100,2)
+			d.tax_amount = get_salary_tax(d.mpi_amount)
 			d.deduction_amount = flt(flt(d.mpi_amount) * flt(self.deduction_percent)/ 100,0)
-			d.net_mpi_amount = flt(flt(d.mpi_amount) - flt(d.deduction_amount),2)
+			d.net_mpi_amount = flt(flt(d.mpi_amount) - flt(d.deduction_amount) - flt(d.tax_amount),2)
 			total_mpi_amount 	+= flt(d.mpi_amount,2)
 			total_deduction 	+= flt(d.deduction_amount,0)
+			total_tax 	+= flt(d.tax_amount,0)
 			total_amount       	+= flt(d.gross_basic_pay,2)
 			net_amount 			+= flt(d.net_mpi_amount,2)
 
 		self.total_amount 		= flt(total_amount,2)
 		self.total_mpi_amount 	= flt(total_mpi_amount,2)
 		self.total_deduction 	= flt(total_deduction,0)
+		self.total_tax_amount 	= flt(total_tax,0)
 		self.net_amount 		= flt(net_amount,2)
 	@frappe.whitelist()
 	def get_mpi_details(self):
@@ -194,7 +216,7 @@ class MPITransaction(Document):
 		sql_query = '''
 			SELECT e.name as employee, e.employee_name,
 				e.branch, e.cost_center, e.designation,
-				e.date_of_joining, 
+				e.date_of_joining, e.tpn_number,
 				(CASE WHEN e.employment_type = 'Contract' 
 					THEN e.contract_end_date ELSE e.date_of_retirement END) as relieving_date,
 				ss.name as salary_structure,
@@ -212,17 +234,20 @@ class MPITransaction(Document):
 		results = frappe.db.sql(sql_query, params, as_dict=True)
 
 		self.set("items", [])
-		total_amount = total_mpi_amount = total_deduction = net_amount = 0
+		total_amount = total_mpi_amount = total_deduction = total_tax = net_amount = 0
 		for d in results:
 			mpi_amount = flt(flt(d.gross_basic_pay) * flt(self.mpi_percent) / 100, 2)
+			tax_amount = get_salary_tax(mpi_amount)
 			deduction_amount = flt(flt(mpi_amount) * flt(self.deduction_percent) / 100, 0)
-			net_mpi_amount = flt(flt(mpi_amount) - flt(deduction_amount), 2)
+			net_mpi_amount = flt(flt(mpi_amount) - flt(deduction_amount) - flt(tax_amount), 2)
 			d.update({
 				"mpi_amount": flt(mpi_amount, 2),
 				"deduction_amount": flt(deduction_amount, 0),
-				"net_mpi_amount": flt(net_mpi_amount, 2)
+				"net_mpi_amount": flt(net_mpi_amount, 2),
+				"tax_amount": flt(tax_amount)
 			})
 			total_mpi_amount += flt(mpi_amount, 2)
+			total_tax += flt(tax_amount, 2)
 			total_deduction += flt(deduction_amount, 0)
 			total_amount += flt(d.gross_basic_pay, 2)
 			net_amount += flt(d.net_mpi_amount, 2)
@@ -232,6 +257,7 @@ class MPITransaction(Document):
 		self.total_amount = flt(total_amount, 2)
 		self.total_mpi_amount = flt(total_mpi_amount, 2)
 		self.total_deduction = flt(total_deduction, 2)
+		self.total_tax_amount = flt(total_tax, 2)
 		self.net_amount = flt(net_amount, 2)
 
 

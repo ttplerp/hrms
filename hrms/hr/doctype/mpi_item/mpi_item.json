@@ -14,9 +14,11 @@
   "gross_basic_pay",
   "joining_date",
   "relieving_date",
+  "tpn_number",
   "total_days_worked",
   "column_break_10",
   "mpi_amount",
+  "tax_amount",
   "deduction_amount",
   "net_mpi_amount",
   "section_break_14",
@@ -65,7 +67,6 @@
   {
    "fieldname": "basic_pay",
    "fieldtype": "Currency",
-   "in_list_view": 1,
    "label": "Basic Pay",
    "read_only": 1
   },
@@ -144,12 +145,26 @@
   {
    "fieldname": "column_break_18",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tax_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Tax Amount",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.tpn_number",
+   "fieldname": "tpn_number",
+   "fieldtype": "Data",
+   "label": "TPN Number",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-03-27 12:16:20.073170",
+ "modified": "2025-04-18 17:15:12.014357",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MPI Item",
