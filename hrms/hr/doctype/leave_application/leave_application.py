@@ -78,6 +78,30 @@ class LeaveApplication(Document):
         self.set_half_day_date()
         if frappe.db.get_value("Leave Type", self.leave_type, "is_optional_leave"):
             self.validate_optional_leave()
+        if self.workflow_state == "Waiting CEO Approval" and self.docstatus == 0:
+            ceo = frappe.db.get_value("Employee", {"designation": "Chief Executive Officer", "status": "Active", "employment_status":  "In Service"}, ["user_id", "employee_name", "designation"])
+            officiating = get_officiating_employee(frappe.db.get_value("Employee", {"user_id":ceo[0]}))
+            if not officiating:
+                self.leave_approver = ceo[0]
+                self.leave_approver_name = ceo[1]
+                self.leave_approver_designation = ceo[2]
+            else:
+                officiating = get_officiating_employee(frappe.db.get_value("Employee", officiating[0].officiate), ["user_id", "employee_name", "designation"])
+                self.leave_approver = officiating[0]
+                self.leave_approver_name = officiating[1]
+                self.leave_approver_designation = officiating[2]
+        if self.workflow_state == "Waiting Supervisor Approval" and self.docstatus == 0:
+            supervisor = frappe.db.get_value("Employee", frappe.db.get_value("Employee", self.employee, "reports_to"), ["user_id", "employee_name", "designation"])
+            officiating = get_officiating_employee(frappe.db.get_value("Employee", {"user_id":supervisor[0]}))
+            if not officiating:
+                self.leave_approver = supervisor[0]
+                self.leave_approver_name = supervisor[1]
+                self.leave_approver_designation = supervisor[2]
+            else:
+                officiating = get_officiating_employee(frappe.db.get_value("Employee", officiating[0].officiate), ["user_id", "employee_name", "designation"])
+                self.leave_approver = officiating[0]
+                self.leave_approver_name = officiating[1]
+                self.leave_approver_designation = officiating[2]
         self.validate_applicable_after()
 
     def on_update(self):
