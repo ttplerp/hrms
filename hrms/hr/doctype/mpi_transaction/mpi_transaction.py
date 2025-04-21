@@ -89,14 +89,15 @@ class MPITransaction(Document):
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions = 1
 		accounts = []
-		accounts.append({
-						"account": self.health_contribution_account,
-						"debit_in_account_currency": flt(self.total_deduction,2),
-						"credit_in_account_currency": 0,            
-						"cost_center": self.cost_center,            
-						"reference_type": self.doctype,            
-						"reference_name": self.name        
-					})
+		if flt(self.total_deduction,2) > 0:
+			accounts.append({
+							"account": self.health_contribution_account,
+							"debit_in_account_currency": flt(self.total_deduction,2),
+							"credit_in_account_currency": 0,            
+							"cost_center": self.cost_center,            
+							"reference_type": self.doctype,            
+							"reference_name": self.name        
+						})
 		accounts.append({
 						"account": self.tax_account,
 						"debit_in_account_currency": flt(self.total_tax_amount),
