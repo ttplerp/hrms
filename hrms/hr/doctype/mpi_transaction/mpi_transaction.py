@@ -155,13 +155,14 @@ class MPITransaction(Document):
 				"cost_center": key
 			})
 		
-		accounts.append({
-				"account": health_contribution_account,
-				"credit_in_account_currency": flt(self.total_deduction),
-				"cost_center": self.cost_center,
-				"reference_type": self.doctype,
-				"reference_name": self.name
-			})
+		if flt(self.total_deduction) > 0:
+			accounts.append({
+					"account": health_contribution_account,
+					"credit_in_account_currency": flt(self.total_deduction),
+					"cost_center": self.cost_center,
+					"reference_type": self.doctype,
+					"reference_name": self.name
+				})
 		accounts.append({
 				"account": tax_account,
 				"credit_in_account_currency": flt(self.total_tax_amount),
