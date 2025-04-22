@@ -97,7 +97,7 @@ class EmployeePMSEvaluatorMapper(Document):
 				max_idx = frappe.db.sql("""
 					SELECT MAX(idx) FROM `tabPerformance Evaluator` 
 					WHERE parent = %s
-				""", a.employee)[0][0] or 0
+				""", a.muster_roll_employee)[0][0] or 0
 
 				pe = frappe.new_doc("Performance Evaluator")
 				pe.parentfield='evaluators'
