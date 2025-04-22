@@ -103,7 +103,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-13 14:15:30.934682",
+ "modified": "2025-04-22 16:33:51.980338",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Attendance for Dashboard",
@@ -125,6 +125,5 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1,
- "track_seen": 1
+ "track_changes": 1
 }
