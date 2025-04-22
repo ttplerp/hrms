@@ -81,6 +81,7 @@
   "material_request_approval_section",
   "mr_approvers",
   "imprest_settlement_administrators",
+  "center_store_approver",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -987,13 +988,19 @@
    "fieldtype": "Data",
    "label": "Loan Approver Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "center_store_approver",
+   "fieldtype": "Link",
+   "label": "Center Store Approver",
+   "options": "Employee"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-12-03 14:29:53.719174",
+ "modified": "2025-04-22 17:27:18.197038",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
