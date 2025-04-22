@@ -85,7 +85,9 @@
   "is_desuup",
   "desuup_id",
   "column_break_a4awx",
-  "batch_number"
+  "batch_number",
+  "disciplinary_actions_section",
+  "misconducts"
  ],
  "fields": [
   {
@@ -542,17 +544,18 @@
   },
   {
    "fieldname": "village",
-   "fieldtype": "Link",
-   "label": "Village",
-   "options": "Village"
+   "fieldtype": "Data",
+   "label": "Village"
   },
   {
+   "depends_on": "eval:doc.muster_roll_group==\"National\"",
    "fieldname": "gewog",
    "fieldtype": "Link",
    "label": "Gewog/Block",
    "options": "Gewog"
   },
   {
+   "depends_on": "eval:doc.muster_roll_group==\"National\"",
    "fieldname": "dzongkhag",
    "fieldtype": "Link",
    "label": "Dzongkhag/District",
@@ -578,11 +581,23 @@
    "label": "Care of (Thrikhadar)",
    "mandatory_depends_on": "eval:doc.muster_roll_group != 'National';",
    "options": "Muster Roll Employee"
+  },
+  {
+   "fieldname": "disciplinary_actions_section",
+   "fieldtype": "Tab Break",
+   "label": "Disciplinary Actions"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "misconducts",
+   "fieldtype": "Table",
+   "label": "Misconducts",
+   "options": "Employee Disciplinary Record Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-14 11:42:59.583134",
+ "modified": "2025-04-21 11:02:18.336528",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
