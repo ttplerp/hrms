@@ -65,8 +65,10 @@
   "email",
   "address_section",
   "dzongkhag",
+  "district",
   "column_break_5fsyg",
   "gewog",
+  "block",
   "village",
   "section_break_16",
   "internal_work_history",
@@ -593,11 +595,23 @@
    "fieldtype": "Table",
    "label": "Misconducts",
    "options": "Employee Disciplinary Record Item"
+  },
+  {
+   "depends_on": "eval:doc.muster_roll_group==\"Non-National\"",
+   "fieldname": "district",
+   "fieldtype": "Data",
+   "label": "Dzongkhag/District"
+  },
+  {
+   "depends_on": "eval:doc.muster_roll_group==\"Non-National\"",
+   "fieldname": "block",
+   "fieldtype": "Data",
+   "label": "Gewog/Block"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-21 11:02:18.336528",
+ "modified": "2025-04-23 09:37:50.848941",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
