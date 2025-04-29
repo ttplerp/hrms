@@ -140,6 +140,9 @@ frappe.ui.form.on('Salary Structure', {
 	eligible_for_house_rent_allowance: function(frm){
 		calculate_others(frm);
 	},
+	eligible_for_staff_welfare_loan: function(frm){
+		calculate_others(frm);
+	},
 	eligible_for_joint_custodian: function(frm){
 		calculate_others(frm);
 	},
