@@ -315,6 +315,7 @@ class LeaveEncashment(Document):
 					self.employee, self.leave_type
 				)
 			)
+
 		''' Commented and replaced with below code
 		self.leave_balance = (
 			allocation.total_leaves_allocated
@@ -348,8 +349,8 @@ class LeaveEncashment(Document):
 			self.flat_amount	   	= flt(employee_group.leave_encashment_amount)
 			self.encashment_amount 	= flt(employee_group.leave_encashment_amount)
 		elif leave_encashment_type == "Basic Pay":
-			self.basic_pay			= flt(pay.get("basic_pay"))
-			self.encashment_amount 	= (flt(pay.get("basic_pay"))/30)*flt(self.encashment_days)
+			self.basic_pay			= flt(pay.get("encashable_pay"))
+			self.encashment_amount 	= (flt(pay.get("encashable_pay"))/30)*flt(self.encashment_days)
 		elif leave_encashment_type == "Gross Pay":
 			self.gross_pay			= flt(pay.get("gross_pay"))
 			self.encashment_amount 	= (flt(pay.get("gross_pay"))/30)*flt(self.encashment_days)

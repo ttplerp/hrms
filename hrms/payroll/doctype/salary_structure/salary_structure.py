@@ -696,6 +696,7 @@ def has_record_permission(doc, user):
 
 def get_basic_and_gross_pay(employee, effective_date=today()):
 	struc = frappe.db.sql(""" select sst.name,
+			sum(case when (sd.salary_component = "Basic Pay" or sd.salary_component = "Personal Pay") then coalesce(sd.amount,0) else 0 end) encashable_pay,
 			sum(case when sd.salary_component = "Basic Pay" then coalesce(sd.amount,0) else 0 end) basic_pay,
 			sum(case when (sc.type = 'Earning' and (sd.salary_component = "Basic Pay" or coalesce(sc.field_name,'') != '')) then ifnull(sd.amount,0) else 0 end) gross_pay
 		from `tabSalary Structure` sst, `tabSalary Detail` sd, `tabSalary Component` sc
