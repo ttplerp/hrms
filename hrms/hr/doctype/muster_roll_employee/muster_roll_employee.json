@@ -600,18 +600,18 @@
    "depends_on": "eval:doc.muster_roll_group==\"Non-National\"",
    "fieldname": "district",
    "fieldtype": "Data",
-   "label": "Dzongkhag/District"
+   "label": "District"
   },
   {
    "depends_on": "eval:doc.muster_roll_group==\"Non-National\"",
    "fieldname": "block",
    "fieldtype": "Data",
-   "label": "Gewog/Block"
+   "label": "Block"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-23 09:37:50.848941",
+ "modified": "2025-04-30 09:57:44.630497",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
