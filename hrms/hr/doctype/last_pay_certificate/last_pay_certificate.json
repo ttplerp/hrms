@@ -31,6 +31,7 @@
   "department",
   "division",
   "section",
+  "fixed_basic_pay",
   "sb_period",
   "fiscal_year",
   "cb_03",
@@ -296,12 +297,17 @@
    "label": "Signed By Name",
    "read_only": 1,
    "reqd": 1
+  },
+  {
+   "fieldname": "fixed_basic_pay",
+   "fieldtype": "Currency",
+   "label": "Fixed Basic Pay"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-29 14:36:32.348417",
+ "modified": "2025-05-14 17:44:19.706401",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Last Pay Certificate",
