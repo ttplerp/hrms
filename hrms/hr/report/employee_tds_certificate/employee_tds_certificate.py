@@ -25,6 +25,8 @@ def get_data( filters=None):
 	data += get_bonus(filters)
 	#PVBA
 	data += get_pbva(filters)
+	#MPI
+	data += get_mpi_entries(filters)
 	#salary arrear
 	# data += get_salary_arrer(filters)
 	#bluk leave Encashment
@@ -147,6 +149,32 @@ def get_pbva(filters):
 								LEFT JOIN `tabPBVA Details` bd ON b.name = bd.parent AND bd.employee = '{employee}'
 								WHERE b.docstatus = 1 AND bd.amount > 0 
 								AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
+					  """.format( employee = filters.employee, fiscal_year=filters.fiscal_year, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
+					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=1)
+def get_mpi_entries(filters):
+	return frappe.db.sql("""SELECT 
+									ROUND(IFNULL(bd.mpi_amount,0),2) AS total, 
+									ROUND(IFNULL(bd.mpi_amount,0),2) AS taxable, 
+									ROUND(IFNULL(bd.tax_amount,0),2) as tds,
+									CONCAT(MONTH(b.posting_date),'-',
+									b.fiscal_year) AS month_year,
+									'MPI' AS type, 
+									0 as basic, 
+									0 as others, 
+									0 AS pf, 
+									0 AS gis, 
+									0 AS totalPfGis, 
+									0 AS health,
+									r.receipt_date,	
+									r.receipt_number,
+									b.posting_date
+								FROM `tabMPI Transaction` b
+								INNER JOIN `tabTDS Receipt Entry` r ON b.fiscal_year = r.fiscal_year AND r.purpose = 'MPI'
+								LEFT JOIN `tabMPI Item` bd ON b.name = bd.parent AND bd.employee = '{employee}'
+								WHERE b.docstatus = 1 AND bd.mpi_amount > 0 
+								AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
+								AND b.fiscal_year ='{fiscal_year}'
+								GROUP BY b.name
 					  """.format( employee = filters.employee, fiscal_year=filters.fiscal_year, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=1)
  
