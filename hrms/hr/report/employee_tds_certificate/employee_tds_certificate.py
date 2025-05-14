@@ -172,7 +172,7 @@ def get_mpi_entries(filters):
 								INNER JOIN `tabTDS Receipt Entry` r ON b.fiscal_year = r.fiscal_year AND r.purpose = 'MPI'
 								LEFT JOIN `tabMPI Item` bd ON b.name = bd.parent AND bd.employee = '{employee}'
 								WHERE b.docstatus = 1 AND bd.mpi_amount > 0
-								AND b.fiscal_year ='{fiscal_year}'
+								AND b.posting_date BETWEEN '{from_date}' AND '{to_date}'
 								GROUP BY b.name
 					  """.format( employee = filters.employee, fiscal_year=filters.fiscal_year, from_date = getdate(str(filters.fiscal_year) + "-01-01"),
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=1)
