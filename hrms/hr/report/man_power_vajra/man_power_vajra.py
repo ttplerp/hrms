@@ -47,11 +47,8 @@ def get_data(filters,designations):
 	
 	msw_data = frappe.db.sql('''
 							 SELECT 
-								
 								cost_center, 
-								
 								local_workers AS lw,
-								
 								`leave`, 
 								absent, 
 								present
@@ -164,6 +161,9 @@ def get_data(filters,designations):
 				result[i.cost_center]['absent'] = int(i.attendance_count) + absent
 			elif i.status == "Present":
 				result[i.cost_center]['present'] = int(i.attendance_count) + present
+			elif i.status == "On Tour":
+				result[i.cost_center]['present'] = int(i.attendance_count) + present
+			
 			
 			
 			# Ensure all keys are populated
