@@ -368,7 +368,8 @@ class PBVI(Document):
 				# 		"Performance Evaluation",
 				# 		{
 				# 			"employee": d.employee,
-				# 			"pms_calendar": self.fiscal_year
+				# 			"pms_calendar": self.fiscal_year,
+				# 			"docstatus": 1
 				# 		},
 				# 		"form_i_total_rating_100"
 				# )
@@ -383,7 +384,8 @@ class PBVI(Document):
 				# 		"Performance Evaluation",
 				# 		{
 				# 			"employee": d.employee,
-				# 			"pms_calendar": self.fiscal_year
+				# 			"pms_calendar": self.fiscal_year,
+				# 			"docstatus": 1
 				# 		},
 				# 		"form_i_total_rating_100"
 				# )
@@ -403,7 +405,8 @@ class PBVI(Document):
 				# 		"Performance Evaluation",
 				# 		{
 				# 			"employee": frappe.db.get_value("Department", d.division, "approver"),
-				# 			"pms_calendar": self.fiscal_year
+				# 			"pms_calendar": self.fiscal_year,
+				# 			"docstatus": 1
 				# 		},
 				# 		"form_i_total_rating_100"
 				# )
@@ -416,7 +419,8 @@ class PBVI(Document):
 			# 			"Performance Evaluation",
 			#    			{
 			#           		"employee": d.employee,
-			# 				"pms_calendar": self.fiscal_year
+			# 					"pms_calendar": self.fiscal_year,
+			# 					"docstatus": 1
 			#             },
 			# 			"final_score_percent"
 			#    )
