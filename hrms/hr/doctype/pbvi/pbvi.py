@@ -325,34 +325,93 @@ class PBVI(Document):
 			d.basic_pay = 0
 			row = self.append('items', {})
 			total_leave_days = basic_pay = 0
-
-			if frappe.db.get_value("Department", d.division, "approver") == d.employee and d.designation != "Chief Executive Officer":
-				d.unit_rating = frappe.db.get_value(
-						"Performance Evaluation",
-						{
-							"employee": d.reports_to,
-							"pms_calendar": self.fiscal_year
-						},
-						"form_i_total_rating_100"
-				)
-			elif frappe.db.get_value("Department", d.division, "approver") == d.employee and d.designation == "Chief Executive Officer":
-				d.unit_rating = frappe.db.get_value(
-						"Performance Evaluation",
-						{
-							"employee": d.employee,
-							"pms_calendar": self.fiscal_year
-						},
-						"form_i_total_rating_100"
-				)	
+			unit_rating = {}
+			unit_rating_1 = {}
+			unit_rating_2 = {}
+			reports_to = []
+			#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+			target_branch = frappe.db.sql("""
+				select 1
+				from `tabTarget Set Up` where docstatus = 1 and employee = '{}'
+				and pms_calendar = '{}' and division like '%Branch Operations Division%'
+			""".format(d.employee, self.fiscal_year))
+			target_dep = frappe.db.sql("""
+				select division
+				from `tabTarget Set Up` where docstatus = 1 and employee = '{}'
+				and pms_calendar = '{}'
+			""".format(d.employee, self.fiscal_year),as_dict=1)
+			if len(target_dep) > 0:
+				for td in target_dep:
+					reports_to.append(frappe.db.get_value("Department", target_dep, "approver"))
+			if len(target_branch) > 0:
+				target_branch = 1
 			else:
-				d.unit_rating = frappe.db.get_value(
-						"Performance Evaluation",
-						{
-							"employee": frappe.db.get_value("Department", d.division, "approver"),
-							"pms_calendar": self.fiscal_year
-						},
-						"form_i_total_rating_100"
-				)
+				target_branch = 0
+			#--------------------------------------------end----------------------------------------#
+			if frappe.db.get_value("Department", d.division, "approver") == d.employee and d.designation != "Chief Executive Officer" and target_branch == 0:
+				unit_rating = frappe.db.sql("""
+										select count(name) as nos, sum(form_i_total_rating_100) as final_score
+										from `tabPerformance Evaluation` where docstatus = 1 and employee in ({})
+										and pms_calendar = '{}'
+										""".format(", ".join("'"+sup+"'" for sup in reports_to), self.fiscal_year), as_dict = 1)
+				
+				# d.unit_rating = frappe.db.get_value(
+				# 		"Performance Evaluation",
+				# 		{
+				# 			"employee": d.reports_to,
+				# 			"pms_calendar": self.fiscal_year
+				# 		},
+				# 		"form_i_total_rating_100"
+				# )
+			elif frappe.db.get_value("Department", d.division, "approver") == d.employee and d.designation == "Chief Executive Officer" and target_branch == 0:
+				# d.unit_rating = frappe.db.get_value(
+				# 		"Performance Evaluation",
+				# 		{
+				# 			"employee": d.employee,
+				# 			"pms_calendar": self.fiscal_year
+				# 		},
+				# 		"form_i_total_rating_100"
+				# )
+				unit_rating =frappe.db.sql("""
+										select count(name) as nos, sum(form_i_total_rating_100) as final_score
+										from `tabPerformance Evaluation` where docstatus = 1 and employee = '{}'
+										and pms_calendar = '{}'
+										""".format(d.employee, self.fiscal_year), as_dict = 1)
+			#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+			elif target_branch == 1:
+				# d.unit_rating = frappe.db.get_value(
+				# 		"Performance Evaluation",
+				# 		{
+				# 			"employee": d.employee,
+				# 			"pms_calendar": self.fiscal_year
+				# 		},
+				# 		"form_i_total_rating_100"
+				# )
+				unit_rating_1 =frappe.db.sql("""
+										select count(name) as nos, sum(form_i_total_rating_100) as final_score
+										from `tabPerformance Evaluation` where docstatus = 1 and employee = '{}'
+										and pms_calendar = '{}'
+										""".format("1045", self.fiscal_year), as_dict = 1)
+				unit_rating_2 =frappe.db.sql("""
+										select count(name) as nos, sum(form_i_total_rating_100) as final_score
+										from `tabPerformance Evaluation` where docstatus = 1 and employee = '{}'
+										and pms_calendar = '{}'
+										""".format("0043", self.fiscal_year), as_dict = 1)
+			#--------------------------------------------end----------------------------------------#
+			else:
+				# d.unit_rating = frappe.db.get_value(
+				# 		"Performance Evaluation",
+				# 		{
+				# 			"employee": frappe.db.get_value("Department", d.division, "approver"),
+				# 			"pms_calendar": self.fiscal_year
+				# 		},
+				# 		"form_i_total_rating_100"
+				# )
+				unit_rating =frappe.db.sql("""
+										select count(name) as nos, sum(form_i_total_rating_100) as final_score
+										from `tabPerformance Evaluation` where docstatus = 1 and employee = '{}'
+										and pms_calendar = '{}'
+										""".format(d.employee, self.fiscal_year), as_dict = 1)
 			# 	d.employee_rating =frappe.db.get_value(
 			# 			"Performance Evaluation",
 			#    			{
@@ -372,13 +431,28 @@ class PBVI(Document):
                                     from `tabPerformance Evaluation` where docstatus = 1 and employee = '{}'
                                     and pms_calendar = '{}'
                                     """.format(d.employee, self.fiscal_year), as_dict = 1)
+			if target_branch == 0:#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+				if unit_rating[0].final_score:
+					d.unit_rating = unit_rating[0].final_score/unit_rating[0].nos
+				else:
+					d.unit_rating = 0
+			else:#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+				if unit_rating_1[0].final_score:#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+					unit_rating_1 = flt(unit_rating_1[0].final_score)/flt(unit_rating_1[0].nos)#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+				else:#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+					unit_rating_1 = 0#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+				if unit_rating_2[0].final_score:#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+					unit_rating_2 = (flt(unit_rating_2[0].final_score)/flt(unit_rating_2[0].nos))#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+				else:#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+					unit_rating_2 = 0#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
+				d.unit_rating = flt(unit_rating_1 * 0.5,2)+flt(unit_rating_2 * 0.5,2)#--------for pbva payout for fiscal year 2024 only / remove after use ------------------#
 			if frappe.db.get_value("Employee", d.employee, "pbvi_percent") == 0 or not frappe.db.get_value("Employee", d.employee, "pbvi_percent"):
 				if not d.unit_rating or d.unit_rating == 0:
 					d.unit_rating = flt(frappe.db.get_value("Department", d.department, "unit_rating"))
 				d.unit_rating = 0 if not d.unit_rating else flt(d.unit_rating * 0.5,2)
 				d.employee_rating = 0
-				if employee_rating:
-					d.employee_rating = employee_rating[0].final_score
+				if employee_rating[0].final_score:
+					d.employee_rating = employee_rating[0].final_score/employee_rating[0].nos
 				if not d.employee_rating:
 					d.employee_rating = 0
 				if d.employee_rating < flt(75):
