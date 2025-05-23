@@ -97,7 +97,7 @@
   {
    "fieldname": "days_worked",
    "fieldtype": "Int",
-   "label": "Days Worked"
+   "label": "Months Worked"
   },
   {
    "fieldname": "data_12",
@@ -198,7 +198,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-04-17 17:47:00.976720",
+ "modified": "2025-05-22 14:11:01.395868",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PBVI Details",
