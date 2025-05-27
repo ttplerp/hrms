@@ -25,8 +25,6 @@ def get_columns(data):
 		_("Loan From") + ":Data:160", 
 		_("Account No") + ":Data:140",  
 		_("Deduction Amount") + ":Currency:140", 
-		_("Total Deductible Amount") + ":Currency:170", 
-		_("Balance Amount") + ":Currency:140",
 		_("Company") + ":Link/Company:120", 
 		_("Cost Center") + ":Link/Cost Center:120", 
 		_("Branch") + ":Link/Branch:120", 
@@ -41,25 +39,51 @@ def get_columns(data):
 def get_data(filters):
 	conditions, filters = get_conditions(filters)
 
-	data = frappe.db.sql("""
-		select t1.employee, t3.employee_name, t3.passport_number, t1.designation,
-			t2.reference_type, t2.institution_name, t2.reference_number, t2.amount, t2.total_deductible_amount, t2.total_outstanding_amount,
-			t1.company, t1.cost_center, t1.branch, t1.department, t1.division, t1.section,
-			t1.fiscal_year, t1.month
-		from `tabSalary Slip` t1, `tabSalary Detail` t2, `tabEmployee` t3
-		where t1.docstatus = 1 %s
-		and t3.employee = t1.employee
-		and t2.parent = t1.name
-		and t2.parentfield = 'deductions'
-		and t2.institution_name != 'RICBL'
-		and exists
-			(select 1
-				from `tabSalary Component` sc
-				where sc.name = t2.salary_component
-			)
-		and t2.reference_type != 'NULL'
-	"""% conditions, filters)
-	return data
+	sql = """
+		SELECT 
+			t1.employee, 
+			t3.employee_name, 
+			t3.passport_number, 
+			t1.designation,
+			t2.reference_type, 
+			t2.institution_name, 
+			t2.reference_number, 
+			t2.amount, 
+			t1.company, 
+			t1.cost_center, 
+			t1.branch, 
+			t1.department, 
+			t1.division, 
+			t1.section,
+			t1.fiscal_year, 
+			CASE 
+				WHEN t1.month = 1 THEN 'Jan'
+				WHEN t1.month = 2 THEN 'Feb'
+				WHEN t1.month = 3 THEN 'Mar'
+				WHEN t1.month = 4 THEN 'Apr'
+				WHEN t1.month = 5 THEN 'May'
+				WHEN t1.month = 6 THEN 'Jun'
+				WHEN t1.month = 7 THEN 'Jul'
+				WHEN t1.month = 8 THEN 'Aug'
+				WHEN t1.month = 9 THEN 'Sep'
+				WHEN t1.month = 10 THEN 'Oct'
+				WHEN t1.month = 11 THEN 'Nov'
+				WHEN t1.month = 12 THEN 'Dec'
+				ELSE ''
+			END as month
+		FROM `tabSalary Slip` t1
+		JOIN `tabSalary Detail` t2 ON t2.parent = t1.name AND t2.parentfield = 'deductions'
+		JOIN `tabEmployee` t3 ON t3.employee = t1.employee
+		WHERE t1.docstatus = 1
+		AND t2.institution_name != 'RICBL'
+		AND EXISTS (
+			SELECT 1 FROM `tabSalary Component` sc WHERE sc.name = t2.salary_component
+		)
+		{conditions}
+	""".format(conditions=conditions)
+
+	return frappe.db.sql(sql, filters)
+
 
 def get_conditions(filters):
 	conditions = ""
