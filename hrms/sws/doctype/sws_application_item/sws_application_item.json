@@ -24,9 +24,10 @@
   {
    "description": "Should be maintained during Family Details in Employee Master",
    "fieldname": "reference_document",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "ignore_user_permissions": 1,
    "label": "Reference Document",
+   "options": "SWS Membership Item",
    "reqd": 1
   },
   {
@@ -106,7 +107,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-29 11:01:00.912082",
+ "modified": "2025-05-29 13:51:37.840331",
  "modified_by": "Administrator",
  "module": "SWS",
  "name": "SWS Application Item",
