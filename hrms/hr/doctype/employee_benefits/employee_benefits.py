@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import flt, nowdate
+from frappe.utils import flt, nowdate, getdate
 from datetime import date
 from datetime import datetime
 from erpnext.custom_workflow import validate_workflow_states
@@ -164,7 +164,7 @@ class EmployeeBenefits(Document):
 				date_of_joining = frappe.db.get_value("Employee", self.employee, "date_of_joining")
 				employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
 				today_date = self.separation_date #datetime.strptime(self.separation_date, "%Y-%m-%d").date()
-				years_in_service = flt(((today_date - date_of_joining).days)/364)
+				years_in_service = flt(((getdate(today_date) - date_of_joining).days)/364)
 				years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
 				if frappe.db.get_value("Employee", self.employee, "employment_type") != "Contract":
 					if years_in_service < 5 and datetime.strptime(str(date_of_joining),"%Y-%m-%d").date() <= datetime.strptime("2023-09-30", "%Y-%m-%d").date():
