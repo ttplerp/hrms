@@ -451,7 +451,7 @@ def get_gratuity_amount(employee, separation_date):
 	today_date = separation_date
 	contract_end_date = frappe.db.get_value("Employee", employee, "contract_end_date")
 	if frappe.db.get_value("Employee", employee, "employment_type") != "Contract":
-		years_in_service = math.floor(flt(((today_date - date_of_joining).days)/365))
+		years_in_service = math.floor(flt(((getdate(today_date) - date_of_joining).days)/365))
 	else:
 		if not contract_end_date:
 			frappe.throw("Contract End Date not set for Employee {}".format(employee))
