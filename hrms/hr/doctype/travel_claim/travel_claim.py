@@ -564,15 +564,16 @@ class TravelClaim(Document):
                             where parent="{}" 
                             group by cost_center;
                             """.format(self.name), as_dict=True):
-            je.append("accounts", {
-                    "account": expense_account,
-                    "reference_type": "Travel Claim",
-                    "reference_name": self.name,
-                    "cost_center": a.cost_center,
-                    "debit_in_account_currency": flt(a.dsa_amt,2),
-                    "debit": flt(a.dsa_amt,2),
-                    "business_activity": self.business_activity,
-            })
+            if a.dsa_amt > 0:
+                je.append("accounts", {
+                        "account": expense_account,
+                        "reference_type": "Travel Claim",
+                        "reference_name": self.name,
+                        "cost_center": a.cost_center,
+                        "debit_in_account_currency": flt(a.dsa_amt,2),
+                        "debit": flt(a.dsa_amt,2),
+                        "business_activity": self.business_activity,
+                })
             if a.milleage_amt > 0:      
                 je.append("accounts", {
                     "account": mileage_acc,
