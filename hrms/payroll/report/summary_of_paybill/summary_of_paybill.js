@@ -9,7 +9,7 @@ frappe.query_reports["Summary of Paybill"] = {
             "label": __("Department"),
             "fieldtype": "Link",
             "options": "Department",
-            "reqd": 1
+            "reqd": 0
         },
 	]
 };
