@@ -17,6 +17,7 @@
   "relieving_order_date",
   "last_pay_date",
   "ltc_paid",
+  "dispatch_no",
   "sb_pay_details",
   "employee",
   "employee_name",
@@ -302,12 +303,18 @@
    "fieldname": "fixed_basic_pay",
    "fieldtype": "Currency",
    "label": "Fixed Basic Pay"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "dispatch_no",
+   "fieldtype": "Data",
+   "label": "Dispatch No."
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-05-14 17:44:19.706401",
+ "modified": "2025-06-06 11:43:37.489240",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Last Pay Certificate",
