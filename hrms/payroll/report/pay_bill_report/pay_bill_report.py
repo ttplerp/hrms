@@ -56,7 +56,7 @@ def get_columns(salary_components):
         {
             "label": component, 
             "fieldname": frappe.scrub(component), 
-            "fieldtype": "Currency", 
+            "fieldtype": "Float", 
             "width": 120
         } 
         for component in salary_components
@@ -64,9 +64,9 @@ def get_columns(salary_components):
     
     # Add total columns
     total_columns = [
-        {"label": _("Gross Pay"), "fieldname": "gross_pay", "fieldtype": "Currency", "width": 120},
-        {"label": _("Total Deduction"), "fieldname": "total_deduction", "fieldtype": "Currency", "width": 120},
-        {"label": _("Net Pay"), "fieldname": "net_pay", "fieldtype": "Currency", "width": 120},
+        {"label": _("Gross Pay"), "fieldname": "gross_pay", "fieldtype": "Float", "width": 120},
+        {"label": _("Total Deduction"), "fieldname": "total_deduction", "fieldtype": "Float", "width": 120},
+        {"label": _("Net Pay"), "fieldname": "net_pay", "fieldtype": "Float", "width": 120},
     ]
     
     return base_columns + component_columns + total_columns
