@@ -34,7 +34,7 @@ frappe.query_reports["Loan Report"] = {
 			"fieldname": "bank",
 			"label": __("Bank"),
 			"fieldtype": "Link",
-			"options": "Financial Institution"
+			"options": "Bank"
 		},
 		{
 			"fieldname": "company",

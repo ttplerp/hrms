@@ -126,9 +126,9 @@ def get_columns(data):
 		_("CID") + ":Data:120", 
 		_("Designation") + ":Link/Designation:120",
 		_("Loan Type") + ":Data:140", 
-		_("Loan From") + ":Data:160", 
+		_("Loan From") + ":Link/Bank:160", 
 		_("Account No") + ":Data:140",  
-		_("Deduction Amount") + ":Currency:140", 
+		_("Deduction Amount") + ":Float:140", 
 		_("Company") + ":Link/Company:120", 
 		_("Cost Center") + ":Link/Cost Center:120", 
 		_("Branch") + ":Link/Branch:120", 
@@ -178,10 +178,12 @@ def get_data(filters):
 		FROM `tabSalary Slip` t1
 		JOIN `tabSalary Detail` t2 ON t2.parent = t1.name AND t2.parentfield = 'deductions'
 		JOIN `tabEmployee` t3 ON t3.employee = t1.employee
-		WHERE t1.docstatus = 1
+		WHERE t1.docstatus = 1 
 		AND t2.institution_name != 'RICBL'
 		AND EXISTS (
-			SELECT 1 FROM `tabSalary Component` sc WHERE sc.name = t2.salary_component
+			SELECT 1 FROM `tabSalary Component` sc 
+			WHERE sc.name = t2.salary_component
+			AND sc.salary_component = 'Financial Institution Loan'
 		)
 		{conditions}
 	""".format(conditions=conditions)
