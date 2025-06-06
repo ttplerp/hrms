@@ -1,6 +1,5 @@
-# Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
-# For license information, please see license.txt
-
+# # Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
+# # For license information, please see license.txt
 from __future__ import unicode_literals
 import frappe
 from frappe import _
@@ -17,7 +16,7 @@ def execute(filters=None):
     if not salary_structures:
         return columns, data
 
-    columns, earning_types, ded_types = get_columns(salary_structures)
+    columns, earning_types, ded_types = get_columns()
     ss_earning_map = get_ss_earning_map(salary_structures)
     ss_ded_map = get_ss_ded_map(salary_structures)
 
@@ -29,40 +28,78 @@ def execute(filters=None):
         if dept not in department_map:
             department_map[dept] = {
                 "department": dept,
-                "earnings": {et: 0 for et in earning_types},
-                "deductions": {dt: 0 for dt in ded_types},
+                "Basic Pay": 0,
+                "HRA": 0,
+                "DA": 0,
+                "Special Allowance": 0,
+                "Other Earnings": 0,
                 "arrear": 0,
                 "leave_encashment": 0,
                 "gross": 0,
+                "PF": 0,
+                "Professional Tax": 0,
+                "TDS": 0,
+                "Other Deductions": 0,
                 "total_deduction": 0,
                 "net_pay": 0
             }
 
         ddata = department_map[dept]
 
-        for e in earning_types:
-            val = flt(ss_earning_map.get(ss.name, {}).get(e))
-            ddata["earnings"][e] += val
-            ddata["gross"] += val
+        # Process earnings
+        for etype, amount in ss_earning_map.get(ss.name, {}).items():
+            amount = flt(amount)
+            if "Basic" in etype:
+                ddata["Basic Pay"] += amount
+            elif "HRA" in etype or "House Rent" in etype:
+                ddata["HRA"] += amount
+            elif "DA" in etype or "Dearness" in etype:
+                ddata["DA"] += amount
+            elif "Special Allowance" in etype:
+                ddata["Special Allowance"] += amount
+            else:
+                ddata["Other Earnings"] += amount
+            ddata["gross"] += amount
 
+        # Process arrear and leave encashment
         ddata["arrear"] += flt(ss.arrear_amount)
         ddata["leave_encashment"] += flt(ss.leave_encashment_amount)
         ddata["gross"] += flt(ss.arrear_amount) + flt(ss.leave_encashment_amount)
 
-        for d in ded_types:
-            val = flt(ss_ded_map.get(ss.name, {}).get(d))
-            ddata["deductions"][d] += val
-            ddata["total_deduction"] += val
+        # Process deductions
+        for dtype, amount in ss_ded_map.get(ss.name, {}).items():
+            amount = flt(amount)
+            if "PF" in dtype or "Provident" in dtype:
+                ddata["PF"] += amount
+            elif "Professional Tax" in dtype or "PT" in dtype:
+                ddata["Professional Tax"] += amount
+            elif "TDS" in dtype or "Tax" in dtype:
+                ddata["TDS"] += amount
+            else:
+                ddata["Other Deductions"] += amount
+            ddata["total_deduction"] += amount
 
         ddata["net_pay"] = ddata["gross"] - ddata["total_deduction"]
 
     # Prepare final output rows
     for dept, ddata in department_map.items():
-        row = [ddata["department"]]
-        row += [ddata["earnings"].get(e, 0) for e in earning_types]
-        row += [ddata["arrear"], ddata["leave_encashment"], ddata["gross"]]
-        row += [ddata["deductions"].get(d, 0) for d in ded_types]
-        row += [ddata["total_deduction"], ddata["net_pay"]]
+        row = [
+            ddata["department"],
+            ddata["Basic Pay"],
+            ddata["HRA"],
+            ddata["DA"],
+            ddata["Special Allowance"],
+            ddata["Other Earnings"],
+            ddata["arrear"],
+            ddata["leave_encashment"],
+            ddata["gross"],
+            ddata["PF"],
+            ddata["Professional Tax"],
+            ddata["TDS"],
+            ddata["Other Deductions"],
+            ddata["total_deduction"],
+            ddata["net_pay"]
+        ]
         data.append(row)
 
     return columns, data
@@ -83,31 +120,38 @@ def get_conditions(filters):
     conditions = ""
     if filters.get("department"):
         conditions += " AND t1.department = %(department)s"
+    if filters.get("company"):
+        conditions += " AND t1.company = %(company)s"
+    if filters.get("from_date"):
+        conditions += " AND t1.from_date >= %(from_date)s"
+    if filters.get("to_date"):
+        conditions += " AND t1.to_date <= %(to_date)s"
     return conditions, filters
 
 
-def get_columns(salary_structures):
+def get_columns():
     columns = [
-        _("Department") + ":Link/Department:150",
+        {"label": _("Department"), "fieldname": "department", "fieldtype": "Link", "options": "Department", "width": 150},
+        {"label": _("Basic Pay"), "fieldname": "Basic Pay", "fieldtype": "Float", "width": 120},
+        {"label": _("HRA"), "fieldname": "HRA", "fieldtype": "Float", "width": 120},
+        {"label": _("DA"), "fieldname": "DA", "fieldtype": "Float", "width": 120},
+        {"label": _("Special Allowance"), "fieldname": "Special Allowance", "fieldtype": "Float", "width": 140},
+        {"label": _("Other Earnings"), "fieldname": "Other Earnings", "fieldtype": "Float", "width": 140},
+        {"label": _("Arrear Amount"), "fieldname": "arrear", "fieldtype": "Float", "width": 130},
+        {"label": _("Leave Encashment"), "fieldname": "leave_encashment", "fieldtype": "Float", "width": 150},
+        {"label": _("Gross Pay"), "fieldname": "gross", "fieldtype": "Float", "width": 120},
+        {"label": _("PF"), "fieldname": "PF", "fieldtype": "Float", "width": 120},
+        {"label": _("Professional Tax"), "fieldname": "Professional Tax", "fieldtype": "Float", "width": 150},
+        {"label": _("TDS"), "fieldname": "TDS", "fieldtype": "Float", "width": 120},
+        {"label": _("Other Deductions"), "fieldname": "Other Deductions", "fieldtype": "Float", "width": 150},
+        {"label": _("Total Deduction"), "fieldname": "total_deduction", "fieldtype": "Float", "width": 130},
+        {"label": _("Net Pay"), "fieldname": "net_pay", "fieldtype": "Float", "width": 130}
     ]
-
-    salary_structure_names = [d.name for d in salary_structures]
-
-    earning_types = frappe.db.sql_list("""
-        SELECT DISTINCT salary_component FROM `tabSalary Detail`
-        WHERE amount != 0 AND parentfield = 'earnings' AND parent IN ({})
-    """.format(', '.join(['%s'] * len(salary_structure_names))), tuple(salary_structure_names))
-
-    ded_types = frappe.db.sql_list("""
-        SELECT DISTINCT salary_component FROM `tabSalary Detail`
-        WHERE amount != 0 AND parentfield = 'deductions' AND parent IN ({})
-    """.format(', '.join(['%s'] * len(salary_structure_names))), tuple(salary_structure_names))
-
-    columns += [(e + ":Currency:120") for e in earning_types]
-    columns += ["Arrear Amount:Currency:130", "Leave Encashment Amount:Currency:130", "Gross Pay:Currency:120"]
-    columns += [(d + ":Currency:120") for d in ded_types]
-    columns += ["Total Deduction:Currency:130", "Net Pay:Currency:130"]
-
+    
+    # These are used for mapping components in the execute function
+    earning_types = ["Basic Pay", "HRA", "DA", "Special Allowance", "Other Earnings"]
+    ded_types = ["PF", "Professional Tax", "TDS", "Other Deductions"]
+    
     return columns, earning_types, ded_types
 
 
