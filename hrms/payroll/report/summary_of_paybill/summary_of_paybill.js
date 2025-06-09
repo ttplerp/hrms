@@ -11,5 +11,12 @@ frappe.query_reports["Summary of Paybill"] = {
             "options": "Department",
             "reqd": 0
         },
+        {
+			"fieldname": "status",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": "All\nActive\nInactive",
+			"default": "Active"
+		},
 	]
 };

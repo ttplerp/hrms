@@ -1,5 +1,3 @@
-# # Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
-# # For license information, please see license.txt
 from __future__ import unicode_literals
 import frappe
 from frappe import _
@@ -24,6 +22,13 @@ def execute(filters=None):
     department_map = {}
 
     for ss in salary_structures:
+        # Apply status filter if specified
+        if filters.get("status") and filters.get("status") != "All":
+            if filters.get("status") == "Active" and ss.is_active != "Yes":
+                continue
+            if filters.get("status") == "Inactive" and ss.is_active == "Yes":
+                continue
+                
         dept = ss.department
         if dept not in department_map:
             department_map[dept] = {
@@ -148,7 +153,6 @@ def get_columns():
         {"label": _("Net Pay"), "fieldname": "net_pay", "fieldtype": "Float", "width": 130}
     ]
     
-    # These are used for mapping components in the execute function
     earning_types = ["Basic Pay", "HRA", "DA", "Special Allowance", "Other Earnings"]
     ded_types = ["PF", "Professional Tax", "TDS", "Other Deductions"]
     
