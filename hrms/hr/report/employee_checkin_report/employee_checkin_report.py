@@ -7,27 +7,40 @@ from frappe import msgprint, _
 import itertools
 from frappe.utils import time_diff_in_hours, time_diff_in_hours
 
+NOT_PUNCHED = '<text style="color:red"><b>Not Punched</b></text>'
 def execute(filters=None):
 	if not filters:
 		filters = {}
 
 	columns = get_columns(filters)
-	emp_map = get_employees(filters)
+	emp_map = get_employees_attendance(filters)
+	# emp_map = get_employees(filters)
+	""" new code """
+	for row in emp_map:
+		if not row.office_in:
+			row.office_in = NOT_PUNCHED
+		if not row.office_out:
+			row.office_out = NOT_PUNCHED
+		
+		if row.office_in != NOT_PUNCHED and row.office_out != NOT_PUNCHED:
+			row.total_hours = time_diff_in_hours(row.office_out_time, row.office_in_time)
+
+	return columns, emp_map
+	""" End of new code jai """
 
 	data = []
 	#frappe.msgprint("{}".format(checkin_map))
 	for a in emp_map:
-		row = [a.employee, a.employee_name, a.branch, a.department, a.designation]
-		# for emp in frappe.db.sql("""
-		# 				 select employee_name, branch, department, designation
-		# 				 from `tabEmployee`
-		# 				 where name = '{}'
-		# 				 """.format(a.employee), as_dict=True):
-  		# 	row = [a.employee, emp.employee_name, emp.branch, emp.department, emp.designation]
+		for emp in frappe.db.sql("""
+						 select employee_name, branch, department, designation
+						 from `tabEmployee`
+						 where name = '{}'
+						 """.format(a.employee), as_dict=True):
+  			row = [a.employee, emp.employee_name, emp.branch, emp.department, emp.designation]
 
 		office_in = lunch_out = lunch_in = office_out = '''<text style="color:red"><b>Not Punched</b></text>'''
 		oi_reason = oo_reason = office_in_time = office_out_time = None
-		checkin_map = get_checkin_list(filters, a.employee, date=a.att_date)
+		checkin_map = get_checkin_list(filters, a.employee)
 		for b in checkin_map:
 			if b.type == "Office" and b.log_type == "IN":
 				office_in = b.att_time
@@ -70,11 +83,11 @@ def get_columns(filters):
 	
 	return columns
 
-def get_checkin_list(filters, employee, date):
+def get_checkin_list(filters, employee):
 	return frappe.db.sql("""select ec.employee, ec.type,ec.log_type,
 			ec.date as att_date, time_format(ec.time, "%H:%i %p") as att_time, ec.time as att_time_nf, ec.reason
 			from `tabEmployee Checkin` ec
-   			where ec.date = '{date}'
+   			where ec.date between '{from_date}' and '{to_date}'
 			and ec.employee = '{employee}'
 			order by ec.creation
    			""".format(from_date=filters.get("from_date"), to_date=filters.get("to_date"), employee = employee, date=date), as_dict=1)
@@ -87,10 +100,43 @@ def get_conditions(filters):
 
 def get_employees(filters):
 	cond = get_conditions(filters)
-	return frappe.db.sql("""select ec.employee, ec.date as att_date,
-			e.employee_name, e.branch, e.department, e.designation
+	return frappe.db.sql("""select ec.employee, ec.date as att_date
 		from `tabEmployee Checkin` ec
-		inner join tabEmployee e on e.name = ec.employee
 		where ec.date between '{from_date}' and '{to_date}' {condition}
 			order by ec.date,ec.creation
 		""".format(from_date=filters.get("from_date"), to_date=filters.get("to_date"),condition=cond), as_dict=1)
+
+def get_employees_attendance(filters):
+	cond = get_conditions(filters)
+	query = """SELECT
+			ec.employee,
+			e.employee_name,
+			e.branch,
+			e.department,
+			e.designation,
+			ec.date,
+
+			-- First Office IN time
+			MIN(CASE WHEN ec.type = 'Office' AND ec.log_type = 'IN' THEN TIME_FORMAT(ec.time, '%H:%i %p') END) AS office_in,
+			MIN(CASE WHEN ec.type = 'Office' AND ec.log_type = 'IN' THEN ec.reason END) AS late_punching,
+
+			-- Last Office OUT time
+			MAX(CASE WHEN ec.type = 'Office' AND ec.log_type = 'OUT' THEN TIME_FORMAT(ec.time, '%H:%i %p') END) AS office_out,
+			MAX(CASE WHEN ec.type = 'Office' AND ec.log_type = 'OUT' THEN ec.reason END) AS early_exit,
+
+			-- Total hours worked (if both IN and OUT exist)
+			MIN(CASE WHEN ec.type = 'Office' AND ec.log_type = 'IN' THEN ec.time END) AS office_in_time,
+			MAX(CASE WHEN ec.type = 'Office' AND ec.log_type = 'OUT' THEN ec.time END) AS office_out_time,
+			0 as total_hours
+
+		FROM `tabEmployee Checkin` ec
+		JOIN `tabEmployee` e ON e.name = ec.employee
+
+		WHERE ec.date BETWEEN '{from_date}' AND '{to_date}'
+		{condition}
+
+		GROUP BY ec.employee, ec.date
+		ORDER BY ec.date DESC, ec.employee
+		""".format(from_date=filters.get("from_date"), to_date=filters.get("to_date"),condition=cond)
+	
+	return frappe.db.sql(query, as_dict=1)
