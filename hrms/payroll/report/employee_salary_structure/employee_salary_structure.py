@@ -90,10 +90,10 @@ def get_columns(salary_structures):
 					order by count(*) desc""" %
                                    (', '.join(['%s']*len(salary_structures))), tuple([d.name for d in salary_structures]))
 
-    columns = columns + [(e + ":Currency:120") for e in earning_types] + \
-        ["Arrear Amount:Currency:120", "Leave Encashment Amount:Currency:150", "Gross Pay:Currency:120"] + \
-        [(d + ":Currency:120") for d in ded_types] + \
-        ["Total Deduction:Currency:120", "Net Pay:Currency:120"]
+    columns = columns + [(e + ":Float:120") for e in earning_types] + \
+        ["Arrear Amount:Float:120", "Leave Encashment Amount:Float:150", "Gross Pay:Float:120"] + \
+        [(d + ":Float:120") for d in ded_types] + \
+        ["Total Deduction:Float:120", "Net Pay:Float:120"]
 
     return columns, earning_types, ded_types
 
