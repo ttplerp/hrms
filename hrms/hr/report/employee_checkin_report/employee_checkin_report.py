@@ -17,30 +17,30 @@ def execute(filters=None):
 	data = []
 	#frappe.msgprint("{}".format(checkin_map))
 	for a in emp_map:
-		for emp in frappe.db.sql("""
-                         select employee_name, branch, department, designation
-                         from `tabEmployee`
-                         where name = '{}'
-                         """.format(a.employee), as_dict=True):
-  			row = [a.employee, emp.employee_name, emp.branch, emp.department, emp.designation]
+		row = [a.employee, a.employee_name, a.branch, a.department, a.designation]
+		# for emp in frappe.db.sql("""
+		# 				 select employee_name, branch, department, designation
+		# 				 from `tabEmployee`
+		# 				 where name = '{}'
+		# 				 """.format(a.employee), as_dict=True):
+  		# 	row = [a.employee, emp.employee_name, emp.branch, emp.department, emp.designation]
 
 		office_in = lunch_out = lunch_in = office_out = '''<text style="color:red"><b>Not Punched</b></text>'''
 		oi_reason = oo_reason = office_in_time = office_out_time = None
-		checkin_map = get_checkin_list(filters, a.employee)
+		checkin_map = get_checkin_list(filters, a.employee, date=a.att_date)
 		for b in checkin_map:
-			if b.att_date == a.att_date:
-				if b.type == "Office" and b.log_type == "IN":
-					office_in = b.att_time
-					office_in_time = b.att_time_nf
-					oi_reason = b.reason
-				elif b.type == "Lunch" and b.log_type == "OUT":
-					lunch_out = b.att_time
-				elif b.type == "Lunch" and b.log_type == "IN":
-					lunch_in = b.att_time
-				elif b.type == "Office" and b.log_type == "OUT":
-					office_out = b.att_time
-					office_out_time = b.att_time_nf
-					oo_reason = b.reason
+			if b.type == "Office" and b.log_type == "IN":
+				office_in = b.att_time
+				office_in_time = b.att_time_nf
+				oi_reason = b.reason
+			elif b.type == "Lunch" and b.log_type == "OUT":
+				lunch_out = b.att_time
+			elif b.type == "Lunch" and b.log_type == "IN":
+				lunch_in = b.att_time
+			elif b.type == "Office" and b.log_type == "OUT":
+				office_out = b.att_time
+				office_out_time = b.att_time_nf
+				oo_reason = b.reason
    
 		# row.extend([a.att_date, office_in, oi_reason, lunch_out, lunch_in, office_out, oo_reason])
 		if office_in != """<text style="color:red"><b>Not Punched</b></text>""" and office_out != """<text style="color:red"><b>Not Punched</b></text>""":
@@ -70,25 +70,27 @@ def get_columns(filters):
 	
 	return columns
 
-def get_checkin_list(filters, employee):
+def get_checkin_list(filters, employee, date):
 	return frappe.db.sql("""select ec.employee, ec.type,ec.log_type,
 			ec.date as att_date, time_format(ec.time, "%H:%i %p") as att_time, ec.time as att_time_nf, ec.reason
 			from `tabEmployee Checkin` ec
-   			where ec.date between '{from_date}' and '{to_date}'
+   			where ec.date = '{date}'
 			and ec.employee = '{employee}'
-			order by ec.employee, ec.creation, ec.date
-   			""".format(from_date=filters.get("from_date"), to_date=filters.get("to_date"), employee = employee), as_dict=1)
+			order by ec.creation
+   			""".format(from_date=filters.get("from_date"), to_date=filters.get("to_date"), employee = employee, date=date), as_dict=1)
 
 def get_conditions(filters):
 	cond = ""
 	if filters.employee:
-		cond += """ and employee="{}" """.format(filters.employee)
+		cond += """ and ec.employee="{}" """.format(filters.employee)
 	return cond
 
 def get_employees(filters):
-    cond = get_conditions(filters)
-    return frappe.db.sql("""select employee, ec.date as att_date
+	cond = get_conditions(filters)
+	return frappe.db.sql("""select ec.employee, ec.date as att_date,
+			e.employee_name, e.branch, e.department, e.designation
 		from `tabEmployee Checkin` ec
+		inner join tabEmployee e on e.name = ec.employee
 		where ec.date between '{from_date}' and '{to_date}' {condition}
-		order by ec.employee
+			order by ec.date,ec.creation
 		""".format(from_date=filters.get("from_date"), to_date=filters.get("to_date"),condition=cond), as_dict=1)
