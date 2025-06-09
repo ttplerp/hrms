@@ -17,12 +17,9 @@ def execute(filters=None):
     columns, earning_types, ded_types = get_columns()
     ss_earning_map = get_ss_earning_map(salary_structures)
     ss_ded_map = get_ss_ded_map(salary_structures)
-
-    # Aggregate data per department
     department_map = {}
 
     for ss in salary_structures:
-        # Apply status filter if specified
         if filters.get("status") and filters.get("status") != "All":
             if filters.get("status") == "Active" and ss.is_active != "Yes":
                 continue
@@ -51,7 +48,6 @@ def execute(filters=None):
 
         ddata = department_map[dept]
 
-        # Process earnings
         for etype, amount in ss_earning_map.get(ss.name, {}).items():
             amount = flt(amount)
             if "Basic" in etype:
@@ -65,13 +61,9 @@ def execute(filters=None):
             else:
                 ddata["Other Earnings"] += amount
             ddata["gross"] += amount
-
-        # Process arrear and leave encashment
         ddata["arrear"] += flt(ss.arrear_amount)
         ddata["leave_encashment"] += flt(ss.leave_encashment_amount)
         ddata["gross"] += flt(ss.arrear_amount) + flt(ss.leave_encashment_amount)
-
-        # Process deductions
         for dtype, amount in ss_ded_map.get(ss.name, {}).items():
             amount = flt(amount)
             if "PF" in dtype or "Provident" in dtype:
@@ -85,8 +77,6 @@ def execute(filters=None):
             ddata["total_deduction"] += amount
 
         ddata["net_pay"] = ddata["gross"] - ddata["total_deduction"]
-
-    # Prepare final output rows
     for dept, ddata in department_map.items():
         row = [
             ddata["department"],
