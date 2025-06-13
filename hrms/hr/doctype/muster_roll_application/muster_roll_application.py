@@ -31,7 +31,7 @@ class MusterRollApplication(Document):
 			if a.approver_status == 'Approved':
 				doc = frappe.get_doc("Muster Roll Employee", a.existing_cid)
 				doc.date_of_transfer = None if cancel else a.joining_date
-				doc.branch = self.from_branch if cancel else self.branch
+				doc.branch = self.branch
 				doc.cost_center = frappe.db.get_value("Branch", self.from_branch, "cost_center") if cancel else self.cost_center
 				doc.rate_per_day = a.rate_per_day
 				doc.rate_per_hour = a.rate_per_hour
@@ -88,9 +88,10 @@ class MusterRollApplication(Document):
 	@frappe.whitelist()
 	def update_requesting_info(self):
 		if self.project and not self.branch:
-			self.branch = frappe.db.get_value("Project", self.project, "branch")
+			self.branch = frappe.db.get_value("Branch", self.branch, "branch")
 			self.cost_center = frappe.db.get_value("Project", self.project, "cost_center")
 		elif self.branch and not self.project:
+			self.branch = frappe.db.get_value("Branch", self.branch, "branch")
 			self.cost_center = frappe.db.get_value("Branch", self.branch, "cost_center")
 		else:
 			self.branch = frappe.db.get_value("Branch", {"cost_center": self.cost_center}, "name")
@@ -182,7 +183,8 @@ class MusterRollApplication(Document):
 					doc.flags.ignore_permissions = 1
 					doc.save()
 				except Exception as e:
-					frappe.throw(_('<span style="color: red;">Muster Roll Application Row#{0}: For Employee <b>{1}({2})</b></span>').format(a.idx,cid,a.person_name),title="Validation Error")
+					frappe.throw(_('<span style="color: red;">Muster Roll Application Row#{0}: For Employee <b>{1}({2})</b> - {3}</span>').format(
+						a.idx, cid, a.person_name, str(e)), title="Validation Error")
 
 @frappe.whitelist()
 def get_mr_approvers(employee):
