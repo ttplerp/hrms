@@ -1,0 +1,98 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-06-06 14:30:23.838050",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "requesting_branch",
+  "column_break_bh8my",
+  "requested_by",
+  "warehouse_section",
+  "requesting_warehouse",
+  "workforce_requirement_section",
+  "workforce_requirement",
+  "remakrs",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "requesting_branch",
+   "fieldtype": "Link",
+   "label": "Requesting Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Work force Requisition",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_bh8my",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "requested_by",
+   "fieldtype": "Link",
+   "label": "Requested By",
+   "options": "User"
+  },
+  {
+   "fieldname": "warehouse_section",
+   "fieldtype": "Section Break",
+   "label": "Warehouse"
+  },
+  {
+   "fieldname": "requesting_warehouse",
+   "fieldtype": "Link",
+   "label": "Requesting Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "workforce_requirement_section",
+   "fieldtype": "Section Break",
+   "label": "Workforce Requirement"
+  },
+  {
+   "fieldname": "workforce_requirement",
+   "fieldtype": "Table",
+   "options": "Workforce Requirement"
+  },
+  {
+   "fieldname": "remakrs",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-06-18 11:05:25.076156",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Work force Requisition",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

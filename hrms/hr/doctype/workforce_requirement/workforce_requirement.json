@@ -1,0 +1,53 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-06-06 14:37:00.488388",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "designation",
+  "workforce_required",
+  "duration",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Designation/Role",
+   "options": "Designation"
+  },
+  {
+   "fieldname": "workforce_required",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Workforce Required"
+  },
+  {
+   "fieldname": "duration",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Duration (Days)"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "label": "Remarks"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-06-06 14:41:51.026279",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Workforce Requirement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
