@@ -1,6 +1,3 @@
-# # Copyright (c) 2022, Frappe Technologies Pvt. Ltd. and contributors
-# # For license information, please see license.txt
-
 # from __future__ import unicode_literals
 # import frappe
 # from frappe.utils import flt, cstr
@@ -8,72 +5,76 @@
 
 
 # def execute(filters=None):
-# 	if not filters:
-# 		filters = {}
-# 	columns, data = [], []
-# 	data = get_data(filters)
-# 	if not data:
-# 		return columns, data
-# 	columns = get_columns(data)
-# 	return columns, data
+#     if not filters:
+#         filters = {}
+#     columns = get_columns()
+#     data = get_data(filters)
+#     return columns, data
 
-# def get_columns(data):
-# 	columns = [
-# 		_("Employee") + ":Link/Employee:80", 
-# 		_("Employee Name") + "::140", 
-# 		_("Designation") + ":Link/Designation:120",
-# 		_("Employment Type") + ":Data:120",
-# 		_("CID") + "::120",
-# 		_("PF Number") + "::120",
-# 		_("Basic Pay") + ":Currency:120",
-# 		_("Employee PF") + ":Currency:120", 
-# 		_("Employer PF") + ":Currency:120", 
-# 		_("Total") + ":Currency:120",
-# 		_("Company") + ":Link/Branch:120", 
-# 		_("Cost Center") + ":Link/Cost Center:120", 
-# 		_("Branch") + ":Link/Branch:120", 
-# 		_("Department") + ":Link/Department:120",
-# 		_("Division") + ":Link/Division:120", 
-# 		_("Section") + ":Link/Section:120", 
-# 		_("Year") + "::80", 
-# 		_("Month") + "::80"
-# 	]
-# 	return columns
+# def get_columns():
+#     return [    
+#         _("Salary Slip") + ":Link/Salary Slip:120",
+#         _("Employee") + ":Link/Employee:80", 
+#         _("Employee Name") + "::140", 
+#         _("Designation") + ":Link/Designation:120",
+#         _("Employment Type") + ":Data:120",
+#         _("CID") + "::120",
+#         _("PF Number") + "::120",
+#         _("Basic Pay") + ":Float:120",
+#         _("Employee PF") + ":Float:120", 
+#         _("Employer PF") + ":Float:120", 
+#         _("Company") + ":Link/Company:120", 
+#         _("Month") + "::80",
+#         _("Year") + "::80"
+#     ]
 
 # def get_data(filters):
-# 	conditions, filters = get_conditions(filters)
-# 	data = frappe.db.sql("""
-# 			select t1.employee, t3.employee_name, t1.designation, t1.employment_type, t3.passport_number, t3.pf_number,
-# 					sum(case when t2.salary_component = 'Basic Pay' then ifnull(t2.amount,0) else 0 end) as basicpay,
-# 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employeepf,
-# 					ifnull(t1.employer_pf,0) as employerpf,
-# 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0)+(t1.employer_pf) else 0 end) as total,
-# 					t1.company, t1.branch, t1.cost_center, t1.department, t1.division, t1.section,
-# 					t1.fiscal_year, t1.month
-# 			from `tabSalary Slip` t1, `tabSalary Detail` t2, `tabEmployee` t3
-# 			where t1.docstatus = 1 %s
-# 			and t3.employee = t1.employee
-# 			and t2.parent = t1.name
-# 			and t2.salary_component in ('Basic Pay','PF')
-# 			group by t1.employee, t3.employee_name, t1.designation, t3.passport_number,
-# 					t1.company, t1.branch, t1.department, t1.division, t1.section,
-# 					t1.fiscal_year, t1.month
-# 			""" % conditions, filters)
-	
-# 	return data
+#     conditions, filters = get_conditions(filters)
+    
+#     sql_query = """
+#         SELECT 
+#             t1.name as salary_slip,
+#             t1.employee, 
+#             t3.employee_name, 
+#             t1.designation, 
+#             t1.employment_type, 
+#             t3.passport_number as cid, 
+#             t3.pf_number,
+#             (SELECT IFNULL(amount, 0) FROM `tabSalary Detail` 
+#             WHERE parent = t1.name AND salary_component = 'Basic Pay' LIMIT 1) AS basic_pay,
+#             (SELECT IFNULL(amount, 0) FROM `tabSalary Detail` 
+#             WHERE parent = t1.name AND salary_component = 'PF' LIMIT 1) AS employee_pf,
+#             IFNULL(t1.employer_pf, 0) AS employer_pf,
+#             t1.company,
+#             ELT(t1.month, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+#                         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec') AS month,
+#             t1.fiscal_year
+#         FROM `tabSalary Slip` t1
+#         JOIN `tabEmployee` t3 ON t3.name = t1.employee
+#         WHERE t1.docstatus = 1
+#         {conditions}
+#         ORDER BY t1.employee, t1.fiscal_year, t1.month
+#     """.format(conditions=conditions)
+
+#     return frappe.db.sql(sql_query, filters, as_dict=1)
 
 # def get_conditions(filters):
-# 	conditions = ""
-# 	if filters.get("fiscal_year"): conditions += " and t1.fiscal_year = %(fiscal_year)s"
-# 	if filters.get("month"):
-# 		month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].index(filters["month"]) + 1
-# 		filters["month"] = month
-# 		conditions += " and t1.month = %(month)s"
-# 	if filters.get("employee"): conditions += " and t1.employee = %(employee)s"
-# 	if filters.get("employment_type"): conditions += " and t1.employment_type = %(employment_type)s"
-# 	if filters.get("cost_center"): conditions += " and exists(select 1 from `tabCost Center` cc where t1.cost_center = cc.name and (cc.parent_cost_center = '{0}' or cc.name = '{0}'))".format(filters.cost_center)
-# 	if filters.get("company"): conditions += " and t1.company = %(company)s"
-# 	return conditions, filters
+#     conditions = ""
+#     if filters.get("fiscal_year"):
+#         conditions += " AND t1.fiscal_year = %(fiscal_year)s"
+#     if filters.get("month"):
+#         month_list = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+#                      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+#         if filters["month"] in month_list:
+#             filters["month"] = month_list.index(filters["month"])
+#             conditions += " AND t1.month = %(month)s"
+#     if filters.get("employee"):
+#         conditions += " AND t1.employee = %(employee)s"
+#     if filters.get("employment_type"):
+#         conditions += " AND t1.employment_type = %(employment_type)s"
+#     if filters.get("company"):
+#         conditions += " AND t1.company = %(company)s"
+#     return conditions, filters
 
 
 
@@ -84,88 +85,64 @@ from frappe import msgprint, _
 
 
 def execute(filters=None):
-	if not filters:
-		filters = {}
-	columns, data = [], []
-	data = get_data(filters)
-	if not data:
-		return columns, data
-	columns = get_columns(data)
-	return columns, data
+    if not filters:
+        filters = {}
+    columns = get_columns()
+    data = get_data(filters)
+    return columns, data
 
-def get_columns(data):
-	columns = [
-		_("Employee") + ":Link/Employee:80", 
-		_("Employee Name") + "::140", 
-		_("Designation") + ":Link/Designation:120",
-		_("Employment Type") + ":Data:120",
-		_("CID") + "::120",
-		_("PF Number") + "::120",
-		_("Basic Pay") + ":Float:120",
-		_("Employee PF") + ":Float:120", 
-		_("Employer PF") + ":Float:120", 
-		_("Total") + ":Float:120",
-		_("Company") + ":Link/Branch:120", 
-		_("Cost Center") + ":Link/Cost Center:120", 
-		_("Branch") + ":Link/Branch:120", 
-		_("Department") + ":Link/Department:120",
-		_("Division") + ":Link/Division:120", 
-		_("Section") + ":Link/Section:120", 
-		_("Year") + "::80", 
-		_("Month") + "::80"
-	]
-	return columns
+def get_columns():
+    return [    
+        _("Account Number") + "::120",
+        _("Employee Name") + "::140", 
+        _("Basic Pay") + ":Float:120",
+        _("Employee PF") + ":Float:120", 
+        _("Employer PF") + ":Float:120", 
+        _("Total") + ":Float:120", 
+       
+    ]
 
 def get_data(filters):
     conditions, filters = get_conditions(filters)
-
-    data = frappe.db.sql(f"""
+    
+    sql_query = """
         SELECT 
-            t1.employee, 
             t3.employee_name, 
-            t1.designation, 
-            t1.employment_type, 
-            t3.passport_number, 
-            t3.pf_number,
-            SUM(CASE WHEN t2.salary_component = 'Basic Pay' THEN IFNULL(t2.amount,0) ELSE 0 END) AS basicpay,
-            SUM(CASE WHEN t2.salary_component = 'PF' THEN IFNULL(t2.amount,0) ELSE 0 END) AS employeepf,
-            IFNULL(t1.employer_pf,0) AS employerpf,
-            SUM(CASE WHEN t2.salary_component = 'PF' THEN IFNULL(t2.amount,0) + t1.employer_pf ELSE 0 END) AS total,
-            t1.company, t1.branch, t1.cost_center, t1.department, t1.division, t1.section,
-            t1.fiscal_year, 
+            t3.bank_ac_no as account_number,
+            (SELECT IFNULL(amount, 0) FROM `tabSalary Detail` 
+            WHERE parent = t1.name AND salary_component = 'Basic Pay') AS basic_pay,
+            (SELECT IFNULL(amount, 0) FROM `tabSalary Detail` 
+            WHERE parent = t1.name AND salary_component = 'PF') AS employee_pf,
+            IFNULL(t1.employer_pf, 0) AS employer_pf,
+            (SELECT IFNULL(amount, 0) FROM `tabSalary Detail` 
+            WHERE parent = t1.name AND salary_component = 'PF') + IFNULL(t1.employer_pf, 0) AS total,
+            t1.company,
             ELT(t1.month, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec') AS month
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec') AS month,
+            t1.fiscal_year
         FROM `tabSalary Slip` t1
-        JOIN `tabSalary Detail` t2 ON t2.parent = t1.name
-        JOIN `tabEmployee` t3 ON t3.employee = t1.employee
-        WHERE t1.docstatus = 1
-          AND t2.salary_component IN ('Basic Pay', 'PF')
-          {conditions}
-        GROUP BY 
-            t1.employee, t3.employee_name, t1.designation, t3.passport_number,
-            t1.company, t1.branch, t1.department, t1.division, t1.section,
-            t1.fiscal_year, t1.month
-    """, filters)
+        JOIN `tabEmployee` t3 ON t3.name = t1.employee
+        WHERE t1.docstatus = 1 AND t3.employment_status != "Left"
+        {conditions}
+        ORDER BY t1.employee, t1.fiscal_year, t1.month
+    """.format(conditions=conditions)
 
-    return data
-
+    return frappe.db.sql(sql_query, filters, as_dict=1)
 
 def get_conditions(filters):
     conditions = ""
     if filters.get("fiscal_year"):
-        conditions += " and t1.fiscal_year = %(fiscal_year)s"
+        conditions += " AND t1.fiscal_year = %(fiscal_year)s"
     if filters.get("month"):
         month_list = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         if filters["month"] in month_list:
             filters["month"] = month_list.index(filters["month"])
-            conditions += " and t1.month = %(month)s"
+            conditions += " AND t1.month = %(month)s"
     if filters.get("employee"):
-        conditions += " and t1.employee = %(employee)s"
+        conditions += " AND t1.employee = %(employee)s"
     if filters.get("employment_type"):
-        conditions += " and t1.employment_type = %(employment_type)s"
-    if filters.get("cost_center"):
-        conditions += " and exists(select 1 from `tabCost Center` cc where t1.cost_center = cc.name and (cc.parent_cost_center = '{0}' or cc.name = '{0}'))".format(filters["cost_center"])
+        conditions += " AND t1.employment_type = %(employment_type)s"
     if filters.get("company"):
-        conditions += " and t1.company = %(company)s"
+        conditions += " AND t1.company = %(company)s"
     return conditions, filters
