@@ -94,9 +94,10 @@ class EmployeeBenefits(Document):
 
 	def update_reference(self):
 		if self.employee_separation_id:
-			id = frappe.get_doc("Employee Separation",self.employee_separation_id)
-			id.employee_benefits_status = "Claimed"
-			id.save()
+			# id = frappe.get_doc("Employee Separation",self.employee_separation_id)
+			# id.employee_benefits_status = "Claimed"
+			# id.save()
+			frappe.db.set_value("Employee Separation",self.employee_separation_id,"employee_benefits_status","Claimed")
 		elif self.employee_transfer_id:
 			id = frappe.get_doc("Employee Transfer",self.employee_transfer_id)
 			id.employee_benefits_status = "Claimed"
