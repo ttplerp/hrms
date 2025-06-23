@@ -359,10 +359,11 @@ def get_gratuity_amount(employee):
 	today_date = date.today()
 	years_in_service = flt(((today_date - date_of_joining).days)/365)
 	years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
-	if frappe.db.get_value("Employee", employee, "employment_type") != "Contract":
+	separation_type = frappe.db.get_value("Employee Separation", self.employee_separation_id, "reason_for_resignation")
+	if frappe.db.get_value("Employee", employee, "employment_type") != "Contract" and separation_type != "Demise":
 		if years_in_service < 5 and employee_group != "ESP":
 			frappe.throw("Should have minimum of 5 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
-	elif employee_group == "ESP" and years_in_service < 1:
+	elif employee_group == "ESP" and years_in_service < 1 and separation_type != "Demise":
 		frappe.throw("ESP Employee should have minimum of 1 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
 	if years_in_service > 0:
 		amount = flt(basic_pay) * years_in_service
