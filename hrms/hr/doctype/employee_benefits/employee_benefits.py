@@ -114,7 +114,7 @@ class EmployeeBenefits(Document):
 				years_in_service = flt(((today_date - date_of_joining).days)/364)
 				years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
 				if frappe.db.get_value("Employee", self.employee, "employment_type") != "Contract":
-					if years_in_service < 5:
+					if years_in_service < 5 and self.reason_for_resignation != "Death":
 						frappe.throw("Should have minimum of 5 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
 	
 	def check_leave_encashment(self):
@@ -346,7 +346,7 @@ def get_leave_encashment_tax(amount, benefit_type):
 		return encashment_tax
 
 @frappe.whitelist()
-def get_gratuity_amount(employee):
+def get_gratuity_amount(employee, reason_for_resignation):
 	basic_pay = amount = 0
 	query = "select amount from `tabSalary Structure` s, `tabSalary Detail` d where s.name = d.parent and s.employee=\'" + str(employee) + "\' and d.salary_component in ('Basic Pay') and is_active='Yes'"
 	data = frappe.db.sql(query, as_dict=True)
@@ -360,11 +360,10 @@ def get_gratuity_amount(employee):
 	today_date = date.today()
 	years_in_service = flt(((today_date - date_of_joining).days)/365)
 	years_in_service = math.ceil(years_in_service) if (years_in_service - int(years_in_service)) >= 0.5 else math.floor(years_in_service)
-	separation_type = frappe.db.get_value("Employee Separation", self.employee_separation_id, "reason_for_resignation")
-	if frappe.db.get_value("Employee", employee, "employment_type") != "Contract" and separation_type != "Demise":
+	if frappe.db.get_value("Employee", employee, "employment_type") != "Contract" and reason_for_resignation != "Death":
 		if years_in_service < 5 and employee_group != "ESP":
 			frappe.throw("Should have minimum of 5 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
-	elif employee_group == "ESP" and years_in_service < 1 and separation_type != "Demise":
+	elif employee_group == "ESP" and years_in_service < 1 and reason_for_resignation != "Death":
 		frappe.throw("ESP Employee should have minimum of 1 years in service for Gratuity. Only <b>{0}</b> year/s in Services as of now ".format(years_in_service))
 	if years_in_service > 0:
 		amount = flt(basic_pay) * years_in_service

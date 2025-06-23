@@ -105,7 +105,7 @@ frappe.ui.form.on("Separation Item", {
 		else if(item.benefit_type == "Gratuity"){
 			return frappe.call({
 				method: "hrms.hr.doctype.employee_benefits.employee_benefits.get_gratuity_amount",
-				args: {"employee": frm.doc.employee},
+				args: {"employee": frm.doc.employee, "reason_for_resignation": frm.doc.reason_for_resignation},
 				callback: function(r) {
 					console.log(r.message);
 					if(r.message) {
