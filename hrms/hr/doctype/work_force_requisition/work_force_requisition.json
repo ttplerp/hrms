@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "WF-{YYYY}-{#####}",
+ "autoname": "format:WF-{YYYY}-{####}",
  "creation": "2025-06-06 14:30:23.838050",
  "default_view": "List",
  "doctype": "DocType",
@@ -14,7 +14,7 @@
   "warehouse_section",
   "requesting_warehouse",
   "column_break_zqwwe",
-  "required_date",
+  "required_by_date",
   "workforce_requirement_section",
   "workforce_requirement",
   "remakrs",
@@ -24,6 +24,7 @@
   {
    "fieldname": "requesting_branch",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Requesting Branch",
    "options": "Branch",
    "reqd": 1
@@ -44,6 +45,7 @@
   {
    "fieldname": "requested_by",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Requested By",
    "options": "User",
    "reqd": 1
@@ -56,6 +58,7 @@
   {
    "fieldname": "requesting_warehouse",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Requesting Warehouse",
    "options": "Warehouse",
    "reqd": 1
@@ -76,25 +79,23 @@
    "label": "Remarks"
   },
   {
-   "fieldname": "required_date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Required By Date",
-   "reqd": 1
-  },
-  {
    "fieldname": "column_break_zqwwe",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "required_by_date",
+   "fieldtype": "Date",
+   "label": "Required By Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-23 12:26:29.230138",
+ "modified": "2025-06-23 12:51:52.531654",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Work force Requisition",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
