@@ -933,7 +933,7 @@ def get_emp_component_amount(payroll_entry, salary_component, party=None):
 					and sd.salary_component = "{salary_component}"
 			group by ss.employee""".format(payroll_entry=payroll_entry, salary_component=salary_component), as_dict=True)
 		else:
-			if salary_component != "Salary Advance Deductions":
+			if salary_component not in ("Salary Advance Deductions", "Excess Salary Recovery"):
 				return frappe.db.sql("""select ss.employee, sum(sd.amount) amount, ss.branch, sd.salary_component,
 							sd.institution_name bank_name, sd.reference_number account_number,
 							1 as recovery_account,
