@@ -2,9 +2,6 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Work force Requisition', {
-	// refresh: function(frm) {
-
-	// }
 	requesting_branch: function(frm){
 	
 		if (frm.doc.requesting_branch === "VCSC"){
