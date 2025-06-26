@@ -911,7 +911,7 @@ def get_payroll_entries_for_jv(doctype, txt, searchfield, start, page_len, filte
 
 # CBS Integration
 def get_emp_component_amount(payroll_entry, salary_component, party=None):
-	if salary_component == "Net Pay":
+	if salary_component in ("Net Pay", "Salary Arrears"):
 		return frappe.db.sql("""select ss.employee, net_pay amount, "Net Pay" as salary_component,
 					ss.bank_name, ss.bank_account_no account_number,
 					0 as recovery_account,
