@@ -5,4 +5,14 @@ frappe.ui.form.on('Work force Requisition', {
 	// refresh: function(frm) {
 
 	// }
+	requesting_branch: function(frm){
+	
+		if (frm.doc.requesting_branch === "VCSC"){
+			frm.set_value("from_branch", "Corporate Office");
+		}
+		else{
+			frm.set_value("from_branch","VCSC")
+		}
+
+	}
 });
