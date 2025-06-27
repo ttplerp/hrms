@@ -1,0 +1,83 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2023-06-01 13:47:14.492684",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mr_attendance",
+  "column_break_2",
+  "date",
+  "column_break_4",
+  "status",
+  "column_break_6",
+  "daily_wage",
+  "is_lumpsum"
+ ],
+ "fields": [
+  {
+   "fieldname": "mr_attendance",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "MR Attendance",
+   "options": "Muster Roll Attendance",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "\nPresent\nAbsent",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "daily_wage",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Wage",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_lumpsum",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Lumpsum Pay",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-08-09 16:06:14.494082",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "MR Attendance Item",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
