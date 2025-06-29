@@ -12,6 +12,7 @@ from calendar import monthrange
 import csv
 import os
 from functools import reduce
+from erpnext.custom_workflow import validate_workflow_states, notify_workflow_states
 from frappe import _
 from frappe.utils.xlsxutils import (
 	read_xls_file_from_attached_file,
@@ -19,7 +20,12 @@ from frappe.utils.xlsxutils import (
 )
 
 class BulkUploadTool(Document):
+	def validate(self):
+		validate_workflow_states(self)
+		if self.workflow_state != "Approved":
+			notify_workflow_states(self)
 	def on_submit(self):
+		notify_workflow_states(self)
 		from erpnext.projects.doctype.process_mr_payment.process_mr_payment import get_pay_details
 		if not self.import_file:
 			frappe.throw("Import File is mandatory")
