@@ -19,6 +19,7 @@
   "below",
   "amount_details",
   "pbva_percent",
+  "company_achievement",
   "get_pbva",
   "column_break_14",
   "total_amount",
@@ -181,12 +182,19 @@
    "label": "Company",
    "options": "Company",
    "read_only": 1
+  },
+  {
+   "fieldname": "company_achievement",
+   "fieldtype": "Percent",
+   "label": "Company Achievement",
+   "precision": "2",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-04-03 11:41:50.353152",
+ "modified": "2025-06-23 15:17:32.457029",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PBVA",

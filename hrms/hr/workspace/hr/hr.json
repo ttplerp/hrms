@@ -1197,7 +1197,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Muster Roll Management",
-   "link_count": 6,
+   "link_count": 5,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -1250,19 +1250,9 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "MR Monthly Overtime Register",
-   "link_count": 0,
-   "link_to": "MR Monthly Overtime Register",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
   }
  ],
- "modified": "2025-04-16 15:10:43.699323",
+ "modified": "2025-06-27 18:39:50.158902",
  "modified_by": "pralad.rai@thimphutechpark.bt",
  "module": "HR",
  "name": "HR",

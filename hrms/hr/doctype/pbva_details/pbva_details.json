@@ -17,7 +17,11 @@
   "date_of_joining",
   "relieving_date",
   "cost_center",
+  "dep_rating",
+  "employee_rating",
+  "total_rating",
   "pms",
+  "pbva_percent",
   "data_12",
   "amount",
   "tax_amount",
@@ -148,13 +152,39 @@
   {
    "fieldname": "pms",
    "fieldtype": "Percent",
+   "hidden": 1,
    "label": "PMS Percentage"
+  },
+  {
+   "fieldname": "dep_rating",
+   "fieldtype": "Percent",
+   "label": "Department Rating (50%)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_rating",
+   "fieldtype": "Percent",
+   "label": "Total Rating",
+   "read_only": 1
+  },
+  {
+   "fieldname": "pbva_percent",
+   "fieldtype": "Percent",
+   "label": "PBVA Percent",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_rating",
+   "fieldtype": "Percent",
+   "label": "Employee Rating (50%)",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-06-06 16:00:07.151778",
+ "modified": "2025-06-23 15:56:31.203928",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "PBVA Details",

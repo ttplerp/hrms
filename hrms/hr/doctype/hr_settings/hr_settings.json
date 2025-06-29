@@ -137,7 +137,12 @@
   "bank_payment_status_notification_template",
   "enote_status_notification",
   "enote_approval_notification",
-  "enote_copyto_notification"
+  "enote_copyto_notification",
+  "tb_pms",
+  "appeal",
+  "max_rating_limit",
+  "cb_pms",
+  "approver_name"
  ],
  "fields": [
   {
@@ -871,13 +876,41 @@
    "fieldtype": "Data",
    "label": "Approver Name (GM,AFD)",
    "read_only": 1
+  },
+  {
+   "fieldname": "tb_pms",
+   "fieldtype": "Tab Break",
+   "label": "PMS Settings"
+  },
+  {
+   "fieldname": "appeal",
+   "fieldtype": "Link",
+   "label": "PMS Approver",
+   "options": "User"
+  },
+  {
+   "fieldname": "max_rating_limit",
+   "fieldtype": "Select",
+   "label": "Max Rating Limit",
+   "options": "\n1\n2\n3\n4\n5"
+  },
+  {
+   "fieldname": "cb_pms",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "appeal.full_name",
+   "fieldname": "approver_name",
+   "fieldtype": "Data",
+   "label": "Approver Name",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-03-21 12:34:42.250198",
+ "modified": "2025-06-24 11:33:19.759670",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
