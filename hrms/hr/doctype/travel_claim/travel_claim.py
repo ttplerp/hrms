@@ -123,6 +123,7 @@ class TravelClaim(Document):
         validate_workflow_states(self)
 
     def on_cancel(self):
+        self.ignore_linked_doctypes = ("GL Entry", "Payment Ledger Entry")
         self.check_journal_entry()
         if self.ta:
             self.ta = None
@@ -173,9 +174,9 @@ class TravelClaim(Document):
         self.unlink_travel_authorization()
 
     def unlink_travel_authorization(self):
-        cl_status = frappe.db.get_value("Journal Entry", self.claim_journal, "docstatus")
-        if cl_status and cl_status != 2:
-            frappe.throw("You need to cancel the claim journal entry first!")
+        # cl_status = frappe.db.get_value("Journal Entry", self.claim_journal, "docstatus")
+        # if cl_status and cl_status != 2:
+        #     frappe.throw("You need to cancel the claim journal entry first!")
 
         tas = frappe.db.sql("select distinct(travel_authorization) as ta from `tabTravel Claim Item` where parent = %s", str(self.name), as_dict=True)
         for a in tas:
