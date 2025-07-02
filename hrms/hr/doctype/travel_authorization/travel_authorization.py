@@ -271,6 +271,7 @@ class TravelAuthorization(Document):
                 
                 #Set a reference to the advance journal entry
                 self.db_set("advance_journal", je.name)
+                frappe.db.commit()
     
     ##
     # Allow only approved authorizations to be submitted
@@ -647,6 +648,8 @@ def make_travel_claim(source_name, target_doc=None):
 
 @frappe.whitelist()
 def get_exchange_rate(from_currency, to_currency, date=None):
+    if str(from_currency) == str(to_currency):
+        return 1
     # Following line is replaced by subsequent code by SHIV on 2020/09/22
     #ex_rate = frappe.db.get_value("Currency Exchange", {"from_currency": from_currency, "to_currency": to_currency}, "exchange_rate")
     if not date or date == "" or date == " ":
