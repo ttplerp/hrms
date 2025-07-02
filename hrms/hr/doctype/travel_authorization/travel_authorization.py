@@ -31,6 +31,8 @@ class TravelAuthorization(Document):
             notify_workflow_states(self)
         if self.training_event:
             self.update_training_event()
+        if not self.currency:
+            self.currency = 'BTN'
             
     def workflow_action(self):
         action = frappe.request.form.get('action') 
