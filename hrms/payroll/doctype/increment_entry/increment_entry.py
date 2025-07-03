@@ -47,6 +47,7 @@ class IncrementEntry(Document):
 			select t1.name as employee, t1.employee_name, t1.grade, t1.department, t1.designation
 			from `tabEmployee` t1
 			where t1.status = 'Active'
+			and t1.employment_status != 'Probation'
 			and t1.increment_cycle = '{}' 
 			and not exists(select 1
 					from `tabSalary Increment` as t3
