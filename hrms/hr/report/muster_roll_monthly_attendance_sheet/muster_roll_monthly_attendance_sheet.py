@@ -1,5 +1,8 @@
-# Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
+# Copyright (c) 2024, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
+
+# import frappe
+
 
 from __future__ import unicode_literals
 import frappe
@@ -17,7 +20,7 @@ def execute(filters=None):
 
         data = []
         for emp in sorted(att_map):
-                row = [emp, att_map[emp]['person_name'], att_map[emp]['id_card'], att_map[emp]['cost_center'], att_map[emp]['unit']]
+                row = [emp, att_map[emp]['person_name'], att_map[emp]['id_card'], att_map[emp]['cost_center']]
 
                 total_p = total_a = total_h = 0.0
                 for day in range(filters["total_days_in_month"]):
@@ -39,7 +42,7 @@ def execute(filters=None):
 
 def get_columns(filters):
         columns = [
-                _("MR Employee") + "::120", _("Name") + "::140", _("CID No") + "::120",  _("Cost Center") + "::150", _("Unit") + "::100"
+                _("MR Employee") + "::120", _("Name") + "::140", _("CID No") + "::120", _("Cost Center") + ":Link/Cost Center:100"
         ]
 
         for day in range(filters["total_days_in_month"]):
@@ -49,7 +52,7 @@ def get_columns(filters):
         return columns
 
 def get_attendance_list(conditions, filters):
-        attendance_list = frappe.db.sql("""select mr_employee, mr_employee_name, cost_center, unit,
+        attendance_list = frappe.db.sql("""select mr_employee, mr_employee_name, cost_center,
                 day(date) as day_of_month, status from `tabMuster Roll Attendance`
                 where docstatus = 1 %s order by mr_employee, date""" % conditions, filters, as_dict=1)
 
@@ -60,7 +63,6 @@ def get_attendance_list(conditions, filters):
                         'person_name': d.mr_employee_name,
                         'id_card': d.mr_employee,
                         'cost_center': d.cost_center,
-                        'unit': d.unit,
                         'attendance': {}
                 })
                 att_map[emp_id]['attendance'][d.day_of_month] = d.status
@@ -74,11 +76,11 @@ def get_conditions(filters):
         filters["month"] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].index(filters.month) + 1
         filters["total_days_in_month"] = monthrange(cint(filters.year), filters.month)[1]
 
-        conditions = " and month(date) = %(month)s and year(date) = %(year)s"
+        conditions = " and month(date) = %(month)s and year(date) = %(year)s "
+        # if filters.get("unit"):
+        #         conditions += " and unit = \'" + str(filters.unit) + "\' "
         if filters.get("cost_center"):
                 conditions += " and cost_center = \'" + str(filters.cost_center) + "\' "
-        if filters.get("unit"):
-                conditions += " and unit = \'" + str(filters.unit) + "\' "
 
         return conditions, filters
 

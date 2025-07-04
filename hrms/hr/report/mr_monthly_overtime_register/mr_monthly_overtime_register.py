@@ -1,5 +1,8 @@
-# Copyright (c) 2023, Frappe Technologies Pvt. Ltd. and contributors
+# Copyright (c) 2024, Frappe Technologies Pvt. Ltd. and contributors
 # For license information, please see license.txt
+
+# import frappe
+
 
 from __future__ import unicode_literals
 import frappe
@@ -41,7 +44,7 @@ def execute(filters=None):
 
 def get_columns(filters):
 	columns = [
-		_("Name") + "::140", _("CID")+ "::120", _("Cost Center")+ "::150"
+		_("Name") + "::140", _("CID")+ "::120", _("Cost Center") + ":Link/Cost Center:100"
 	]
 
 	for day in range(filters["total_days_in_month"]):
@@ -52,7 +55,7 @@ def get_columns(filters):
 	return columns
 
 def get_attendance_list(conditions, filters):
-	attendance_list = frappe.db.sql(f"""select mr_employee as employee, day(date) as day_of_month,
+	attendance_list = frappe.db.sql(f"""select mr_employee as employee, day(date) as day_of_month, cost_center,
 					number_of_hours_regular as status, number_of_hours_special as hrs 
 				from `tabMuster Roll Overtime Entry` where docstatus = 1 %s order by mr_employee, date""" %
 		conditions, filters, as_dict=1)
@@ -63,6 +66,7 @@ def get_attendance_list(conditions, filters):
 			day_of_month = str(d.day_of_month) + str(t)
 			att_map.setdefault(d.employee, frappe._dict()).setdefault(day_of_month, "")
 			att_map[d.employee][day_of_month] = d.status if t=="R" else d.hrs
+			att_map[d.employee]["cost_center"] = d.cost_center
 	return att_map
 
 def get_conditions(filters):
@@ -76,14 +80,17 @@ def get_conditions(filters):
 
 	conditions = " and month(date) = %(month)s and year(date) = %(year)s"
 	if filters.get("cost_center"):
-		conditions += "and cost_center = \'" + str(filters.cost_center) + "\' "
+		conditions += " and cost_center = \'" + str(filters.cost_center) + "\' "
 	return conditions, filters
 
 def get_employee_details(employee_type):
 	emp_map = frappe._dict()
-	for d in frappe.db.sql("""select name, person_name, id_card, cost_center
-		from `tabMuster Roll Employee`""", as_dict=1):
-		emp_map.setdefault(d.name, d)
+	if employee_type == "Muster Roll Employee":
+		for d in frappe.db.sql("""select name, person_name, id_card, cost_center
+			from `tabMuster Roll Employee`""", as_dict=1):
+			emp_map.setdefault(d.name, d)
+	else:
+		frappe.throw("Select a Employee Type")
 
 	return emp_map
 
