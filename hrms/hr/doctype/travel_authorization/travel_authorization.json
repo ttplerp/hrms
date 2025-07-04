@@ -299,6 +299,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "depends_on": "eval:doc.need_advance",
    "fieldname": "estimated_amount",
    "fieldtype": "Currency",
@@ -515,7 +516,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-10 18:04:31.836865",
+ "modified": "2025-07-04 14:35:03.640322",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Authorization",
