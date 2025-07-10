@@ -87,9 +87,8 @@ class OfficiatingEmployee(Document):
 
 def check_off_exp():
 	off = frappe.db.sql("""select name from `tabOfficiating Employee` 
-		where docstatus = 1 and to_date = %(today)s""", {"today": add_days(nowdate(), -1)}, as_dict=True)
+		where docstatus = 1 and revoked = 0 and to_date = %(today)s""", {"today": add_days(nowdate(), -1)}, as_dict=True)
 	for a in off:
 		print(str(a))
 		doc = frappe.get_doc("Officiating Employee", a)
 		doc.revoke_perm()
-
