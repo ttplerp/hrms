@@ -23,6 +23,13 @@ frappe.query_reports["Employee Checkin Report"] = {
 			"label": __("Select Employee"),
 			"fieldtype": "Link",
 			"options": "Employee"
+		},
+		{
+			"fieldname":"division",
+			"label": __("Select Division"),
+			"fieldtype": "Link",
+			"options": "Department",
+			"get_query": function() {return {'filters': [['Department', 'is_division', '=', '1']]}}
 		}
 	]
 };
