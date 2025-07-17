@@ -442,4 +442,37 @@ def update_suspension_record():
 		emp.promotion_cycle = d.promotion_month
 		emp.save()
 		
+# ------------------
+# PROBATION REMINDERS
+# mail notify on 15 day before Probation end date to HR User role
+# ------------------
+def send_end_of_probation_reminder():
+	employees = frappe.db.sql(""" 
+			Select name, employee_name 
+			From tabEmployee
+			Where employment_status = 'Probation' and probation_end_date = %(end_date)s 
+		""", {'end_date': add_days(nowdate(), 15)}, as_dict=True)
 	
+	hr_users = frappe.db.sql("select e.user_id \
+		from tabEmployee e join `tabHas Role` r on r.parent=e.user_id and r.parenttype='User' \
+		where e.status='Active' and r.role = %s ", "HR User", as_dict=True)
+	recipients = [d.user_id for d in hr_users]
+	
+	try:
+		message = ('<div>'
+			'<h5> Employees in probation nearing end after 15 Days: </h5>'
+			'<ol>'
+		)
+		for e in employees:
+			message += '<li> {}, {} </li>'.format(e.name, e.employee_name)
+		message += "</ol></div>"
+		
+		subject = "Probation Ending Reminder"
+	
+		frappe.sendmail(
+			recipients=recipients,
+			subject=_(subject),
+			message= _(message), 
+		)
+	except :
+		frappe.msgprint(_("Failed to send reminder."))
