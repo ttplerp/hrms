@@ -98,6 +98,10 @@ def get_conditions(filters):
 		cond += """ and ec.employee="{}" """.format(filters.employee)
 	if filters.division:
 		cond += """ and e.division="{}" """.format(filters.division)
+	if filters.section:
+		cond += """ and e.section="{}" """.format(filters.section)
+	if filters.unit:
+		cond += """ and e.unit="{}" """.format(filters.unit)
 	return cond
 
 def get_employees(filters):

@@ -29,7 +29,37 @@ frappe.query_reports["Employee Checkin Report"] = {
 			"label": __("Select Division"),
 			"fieldtype": "Link",
 			"options": "Department",
-			"get_query": function() {return {'filters': [['Department', 'is_division', '=', '1']]}}
+			"get_query": function() {return {'filters': [['Department', 'is_division', '=', '1']]}},
+			on_change: function() {
+				frappe.query_report.set_filter_value('section', "");
+			},
+		},
+		{
+			"fieldname":"section",
+			"label": __("Select Section"),
+			"fieldtype": "Link",
+			"options": "Department",
+			"get_query": function(txn) {
+				return {
+					'filters': [
+						['Department', 'is_section', '=', '1'],
+						['parent_department', '=', frappe.query_report.get_filter_value("division")]
+					]
+				}
+			}
+		},
+		{
+			"fieldname":"unit",
+			"label": __("Select Unit"),
+			"fieldtype": "Link",
+			"options": "Department",
+			"get_query": function(txn) {
+				return {
+					'filters': [
+						['Department', 'is_unit', '=', '1']
+					]
+				}
+			}
 		}
 	]
 };
