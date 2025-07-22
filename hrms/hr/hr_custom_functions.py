@@ -458,21 +458,22 @@ def send_end_of_probation_reminder():
 		where e.status='Active' and r.role = %s ", "HR User", as_dict=True)
 	recipients = [d.user_id for d in hr_users]
 	
-	try:
-		message = ('<div>'
-			'<h5> Employees in probation nearing end after 15 Days: </h5>'
-			'<ol>'
-		)
-		for e in employees:
-			message += '<li> {}, {} </li>'.format(e.name, e.employee_name)
-		message += "</ol></div>"
+	if employees:
+		try:
+			message = ('<div>'
+				'<h5> Employee list with probation ending after 15 Days: </h5>'
+				'<ol>'
+			)
+			for e in employees:
+				message += '<li> {}, {} </li>'.format(e.name, e.employee_name)
+			message += "</ol></div>"
+			
+			subject = "Probation Ending Reminder"
 		
-		subject = "Probation Ending Reminder"
-	
-		frappe.sendmail(
-			recipients=recipients,
-			subject=_(subject),
-			message= _(message), 
-		)
-	except :
-		frappe.msgprint(_("Failed to send reminder."))
+			frappe.sendmail(
+				recipients=recipients,
+				subject=_(subject),
+				message= _(message), 
+			)
+		except :
+			frappe.msgprint(_("Failed to send reminder."))
