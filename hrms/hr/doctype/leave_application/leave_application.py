@@ -86,7 +86,7 @@ class LeaveApplication(Document):
                 self.leave_approver_name = ceo[1]
                 self.leave_approver_designation = ceo[2]
             else:
-                officiating = get_officiating_employee(frappe.db.get_value("Employee", officiating[0].officiate), ["user_id", "employee_name", "designation"])
+                officiating = frappe.db.get_value("Employee", officiating[0].officiate, ["user_id", "employee_name", "designation"])
                 self.leave_approver = officiating[0]
                 self.leave_approver_name = officiating[1]
                 self.leave_approver_designation = officiating[2]
@@ -98,7 +98,7 @@ class LeaveApplication(Document):
                 self.leave_approver_name = supervisor[1]
                 self.leave_approver_designation = supervisor[2]
             else:
-                officiating = get_officiating_employee(frappe.db.get_value("Employee", officiating[0].officiate), ["user_id", "employee_name", "designation"])
+                officiating = frappe.db.get_value("Employee", officiating[0].officiate, ["user_id", "employee_name", "designation"])
                 self.leave_approver = officiating[0]
                 self.leave_approver_name = officiating[1]
                 self.leave_approver_designation = officiating[2]
@@ -803,8 +803,9 @@ def get_number_of_leave_days(
                     # print(f"Sun deduction: {final}") 
         cur_date=add_to_date(getdate(cur_date), days=1, as_string=True)
 
-    if int(half_day)==1:
-        final-=0.5
+    #---below commented by Jai. as above code already handles days calc. it is double subtracting for half day
+    # if int(half_day)==1:
+    #     final-=0.5
     
     # if not frappe.db.get_value("Leave Type", leave_type, "include_holiday"):
     # 	number_of_days = flt(number_of_days) - flt(
