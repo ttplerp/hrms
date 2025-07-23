@@ -461,7 +461,7 @@ def send_end_of_probation_reminder():
 	if employees:
 		try:
 			message = ('<div>'
-				'<h5> Employee list with probation ending after 15 Days: </h5>'
+				'<h5> Employee list with probation ending after 15 Days from today '+ nowdate() +': </h5>'
 				'<ol>'
 			)
 			for e in employees:
