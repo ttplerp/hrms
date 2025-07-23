@@ -804,8 +804,8 @@ def get_number_of_leave_days(
         cur_date=add_to_date(getdate(cur_date), days=1, as_string=True)
 
     #---below commented by Jai. as above code already handles days calc. it is double subtracting for half day
-    # if int(half_day)==1:
-    #     final-=0.5
+    if int(half_day)==1:
+        final-=0.5
     
     # if not frappe.db.get_value("Leave Type", leave_type, "include_holiday"):
     # 	number_of_days = flt(number_of_days) - flt(
