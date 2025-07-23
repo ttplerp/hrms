@@ -785,14 +785,15 @@ def get_number_of_leave_days(
  
     cur_date=from_date
     # print(f"inital: {no_days}")
-
+    #flag used to track for saturday, to avoide double deduction of -0.5
+    flag_half_day = 0
         
     for i in range(0, no_days):
         for holiday in frappe.db.sql("select * from `tabHoliday` where parent='{}'".format(get_holiday_list_for_employee(employee)), as_dict=1):
             hol_date=getdate(cur_date)
             if holiday.holiday_date==hol_date:
                 if holiday.holiday_date.weekday()==5 and ("saturday" in holiday.description.lower()):
-                    
+                    flag_half_day = 1
                     #print(f"Saturday: date {cur_date} holiday {holiday.holiday_date}" )
                     final-=0.5  
                     # print(f"Sat deduction: {final}") 
@@ -803,8 +804,7 @@ def get_number_of_leave_days(
                     # print(f"Sun deduction: {final}") 
         cur_date=add_to_date(getdate(cur_date), days=1, as_string=True)
 
-    #---below commented by Jai. as above code already handles days calc. it is double subtracting for half day
-    if int(half_day)==1:
+    if int(half_day)==1 and not flag_half_day:
         final-=0.5
     
     # if not frappe.db.get_value("Leave Type", leave_type, "include_holiday"):
