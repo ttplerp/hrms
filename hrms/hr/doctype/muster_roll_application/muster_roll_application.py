@@ -31,7 +31,7 @@ class MusterRollApplication(Document):
 			if a.approver_status == 'Approved':
 				doc = frappe.get_doc("Muster Roll Employee", a.existing_cid)
 				doc.date_of_transfer = None if cancel else a.joining_date
-				doc.branch = self.branch
+				doc.branch = self.from_branch if cancel else self.branch
 				doc.cost_center = frappe.db.get_value("Branch", self.from_branch, "cost_center") if cancel else self.cost_center
 				doc.rate_per_day = a.rate_per_day
 				doc.rate_per_hour = a.rate_per_hour
@@ -57,8 +57,8 @@ class MusterRollApplication(Document):
 					}
 				doc.append("internal_work_history", internal_work_history)
 
-				if self.project:
-					doc.project = self.project
+				# if self.project:
+				# 	doc.project = self.project
 			try:
 				doc.save(ignore_permissions=True)
 			except Exception as e:
@@ -87,10 +87,8 @@ class MusterRollApplication(Document):
 
 	@frappe.whitelist()
 	def update_requesting_info(self):
-		if self.project and not self.branch:
-			self.branch = frappe.db.get_value("Branch", self.branch, "branch")
-			self.cost_center = frappe.db.get_value("Project", self.project, "cost_center")
-		elif self.branch and not self.project:
+		
+		if self.branch and not self.project:
 			self.branch = frappe.db.get_value("Branch", self.branch, "branch")
 			self.cost_center = frappe.db.get_value("Branch", self.branch, "cost_center")
 		else:
@@ -176,8 +174,8 @@ class MusterRollApplication(Document):
 				doc.business_activity = a.business_activity
 				doc.bank_account_type = a.bank_account_type
 
-				if self.project:
-					doc.project = self.project
+				# if self.project:
+				# 	doc.project = self.project
 
 				try:
 					doc.flags.ignore_permissions = 1
