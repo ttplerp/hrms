@@ -57,6 +57,7 @@
   {
    "fieldname": "project",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
@@ -199,7 +200,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-25 10:46:42.492728",
+ "modified": "2025-07-30 09:08:14.627764",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Application",
