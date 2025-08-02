@@ -26,42 +26,42 @@ class TravelAuthorization(Document):
         self.set_travel_period()
         self.validate_travel_dates(update=True)
         self.check_maintenance_project()
-        self.workflow_action()
-        if self.workflow_state != "Approved" and self.workflow_state != "Waiting for Verification":
+        # self.workflow_action()
+        if self.workflow_state != "Approved":
             notify_workflow_states(self)
         if self.training_event:
             self.update_training_event()
         if not self.currency:
             self.currency = 'BTN'
             
-    def workflow_action(self):
-        action = frappe.request.form.get('action') 
-        if action in ("Apply","Reapply"):
-            if self.travel_type == "Travel":
-                self.notify_reviewers(self.supervisor)
-            else:
-                rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
-                self.notify_reviewers(rcvpnt)   
+    # def workflow_action(self):
+    #     action = frappe.request.form.get('action') 
+    #     if action in ("Apply","Reapply"):
+    #         if self.travel_type == "Travel":
+    #             self.notify_reviewers(self.supervisor)
+    #         else:
+    #             rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
+    #             self.notify_reviewers(rcvpnt)   
                 
     
-    def notify_reviewers(self, recipients):
-        parent_doc = frappe.get_doc(self.doctype, self.name)
-        args = parent_doc.as_dict()
-        args.workflow_state = self.workflow_state
+    # def notify_reviewers(self, recipients):
+    #     parent_doc = frappe.get_doc(self.doctype, self.name)
+    #     args = parent_doc.as_dict()
+    #     args.workflow_state = self.workflow_state
         
-        try:
-            email_template = frappe.get_doc("Email Template", 'Travel Authorization Status Notification')
-            message = frappe.render_template(email_template.response, args)
-            subject = email_template.subject
+    #     try:
+    #         email_template = frappe.get_doc("Email Template", 'Travel Authorization Status Notification')
+    #         message = frappe.render_template(email_template.response, args)
+    #         subject = email_template.subject
         
-            frappe.sendmail(
-                recipients=recipients,
-                subject=_(subject),
-                message= _(message),
+    #         frappe.sendmail(
+    #             recipients=recipients,
+    #             subject=_(subject),
+    #             message= _(message),
                 
-            )
-        except :
-            frappe.msgprint(_("Travel Authorization Status Notification is missing."))
+    #         )
+    #     except :
+    #         frappe.msgprint(_("Travel Authorization Status Notification is missing."))
     
         
     def on_update(self):
@@ -424,7 +424,7 @@ class TravelAuthorization(Document):
             
         if self.place_type == "In-Country":
             
-            if self.travel_type == "Training" or  self.travel_type == "Meeting and Seminars":
+            if self.travel_type == "Training" or self.travel_type == "Workshop and Seminars" or self.travel_type == "Meeting":
             
                 if self.within_same_locality==1:
                     start_day=0
@@ -560,7 +560,7 @@ def make_travel_claim(source_name, target_doc=None):
         target.amount = target.dsa
         target.dsa_percent='100'
         
-        if (source_parent.travel_type=="Training" or source_parent.travel_type == "Meeting and Seminars" or source_parent.travel_type == "Workshop") and source_parent.place_type=="In-Country":
+        if (source_parent.travel_type=="Training" or source_parent.travel_type == "Workshop and Seminars" or source_parent.travel_type == "Meeting") and source_parent.place_type=="In-Country":
             target.dsa = frappe.get_doc("HR Settings").training_dsa
             
         if source_parent.within_same_locality==1:
@@ -568,7 +568,7 @@ def make_travel_claim(source_name, target_doc=None):
                 
         if target.halt:
             
-            if (source_parent.travel_type=="Training" or source_parent.travel_type == "Meeting and Seminars" or source_parent.travel_type == "Workshop") and source_parent.place_type=="In-Country":
+            if (source_parent.travel_type=="Training" or source_parent.travel_type == "Workshop and Seminars" or source_parent.travel_type == "Meeting") and source_parent.place_type=="In-Country":
                     
                 target.dsa = frappe.get_doc("HR Settings").training_dsa
             

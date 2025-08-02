@@ -239,7 +239,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Purpose",
-   "options": "\nTravel\nTraining\nMeeting and Seminars",
+   "options": "\nTravel\nMeeting\nTraining\nWorkshop and Seminars",
    "reqd": 1
   },
   {
@@ -610,7 +610,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-14 15:08:17.261023",
+ "modified": "2025-08-01 17:38:25.564638",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim",

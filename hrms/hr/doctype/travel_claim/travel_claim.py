@@ -15,62 +15,57 @@ from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_ban
 
 class TravelClaim(Document):
     def validate(self):
-        self.workflow_action()
-        if frappe.request.form.get('action') != "Save":
-            validate_workflow_states(self)
+        # self.workflow_action()
+        validate_workflow_states(self)
         self.validate_dates()
         self.validate_duplicate()
         self.validate_cost_center()
-        if self.travel_type not in ("Training", "Meeting and Seminars") and self.supervisor:
-            self.set_supervisor_manager()
+        if self.workflow_state != "Claimed":
+            notify_workflow_states(self)
+        # if self.travel_type not in ("Training", "Meeting and Seminars") and self.supervisor:
+        #     self.set_supervisor_manager()
         if self.training_event:
             self.update_training_event()
                 
-    def workflow_action(self):
-        action = frappe.request.form.get('action') 
-        if action in ("Apply","Reapply"):
-            if self.travel_type == "Travel":
-                self.notify_reviewers(self.supervisor)
-            else:
-                rcvpnt=frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_verifier"), "user_id")
-                self.notify_reviewers(rcvpnt)
-        elif action == "Approve" and self.workflow_state == "Approved":
-            #Get the user with Account User Role who are permitted to this selected branch
-            recipients=[]
-            for a in frappe.db.sql("""
-                                select u.name from `tabUser` u inner join  `tabHas Role` r
-                                on u.name = r.parent
-                                where r.role in ("Accounts User","Accounts Manager") 
-                                and u.name like "%bdb.bt"
-                                and exists(
-                                    select 1 from `tabAssign Branch` b inner join `tabBranch Item` i 
-                                    on b.name = i.parent 
-                                    where branch="{branch}" and b.user = u.name
-                                )
-                                group by u.name
-                            """.format(branch=self.branch), as_dict=True):
-                recipients.append(a.name)
-            self.notify_reviewers(recipients)
-        elif self.workflow_state in ("Claimed","Rejected") and frappe.request.form.get('action')!="Save":
-            user_email = frappe.db.get_value("Employee", self.employee, "user_id")
-            self.notify_reviewers(user_email)
+    # def workflow_action(self):
+    #     action = frappe.request.form.get('action') 
+    #    if action == "Approve" and self.workflow_state == "Approved":
+    #         #Get the user with Account User Role who are permitted to this selected branch
+    #         recipients=[]
+    #         for a in frappe.db.sql("""
+    #                             select u.name from `tabUser` u inner join  `tabHas Role` r
+    #                             on u.name = r.parent
+    #                             where r.role in ("Accounts User","Accounts Manager") 
+    #                             and u.name like "%bdb.bt"
+    #                             and exists(
+    #                                 select 1 from `tabAssign Branch` b inner join `tabBranch Item` i 
+    #                                 on b.name = i.parent 
+    #                                 where branch="{branch}" and b.user = u.name
+    #                             )
+    #                             group by u.name
+    #                         """.format(branch=self.branch), as_dict=True):
+    #             recipients.append(a.name)
+    #         self.notify_reviewers(recipients)
+    #     elif self.workflow_state in ("Claimed","Rejected") and frappe.request.form.get('action')!="Save":
+    #         user_email = frappe.db.get_value("Employee", self.employee, "user_id")
+    #         self.notify_reviewers(user_email)
     
-    def notify_reviewers(self, recipients):
-        parent_doc = frappe.get_doc(self.doctype, self.name)
-        args = parent_doc.as_dict()
-        args.workflow_state = self.workflow_state
-        try:
-            email_template = frappe.get_doc("Email Template", 'Travel Claim Status Notification')
-            message = frappe.render_template(email_template.response, args)
-            subject = email_template.subject
+    # def notify_reviewers(self, recipients):
+    #     parent_doc = frappe.get_doc(self.doctype, self.name)
+    #     args = parent_doc.as_dict()
+    #     args.workflow_state = self.workflow_state
+    #     try:
+    #         email_template = frappe.get_doc("Email Template", 'Travel Claim Status Notification')
+    #         message = frappe.render_template(email_template.response, args)
+    #         subject = email_template.subject
         
-            frappe.sendmail(
-                recipients=recipients,
-                subject=_(subject),
-                message= _(message), 
-            )
-        except :
-            frappe.msgprint(_("Travel Claim Status Notification is missing."))
+    #         frappe.sendmail(
+    #             recipients=recipients,
+    #             subject=_(subject),
+    #             message= _(message), 
+    #         )
+    #     except :
+    #         frappe.msgprint(_("Travel Claim Status Notification is missing."))
 
     def validate_duplicate(self):
         existing = []
@@ -86,8 +81,8 @@ class TravelClaim(Document):
         if self.reference_type and self.reference_name: 
             self.cost_center = frappe.db.get_value(self.reference_type, self.reference_name, 'cost_center')
 
-    def set_supervisor_manager(self):
-        self.supervisor_manager, self.supervisor_manager_name, supervisor_manager_designation = frappe.db.get_value("Employee",frappe.db.get_value("Employee", {"user_id":self.supervisor},["reports_to"]),['user_id','employee_name','designation'])
+    # def set_supervisor_manager(self):
+    #     self.supervisor_manager, self.supervisor_manager_name, supervisor_manager_designation = frappe.db.get_value("Employee",frappe.db.get_value("Employee", {"user_id":self.supervisor},["reports_to"]),['user_id','employee_name','designation'])
 
     def on_update(self):
         self.check_double_dates()
@@ -216,6 +211,7 @@ class TravelClaim(Document):
                 frappe.throw(_("Row#{0} : Till Date cannot be before from date.").format(i.idx), title="Invalid Data")
         return collections.OrderedDict(sorted(counts.items()))
     
+    #--- this func. is not used
     def validate_dsa_ceiling(self):
             max_days_per_month  = 0
             tt_list             = []
@@ -306,6 +302,7 @@ class TravelClaim(Document):
                             i.remarks        = ""
                             i.days_allocated = 1 
     
+    #--- this func is not used
     def update_amounts(self):
         #dsa_per_day         = flt(frappe.db.get_value("Employee Grade", self.grade, "dsa"))
         lastday_dsa_percent = frappe.db.get_single_value("HR Settings", "return_day_dsa")
@@ -546,7 +543,7 @@ class TravelClaim(Document):
                 mileage_acc_field = "training_out_country_mileage_account"
             else:
                 mileage_acc_field = "training_in_country_mileage_account"
-        elif self.travel_type in ("Workshop", "Meeting and Seminars"):
+        elif self.travel_type in ("Meeting", "Workshop and Seminars"):
             if self.place_type == "Out Country":
                 mileage_acc_field = "wms_out_country_mileage_account"
             else:
