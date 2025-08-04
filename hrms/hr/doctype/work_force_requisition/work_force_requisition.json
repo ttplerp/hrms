@@ -12,7 +12,7 @@
   "column_break_bh8my",
   "requested_by",
   "warehouse_section",
-  "requesting_warehouse",
+  "request_from",
   "column_break_zqwwe",
   "required_by_date",
   "workforce_requirement_section",
@@ -56,14 +56,6 @@
    "label": "Warehouse"
   },
   {
-   "fieldname": "requesting_warehouse",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Requesting Warehouse",
-   "options": "Warehouse",
-   "reqd": 1
-  },
-  {
    "fieldname": "workforce_requirement_section",
    "fieldtype": "Section Break",
    "label": "Workforce Requirement"
@@ -86,12 +78,20 @@
    "fieldname": "required_by_date",
    "fieldtype": "Date",
    "label": "Required By Date"
+  },
+  {
+   "fieldname": "request_from",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "MR Request From",
+   "options": "Warehouse",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-23 12:51:52.531654",
+ "modified": "2025-08-04 16:58:51.441045",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Work force Requisition",
