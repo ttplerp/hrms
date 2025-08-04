@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Sales",
- "modified": "2023-01-30 15:52:33.983039",
+ "modified": "2025-08-04 16:42:44.089523",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Monthly Salary Register",
@@ -22,9 +22,6 @@
  "roles": [
   {
    "role": "Administrator"
-  },
-  {
-   "role": "Employee"
   },
   {
    "role": "HR User"
