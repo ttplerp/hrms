@@ -78,6 +78,18 @@ class LeaveApplication(Document):
         self.set_half_day_date()
         if frappe.db.get_value("Leave Type", self.leave_type, "is_optional_leave"):
             self.validate_optional_leave()
+        if self.workflow_state == "Waiting Approval" and self.leave_type == 'Maternity Leave':
+            hr_approval = frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_approver"), ["user_id", "employee_name", "designation"])
+            officiating = get_officiating_employee(frappe.db.get_value("Employee", {"user_id":hr_approval[0]}))
+            if not officiating:
+                self.leave_approver = hr_approval[0]
+                self.leave_approver_name = hr_approval[1]
+                self.leave_approver_designation = hr_approval[2]
+            else:
+                officiating = frappe.db.get_value("Employee", officiating[0].officiate, ["user_id", "employee_name", "designation"])
+                self.leave_approver = officiating[0]
+                self.leave_approver_name = officiating[1]
+                self.leave_approver_designation = officiating[2]
         if self.workflow_state == "Waiting CEO Approval" and self.docstatus == 0:
             ceo = frappe.db.get_value("Employee", {"designation": "Chief Executive Officer", "status": "Active", "employment_status":  "In Service"}, ["user_id", "employee_name", "designation"])
             officiating = get_officiating_employee(frappe.db.get_value("Employee", {"user_id":ceo[0]}))
