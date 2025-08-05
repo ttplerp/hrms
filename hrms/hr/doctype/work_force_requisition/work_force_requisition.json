@@ -84,14 +84,14 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "MR Request From",
-   "options": "Warehouse",
+   "options": "Branch",
    "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-04 16:58:51.441045",
+ "modified": "2025-08-05 09:20:41.569386",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Work force Requisition",
