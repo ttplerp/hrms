@@ -8,6 +8,7 @@
  "document_type": "Document",
  "engine": "InnoDB",
  "field_order": [
+  "employee_leave_application_section",
   "naming_series",
   "employee",
   "employee_name",
@@ -305,6 +306,11 @@
   {
    "fieldname": "column_break_32emk",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee_leave_application_section",
+   "fieldtype": "Section Break",
+   "label": "Employee Leave Application"
   }
  ],
  "icon": "fa fa-calendar",
@@ -312,7 +318,7 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 3,
- "modified": "2025-08-05 12:12:00.545730",
+ "modified": "2025-08-05 12:20:55.284920",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Leave Application",
