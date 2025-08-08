@@ -78,7 +78,7 @@ class LeaveApplication(Document):
         self.set_half_day_date()
         if frappe.db.get_value("Leave Type", self.leave_type, "is_optional_leave"):
             self.validate_optional_leave()
-        if self.workflow_state == "Waiting Approval" and self.leave_type == 'Maternity Leave':
+        if self.workflow_state == "Waiting Approval" and self.leave_type in ('Maternity Leave', 'Paternity Leave'):
             hr_approval = frappe.db.get_value("Employee", frappe.db.get_single_value("HR Settings", "hr_approver"), ["user_id", "employee_name", "designation"])
             officiating = get_officiating_employee(frappe.db.get_value("Employee", {"user_id":hr_approval[0]}))
             if not officiating:
