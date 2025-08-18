@@ -110,7 +110,15 @@ class LeaveApplication(Document):
                 self.leave_approver_name = supervisor[1]
                 self.leave_approver_designation = supervisor[2]
             else:
-                officiating = frappe.db.get_value("Employee", officiating[0].officiate, ["user_id", "employee_name", "designation"])
+                if officiating[0].officiate == self.employee:
+                    sup_officiating = get_officiating_employee(frappe.db.get_value("Employee", {"user_id": frappe.db.get_value("Employee", {"user_id":supervisor[0]}, "leave_approver")}))
+                    if sup_officiating:
+                        officiating = frappe.db.get_value("Employee", sup_officiating[0].officiate, ["user_id", "employee_name", "designation"])
+                    else:
+                        officiating = frappe.db.get_value("Employee", {"user_id": frappe.db.get_value("Employee", {"user_id":supervisor[0]}, "leave_approver")}, ["user_id", "employee_name", "designation"])
+                else:
+                    officiating = frappe.db.get_value("Employee", officiating[0].officiate, ["user_id", "employee_name", "designation"])
+                # officiating = frappe.db.get_value("Employee", officiating[0].officiate, ["user_id", "employee_name", "designation"])
                 self.leave_approver = officiating[0]
                 self.leave_approver_name = officiating[1]
                 self.leave_approver_designation = officiating[2]
