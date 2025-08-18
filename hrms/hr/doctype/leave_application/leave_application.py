@@ -1354,7 +1354,15 @@ def get_leave_approver(employee):
         )
     officiating = get_officiating_employee(frappe.db.get_value("Employee", {"user_id":leave_approver}))
     if officiating:
-        leave_approver = frappe.db.get_value("Employee", officiating[0].officiate, "user_id")
+        if officiating[0].officiate == employee:
+            sup_officiating = get_officiating_employee(frappe.db.get_value("Employee", frappe.db.get_value("Employee", {"user_id":leave_approver}, "name"),"leave_approver"))
+            if sup_officiating:
+                leave_approver = frappe.db.get_value("Employee", sup_officiating[0].officiate, "user_id")
+            else:
+                leave_approver = frappe.db.get_value("Employee", frappe.db.get_value("Employee", {"user_id":leave_approver}, "name"),"leave_approver")
+        else:
+            leave_approver = frappe.db.get_value("Employee", officiating[0].officiate, "user_id")
+        # leave_approver = frappe.db.get_value("Employee", officiating[0].officiate, "user_id")
     return leave_approver
 
 def get_permission_query_conditions(user):
