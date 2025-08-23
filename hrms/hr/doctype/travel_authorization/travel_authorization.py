@@ -678,8 +678,28 @@ def get_permission_query_conditions(user):
     if user == "Administrator":
         return
         
-    if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles:
+    if "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles:
         return
+    if "HR User" in user_roles:
+        return """(
+            `tabTravel Authorization`.owner = '{user}'
+            or
+            exists(select 1
+                    from `tabEmployee`
+                    where `tabEmployee`.name = `tabTravel Authorization`.employee
+                    and `tabEmployee`.user_id = '{user}' and `tabTravel Authorization`.docstatus != 2)
+            or
+            exists(select 1
+                    from `tabEmployee`, `tabHas Role`
+                    where `tabEmployee`.user_id = `tabHas Role`.parent
+                    and `tabHas Role`.role = 'Travel Administrator'
+                    and (select region from `tabEmployee` where `tabEmployee`.name = `tabTravel Authorization`.employee limit 1) = (select region from `tabEmployee` where `tabEmployee`.user_id = '{user}' limit 1)
+                    and `tabEmployee`.user_id = '{user}')
+            or
+            (`tabTravel Authorization`.workflow_state not in ('Draft') and `tabTravel Authorization`.travel_type not in ('Travel','Meeting'))
+            or 
+            (`tabTravel Authorization`.travel_type = 'Meeting' and `tabTravel Authorization`.place_type = "Out-Country" and `tabTravel Authorization`.workflow_state not in ('Draft'))
+        )""".format(user=user)
 
     return """(
         `tabTravel Authorization`.owner = '{user}'
