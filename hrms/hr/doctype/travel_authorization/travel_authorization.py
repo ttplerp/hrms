@@ -678,9 +678,7 @@ def get_permission_query_conditions(user):
     if user == "Administrator":
         return
         
-    if "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles:
-        return
-    if "HR User" in user_roles:
+    if "HR User" in user_roles and user in ('nima.wangmo@bdb.bt'):
         return """(
             `tabTravel Authorization`.owner = '{user}'
             or
@@ -700,6 +698,9 @@ def get_permission_query_conditions(user):
             or 
             (`tabTravel Authorization`.travel_type = 'Meeting' and `tabTravel Authorization`.place_type = "Out-Country" and `tabTravel Authorization`.workflow_state not in ('Draft'))
         )""".format(user=user)
+    
+    if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles:
+        return
 
     return """(
         `tabTravel Authorization`.owner = '{user}'
