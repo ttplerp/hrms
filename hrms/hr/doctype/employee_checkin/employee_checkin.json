@@ -127,7 +127,8 @@
    "in_list_view": 1,
    "label": "Date",
    "read_only": 1,
-   "reqd": 1
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "fieldname": "amended_from",
@@ -185,7 +186,7 @@
   }
  ],
  "links": [],
- "modified": "2024-07-05 09:34:39.365192",
+ "modified": "2025-08-26 17:31:06.866251",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Checkin",
