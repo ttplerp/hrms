@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
- "autoname": "EMP-CKIN-.MM.-.YYYY.-.######",
+ "autoname": "hash",
  "creation": "2019-06-10 11:56:34.536413",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -186,11 +186,11 @@
   }
  ],
  "links": [],
- "modified": "2025-08-26 17:31:06.866251",
+ "modified": "2025-09-04 17:13:16.572628",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Checkin",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [
   {
