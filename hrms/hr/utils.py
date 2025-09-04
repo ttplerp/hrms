@@ -16,6 +16,8 @@ from frappe.utils import (
 	getdate,
 	nowdate,
 	today,
+	add_months,
+	get_last_day,
 )
 
 import erpnext
@@ -277,6 +279,9 @@ def allocate_earned_leaves():
 	"""Allocate earned leaves to Employees"""
 	e_leave_types = get_earned_leaves()
 	today = nowdate()
+	if get_datetime(today).day != get_datetime(get_last_day(today)).day:
+		new_date = add_months(today, -1)
+		today = get_last_day(new_date)
 
 	for e_leave_type in e_leave_types:
 
@@ -332,8 +337,11 @@ def update_previous_leave_allocation(allocation, annual_allocation, e_leave_type
 	if new_allocation > e_leave_type.max_leaves_allowed and e_leave_type.max_leaves_allowed > 0:
 		new_allocation = e_leave_type.max_leaves_allowed
 	
-	if new_allocation != allocation.total_leaves_allocated:
+	if new_allocation:
 		today_date = today()
+		if get_datetime(today_date).day != get_datetime(get_last_day(today_date)).day:
+			new_date = add_months(today_date, -1)
+			today_date = get_last_day(new_date)
 
 		allocation.db_set("total_leaves_allocated", new_allocation, update_modified=False)
 		create_additional_leave_ledger_entry(allocation, earned_leaves, today_date)
@@ -403,9 +411,14 @@ def get_leave_allocations(date, leave_type):
 		where
 			la.employee = e.name
 			and e.status = 'Active' and
-			%s between la.from_date and la.to_date and la.docstatus=1
-			and leave_type=%s""",
-		(date, leave_type),
+			'{0}' between la.from_date and la.to_date and la.docstatus=1
+			and leave_type='{1}'
+			and e.name not in (
+				select distinct employee from `tabLeave Ledger Entry`
+				where leave_type = 'Earned Leave' and leaves = 2.5 and from_date = '{0}' and docstatus = 1
+			)
+		"""
+		.format(date, leave_type),
 		as_dict=1,
 	)
 
