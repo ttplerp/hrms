@@ -327,6 +327,10 @@ def update_previous_leave_allocation(allocation, annual_allocation, e_leave_type
 	if not balance:
 		balance = 0
 	# new_allocation = flt(allocation.total_leaves_allocated) + flt(earned_leaves)
+	new_allocation_without_cf = flt(
+		flt(allocation.get_existing_leave_count_without_cf()) + flt(earned_leaves),
+		allocation.precision("total_leaves_allocated"),
+	)
 	
 	if flt(balance) + flt(earned_leaves) > e_leave_type.max_leaves_allowed and balance < e_leave_type.max_leaves_allowed:
 		earned_leaves = (flt(balance) + flt(earned_leaves)) - e_leave_type.max_leaves_allowed
@@ -334,7 +338,8 @@ def update_previous_leave_allocation(allocation, annual_allocation, e_leave_type
 	if new_allocation > e_leave_type.max_leaves_allowed and e_leave_type.max_leaves_allowed > 0:
 		new_allocation = e_leave_type.max_leaves_allowed
 	
-	if new_allocation != allocation.total_leaves_allocated:
+	# if new_allocation != allocation.total_leaves_allocated:
+	if new_allocation_without_cf <= annual_allocation:
 		today_date = today()
 
 		allocation.db_set("total_leaves_allocated", new_allocation, update_modified=False)

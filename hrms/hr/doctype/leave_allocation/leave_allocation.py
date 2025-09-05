@@ -126,6 +126,26 @@ class LeaveAllocation(Document):
 			total_existing_leaves += entry
 
 		return total_existing_leaves
+	
+	# Jai added
+	def get_existing_leave_count_without_cf(self):
+		ledger_entries = frappe.get_all(
+			"Leave Ledger Entry",
+			filters={
+				"transaction_type": "Leave Allocation",
+				"transaction_name": self.name,
+				"employee": self.employee,
+				"company": self.company,
+				"leave_type": self.leave_type,
+				"is_carry_forward": 0,
+			},
+			pluck="leaves",
+		)
+		total_existing_leaves = 0
+		for entry in ledger_entries:
+			total_existing_leaves += entry
+
+		return total_existing_leaves
 
 	def validate_against_leave_applications(self):
 		leaves_taken = get_approved_leaves_for_period(
