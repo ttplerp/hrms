@@ -400,4 +400,10 @@ def get_permission_query_conditions(user):
 				from `tabEmployee` as e
 				where e.name = `tabAttendance`.employee
 				and e.user_id = '{user}')
+			or 
+			employee in (select e1.name
+				from `tabEmployee` as e1
+				where e1.reports_to = (select name 
+					from tabEmployee 
+					where user_id = '{user}' and status = 'Active'))
 		)""".format(user=user)
