@@ -5,14 +5,16 @@
    "label": "Outgoing Salary"
   }
  ],
- "content": "[{\"type\":\"chart\",\"data\":{\"chart_name\":\"Outgoing Salary\",\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Increment Entry\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Increment\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Register\",\"col\":3}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Quick Links\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"_sfXoScI3F\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Outgoing Salary\",\"col\":12}},{\"id\":\"iDWwbnnzfk\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Your Shortcuts</b></span>\",\"col\":12}},{\"id\":\"Im7V9TG4oB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Increment Entry\",\"col\":3}},{\"id\":\"J_LIeX4lXR\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Increment\",\"col\":3}},{\"id\":\"chKgN-KXuf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Dashboard\",\"col\":3}},{\"id\":\"qZ4mboTA6n\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Salary Register\",\"col\":3}},{\"id\":\"r1gJZM_tNF\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"v315z0OnD_\",\"type\":\"card\",\"data\":{\"card_name\":\"Quick Links\",\"col\":4}},{\"id\":\"-E007LD4wc\",\"type\":\"card\",\"data\":{\"card_name\":\"Settings\",\"col\":4}},{\"id\":\"UP0uQj7TaK\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}}]",
  "creation": "2020-05-27 19:54:23.405607",
+ "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
  "hide_custom": 0,
  "icon": "money-coins-1",
  "idx": 0,
+ "is_hidden": 0,
  "label": "Payroll",
  "links": [
   {
@@ -380,7 +382,8 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Quick Links",
-   "link_count": 4,
+   "link_count": 5,
+   "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
   },
@@ -423,12 +426,23 @@
    "link_type": "DocType",
    "onboard": 1,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Structure",
+   "link_count": 0,
+   "link_to": "Salary Structure",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2023-06-07 11:26:44.500231",
- "modified_by": "Administrator",
+ "modified": "2025-05-22 15:39:42.348962",
+ "modified_by": "tshering.lham@thimphutechpark.bt",
  "module": "Payroll",
  "name": "Payroll",
+ "number_cards": [],
  "owner": "Administrator",
  "parent_page": "HR",
  "public": 1,

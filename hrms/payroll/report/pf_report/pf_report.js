@@ -97,6 +97,7 @@ frappe.query_reports["PF Report"] = {
 			"options": "Company",
 			"default": frappe.defaults.get_user_default("Company")
 		},
+		
 	]
 };
 

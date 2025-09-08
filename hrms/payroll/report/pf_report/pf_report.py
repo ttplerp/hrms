@@ -94,6 +94,7 @@ def execute(filters=None):
 def get_columns():
     return [    
         _("Account Number") + "::120",
+        _("CID") + "::120",
         _("Employee Name") + "::140", 
         _("Basic Pay") + ":Float:120",
         _("Employee PF") + ":Float:120", 
@@ -107,7 +108,7 @@ def get_data(filters):
     
     sql_query = """
         SELECT 
-            t3.employee_name, 
+            t3.employee_name, t3.passport_number as cid, 
             t3.bank_ac_no as account_number,
             (SELECT IFNULL(amount, 0) FROM `tabSalary Detail` 
             WHERE parent = t1.name AND salary_component = 'Basic Pay') AS basic_pay,
