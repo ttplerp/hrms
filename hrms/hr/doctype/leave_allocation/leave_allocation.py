@@ -138,6 +138,7 @@ class LeaveAllocation(Document):
 				"company": self.company,
 				"leave_type": self.leave_type,
 				"is_carry_forward": 0,
+				"is_adjusted_leave": 0,
 			},
 			pluck="leaves",
 		)
