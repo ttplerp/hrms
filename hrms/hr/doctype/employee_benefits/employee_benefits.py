@@ -287,7 +287,7 @@ class EmployeeBenefits(Document):
 				party_type = "Employee"
 				party = self.employee
 
-			total_amount = flt(total_amount) - flt(b.amount,2)
+			total_amount = flt(total_amount,2) - flt(b.amount,2)
 			je.append("accounts", {
 				"account": b.deduction_account,
 				"credit_in_account_currency": flt(b.amount,2),
