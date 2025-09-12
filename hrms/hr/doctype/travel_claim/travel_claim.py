@@ -481,7 +481,8 @@ class TravelClaim(Document):
                         (t3.date <= t2.till_date and t3.till_date >= t2.date)
                     )
                     and t1.workflow_state not like '%Rejected%'
-            """.format(travel_claim = self.name, employee = self.employee), as_dict=True)
+                    and t1.travel_type = "{travel_type}"
+            """.format(travel_claim = self.name, employee = self.employee, travel_type=self.travel_type), as_dict=True)
             for t in tas:
                 frappe.throw("Row#{}: The dates in your current Travel Claim have already been claimed in {} between {} and {}"\
                     .format(t.idx, frappe.get_desk_link("Travel Claim", t.name), t.date, t.till_date))
@@ -797,6 +798,6 @@ def get_permission_query_conditions(user):
                 where `tabEmployee`.name = `tabTravel Claim`.employee
                 and `tabEmployee`.user_id = '{user}')
         or
-        (`tabTravel Claim`.supervisor = '{user}' and `tabTravel Claim`.workflow_state not in ('Draft','Claimed','Approved','Rejected','Rejected By Supervisor','Waiting for Supervisor','Waiting HR','Cancelled'))
+        (`tabTravel Claim`.supervisor = '{user}' and `tabTravel Claim`.workflow_state not in ('Not Eligible','Draft','Claimed','Approved','Rejected','Rejected By Supervisor','Waiting for Supervisor','Waiting HR','Cancelled'))
     )""".format(user=user)
 
