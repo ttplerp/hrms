@@ -749,7 +749,7 @@ def get_permission_query_conditions(user):
 	if user == "Administrator":
 		return
 	#for BAs
-	if "System Manager" in user_roles:
+	if "System Manager" in user_roles or "Auditor" in user_roles:
 		return
 	
 	if "Expense Approver" in user_roles or "Expense Verifier" in user_roles or "Accounts User" in user_roles or "Accounts Master" in user_roles:

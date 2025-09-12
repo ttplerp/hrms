@@ -699,7 +699,7 @@ def get_permission_query_conditions(user):
             (`tabTravel Authorization`.travel_type = 'Meeting' and `tabTravel Authorization`.place_type = "Out-Country" and `tabTravel Authorization`.workflow_state not in ('Draft'))
         )""".format(user=user)
     
-    if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles:
+    if "HR User" in user_roles or "HR Manager" in user_roles or "Accounts User" in user_roles or "Accounts Manager" in user_roles or "Auditor" in user_roles:
         return
 
     return """(
