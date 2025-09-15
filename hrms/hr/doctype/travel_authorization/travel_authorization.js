@@ -244,8 +244,8 @@ frappe.ui.form.on("Travel Authorization Item", {
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt_at', false);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('return_same_day', true);
 			
-			frappe.model.set_value(cdt, cdn, "halt", 0);
-			frappe.model.set_value(cdt, cdn, "halt_at", null);
+			// frappe.model.set_value(cdt, cdn, "halt", 0);
+			// frappe.model.set_value(cdt, cdn, "halt_at", null);
 		}
 		else {
 			
@@ -254,10 +254,10 @@ frappe.ui.form.on("Travel Authorization Item", {
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt', true);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('halt_at', true);
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('return_same_day', false);
-			frappe.model.set_value(cdt, cdn, "return_same_day", 0);
+			// frappe.model.set_value(cdt, cdn, "return_same_day", 0);
 		}
 		frm.refresh_field("items");
-		frm.refresh_field("items");
+		// frm.refresh_field("items");
 		
 	},
 	"date": function (frm, cdt, cdn) {
