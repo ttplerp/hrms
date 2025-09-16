@@ -682,6 +682,8 @@ def get_permission_query_conditions(user):
         return """(
             `tabTravel Authorization`.owner = '{user}'
             or
+            `tabTravel Authorization`.supervisor = '{user}'
+            or
             exists(select 1
                     from `tabEmployee`
                     where `tabEmployee`.name = `tabTravel Authorization`.employee
