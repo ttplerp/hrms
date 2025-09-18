@@ -28,7 +28,7 @@ def get_columns():
         {
             "fieldname": "fiscal_year",  # Fixed typo
             "label": _("Fiscal Year"),
-            "fieldtype": "Date",
+            "fieldtype": "Link",
             "width": 150
         },
         {
