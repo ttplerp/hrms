@@ -25,6 +25,18 @@ def get_columns():
             "width": 200
         },
         {
+			"fieldname": "fiscal_yaer",
+			"label": __("Fiscal Year"),
+			"fieldtype": "Date",
+			"width": "150px"
+		},
+		{
+			"fieldname": "yearmonth",
+			"label": __("Month"),
+			"fieldtype": "Date",
+			"width": "150px"
+		},
+        {
             "label": "Designation",
             "fieldname": "designation",
             "fieldtype": "Link",
@@ -66,6 +78,8 @@ def get_data(filters):
         SELECT 
             ss.employee,
             ss.employee_name,
+            ss.fiscal_year,
+            ss.yearmonth,
             ss.designation,
             ss.department,
             sd.salary_component,
