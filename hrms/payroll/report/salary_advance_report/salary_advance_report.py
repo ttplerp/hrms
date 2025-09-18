@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe import _
+from frappe import _  
 
 def execute(filters=None):
     columns = get_columns()
@@ -27,16 +27,16 @@ def get_columns():
         },
         {
             "fieldname": "fiscal_year",
-            "label": __("Fiscal Year"),
+            "label": _("Fiscal Year"),  
             "fieldtype": "Link",
-            "options":"Fiscal Year",
-            "width": "150px"
+            "options": "Fiscal Year",
+            "width": 150
         },
         {
             "fieldname": "month",
-            "label": __("Month"),
-            "fieldtype": "Data",  # Use Data type to show month abbreviation
-            "width": "120px"
+            "label": _("Month"),
+            "fieldtype": "Data",
+            "width": 120
         },
         {
             "label": "Designation",
@@ -76,7 +76,6 @@ def get_data(filters):
         conditions += " AND ss.employee = %(employee)s"
         values["employee"] = filters.get("employee")
 
-    # Fetch salary slips and salary details
     query = f"""
         SELECT 
             ss.employee,
@@ -98,13 +97,11 @@ def get_data(filters):
 
     data = frappe.db.sql(query, values, as_dict=1)
 
-    # Map month number to abbreviation
     month_map = {
         1: "JAN", 2: "FEB", 3: "MAR", 4: "APR", 5: "MAY", 6: "JUN",
         7: "JUL", 8: "AUG", 9: "SEP", 10: "OCT", 11: "NOV", 12: "DEC"
     }
 
-    # Add month abbreviation to each row
     for row in data:
         if row.get("start_date"):
             month_num = row["start_date"].month
