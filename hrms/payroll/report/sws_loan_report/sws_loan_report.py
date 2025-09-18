@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _  # Import _ for translations
 
 def execute(filters=None):
     columns = get_columns()
@@ -25,17 +26,17 @@ def get_columns():
             "width": 200
         },
         {
-			"fieldname": "fiscal_yaer",
-			"label": __("Fiscal Year"),
-			"fieldtype": "Date",
-			"width": "150px"
-		},
-		{
-			"fieldname": "yearmonth",
-			"label": __("Month"),
-			"fieldtype": "Date",
-			"width": "150px"
-		},
+            "fieldname": "fiscal_year",  # Fixed typo
+            "label": _("Fiscal Year"),
+            "fieldtype": "Date",
+            "width": 150
+        },
+        {
+            "fieldname": "yearmonth",
+            "label": _("Month"),
+            "fieldtype": "Date",
+            "width": 150
+        },
         {
             "label": "Designation",
             "fieldname": "designation",
