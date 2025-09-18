@@ -51,13 +51,6 @@ def get_columns():
             "fieldtype": "Currency",
             "width": 150
         },
-        {
-            "label": "Salary Slip",
-            "fieldname": "salary_slip",
-            "fieldtype": "Link",
-            "options": "Salary Slip",
-            "width": 180
-        }
     ]
 
 
@@ -77,11 +70,10 @@ def get_data(filters):
             ss.department,
             sd.salary_component,
             sd.amount,
-            ss.name as salary_slip
         FROM `tabSalary Slip` ss
         INNER JOIN `tabSalary Detail` sd 
             ON ss.name = sd.parent
-        WHERE sd.salary_component = 'Salary Advance Deduction'
+        WHERE sd.salary_component = 'Salary Advance Deductions'
           AND ss.docstatus = 1
           {conditions}
     """
