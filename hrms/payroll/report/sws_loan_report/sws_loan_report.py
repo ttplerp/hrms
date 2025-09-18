@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe import _  # Import _ for translations
+from frappe import _  # For translations
 
 def execute(filters=None):
     columns = get_columns()
@@ -26,17 +26,17 @@ def get_columns():
             "width": 200
         },
         {
-            "fieldname": "fiscal_year",  # Fixed typo
+            "fieldname": "fiscal_year",
             "label": _("Fiscal Year"),
             "fieldtype": "Link",
-            "options":"Fiscal Year",
+            "options": "Fiscal Year",
             "width": 150
         },
         {
-            "fieldname": "yearmonth",
+            "fieldname": "month",
             "label": _("Month"),
-            "fieldtype": "Date",
-            "width": 150
+            "fieldtype": "Data",
+            "width": 100
         },
         {
             "label": "Designation",
@@ -76,12 +76,24 @@ def get_data(filters):
         conditions += " AND ss.employee = %(employee)s"
         values["employee"] = filters.get("employee")
 
+    if filters.get("month"):
+        # Convert month abbreviation to number
+        month_map_rev = {
+            "JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5,
+            "JUN": 6, "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10,
+            "NOV": 11, "DEC": 12
+        }
+        month_num = month_map_rev.get(filters.get("month").upper())
+        if month_num:
+            conditions += " AND ss.month = %(month)s"
+            values["month"] = month_num
+
     query = f"""
         SELECT 
             ss.employee,
             ss.employee_name,
             ss.fiscal_year,
-            ss.yearmonth,
+            ss.month,
             ss.designation,
             ss.department,
             sd.salary_component,
@@ -95,4 +107,23 @@ def get_data(filters):
           {conditions}
     """
 
-    return frappe.db.sql(query, values, as_dict=1)
+    data = frappe.db.sql(query, values, as_dict=1)
+
+    # Convert numeric month to abbreviation
+    month_map = {
+        1: "JAN", 2: "FEB", 3: "MAR", 4: "APR", 5: "MAY",
+        6: "JUN", 7: "JUL", 8: "AUG", 9: "SEP", 10: "OCT",
+        11: "NOV", 12: "DEC"
+    }
+
+    for row in data:
+        if isinstance(row.get("month"), int):
+            row["month"] = month_map.get(row["month"], row["month"])
+        elif isinstance(row.get("month"), str):
+            try:
+                # Handle date string format 'YYYY-MM-DD'
+                row["month"] = month_map.get(int(row["month"].split("-")[1]), row["month"])
+            except:
+                pass
+
+    return data

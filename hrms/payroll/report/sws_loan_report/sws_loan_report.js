@@ -12,11 +12,12 @@ frappe.query_reports["SWS Loan Report"] = {
 			"width": "150px"
 		},
 		{
-			"fieldname": "yearmonth",
-			"label": __("Month"),
-			"fieldtype": "Date",
-			"width": "150px"
-		},
+            "fieldname": "month",
+            "label": __("Month"),
+            "fieldtype": "Select",
+            "options": "\nJAN\nFEB\nMAR\nAPR\nMAY\nJUN\nJUL\nAUG\nSEP\nOCT\nNOV\nDEC",
+            "width": "120px"
+        },
 
 		{
 			"fieldname": "employee",
