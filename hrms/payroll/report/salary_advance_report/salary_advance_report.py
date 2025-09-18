@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe import _  
+from frappe import _
 
 def execute(filters=None):
     columns = get_columns()
@@ -27,7 +27,7 @@ def get_columns():
         },
         {
             "fieldname": "fiscal_year",
-            "label": _("Fiscal Year"),  
+            "label": _("Fiscal Year"),
             "fieldtype": "Link",
             "options": "Fiscal Year",
             "width": 150
@@ -35,7 +35,7 @@ def get_columns():
         {
             "fieldname": "month",
             "label": _("Month"),
-            "fieldtype": "Data",
+            "fieldtype": "Data",  
             "width": 120
         },
         {
@@ -75,6 +75,21 @@ def get_data(filters):
     if filters.get("employee"):
         conditions += " AND ss.employee = %(employee)s"
         values["employee"] = filters.get("employee")
+
+    if filters.get("fiscal_year"):
+        conditions += " AND ss.fiscal_year = %(fiscal_year)s"
+        values["fiscal_year"] = filters.get("fiscal_year")
+
+    month_map_reverse = {
+        "JAN": 1, "FEB": 2, "MAR": 3, "APR": 4, "MAY": 5, "JUN": 6,
+        "JUL": 7, "AUG": 8, "SEP": 9, "OCT": 10, "NOV": 11, "DEC": 12
+    }
+    if filters.get("month"):
+        month_num = month_map_reverse.get(filters.get("month"))
+        if month_num:
+            conditions += " AND MONTH(ss.start_date) = %(month)s"
+            values["month"] = month_num
+
 
     query = f"""
         SELECT 
