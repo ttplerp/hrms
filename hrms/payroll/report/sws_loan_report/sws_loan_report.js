@@ -8,6 +8,7 @@ frappe.query_reports["SWS Loan Report"] = {
 			"fieldname": "fiscal_year",
 			"label": __("Fiscal Year"),
 			"fieldtype": "Link",
+			"options":"Fiscal Year",
 			"width": "150px"
 		},
 		{
