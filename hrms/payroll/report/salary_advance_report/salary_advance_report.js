@@ -5,6 +5,20 @@
 frappe.query_reports["Salary Advance Report"] = {
 	"filters": [
 		{
+			"fieldname": "fiscal_year",
+			"label": __("Fiscal Year"),
+			"fieldtype": "Link",
+			"options":"Fiscal Year",
+			"width": "150px"
+		},
+		{
+            "fieldname": "month",
+            "label": __("Month"),
+            "fieldtype": "Select",
+            "options": "\nJAN\nFEB\nMAR\nAPR\nMAY\nJUN\nJUL\nAUG\nSEP\nOCT\nNOV\nDEC",
+            "width": "120px"
+        },
+		{
 			"fieldname": "employee",
 			"label": __("Employee"),
 			"fieldtype": "Link",
