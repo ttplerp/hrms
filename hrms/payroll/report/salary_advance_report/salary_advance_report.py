@@ -70,6 +70,7 @@ def get_data(filters):
             ss.department,
             sd.salary_component,
             sd.amount,
+            ss.name as salary_slip
         FROM `tabSalary Slip` ss
         INNER JOIN `tabSalary Detail` sd 
             ON ss.name = sd.parent
