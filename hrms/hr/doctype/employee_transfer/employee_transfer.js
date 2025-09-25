@@ -87,7 +87,8 @@ var enable_disable = function(frm){
 		in_list(frappe.user_roles, "HR Manager")){
 		frm.toggle_reqd(["new_department", "new_reports_to"], 1);
 	} else {
-		frm.toggle_display(["old_department", "old_division", "old_section", "old_reports_to", "current_supervisor_name",
+		// "old_department", "old_division", "old_section", "old_reports_to",
+		frm.toggle_display(["current_supervisor_name",
 			"new_department", "new_division", "new_section", "new_reports_to"], 0);
 	}
 }
