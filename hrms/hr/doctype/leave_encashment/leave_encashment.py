@@ -148,15 +148,18 @@ class LeaveEncashment(Document):
 					self.employee, self.leave_type
 				)
 			)
-
-		self.leave_balance = (
-			allocation.total_leaves_allocated
-			- allocation.carry_forwarded_leaves_count
-			# adding this because the function returns a -ve number
-			+ get_leaves_for_period(
-				self.employee, self.leave_type, allocation.from_date, self.encashment_date
-			)
-		)
+		leaves = frappe.db.sql("""
+                         select sum(ifnull(leaves,0)) leaves from`tabLeave Ledger Entry` where employee = '{}' and year(from_date) = year('{}') and leave_type = '{}';
+                         """.format(self.employee, self.encashment_date, self.leave_type), as_dict=1)[0].leaves
+		# self.leave_balance = (
+		# 	allocation.new_leaves_allocated
+		# 	# - allocation.carry_forwarded_leaves_count
+		# 	# adding this because the function returns a -ve number
+		# 	+ get_leaves_for_period(
+		# 		self.employee, self.leave_type, allocation.from_date, self.encashment_date
+		# 	)
+		# )
+		self.leave_balance = flt(leaves)
 		employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
 		encashable_days = frappe.db.get_value("Employee Group", employee_group, "encashment_min")
 
@@ -202,6 +205,7 @@ class LeaveEncashment(Document):
 				LeaveAllocation.from_date,
 				LeaveAllocation.to_date,
 				LeaveAllocation.total_leaves_allocated,
+				LeaveAllocation.new_leaves_allocated,
 				LeaveAllocation.carry_forwarded_leaves_count,
 			)
 			.where(

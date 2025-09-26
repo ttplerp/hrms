@@ -36,7 +36,9 @@ def get_columns(data):
 		_("Division") + ":Link/Division:120", 
 		_("Section") + ":Link/Section:120", 
 		_("Year") + "::80", 
-		_("Month") + "::80"
+		_("Month") + "::80",
+		_("Employee Grade") + ":Link/Employee Grade:130"
+	
 	]
 	return columns
 
@@ -49,7 +51,7 @@ def get_data(filters):
 					ifnull(t1.employer_pf,0) as employerpf,
 					sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0)+(t1.employer_pf) else 0 end) as total,
 					t1.company, t1.branch, t1.cost_center, t1.department, t1.division, t1.section,
-					t1.fiscal_year, t1.month
+					t1.fiscal_year, t1.month, t1.employee_grade, t3.grade
 			from `tabSalary Slip` t1, `tabSalary Detail` t2, `tabEmployee` t3
 			where t1.docstatus = 1 %s
 			and t3.employee = t1.employee

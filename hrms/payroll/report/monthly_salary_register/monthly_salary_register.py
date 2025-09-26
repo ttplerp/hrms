@@ -104,7 +104,7 @@ def get_columns(salary_slips):
 def get_salary_slips(filters):
 	conditions, filters = get_conditions(filters)
 	salary_slips = frappe.db.sql("""
-								select * from `tabSalary Slip` where 1 = 1 %s
+								select * from `tabSalary Slip` where docstatus !=2 %s
 								order by employee, month
 							""" % conditions, filters, as_dict=1)
 	'''
