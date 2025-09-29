@@ -69,7 +69,6 @@
    "reqd": 1
   },
   {
-   "description": "Only eligible for transfer if employee has served 4 years in a department.",
    "fieldname": "transfer_date",
    "fieldtype": "Date",
    "in_list_view": 1,
@@ -408,7 +407,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-10-11 12:02:00.660595",
+ "modified": "2025-09-29 10:16:01.094630",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer",
