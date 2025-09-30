@@ -60,10 +60,12 @@ class TravelRequest(AccountsController):
 	def set_dsa_percent(self):
 		for item in self.get("itinerary"):
 			if len(self.itinerary) == 1 or item.idx == len(self.itinerary) or cint(item.return_same_day) == 1:
-				item.dsa_percent = cint(frappe.db.get_single_value("HR Settings","returen_day_dsa_percent"))
+				if not item.dsa_percent:
+					item.dsa_percent = cint(frappe.db.get_single_value("HR Settings","returen_day_dsa_percent"))
 				if cint(item.return_same_day) == 1:
 					item.no_days = 1
-					item.dsa_percent = 0
+					if not item.dsa_percent:
+						item.dsa_percent = 0
 				if self.travel_type == "International" and flt(item.total_claim) <=0:
 					item.actual_amount = 0
 
