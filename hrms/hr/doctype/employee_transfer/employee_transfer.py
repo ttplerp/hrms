@@ -35,11 +35,11 @@ class EmployeeTransfer(Document):
   
 	def validate_transfer_date(self):
 		for t in frappe.db.get_all("Employee Transfer", {"employee": self.employee, "name": ("!=", self.name),
-			"transfer_date": (">", self.transfer_date), "docstatus": ("!=", 2)}):
+			"transfer_date": (">", self.transfer_date), "docstatus": ("!=", 2), "workflow_state": ("!=", "Rejected")}):
 			frappe.throw(_("Not permitted as there is another transfer record {} following this entry").format(frappe.get_desk_link(self.doctype, t.name)), title="Not Permitted")			
 
 	def check_duplicate(self):
-		for t in frappe.db.get_all("Employee Transfer", {"employee": self.employee, "name": ("!=", self.name), "docstatus": ("=", 0)}):
+		for t in frappe.db.get_all("Employee Transfer", {"employee": self.employee, "name": ("!=", self.name), "docstatus": ("=", 0), "workflow_state": ("!=", "Rejected")}):
 				frappe.throw(_("There is another transfer record {} in process").format(frappe.get_desk_link(self.doctype, t.name)), title="Duplicate Entry")		
 
 	def update_employee_master(self, cancel=False):
