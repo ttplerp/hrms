@@ -97,6 +97,8 @@ class BulkUploadTool(Document):
 						status = ''
 						if str(day_value) in ("P", "p", "1"):
 							status = 'Present'
+						elif str(day_value) in ("H", "h"):
+							status = 'Half Day'
 						elif str(day_value) in ("A", "a", "0"):
 							status = 'Absent'
 						else:
@@ -105,11 +107,11 @@ class BulkUploadTool(Document):
 						old = frappe.db.get_value("Muster Roll Attendance", {"mr_employee": str(row[3]).strip('\''), "date": date_str, "docstatus": 1}, ["status", "name"], as_dict=1)
 						if old:
 							doc = frappe.get_doc("Muster Roll Attendance", old.name)
-							doc.db_set('status', status if status in ('Present', 'Absent') else doc.status)
+							doc.db_set('status', status if status in ('Present', 'Absent','Half Day') else doc.status)
 							doc.db_set('branch', row[0])
 							doc.db_set('cost_center', row[1])
 							doc.db_set('unit', row[2])
-						if not old and status in ('Present', 'Absent'):
+						if not old and status in ('Present', 'Absent','Half Day'):
 							doc = frappe.new_doc("Muster Roll Attendance")
 							doc.status = status
 							doc.branch = row[0]

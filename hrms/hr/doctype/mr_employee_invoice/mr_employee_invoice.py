@@ -38,9 +38,15 @@ class MREmployeeInvoice(AccountsController):
 		grand_total = outstanding_amount = other_deductions = net_payable = total_ot_amount = total_daily_wage_amount = 0
 		for a in self.attendance:
 			if cint(a.is_lumpsum) == 0:
-				total_daily_wage_amount += flt(a.daily_wage,2)
+				if a.status == "Present":
+					total_daily_wage_amount += flt(a.daily_wage,2)
+				elif a.status == "Half Day":
+					total_daily_wage_amount += flt(flt(a.daily_wage) / 2,2)
 			else:
-				total_daily_wage_amount = flt(a.daily_wage,2)	 
+				if a.status == "Present":
+					total_daily_wage_amount = flt(a.daily_wage,2)	
+				elif a.status == "Half Day":
+					total_daily_wage_amount = flt(flt(a.daily_wage) / 2,2) 
 		for a in self.ot:
 			total_ot_amount += flt(a.amount,2)
 		for d in self.deduction:
@@ -181,12 +187,15 @@ class MREmployeeInvoice(AccountsController):
 					END AS daily_wage
 				from `tabMuster Roll Attendance` a join
 				`tabMuster Roll Employee` b on a.mr_employee = b.name
-				where a.date between '{}' and '{}' and a.status = 'Present' 
+				where a.date between '{}' and '{}' and a.status IN ('Present', 'Half Day') 
 				and a.docstatus = 1 and a.mr_employee = '{}'
 				and not exists (select 1 from `tabMR Employee Invoice` e inner join `tabMR Attendance Item` f 
 								on e.name = f.parent where e.name != '{}' and f.mr_attendance = a.name and e.docstatus != 2)
 				'''.format(start_date, end_date, self.mr_employee, self.name), as_dict=1):
-			self.total_days_worked += 1
+			if d.status == "Present":
+				self.total_days_worked += 1
+			elif d.status == "Half Day":
+				self.total_days_worked += 0.5
 			self.append("attendance", d)
 		if len(self.attendance) <= 0:
 			frappe.msgprint("No attendance found for year {} of month {}".format(frappe.bold(self.fiscal_year), frappe.bold(self.month)),raise_exception=True)
