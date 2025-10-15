@@ -16,6 +16,7 @@ from erpnext.custom_workflow import validate_workflow_states, notify_workflow_st
 
 class LeaveEncashment(Document):
 	def validate(self):
+		#frappe.throw("hic")
 		validate_workflow_states(self)
 		set_employee_name(self)
 		validate_active_employee(self.employee)
@@ -121,14 +122,26 @@ class LeaveEncashment(Document):
 			)
 			create_leave_ledger_entry(self, args, submit)
 	def check_duplicate_entry(self):
-		count = frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) \
-					if frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) else 0
-		employee_grp = frappe.db.get_value("Employee",self.employee,"employee_group")
-		frequency = frappe.db.get_value("Employee Group",employee_grp,"encashment_frequency")
+		#frappe.throw("hi")
+		# More efficient query - only count once
+		filters = {
+			"employee": self.employee,
+			"leave_period": self.leave_period, 
+			"leave_type": self.leave_type
+			#"docstatus": 1
+		}
+		count = frappe.db.count(self.doctype, filters) or 0
+		
+		employee_grp = frappe.db.get_value("Employee", self.employee, "employee_group")
+		frequency = frappe.db.get_value("Employee Group", employee_grp, "encashment_frequency")
 		
 		if flt(count) >= flt(frequency):
-			frappe.throw("You had already Encash {} time for leave period {}".format(frappe.bold(count), frappe.bold(self.leave_period)))
-
+			frappe.throw(
+				"You have already encashed {} times for leave period {}".format(
+					frappe.bold(count), 
+					frappe.bold(self.leave_period)
+				)
+			)
 	@frappe.whitelist()
 	def get_leave_details_for_encashment(self):
 		salary_structure =  frappe.db.sql("""select name 
