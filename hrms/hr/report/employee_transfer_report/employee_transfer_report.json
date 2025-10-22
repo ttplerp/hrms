@@ -1,0 +1,49 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2025-10-20 11:48:25.161181",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "mandatory": 1,
+   "wildcard_filter": 0
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "mandatory": 1,
+   "wildcard_filter": 0
+  }
+ ],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "Bhutan Development Bank LImited",
+ "modified": "2025-10-22 12:44:49.380104",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Employee Transfer Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT\r\n    employee AS \"Employee\",\r\n    emp_name AS \"Employee Name\",\r\n    date_of_joining AS \"Date of Joining\",\r\n    transfer_type AS \"Transfer Type\",\r\n    transfer_date AS \"Transfer Date\",\r\n    description AS \"Description\",\r\n    rejection_reason AS \"Rejection Reason\",\r\n    supervisor_name AS \"Supervisor Name\",\r\n    supervisor_designation AS \"Supervisor Designation\",\r\n    supervisor AS \"Supervisor\",\r\n    old_branch AS \"Old Branch\",\r\n    old_cost_center AS \"Old Cost Center\",\r\n    new_branch AS \"New Branch\",\r\n    new_cost_center AS \"New Cost Center\",\r\n    old_department AS \"Old Department\",\r\n    old_division AS \"Old Division\",\r\n    old_section AS \"Old Section\",\r\n    old_designation AS \"Old Designation\",\r\n    old_unit AS \"Old Unit\",\r\n    current_region AS \"Current Region\",\r\n    new_department AS \"New Department\",\r\n    new_division AS \"New Division\",\r\n    new_section AS \"New Section\",\r\n    new_unit AS \"New Unit\",\r\n    new_designation AS \"New Designation\",\r\n    new_region AS \"New Region\",\r\n    old_reports_to AS \"Old Reports To\",\r\n    current_supervisor_name AS \"Current Supervisor Name\",\r\n    new_reports_to AS \"New Reports To\",\r\n    new_supervisor_name AS \"New Supervisor Name\",\r\n    reallocate_leaves AS \"Reallocate Leaves\",\r\n    create_new_employee_id AS \"Create New Employee ID\",\r\n    new_employee_id AS \"New Employee ID\",\r\n    employee_benefits_status AS \"Employee Benefits Status\",\r\n    workflow_state AS \"Workflow State\"\r\nFROM\r\n    `tabEmployee Transfer`\r\nWHERE\r\n    transfer_date BETWEEN %(from_date)s AND %(to_date)s\r\nORDER BY\r\n    transfer_date DESC\r\n",
+ "ref_doctype": "Employee Transfer",
+ "report_name": "Employee Transfer Report",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Employee"
+  },
+  {
+   "role": "HR User"
+  }
+ ]
+}
