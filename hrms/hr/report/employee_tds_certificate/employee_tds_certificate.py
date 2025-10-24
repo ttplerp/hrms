@@ -121,7 +121,7 @@ def get_pbva(filters):
 									ROUND(IFNULL(bd.amount,0),2) AS taxable, 
 									ROUND(IFNULL(bd.tax_amount,0),2) as tds,
 									CONCAT(MONTH(b.posting_date),'-',
-									b.fiscal_year) AS month_year,
+									{fiscal_year}) AS month_year,
 									'PBVI' AS type, 
 									0 as basic, 
 									0 as others, 
