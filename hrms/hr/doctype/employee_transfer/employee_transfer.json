@@ -30,6 +30,7 @@
   "column_break_12",
   "new_branch",
   "new_cost_center",
+  "optional_transfer_branch",
   "sb_transfer_details",
   "old_department",
   "old_division",
@@ -402,12 +403,18 @@
    "label": "Employee Benefit Status",
    "options": "Not Claimed\nClaimed",
    "read_only": 1
+  },
+  {
+   "fieldname": "optional_transfer_branch",
+   "fieldtype": "Table",
+   "label": "Optional Branch",
+   "options": "Employee Transfer Branch"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-29 10:16:01.094630",
+ "modified": "2025-10-22 11:16:31.918570",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer",
