@@ -1016,6 +1016,19 @@ def get_semso_emp_details(payroll_entry, salary_component=None):
 				and sd.parent = ss.name
 				and sd.salary_component = "{salary_component}"
 	""".format(payroll_entry=payroll_entry, salary_component=salary_component), as_dict=True)
+
+def get_commu_emp_details(payroll_entry, salary_component=None):
+	return frappe.db.sql("""select ss.employee, sum(sd.amount) amount, ss.branch, sd.salary_component,
+					sd.institution_name bank_name, (select case when a.gl_type = "CASA" then a.bank_account_no else a.account_number end from `tabAccount` a, `tabSalary Component` sc where sc.name = sd.salary_component and sc.gl_head = a.name) account_number,
+					1 as recovery_account,
+					sd.salary_component remarks
+				from `tabSalary Slip` ss, `tabSalary Detail` sd
+				where ss.payroll_entry = "{payroll_entry}"
+				and ss.docstatus = 1
+				and sd.parent = ss.name
+				and sd.salary_component = "{salary_component}"
+	""".format(payroll_entry=payroll_entry, salary_component=salary_component), as_dict=True)
+
 def get_loan_emp_details(payroll_entry, salary_component=None):
 	return frappe.db.sql("""select '' as employee, sum(sd.amount) amount, ss.branch, sd.salary_component,
 					sd.institution_name bank_name, (select case when a.gl_type = "CASA" then a.bank_account_no else a.account_number end from `tabAccount` a, `tabSalary Component` sc where sc.name = sd.salary_component and sc.gl_head = a.name) account_number,
