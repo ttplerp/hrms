@@ -135,10 +135,10 @@ class LeaveEncashment(Document):
 		employee_grp = frappe.db.get_value("Employee", self.employee, "employee_group")
 		frequency = frappe.db.get_value("Employee Group", employee_grp, "encashment_frequency")
 		
-		if flt(count) >= flt(frequency):
+		if flt(count) > flt(frequency):
 			frappe.throw(
 				"You have already encashed {} times for leave period {}".format(
-					frappe.bold(count), 
+					frappe.bold(count - 1), 
 					frappe.bold(self.leave_period)
 				)
 			)
