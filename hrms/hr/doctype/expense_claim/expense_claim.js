@@ -255,6 +255,7 @@ frappe.ui.form.on("Expense Claim", {
 				frappe.set_route("query-report", "General Ledger");
 			}, __("View"));
 		}
+		/*
 		var je = 0;
 		frappe.call({
 			method: "check_journal_entry",
@@ -276,7 +277,7 @@ frappe.ui.form.on("Expense Claim", {
 		) {
 			//frm.add_custom_button(__('Make Journal Entry'),
 			//	function() { frm.events.make_bank_entry(frm); }, __('Create'));
-		}
+		} */
 	},
 
 	calculate_grand_total: function(frm) {
