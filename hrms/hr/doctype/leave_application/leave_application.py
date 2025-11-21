@@ -1390,5 +1390,5 @@ def get_permission_query_conditions(user):
                 where `tabEmployee`.name = `tabLeave Application`.employee
                 and `tabEmployee`.user_id = '{user}')
         or
-        (`tabLeave Application`.leave_approver = '{user}' and `tabLeave Application`.workflow_state not in  ('Draft','Approved','Rejected','Cancelled'))
+        (`tabLeave Application`.leave_approver = '{user}' and `tabLeave Application`.workflow_state not in  ('Draft','Rejected','Cancelled'))
     )""".format(user=user)
