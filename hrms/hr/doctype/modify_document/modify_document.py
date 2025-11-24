@@ -11,7 +11,10 @@ class ModifyDocument(Document):
 			frappe.throw("Not allowed to change to Draft as its already submitted")
 
 		if self.document_type=="Payroll Entry":
-			self.validate_payroll()
+			# on payrolle entry, sws contribution from salary slip need to be updated. and Adv deduction from salary structure need to be updated
+			# so do not allow changing state of payroll entry
+			frappe.throw("Not allowed to change the state of Payroll Entry document.")
+			# self.validate_payroll()
 		
 	def on_submit(self):
 		self.change_state()
