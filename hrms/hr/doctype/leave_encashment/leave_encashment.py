@@ -122,8 +122,21 @@ class LeaveEncashment(Document):
 			)
 			create_leave_ledger_entry(self, args, submit)
 	def check_duplicate_entry(self):
-		#frappe.throw("hi")
+		#frappe.throw(str(self.leave_period))
 		# More efficient query - only count once
+		bulk_leave_encashment_name=frappe.db.get_value("Bulk Leave Encashment",{"leave_period":self.leave_period,"docstatus":1})
+		if bulk_leave_encashment_name:
+			bulk_exits=frappe.db.exists("Bulk Leave Encashment Item",{"parent":bulk_leave_encashment_name,"employee":self.employee})
+			if bulk_exits:
+				frappe.throw(
+                                "You have already encashed {} times for leave period {}".format(
+                                        frappe.bold(1),
+                                        frappe.bold(self.leave_period)
+                                	)
+                        	)
+			#else:
+				#frappe.throw("bbb")
+		#frappe.throw(str(bulk_leave_encashment_name))
 		filters = {
 			"employee": self.employee,
 			"leave_period": self.leave_period, 
