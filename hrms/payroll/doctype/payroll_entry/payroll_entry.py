@@ -675,14 +675,16 @@ class PayrollEntry(Document):
 				remit_gl_list   = [rec.gl_head,default_gpf_account] if rec.salary_component == salary_component_pf else [rec.gl_head]
 
 				for r in remit_gl_list:
+					
 					# remit_amount += flt(rec.amount)
 					if r == default_gpf_account:
 						for i in self.get_cc_wise_entries(salary_component_pf):
-							remit_amount += flt(i.amount)
-							# frappe.throw(str(i))
+							#remit_amount = flt(i.amount)
+							employer_amount = flt(i.amount)
+							#frappe.throw(str(remit_amount))
 							posting.setdefault(rec.salary_component,[]).append({
 								"account"       : r,
-								"debit_in_account_currency" : flt(i.amount),
+								"debit_in_account_currency" : flt(employer_amount),
 								"cost_center"   : i.cost_center,
 								"business_activity" : i.business_activity,
 								"party_check"   : 0,
@@ -693,11 +695,29 @@ class PayrollEntry(Document):
 								"reference_name": self.name,
 								"salary_component": rec.salary_component
 							})
+							posting.setdefault(rec.salary_component,[]).append({
+								"account"       : "21.501 - PF Employer Contribution Payable",
+								"credit_in_account_currency" : flt(employer_amount),
+								"cost_center"   : rec.cost_center,
+								"business_activity" : rec.business_activity,
+								"party_check"   : 0,
+								"reference_type": self.doctype,
+								"reference_name": self.name,
+								"salary_component": rec.salary_component
+							})
+							
+
+							
+						
 					else:
-						remit_amount += flt(rec.amount)
+						#remit_amount += flt(rec.amount)
+						#frappe.msgprint(str(rec.amount))
+						employee_amount = flt(rec.amount)
+						remit_amount = employee_amount
+						frappe.msgprint(str(r))
 						posting.setdefault(rec.salary_component,[]).append({
 							"account"       : r,
-							"debit_in_account_currency" : flt(rec.amount),
+							"debit_in_account_currency" : flt(employee_amount),
 							"cost_center"   : rec.cost_center,
 							"business_activity" : rec.business_activity,
 							"party_check"   : 0,
@@ -708,7 +728,19 @@ class PayrollEntry(Document):
 							"reference_name": self.name,
 							"salary_component": rec.salary_component
 						})
-					
+
+						
+				#frappe.msgprint(str(default_bank_account))
+				# posting.setdefault(rec.salary_component,[]).append({
+				# 	"account"       : "21.501 - PF Employer Contribution Payable",
+				# 	"credit_in_account_currency" : flt(12500),
+				# 	"cost_center"   : rec.cost_center,
+				# 	"business_activity" : rec.business_activity,
+				# 	"party_check"   : 0,
+				# 	"reference_type": self.doctype,
+				# 	"reference_name": self.name,
+				# 	"salary_component": rec.salary_component
+				# })
 				posting.setdefault(rec.salary_component,[]).append({
 					"account"       : default_bank_account,
 					"credit_in_account_currency" : flt(remit_amount),
@@ -732,6 +764,7 @@ class PayrollEntry(Document):
 				"reference_name": self.name,
 				"salary_component": rec.salary_component
 			})
+			#frappe.throw(str(tot_payable_amt))
 			posting.setdefault("to_bank",[]).append({
 				"account"       : default_bank_account,
 				"credit_in_account_currency": flt(tot_payable_amt),
