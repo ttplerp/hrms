@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from dateutil.relativedelta import relativedelta
-from frappe.utils import cint, flt, nowdate, add_days, add_years, getdate, fmt_money, add_to_date, DATE_FORMAT, date_diff, get_last_day
+from frappe.utils import cint, flt, nowdate, add_days, add_years, getdate, fmt_money, add_to_date, DATE_FORMAT, date_diff, get_last_day, month_diff
 from frappe import _
 from erpnext.accounts.utils import get_fiscal_year
 from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
@@ -44,7 +44,7 @@ class IncrementEntry(Document):
 		cond += self.get_joining_relieving_condition()
 		data = []
 		emp_list = frappe.db.sql("""
-			select t1.name as employee, t1.employee_name, t1.grade, t1.department, t1.designation
+			select t1.name as employee, t1.employee_name, t1.grade, t1.department, t1.designation, t1.date_of_joining
 			from `tabEmployee` t1
 			where t1.status = 'Active'
 			and t1.employment_status != 'Probation'
@@ -64,8 +64,11 @@ class IncrementEntry(Document):
 		""".format(self.month_name, self.fiscal_year, self.month_name, cond), as_dict=True)
 		if emp_list:
 			for a in emp_list:
-				new_basic, increment, old_basic = self.get_employee_payscale(a.employee)
-				data.append({"employee":a.employee,"employee_name":a.employee_name,"grade":a.grade,"department":a.department,"designation":a.designation,"current_basic_pay":old_basic,"increment":increment,"new_basic_pay":new_basic})
+				joining_date = getdate(a.date_of_joining)
+				months = month_diff(getdate(self.start_date), joining_date)
+				if months >= 12:
+					new_basic, increment, old_basic = self.get_employee_payscale(a.employee)
+					data.append({"employee":a.employee,"employee_name":a.employee_name,"grade":a.grade,"department":a.department,"designation":a.designation,"current_basic_pay":old_basic,"increment":increment,"new_basic_pay":new_basic})
 		return data
 
 	def get_filter_condition(self):
