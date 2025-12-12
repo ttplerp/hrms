@@ -84,7 +84,7 @@ def get_leave_encashment(filters):
 								0 AS others,
 								0 AS health
 								FROM `tabLeave Encashment` a
-								JOIN `tabTDS Receipt Entry` r ON a.name = r.invoice_no
+								LEFT JOIN `tabTDS Receipt Entry` r ON a.name = r.invoice_no
 								WHERE a.employee = '{employee}'
 								AND a.docstatus = 1
 								AND a.encashment_date BETWEEN '{from_date}' AND '{to_date}'
