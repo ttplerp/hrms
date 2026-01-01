@@ -160,7 +160,7 @@ class IncrementEntry(Document):
 		si_list = self.get_sal_increment_list(si_status=0)
 		if len(si_list) > 300:
 			# frappe.enqueue(submit_salary_increments_for_employees, timeout=600, increment_entry=self, salary_increments=si_list)
-			submit_salary_increments_for_employee(self, si_list, publish_progress=False)
+			submit_salary_increments_for_employees(self, si_list, publish_progress=False)
 		else:
 			submit_salary_increments_for_employees(self, si_list, publish_progress=False)
 
