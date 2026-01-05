@@ -1,0 +1,140 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:GST{YY}{MM}{####}",
+ "creation": "2026-01-05 16:39:39.038281",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "transaction_id",
+  "customer_name",
+  "cid",
+  "tpn",
+  "officer",
+  "branch",
+  "column_break_cjxx8",
+  "service_type",
+  "others",
+  "fee_charges",
+  "gst",
+  "total_amount",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "transaction_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Transaction ID(Finacle)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name"
+  },
+  {
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "label": "Customer CID"
+  },
+  {
+   "fieldname": "tpn",
+   "fieldtype": "Data",
+   "label": "Customer TPN"
+  },
+  {
+   "fieldname": "service_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Service Type",
+   "options": "GST Service Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fee_charges",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Fee & Charges Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gst",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "GST(5%)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Data",
+   "label": "Total Amount",
+   "reqd": 1
+  },
+  {
+   "fieldname": "officer",
+   "fieldtype": "Link",
+   "label": "Processing Officer",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "officer.branch",
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "GST Invoice",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_cjxx8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.service_type==\"Others\"",
+   "fieldname": "others",
+   "fieldtype": "Data",
+   "label": "Specify if Others"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-01-05 17:03:17.955620",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "GST Invoice",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
