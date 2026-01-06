@@ -22,6 +22,7 @@ class LeaveEncashment(Document):
 		set_employee_name(self)
 		validate_active_employee(self.employee)
 		self.get_leave_details_for_encashment()
+		self.validate_leave_balance()
 		self.check_duplicate_entry()
 		if not self.encashment_date:
 			self.encashment_date = getdate(nowdate())
@@ -38,7 +39,14 @@ class LeaveEncashment(Document):
 		self.post_accounts_entry()
 		self.create_leave_ledger_entry()
 		notify_workflow_states(self)
-	
+
+	def validate_leave_balance(self):
+		employee_group = frappe.db.get_value("Employee", self.employee, "employee_group")
+		encashable_days = frappe.db.get_value("Employee Group", employee_group, "encashment_min")
+
+		if self.leave_balance < cint(encashable_days):
+			frappe.throw(_("Minimum '{}' days balance is Mandatory for Encashment").format(cint(encashable_days)),title="Leave Balance")
+
 	def post_accounts_entry(self):
 		if not self.cost_center:
 			frappe.throw("Setup Cost Center for employee in Employee Information")
