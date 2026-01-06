@@ -69,19 +69,20 @@ class MergeCLToEL(Document):
 		fiscal_year_start_date = cur_fiscal_year[1]
 		fiscal_year_end_date = cur_fiscal_year[2]
 		for em in self.items:
-			# doc = frappe.new_doc("Leave Ledger Entry")
-			# doc.employee = em.employee
-			# doc.employee_name = em.employee_name
-			# doc.from_date = fiscal_year_start_date
-			# doc.to_date = fiscal_year_end_date
-			# doc.leave_type = self.merging_to
-			# doc.transaction_type = self.doctype
-			# doc.transaction_name = self.name
-			# doc.leaves = em.leave_balance
-			# doc.is_carry_forward = 1
-			# doc.flags.ignore_validate = True
-			# doc.insert(ignore_permissions=True)
-			# doc.submit()
+			doc = frappe.new_doc("Leave Ledger Entry")
+			doc.employee = em.employee
+			doc.employee_name = em.employee_name
+			doc.from_date = fiscal_year_start_date
+			doc.to_date = fiscal_year_end_date
+			doc.leave_type = self.merging_to
+			doc.transaction_type = self.doctype
+			doc.transaction_name = self.name
+			doc.leaves = em.leave_balance
+			doc.is_carry_forward = 1
+			doc.flags.ignore_validate = True
+			doc.insert(ignore_permissions=True)
+			doc.submit()
+
 			doc = frappe.new_doc("Leave Ledger Entry")
 			doc.employee = em.employee
 			doc.employee_name = em.employee_name

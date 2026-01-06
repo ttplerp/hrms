@@ -353,13 +353,18 @@ def get_leave_allocation_for_period(
 
 @frappe.whitelist()
 def get_carry_forwarded_leaves(employee, leave_type, date, carry_forward=None):
+	from erpnext.accounts.utils import get_fiscal_year
 	"""Returns carry forwarded leaves for the given employee"""
 	unused_leaves = 0.0
 	previous_allocation = get_previous_allocation(date, leave_type, employee)
+
+	cur_fiscal_year = get_fiscal_year(previous_allocation.from_date)
+	fiscal_year_start_date = cur_fiscal_year[1]
+	""" jai changed, previous_allocation.from_date to fiscal_year_start_date in below line """
 	if carry_forward and previous_allocation:
 		validate_carry_forward(leave_type)
 		unused_leaves = get_unused_leaves(
-			employee, leave_type, previous_allocation.from_date, previous_allocation.to_date
+			employee, leave_type, fiscal_year_start_date, previous_allocation.to_date
 		)
 		if unused_leaves:
 			max_carry_forwarded_leaves = frappe.db.get_value(
