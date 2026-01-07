@@ -9,7 +9,11 @@
  "engine": "InnoDB",
  "field_order": [
   "service_type",
-  "desc"
+  "desc",
+  "column_break_fopzb",
+  "require_adjustment",
+  "service_gl_account",
+  "gst_gl_account"
  ],
  "fields": [
   {
@@ -24,11 +28,35 @@
    "fieldname": "desc",
    "fieldtype": "Data",
    "label": "Desc"
+  },
+  {
+   "default": "0",
+   "fieldname": "require_adjustment",
+   "fieldtype": "Check",
+   "label": "Require CBS Adjustment"
+  },
+  {
+   "depends_on": "eval:doc.require_adjustment==1",
+   "fieldname": "service_gl_account",
+   "fieldtype": "Data",
+   "label": "Service  GL Account",
+   "mandatory_depends_on": "eval:doc.require_adjustment==1"
+  },
+  {
+   "depends_on": "eval:doc.require_adjustment==1",
+   "fieldname": "gst_gl_account",
+   "fieldtype": "Data",
+   "label": "GST GL Account",
+   "mandatory_depends_on": "eval:doc.require_adjustment==1"
+  },
+  {
+   "fieldname": "column_break_fopzb",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-05 16:55:56.144916",
+ "modified": "2026-01-07 07:19:43.668930",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "GST Service Type",
