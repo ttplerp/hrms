@@ -358,10 +358,11 @@ def get_carry_forwarded_leaves(employee, leave_type, date, carry_forward=None):
 	unused_leaves = 0.0
 	previous_allocation = get_previous_allocation(date, leave_type, employee)
 
-	cur_fiscal_year = get_fiscal_year(previous_allocation.from_date)
-	fiscal_year_start_date = cur_fiscal_year[1]
 	""" jai changed, previous_allocation.from_date to fiscal_year_start_date in below line """
 	if carry_forward and previous_allocation:
+		cur_fiscal_year = get_fiscal_year(previous_allocation.from_date)
+		fiscal_year_start_date = cur_fiscal_year[1]
+		
 		validate_carry_forward(leave_type)
 		unused_leaves = get_unused_leaves(
 			employee, leave_type, fiscal_year_start_date, previous_allocation.to_date
