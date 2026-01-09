@@ -89,7 +89,7 @@ def get_leave_encashment(filters):
 								LEFT JOIN `tabTDS Receipt Entry` r ON a.name = r.invoice_no
 								WHERE a.employee = '{employee}'
 								AND a.docstatus = 1
-					  			AND a.journal_entry IS NOT NULL
+					  			AND IFNULL(a.journal_entry, '') != ''
 								AND a.encashment_date BETWEEN '{from_date}' AND '{to_date}'
 						""".format(employee=filters.employee,from_date = getdate(str(filters.fiscal_year) + "-01-01"),
 					  to_date = getdate(str(filters.fiscal_year) + "-12-31")), as_dict=True) 
