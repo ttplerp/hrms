@@ -3,12 +3,27 @@
 
 frappe.ui.form.on('GST Invoice', {
 	refresh: function(frm) {
-		if (frm.doc.cbs_status !== 'SUCCESS' && frm.doc.docstatus === 1) {
+		if (frm.doc.cbs_response !== 'SUCCESS' && frm.doc.docstatus === 1) {
 			frm.add_custom_button(__('Make CBS Entry'), function() {
-				frm.call('before_submit').then(() => {
-					frm.reload_doc();
-				});
-			});
+				frappe.confirm(
+					__('Confirm for CBS Entry.'),
+					() => {
+						frm.call({
+							method: 'make_cbs_entry',
+							doc: frm.doc,
+							callback: function (r) {
+								// console.log(r);
+								if (!r.exc) {
+									frm.reload_doc();
+								}
+							}
+						});
+					}, 
+					() => {
+						console.log("Operation is cancelled.")
+					}
+				);
+			}).addClass("btn-primary");
 		}
 	},
 	
