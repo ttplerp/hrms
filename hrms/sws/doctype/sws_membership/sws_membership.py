@@ -87,7 +87,8 @@ class SWSMembership(Document):
 				where smi.parent = sm.name
 				and smi.cid_no ='{0}'
 				and smi.employee !='{1}'
-				""".format(a.cid_no,self.employee))
+				and smi.relationship = '{2}'
+				""".format(a.cid_no,self.employee,a.relationship))
 			if exists:
 				frappe.throw("CID ({}) is already registered by other employee".format(a.cid_no))
 
