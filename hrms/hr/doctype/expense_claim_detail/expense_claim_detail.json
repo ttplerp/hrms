@@ -13,6 +13,11 @@
   "amount",
   "column_break_8",
   "sanctioned_amount",
+  "gst_section_break",
+  "gst_applicable",
+  "gst_account",
+  "gst_cb_1",
+  "gst_amount",
   "accounting_dimensions_section",
   "cost_center",
   "reference_type",
@@ -127,12 +132,41 @@
    "label": "Reference",
    "options": "reference_type",
    "read_only": 1
+  },
+  {
+   "fieldname": "gst_section_break",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "gst_applicable",
+   "fieldtype": "Check",
+   "label": "GST Applicable"
+  },
+  {
+   "depends_on": "eval: doc.gst_applicable",
+   "fieldname": "gst_account",
+   "fieldtype": "Link",
+   "label": "GST Account",
+   "mandatory_depends_on": "eval: doc.gst_applicable",
+   "options": "Account"
+  },
+  {
+   "fieldname": "gst_cb_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.gst_applicable",
+   "fieldname": "gst_amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "GST Amount"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-12-19 15:44:18.156469",
+ "modified": "2026-01-10 12:49:01.908796",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Detail",

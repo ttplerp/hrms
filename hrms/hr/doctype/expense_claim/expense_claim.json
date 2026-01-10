@@ -26,6 +26,7 @@
   "total_sanctioned_amount",
   "total_taxes_and_charges",
   "total_advance_amount",
+  "total_gst_amount",
   "column_break_17",
   "grand_total",
   "total_claimed_amount",
@@ -411,13 +412,20 @@
    "fieldname": "report_supporting_doc",
    "fieldtype": "Attach",
    "label": "Report/Supporting Document"
+  },
+  {
+   "fieldname": "total_gst_amount",
+   "fieldtype": "Currency",
+   "label": "Total GST Amount",
+   "options": "Company:company:default_currency",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-money",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-08 09:38:45.325074",
+ "modified": "2026-01-10 11:44:07.861558",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim",

@@ -347,9 +347,23 @@ class ExpenseClaim(AccountsController):
 				self.get_gl_dict(
 					{
 						"account": data.default_account,
-						"debit": data.sanctioned_amount,
-						"debit_in_account_currency": data.sanctioned_amount,
+						"debit": data.sanctioned_amount if not data.gst_applicable else data.sanctioned_amount - data.gst_amount,
+						"debit_in_account_currency": data.sanctioned_amount if not data.gst_applicable else data.sanctioned_amount - data.gst_amount,
 						"against": self.employee,
+						"cost_center": data.cost_center or self.cost_center,
+					},
+					item=data,
+				)
+			)
+
+			if data.gst_applicable:
+				gl_entry.append(
+				self.get_gl_dict(
+					{
+						"account": data.gst_account,
+						"debit": data.gst_amount,
+						"debit_in_account_currency": data.gst_amount,
+						"against": self.name,
 						"cost_center": data.cost_center or self.cost_center,
 					},
 					item=data,
@@ -445,11 +459,14 @@ class ExpenseClaim(AccountsController):
 	def calculate_total_amount(self):
 		self.total_claimed_amount = 0
 		self.total_sanctioned_amount = 0
+		self.total_gst_amount = 0
 		for d in self.get("expenses"):
 			if self.approval_status == "Rejected":
 				d.sanctioned_amount = 0.0
 			self.total_claimed_amount += flt(d.amount)
 			self.total_sanctioned_amount += flt(d.sanctioned_amount)
+			self.total_gst_amount += flt(d.gst_amount)
+	
 	@frappe.whitelist()
 	def calculate_taxes(self):
 		self.total_taxes_and_charges = 0
