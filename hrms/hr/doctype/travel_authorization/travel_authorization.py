@@ -560,17 +560,18 @@ def make_travel_claim(source_name, target_doc=None):
         target.amount = target.dsa
         target.dsa_percent='100'
         
-        if (source_parent.travel_type=="Training" or source_parent.travel_type == "Workshop and Seminars" or source_parent.travel_type == "Meeting") and source_parent.place_type=="In-Country":
-            target.dsa = frappe.get_doc("HR Settings").training_dsa
+        # ISR amended by 2025, removing training dsa condition
+        # if (source_parent.travel_type=="Training" or source_parent.travel_type == "Workshop and Seminars" or source_parent.travel_type == "Meeting") and source_parent.place_type=="In-Country":
+        #     target.dsa = frappe.get_doc("HR Settings").training_dsa
             
         if source_parent.within_same_locality==1:
             target.dsa_percent= frappe.get_doc("HR Settings").dsa_within_same_locality
                 
         if target.halt:
             
-            if (source_parent.travel_type=="Training" or source_parent.travel_type == "Workshop and Seminars" or source_parent.travel_type == "Meeting") and source_parent.place_type=="In-Country":
+            # if (source_parent.travel_type=="Training" or source_parent.travel_type == "Workshop and Seminars" or source_parent.travel_type == "Meeting") and source_parent.place_type=="In-Country":
                     
-                target.dsa = frappe.get_doc("HR Settings").training_dsa
+            #     target.dsa = frappe.get_doc("HR Settings").training_dsa
             
             
                 
