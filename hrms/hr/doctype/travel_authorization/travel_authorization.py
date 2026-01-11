@@ -409,7 +409,8 @@ class TravelAuthorization(Document):
         after30=flt(after30)
         after90=flt(after90)
         
-        train_dsa= flt(frappe.get_doc("HR Settings").training_dsa)*percent
+        # train_dsa= flt(frappe.get_doc("HR Settings").training_dsa)*percent
+        train_dsa= 0
         dsa_rate  = frappe.db.get_value("Employee Grade", self.grade, "dsa")
         return_dsa = frappe.get_doc("HR Settings").return_day_dsa
 
@@ -419,25 +420,24 @@ class TravelAuthorization(Document):
         if not dsa_rate:
             frappe.throw("No DSA Rate set for Grade <b> {0} /<b> ".format(self.grade))
 
-        if not train_dsa:
-            frappe.throw("Set Training DSA in HR Settings") 
+        # if not train_dsa:
+        #     frappe.throw("Set Training DSA in HR Settings") 
             
         if self.place_type == "In-Country":
             
-            if self.travel_type == "Training" or self.travel_type == "Workshop and Seminars" or self.travel_type == "Meeting":
+            # if self.travel_type == "Training" or self.travel_type == "Workshop and Seminars" or self.travel_type == "Meeting":
             
-                if self.within_same_locality==1:
-                    start_day=0
-                    return_day=0
-                    within_same=frappe.get_doc("HR Settings").dsa_within_same_locality  
+            #     if self.within_same_locality==1:
+            #         start_day=0
+            #         return_day=0
+            #         within_same=frappe.get_doc("HR Settings").dsa_within_same_locality  
                     
-                    train_dsa=flt(train_dsa)*flt(within_same/100)
+            #         train_dsa=flt(train_dsa)*flt(within_same/100)
                 
-                    if not within_same:
-                        frappe.throw("Set DSA Within Same Locality in HR Settings")
-            else:
-                
-                train_dsa=dsa_rate
+            #         if not within_same:
+            #             frappe.throw("Set DSA Within Same Locality in HR Settings")
+            # else:
+            train_dsa=dsa_rate
             full_dsa = quarter_dsa = half_dsa = 0
                             
             for i in self.items:
@@ -598,7 +598,7 @@ def make_travel_claim(source_name, target_doc=None):
                 target.amount = flt(target.dsa)*30 + flt(target.dsa)*60*flt(after30/100) +flt(target.dsa) * (flt(target.no_days)-90) * (after90/100)
         else:
             if source_parent.within_same_locality:
-                target.dsa = flt(frappe.get_doc("HR Settings").training_dsa)
+                # target.dsa = flt(frappe.get_doc("HR Settings").training_dsa)
                 target.amount = flt(target.dsa)
             
              
