@@ -89,6 +89,9 @@
   "eligible_for_difficulty_allowance",
   "difficulty_allowance_method",
   "difficulty_allowance",
+  "eligible_for_commitment_allowance",
+  "commitment_allowance_method",
+  "commitment_allowance_value",
   "sb_other_benefits",
   "eligible_for_gis",
   "eligible_for_pf",
@@ -880,12 +883,31 @@
    "fieldtype": "Int",
    "label": "Value(Fixed Allowance)",
    "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_commitment_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Commitment Allowance"
+  },
+  {
+   "depends_on": "eligible_for_commitment_allowance",
+   "fieldname": "commitment_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Commitment Allowance Method",
+   "options": "\nPercent\nLumpsum"
+  },
+  {
+   "depends_on": "eligible_for_commitment_allowance",
+   "fieldname": "commitment_allowance_value",
+   "fieldtype": "Int",
+   "label": "Value (Commitment Allowance)"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2025-07-15 11:01:30.652621",
+ "modified": "2026-01-20 16:07:40.580819",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Structure",
