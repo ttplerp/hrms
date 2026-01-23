@@ -44,7 +44,7 @@ frappe.ui.form.on('Travel Request', {
 		}
 	},
 	"advance_amount": function(frm) {
-		if(frm.doc.advance_amount > frm.doc.total_travel_amount * 0.9) {
+		if(frm.dco.self.travel_type == "Domestic" && frm.doc.advance_amount > frm.doc.total_travel_amount * 0.9) {
 			msgprint("Advance amount cannot be greater than 90% of the <b>Total Travel Amount</b>")
 			frm.set_value("advance_amount", 0)
 		}
