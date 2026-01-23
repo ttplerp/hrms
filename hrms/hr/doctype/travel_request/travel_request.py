@@ -26,7 +26,8 @@ class TravelRequest(AccountsController):
 		self.set_currency_exchange()
 		self.update_amount()
 		self.update_total_amount()
-		self.validate_advance_amount()
+		if self.travel_type == "Domestic":
+			self.validate_advance_amount()
 		if self.workflow_state == "Verified By Supervisor":
 			self.notify_supervisor()
 		if self.workflow_state == "Waiting Supervisor Approval":
