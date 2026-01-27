@@ -76,6 +76,7 @@ class LeaveAdjustment(Document):
 							
 						# doc.db_set("carry_forwarded_leaves_count", carry_forwarded)
 						doc.db_set("new_leaves_allocated", balance)
+						doc.db_set("total_leaves_allocated", balance)
 
 						self.create_additional_leave_ledger_entry(doc, leaves, self.adjustment_date, adjusted_leave = 1, adjustment_id = self.name)
 
