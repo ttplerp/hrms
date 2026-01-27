@@ -43,6 +43,9 @@
   "advance_amount_nu",
   "miscellaneous_amount_details_section",
   "miscellaneous_amount",
+  "toll_fee",
+  "incidental_charges",
+  "year_closing_dsa",
   "column_break_36",
   "remarks_for_miscellaneous_amount_claim",
   "costing_details",
@@ -581,11 +584,29 @@
    "label": "Advance Pre Conditions",
    "mandatory_depends_on": "eval:doc.need_advance;",
    "options": "\nNone\nFooding\nLodging\nFooding and Lodging"
+  },
+  {
+   "default": "0",
+   "fieldname": "toll_fee",
+   "fieldtype": "Check",
+   "label": "Toll Fee"
+  },
+  {
+   "default": "0",
+   "fieldname": "incidental_charges",
+   "fieldtype": "Check",
+   "label": "Incidental Charges"
+  },
+  {
+   "default": "0",
+   "fieldname": "year_closing_dsa",
+   "fieldtype": "Check",
+   "label": "Year Closing DSA"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-27 15:16:59.466323",
+ "modified": "2026-01-27 15:27:46.865022",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",
