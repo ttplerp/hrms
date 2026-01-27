@@ -28,6 +28,7 @@ class TravelRequest(AccountsController):
 		self.update_amount()
 		self.update_total_amount()
 		self.validate_advance_amount()
+		self.validate_misc_amount()
 		if self.workflow_state != "Approved":
 			notify_workflow_states(self)
 	def on_update(self):
@@ -48,13 +49,17 @@ class TravelRequest(AccountsController):
 
 	def validate_advance_amount(self):
 		if flt(self.advance_amount) > flt(self.total_travel_amount) * flt(0.9):
-			frappe.msgprint("Advance amount cannot be greater than 90% of the <b>Total Travel Amount</b>",title="Excess Advance Amount",indicator="red",raise_exception=True)
+			frappe.throw("Advance amount cannot be greater than 90% of the <b>Total Travel Amount</b>",title="Excess Advance Amount",indicator="red",raise_exception=True)
 		elif flt(self.advance_amount) <= 0 and self.need_advance == 1:
 			frappe.throw("Advance amount cannot be: {}".format(self.advance_amount))
 	def set_dsa_percent(self):
 		for item in self.get("itinerary"):
 			if len(self.itinerary) == 1 or item.idx == len(self.itinerary) or cint(item.return_same_day) == 1:
 				item.dsa_percent = cint(frappe.db.get_single_value("HR Settings","returen_day_dsa_percent"))
+
+	def validate_misc_amount(self):
+		if flt(self.miscellaneous_amount) > 0 and self.toll_fee == 0 and self.incidental_charges == 0 and self.year_closing_dsa == 0:
+			frappe.throw("At least one of the Miscellaneous Expense fields must be tiked i.e. Toll Fee or Incidental Charges or Year Closing DSA")
 
 	##
 	# Check if the dates are used under Leave Application
@@ -121,7 +126,7 @@ class TravelRequest(AccountsController):
 			else:
 				if frappe.db.get_value("Employee Advance",self.employee_advance_reference,"status") != "Paid":
 					frappe.throw("Cannot Apply whithout claiming travel advance")
-		if not self.attach_report:
+		if not self.attach_report and self.travel_authorization_approved == 1:
 			frappe.throw("Tour Report is mandatory")
 	def update_total_amount(self):
 		total = base_total = 0
@@ -149,7 +154,7 @@ class TravelRequest(AccountsController):
 	def check_date(self):
 		for item in self.get("itinerary"):
 			las_date = item.from_date
-		if datetime.strptime(nowdate(),"%Y-%m-%d").date() <= datetime.strptime(str(las_date),"%Y-%m-%d").date():
+		if datetime.strptime(nowdate(),"%Y-%m-%d").date() <= datetime.strptime(str(las_date),"%Y-%m-%d").date() and self.travel_authorization_approved == 1:
 			frappe.throw("You cannot Claim Travel before '{}'".format(las_date))
 
 	def check_duplicate_requests(self):

@@ -76,6 +76,7 @@
   "column_break_2",
   "ex_reference",
   "additional_information_section",
+  "travel_authorization_approved",
   "other_details",
   "employee_advance_reference",
   "event_details",
@@ -417,6 +418,7 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Travel Authorization Date",
+   "permlevel": 1,
    "reqd": 1
   },
   {
@@ -602,11 +604,18 @@
    "fieldname": "year_closing_dsa",
    "fieldtype": "Check",
    "label": "Year Closing DSA"
+  },
+  {
+   "default": "0",
+   "fieldname": "travel_authorization_approved",
+   "fieldtype": "Check",
+   "label": "Travel Authorization Approved",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-27 15:27:46.865022",
+ "modified": "2026-01-27 16:10:11.569980",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",
