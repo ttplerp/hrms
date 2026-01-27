@@ -35,6 +35,7 @@
   "currency",
   "exchange_rate",
   "need_advance",
+  "advance_pre_conditions",
   "advance_reference",
   "column_break_35",
   "estimated_amount",
@@ -572,11 +573,19 @@
    "fieldtype": "Attach",
    "ignore_user_permissions": 1,
    "label": "Attach Report"
+  },
+  {
+   "depends_on": "eval:doc.need_advance;",
+   "fieldname": "advance_pre_conditions",
+   "fieldtype": "Select",
+   "label": "Advance Pre Conditions",
+   "mandatory_depends_on": "eval:doc.need_advance;",
+   "options": "\nNone\nFooding\nLodging\nFooding and Lodging"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-22 16:52:13.189461",
+ "modified": "2026-01-27 15:16:59.466323",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",

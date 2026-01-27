@@ -18,25 +18,29 @@ frappe.ui.form.on("Selected List", {
 		if (child.user_id != null) {
 			console.log(child.user_id)
 			frappe.model.open_mapped_doc({
-				method: "hrms.hr.doctype.selected_candidate.selected_candidate.create_employee",	
+				method: "hrms.hr.doctype.selected_candidate.selected_candidate.create_employee",
 				frm: cur_frm,
 				args: {
 					"user_id": child.user_id,
 					"child_name": child.name
+				},
+				callback: function (doc) {
+					frappe.model.sync(doc);
+					cur_frm.refresh();
 				}
 			});
-			
-		}else{
+
+		} else {
 			frappe.msgprint("No userId")
 		}
 	},
 });
 
-var get_selected_list = (frm)=>{
+var get_selected_list = (frm) => {
 	frappe.call({
 		method: 'get_selected_list',
 		doc: frm.doc,
-		callback: (r)=> {
+		callback: (r) => {
 			frm.refresh_field("selected_list")
 		},
 		freeze: true,
