@@ -418,7 +418,6 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Travel Authorization Date",
-   "permlevel": 1,
    "reqd": 1
   },
   {
@@ -615,7 +614,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-27 16:10:11.569980",
+ "modified": "2026-01-27 16:25:13.949193",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Request",
