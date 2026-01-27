@@ -49,8 +49,12 @@ frappe.ui.form.on('Leave Policy Assignment', {
 		} else if (frm.doc.assignment_based_on == "Joining Date" && frm.doc.employee) {
 			frappe.model.with_doc("Employee", frm.doc.employee, function () {
 				let from_date = frappe.model.get_value("Employee", frm.doc.employee, "date_of_joining");
+				console.log(from_date);
+				let year = (new Date(from_date)).getFullYear();
+				let end_of_year = year + "-12-31";
+				frm.set_value("effective_to", end_of_year);
 				frm.set_value("effective_from", from_date);
-				frm.set_value("effective_to", frappe.datetime.add_months(frm.doc.effective_from, 12));
+				// frm.set_value("effective_to", frappe.datetime.add_months(frm.doc.effective_from, 12));
 			});
 		}
 		frm.refresh();

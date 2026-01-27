@@ -27,6 +27,7 @@ class LeavePolicyAssignment(Document):
 			)
 		elif self.assignment_based_on == "Joining Date":
 			self.effective_from = frappe.db.get_value("Employee", self.employee, "date_of_joining")
+			self.effective_to = getdate(str(getdate(self.effective_from).year) + '-12-31')
 
 	def validate_policy_assignment_overlap(self):
 		leave_policy_assignments = frappe.get_all(
