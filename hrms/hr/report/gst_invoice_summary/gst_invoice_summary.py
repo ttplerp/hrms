@@ -51,7 +51,7 @@ def get_data(filters):
 			i.name = d.parent and i.docstatus = 1
 		{condition_sql}
 		ORDER BY
-			i.posting_date DESC
+			i.name DESC, i.posting_date DESC
 	"""
 
 	data = frappe.db.sql(query, filters, as_dict=True)
