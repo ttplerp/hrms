@@ -5,6 +5,14 @@
 frappe.query_reports["GST Invoice Summary"] = {
 	"filters": [
 		{
+			"fieldname": "branch",
+			"label": __("Branch"),
+			"fieldtype": "Link",
+			"options": "Branch",
+			"width": "80",
+			"default": ""
+		},
+		{
 			"fieldname": "service_type",
 			"label": __("Service Type"),
 			"fieldtype": "Link",

@@ -21,6 +21,8 @@ def get_data(filters):
 		conditions.append("i.cbs_response = %(response_status)s")
 	if filters.get("service_type"):
 		conditions.append("d.service_type = %(service_type)s")
+	if filters.get("branch"):
+		conditions.append("i.branch = %(branch)s")
 
 	condition_sql = " AND ".join(conditions)
 	if condition_sql:
@@ -68,7 +70,8 @@ def get_columns(filters):
 		{
 			"label": "Invoice Number",
 			"fieldname": "invoice_number",
-			"fieldtype": "Data",
+			"fieldtype": "Link",
+			"options": "GST Invoice",
 			"width": 150
 		},
 		{
