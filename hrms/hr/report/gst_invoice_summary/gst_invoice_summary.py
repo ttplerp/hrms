@@ -72,6 +72,12 @@ def get_columns(filters):
 			"width": 150
 		},
 		{
+			"label": "Service Type",
+			"fieldname": "service_type",
+			"fieldtype": "Data",
+			"width": 100
+		},
+		{
 			"label": "Customer",
 			"fieldname": "customer",
 			"fieldtype": "Data",
@@ -81,7 +87,7 @@ def get_columns(filters):
 			"label": "Customer TPN",
 			"fieldname": "customer_tpn",
 			"fieldtype": "Data",
-			"width": 200
+			"width": 80
 		},
 		{
 			"label": "Customer CID",
@@ -116,12 +122,6 @@ def get_columns(filters):
 		{
 			"label": "CBS Transaction ID",
 			"fieldname": "cbs_transaction_id",
-			"fieldtype": "Data",
-			"width": 100
-		},
-		{
-			"label": "Service Type",
-			"fieldname": "service_type",
 			"fieldtype": "Data",
 			"width": 100
 		},
