@@ -810,10 +810,10 @@ def get_number_of_leave_days(
     flag_half_day = 0
         
     for i in range(0, no_days):
-        for holiday in frappe.db.sql("select * from `tabHoliday` where parent='{}'".format(get_holiday_list_for_employee(employee)), as_dict=1):
+        for holiday in frappe.db.sql("select distinct holiday_date from `tabHoliday` where parent='{}'".format(get_holiday_list_for_employee(employee)), as_dict=1):
             hol_date=getdate(cur_date)
             if holiday.holiday_date==hol_date:
-                if holiday.holiday_date.weekday()==5 and ("saturday" in holiday.description.lower()) and hol_date < getdate('2026-01-17'):
+                if holiday.holiday_date.weekday()==5 and hol_date < getdate('2026-01-17'):
                     flag_half_day = 1
                     #print(f"Saturday: date {cur_date} holiday {holiday.holiday_date}" )
                     final-=0.5  
