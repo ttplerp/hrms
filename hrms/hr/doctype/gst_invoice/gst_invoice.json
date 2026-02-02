@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:GST{YY}{MM}{####}",
+ "autoname": "format:GST-{YY}{MM}-{####}",
  "creation": "2026-01-05 16:39:39.038281",
  "default_view": "List",
  "doctype": "DocType",
@@ -10,9 +10,11 @@
  "field_order": [
   "posting_date",
   "cid",
+  "contact_no",
   "column_break_cjxx8",
   "customer_name",
   "tpn",
+  "address",
   "amended_from",
   "section_break_msiin",
   "item",
@@ -140,12 +142,22 @@
    "fieldtype": "Data",
    "label": "Branch Code",
    "read_only": 1
+  },
+  {
+   "fieldname": "contact_no",
+   "fieldtype": "Data",
+   "label": "Contact No."
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Data",
+   "label": "Address"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-01-27 16:03:11.924678",
+ "modified": "2026-01-30 14:18:23.793427",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "GST Invoice",
