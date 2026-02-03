@@ -20,7 +20,8 @@ class GSTInvoice(Document):
 		pass
 	
 	def before_cancel(self):
-		frappe.throw("Cancel is not permitted")
+		if "Accounts User" not in frappe.get_roles(frappe.session.user):
+			frappe.throw("Cancel is not permitted")
 
 	@frappe.whitelist()
 	def make_cbs_entry(self):
