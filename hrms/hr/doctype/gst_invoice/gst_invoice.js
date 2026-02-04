@@ -26,7 +26,15 @@ frappe.ui.form.on('GST Invoice', {
 			}).addClass("btn-primary");
 		}
 	},
-	
+	setup: function(frm) {
+		frm.set_query('service_type', 'item', function() {
+			return {
+				filters: {
+					'name': ['!=', 'Others']
+				}
+			};
+		});
+	}
 });
 
 frappe.ui.form.on('GST Invoice Item', {
