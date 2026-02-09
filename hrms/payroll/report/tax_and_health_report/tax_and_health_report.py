@@ -30,7 +30,7 @@ def get_columns(data):
 		_("Gross Salary(A)") + ":Currency:120", 
 		_("PF Amount(B)") + ":Currency:120", 
 		_("GIS Amount(C)") + ":Currency:120",
-		_("Net Salary(A-(B+C))") + ":Currency:140", 
+		_("Net Salary") + ":Currency:140", 
 		_("Salary Tax(X)") + ":Currency:120", 
 		_("Health Contr(Y)") + ":Currency:120",
 		_("Total(X+Y)") + ":Currency:120", 
