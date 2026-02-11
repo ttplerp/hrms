@@ -27,9 +27,7 @@ def get_columns(data):
 		_("Basic Salary") + ":Currency:120", 
 		_("Allowances") + ":Currency:120", 
 		_("Arrears") + ":Currency:120",
-		_("Gross Salary(A)") + ":Currency:120", 
-		_("PF Amount(B)") + ":Currency:120", 
-		_("GIS Amount(C)") + ":Currency:120",
+		_("Gross Salary(A)") + ":Currency:120",
 		_("Net Salary") + ":Currency:140", 
 		_("Salary Tax(X)") + ":Currency:120", 
 		_("Health Contr(Y)") + ":Currency:120",
@@ -47,6 +45,7 @@ def get_columns(data):
 
 def get_data(filters):
 	conditions, filters = get_conditions(filters)
+
 	data = frappe.db.sql("""
 		select t1.employee, t3.employee_name, t1.designation, t3.passport_number, t3.tpn_number,
 			sum(case when t2.salary_component = 'Basic Pay' then ifnull(t2.amount,0) else 0 end) as basicpay,
@@ -57,13 +56,7 @@ def get_data(filters):
 				 else 0 end) as allowances,
 			sum(case when t2.salary_component = 'Salary  Arrears' then ifnull(t2.amount,0) else 0 end) as arrears,
 			sum(case when t2.parentfield = 'earnings' then ifnull(t2.amount,0) else 0 end) as grosspay,
-			sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as pfamount,
-			sum(case when t2.salary_component = 'GIS' then ifnull(t2.amount,0) else 0 end) as gisamount,
-			sum(
-			   (case when t2.parentfield = 'earnings' then ifnull(t2.amount,0) else 0 end)
-			   - (case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end)
-			   - (case when t2.salary_component = 'GIS' then ifnull(t2.amount,0) else 0 end)
-			) as netpay,
+			sum(case when t2.parentfield = 'earnings' then ifnull(t2.amount,0) else 0 end) - sum(case when t2.parentfield = 'earnings' then ifnull(t2.amount,0) else 0 end) * 0.15 as netpay,
 			sum(case when t2.salary_component = 'Salary Tax' then ifnull(t2.amount,0) else 0 end) as salarytax,
 			sum(case when t2.salary_component = 'Health Contribution' then ifnull(t2.amount,0) else 0 end) as healthcont,
 			sum(
@@ -80,6 +73,40 @@ def get_data(filters):
 			t3.tpn_number, t1.company, t1.branch, t1.department, t1.division, t1.section,
 			t1.fiscal_year, t1.month
 		""" % conditions, filters)
+
+	# data = frappe.db.sql("""
+	# 	select t1.employee, t3.employee_name, t1.designation, t3.passport_number, t3.tpn_number,
+	# 		sum(case when t2.salary_component = 'Basic Pay' then ifnull(t2.amount,0) else 0 end) as basicpay,
+	# 		sum(case when t2.parentfield = 'earnings'
+	# 			 then (case when t2.salary_component = 'Basic Pay' then 0
+	# 				    when t2.salary_component = 'Salary  Arrears' then 0
+	# 			       else ifnull(t2.amount,0) end)
+	# 			 else 0 end) as allowances,
+	# 		sum(case when t2.salary_component = 'Salary  Arrears' then ifnull(t2.amount,0) else 0 end) as arrears,
+	# 		sum(case when t2.parentfield = 'earnings' then ifnull(t2.amount,0) else 0 end) as grosspay,
+	# 		sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as pfamount,
+	# 		sum(case when t2.salary_component = 'GIS' then ifnull(t2.amount,0) else 0 end) as gisamount,
+	# 		sum(case when t2.salary_component = 'Salary Tax' then ifnull(t2.amount,0) else 0 end) as salarytax,
+	# 		sum(
+	# 		   (case when t2.parentfield = 'earnings' then ifnull(t2.amount,0) else 0 end)
+	# 		   - (case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end)
+	# 		   - (case when t2.salary_component = 'GIS' then ifnull(t2.amount,0) else 0 end)
+	# 		) as netpay,
+	# 		sum(case when t2.salary_component = 'Health Contribution' then ifnull(t2.amount,0) else 0 end) as healthcont,
+	# 		sum(
+	# 		   (case when t2.salary_component = 'Salary Tax' then ifnull(t2.amount,0) else 0 end)
+	# 		   + (case when t2.salary_component = 'Health Contribution' then ifnull(t2.amount,0) else 0 end)
+	# 		) as total,
+	# 		t1.company, t1.cost_center, t1.branch, t1.department, t1.division, t1.section,
+	# 		t1.fiscal_year, t1.month
+	# 	from `tabSalary Slip` t1, `tabSalary Detail` t2, `tabEmployee` t3
+	# 	where t1.docstatus = 1 %s
+	# 	and t3.employee = t1.employee
+	# 	and t2.parent = t1.name
+	# 	group by t1.employee, t3.employee_name, t1.designation, t3.passport_number,
+	# 		t3.tpn_number, t1.company, t1.branch, t1.department, t1.division, t1.section,
+	# 		t1.fiscal_year, t1.month
+	# 	""" % conditions, filters)
 
 	'''
 	if not data:
