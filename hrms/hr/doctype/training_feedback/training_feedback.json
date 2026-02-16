@@ -16,7 +16,77 @@
   "trainer_name",
   "section_break_6",
   "feedback",
-  "amended_from"
+  "amended_from",
+  "tab_one",
+  "sb_course",
+  "length_of_course_rating",
+  "length_of_course_ui",
+  "content_rating",
+  "content_ui",
+  "materials_rating",
+  "materials_rating_ui",
+  "ability_to_hold_interest_rating",
+  "ability_to_hold_interest_ui",
+  "use_of_relevant_examples",
+  "use_of_relevant_ui",
+  "audio_visual",
+  "audio_visual_ui",
+  "pace_of_course_was_comfortable",
+  "place_of_course_ui",
+  "usefulness_of_ideas_and_skills_presented",
+  "usefulness_of_ideas_ui",
+  "i_would_recommend_this_training",
+  "i_would_recommend_ui",
+  "overall_course_rating",
+  "overall_course_rating_ui",
+  "tab_two",
+  "sb_facilitator",
+  "ability_to_hold_interest_faci",
+  "ability_to_hold_interest_faci_ui",
+  "expertise_on_the_topic",
+  "expertise_on_the_topic_ui",
+  "effective_response_to_questions",
+  "effective_response_ui",
+  "ability_to_stay_focused_on_the_topic",
+  "ability_to_stay_focused_ui",
+  "use_of_relevant_examples_faci",
+  "use_of_relevant_examples_faci_ui",
+  "encouraged_audience_interaction",
+  "encouraged_audience_ui",
+  "seriousness_on_attendance",
+  "seriousness_on_attendance_ui",
+  "overall_facilitator_rating",
+  "overall_facilitator_ui",
+  "tab_three",
+  "sb_vanue",
+  "seating_comfort",
+  "seating_comfort_ui",
+  "room_temperature",
+  "room_temperature_ui",
+  "room_lighting",
+  "room_lighting_ui",
+  "food",
+  "food_ui",
+  "overall_logistics_arrangement",
+  "overall_logistics_ui",
+  "support_from_hr_tab",
+  "section_break_ndqeq",
+  "hr_travel_itinerary_timely",
+  "hr1",
+  "hr_clarification_clear",
+  "hr2",
+  "hr_clarification_prompt",
+  "hr3",
+  "hr_nomination_fair",
+  "hr4",
+  "recommendation_and_observation_tab",
+  "sb_recommendation",
+  "learned_most",
+  "neet_to_leard",
+  "apply_at_bdb",
+  "difficulty_in_applying",
+  "might_have_effective",
+  "date_of_feedback"
  ],
  "fields": [
   {
@@ -84,9 +154,8 @@
   },
   {
    "fieldname": "feedback",
-   "fieldtype": "Text",
-   "label": "Feedback",
-   "reqd": 1
+   "fieldtype": "Small Text",
+   "label": "Any other Feedback"
   },
   {
    "fieldname": "amended_from",
@@ -96,11 +165,396 @@
    "options": "Training Feedback",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "tab_one",
+   "fieldtype": "Tab Break",
+   "label": "Course"
+  },
+  {
+   "description": "*Rating from 1 (Fair) to 5 (Excellent)",
+   "fieldname": "length_of_course_rating",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Length of course"
+  },
+  {
+   "fieldname": "length_of_course_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"rating-scale\">\n  <div class=\"rating-question\">Length of course</div>\n  <div class=\"rating-container\">\n    <span class=\"rating-label\">Fair</span>\n    <div class=\"rating-options\">\n      <span class=\"rating-circle\" data-value=\"1\">1</span>\n      <span class=\"rating-circle\" data-value=\"2\">2</span>\n      <span class=\"rating-circle\" data-value=\"3\">3</span>\n      <span class=\"rating-circle\" data-value=\"4\">4</span>\n      <span class=\"rating-circle\" data-value=\"5\">5</span>\n    </div>\n    <span class=\"rating-label\">Excellent</span>\n  </div>\n</div>"
+  },
+  {
+   "description": "*Rating from Poor to Excellent",
+   "fieldname": "content_rating",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Content"
+  },
+  {
+   "fieldname": "content_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Content</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"content_rating\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"content_rating\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"content_rating\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"content_rating\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"content_rating\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "materials_rating",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Materials"
+  },
+  {
+   "fieldname": "materials_rating_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Materials</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"materials_rating\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"materials_rating\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"materials_rating\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"materials_rating\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"materials_rating\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "description": "*Rating from Poor to Excellent",
+   "fieldname": "ability_to_hold_interest_rating",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Ability to hold my interest"
+  },
+  {
+   "fieldname": "ability_to_hold_interest_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Ability to hold my interest</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_rating\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_rating\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_rating\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_rating\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_rating\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "description": "*Rating from Poor to Excellent",
+   "fieldname": "use_of_relevant_examples",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Use of relevant examples"
+  },
+  {
+   "fieldname": "use_of_relevant_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Use of relevant examples</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "description": "*Rating from Poor to Excellent",
+   "fieldname": "audio_visual",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Audio/visual"
+  },
+  {
+   "fieldname": "audio_visual_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Audio/visual</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"audio_visual\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"audio_visual\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"audio_visual\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"audio_visual\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"audio_visual\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "description": "*Rating from Poor to Excellent",
+   "fieldname": "pace_of_course_was_comfortable",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Pace of course was comfortable"
+  },
+  {
+   "fieldname": "place_of_course_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Pace of course was comfortable</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"pace_of_course_was_comfortable\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"pace_of_course_was_comfortable\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"pace_of_course_was_comfortable\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"pace_of_course_was_comfortable\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"pace_of_course_was_comfortable\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "usefulness_of_ideas_and_skills_presented",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Usefulness of ideas and skills presented"
+  },
+  {
+   "fieldname": "usefulness_of_ideas_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Usefulness of ideas and skills presented</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"usefulness_of_ideas_and_skills_presented\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"usefulness_of_ideas_and_skills_presented\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"usefulness_of_ideas_and_skills_presented\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"usefulness_of_ideas_and_skills_presented\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"usefulness_of_ideas_and_skills_presented\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "i_would_recommend_this_training",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "I would recommend this training to a co-worker"
+  },
+  {
+   "fieldname": "i_would_recommend_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">I would recommend this training to a co-worker</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "overall_course_rating",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Overall course rating"
+  },
+  {
+   "fieldname": "overall_course_rating_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Overall course rating</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_course_rating\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_course_rating\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_course_rating\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_course_rating\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_course_rating\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "tab_two",
+   "fieldtype": "Tab Break",
+   "label": "Facilitator"
+  },
+  {
+   "fieldname": "expertise_on_the_topic",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Expertise on the topic"
+  },
+  {
+   "fieldname": "expertise_on_the_topic_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Expertise on the Topic</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"expertise_on_the_topic\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"expertise_on_the_topic\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"expertise_on_the_topic\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"expertise_on_the_topic\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"expertise_on_the_topic\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "effective_response_to_questions",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Effective response to questions"
+  },
+  {
+   "fieldname": "effective_response_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Effective response to questions</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"effective_response_to_questions\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"effective_response_to_questions\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"effective_response_to_questions\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"effective_response_to_questions\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"effective_response_to_questions\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "ability_to_stay_focused_on_the_topic",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Ability to stay focused on the topic"
+  },
+  {
+   "fieldname": "ability_to_stay_focused_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Ability to stay focused on the topic</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_stay_focused_on_the_topic\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_stay_focused_on_the_topic\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_stay_focused_on_the_topic\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_stay_focused_on_the_topic\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_stay_focused_on_the_topic\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "encouraged_audience_interaction",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Encouraged audience interaction"
+  },
+  {
+   "fieldname": "encouraged_audience_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Encouraged audience interaction</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"encouraged_audience_interaction\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"encouraged_audience_interaction\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"encouraged_audience_interaction\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"encouraged_audience_interaction\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"encouraged_audience_interaction\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "seriousness_on_attendance",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Seriousness on attendance"
+  },
+  {
+   "fieldname": "seriousness_on_attendance_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Seriousness on attendance</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seriousness_on_attendance\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seriousness_on_attendance\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seriousness_on_attendance\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seriousness_on_attendance\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seriousness_on_attendance\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "overall_facilitator_rating",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Overall facilitator rating"
+  },
+  {
+   "fieldname": "overall_facilitator_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Overall facilitator rating</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_facilitator_rating\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_facilitator_rating\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_facilitator_rating\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_facilitator_rating\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_facilitator_rating\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "tab_three",
+   "fieldtype": "Tab Break",
+   "label": "Venue"
+  },
+  {
+   "fieldname": "seating_comfort",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Seating Comfort"
+  },
+  {
+   "fieldname": "seating_comfort_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Seating Comfort</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seating_comfort\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seating_comfort\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seating_comfort\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seating_comfort\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"seating_comfort\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "room_temperature",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Room Temperature"
+  },
+  {
+   "fieldname": "room_temperature_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Room Temperature</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_temperature\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_temperature\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_temperature\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_temperature\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_temperature\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "room_lighting",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Room Lighting"
+  },
+  {
+   "fieldname": "room_lighting_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Room Lighting</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_lighting\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_lighting\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_lighting\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_lighting\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"room_lighting\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "food",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Food"
+  },
+  {
+   "fieldname": "food_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Food</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"food\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"food\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"food\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"food\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"food\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "overall_logistics_arrangement",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Overall Logistics Arrangement"
+  },
+  {
+   "fieldname": "overall_logistics_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Overall Logistics Arrangement</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_logistics_arrangement\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_logistics_arrangement\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_logistics_arrangement\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_logistics_arrangement\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"overall_logistics_arrangement\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "ability_to_hold_interest_faci",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Ability to hold my interest"
+  },
+  {
+   "fieldname": "ability_to_hold_interest_faci_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Ability to hold my interest</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_faci\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_faci\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_faci\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_faci\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"ability_to_hold_interest_faci\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "use_of_relevant_examples_faci",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Use of relevant examples"
+  },
+  {
+   "fieldname": "use_of_relevant_examples_faci_ui",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Use of relevant examples</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples_faci\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples_faci\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples_faci\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples_faci\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples_faci\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+  },
+  {
+   "fieldname": "recommendation_and_observation_tab",
+   "fieldtype": "Tab Break",
+   "label": "Recommendation and Observation"
+  },
+  {
+   "fieldname": "sb_recommendation",
+   "fieldtype": "Section Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "learned_most",
+   "fieldtype": "Small Text",
+   "label": "What I learned most from this course was:"
+  },
+  {
+   "fieldname": "sb_course",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sb_facilitator",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sb_vanue",
+   "fieldtype": "Section Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "neet_to_leard",
+   "fieldtype": "Small Text",
+   "label": "What I still need to Learn more about is:"
+  },
+  {
+   "bold": 1,
+   "fieldname": "apply_at_bdb",
+   "fieldtype": "Small Text",
+   "label": "I will apply the following at BDB:"
+  },
+  {
+   "bold": 1,
+   "fieldname": "difficulty_in_applying",
+   "fieldtype": "Small Text",
+   "label": "I will have difficulty applying the following:"
+  },
+  {
+   "bold": 1,
+   "fieldname": "might_have_effective",
+   "fieldtype": "Small Text",
+   "label": "The course might have been more effective if:"
+  },
+  {
+   "description": "Thank you for completing this form. Information shall be used for the purpose of improving Training and Development program.",
+   "fieldname": "date_of_feedback",
+   "fieldtype": "Date",
+   "label": "Date of Feedback",
+   "reqd": 1
+  },
+  {
+   "fieldname": "support_from_hr_tab",
+   "fieldtype": "Tab Break",
+   "label": "Support from HR"
+  },
+  {
+   "fieldname": "section_break_ndqeq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "hr_travel_itinerary_timely",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Processing of travel Itineraries was on time "
+  },
+  {
+   "fieldname": "hr1",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Processing of travel itineraries was on time</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_travel_itinerary_timely\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_travel_itinerary_timely\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_travel_itinerary_timely\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_travel_itinerary_timely\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_travel_itinerary_timely\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>\n"
+  },
+  {
+   "fieldname": "hr_clarification_clear",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Clarification(s) sought was on clear "
+  },
+  {
+   "fieldname": "hr2",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Clarifications sought were clear</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_clear\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_clear\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_clear\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_clear\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_clear\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>\n"
+  },
+  {
+   "fieldname": "hr_clarification_prompt",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Clarification(s) sought was prompt "
+  },
+  {
+   "fieldname": "hr3",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Clarifications sought were prompt</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_prompt\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_prompt\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_prompt\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_prompt\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_clarification_prompt\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>\n"
+  },
+  {
+   "fieldname": "hr_nomination_fair",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Nomination was transparent and fair "
+  },
+  {
+   "fieldname": "hr4",
+   "fieldtype": "HTML",
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Nomination was transparent and fair</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_nomination_fair\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_nomination_fair\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_nomination_fair\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_nomination_fair\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"hr_nomination_fair\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>\n"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-04-28 13:32:29.261421",
+ "modified": "2026-02-09 15:17:10.366160",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Feedback",

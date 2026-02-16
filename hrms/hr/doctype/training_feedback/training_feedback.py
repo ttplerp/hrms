@@ -30,6 +30,12 @@ class TrainingFeedback(Document):
 		if emp_event_details.attendance == "Absent":
 			frappe.throw(_("Feedback cannot be recorded for an absent Employee."))
 
+		meta = frappe.get_meta("Training Feedback")
+		field_names = [d.fieldname for d in meta.fields if d.fieldtype == "Data"]
+		for field in range(len(field_names)):
+			if not self.get(field_names[field]):
+				frappe.throw(_("Value missing for <strong>{0}</strong>.").format(_(meta.get_label(field_names[field]))))
+
 	def on_submit(self):
 		employee = frappe.db.get_value(
 			"Training Event Employee", {"parent": self.training_event, "employee": self.employee}
@@ -45,3 +51,21 @@ class TrainingFeedback(Document):
 
 		if employee:
 			frappe.db.set_value("Training Event Employee", employee, "status", "Completed")
+
+
+# Following code added by SHIV on 2020/09/21
+def get_permission_query_conditions(user):
+    if not user: user = frappe.session.user
+    user_roles = frappe.get_roles(user)
+    
+    if "HR User" in user_roles or "HR Manager" in user_roles:
+        return
+
+    return """(
+        owner = '{user}'
+        or
+        exists(select 1
+                from `tabEmployee`
+                where `tabEmployee`.name = `tabTraining Feedback`.employee
+                and `tabEmployee`.user_id = '{user}')
+    )""".format(user=user)

@@ -8,13 +8,21 @@
   "employee",
   "employee_name",
   "department",
+  "designation",
   "column_break_3",
   "status",
   "attendance",
   "is_mandatory",
-  "create_travel_request",
-  "travel_request_id",
-  "course_fee"
+  "cell_number",
+  "section_break_ufzmg",
+  "course_fee",
+  "air_fare",
+  "travel_insurance",
+  "dsa_incidental_and_mileage",
+  "column_break_k0mbb",
+  "mileage",
+  "total",
+  "travel_claim"
  ],
  "fields": [
   {
@@ -69,28 +77,66 @@
    "label": "Is Mandatory"
   },
   {
-   "depends_on": "eval:!doc.travel_request_id && doc.docstatus == 1;",
-   "fieldname": "create_travel_request",
-   "fieldtype": "Button",
-   "label": "Create Travel Request"
-  },
-  {
-   "fieldname": "travel_request_id",
-   "fieldtype": "Link",
-   "label": "Travel Request ID",
-   "options": "Travel Request",
-   "read_only": 1
-  },
-  {
    "fieldname": "course_fee",
    "fieldtype": "Currency",
    "label": "Course/Training Fee"
+  },
+  {
+   "fetch_from": "employee.designation",
+   "fieldname": "designation",
+   "fieldtype": "Read Only",
+   "label": "Designation"
+  },
+  {
+   "fetch_from": "employee.cell_number",
+   "fieldname": "cell_number",
+   "fieldtype": "Read Only",
+   "label": "Contact Number"
+  },
+  {
+   "fieldname": "air_fare",
+   "fieldtype": "Currency",
+   "label": "Air Fare"
+  },
+  {
+   "fieldname": "travel_insurance",
+   "fieldtype": "Currency",
+   "label": "Travel Insurance"
+  },
+  {
+   "fieldname": "dsa_incidental_and_mileage",
+   "fieldtype": "Currency",
+   "label": "DSA, Incidental and Mileage"
+  },
+  {
+   "fieldname": "mileage",
+   "fieldtype": "Currency",
+   "label": "Mileage"
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Currency",
+   "label": "Total"
+  },
+  {
+   "fieldname": "section_break_ufzmg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_k0mbb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "travel_claim",
+   "fieldtype": "Link",
+   "label": "Travel Claim",
+   "options": "Travel Claim"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-08-13 11:21:48.025764",
+ "modified": "2026-02-05 10:02:28.023134",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Event Employee",

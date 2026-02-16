@@ -9,32 +9,43 @@
  "engine": "InnoDB",
  "field_order": [
   "event_name",
-  "training_program",
   "event_status",
   "has_certificate",
+  "training_program",
+  "fiscal_year",
   "column_break_2",
-  "type",
-  "international_or_domestic",
+  "ex_country_in_country",
   "level",
   "company",
-  "section_break_4",
-  "trainer_name",
-  "trainer_email",
-  "column_break_7",
-  "training_institute",
-  "contact_number",
+  "funded_by",
   "section_break_9",
   "course",
   "location",
   "column_break_12",
   "start_time",
   "end_time",
+  "section_break_j2m7u",
+  "budget_projected",
+  "column_break_3xouh",
+  "actual_expense",
+  "column_break_mo2ss",
+  "difference",
   "section_break_15",
+  "trainer_name",
+  "trainer_email",
+  "column_break_7",
+  "training_institute",
+  "contact_number",
+  "section_break_4",
   "introduction",
   "section_break_18",
   "employees",
   "amended_from",
-  "employee_emails"
+  "employee_emails",
+  "section_break_hhyi1",
+  "no_of_employee",
+  "column_break_hkyig",
+  "grand_total"
  ],
  "fields": [
   {
@@ -47,19 +58,13 @@
    "unique": 1
   },
   {
-   "fieldname": "training_program",
-   "fieldtype": "Link",
-   "label": "Training Program",
-   "options": "Training Program"
-  },
-  {
    "allow_on_submit": 1,
    "fieldname": "event_status",
    "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Event Status",
-   "options": "Scheduled\nCompleted\nCancelled",
+   "options": "Scheduled\nCompleted\nCancelled\nOngoing\nPending",
    "reqd": 1
   },
   {
@@ -72,15 +77,6 @@
   {
    "fieldname": "column_break_2",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "type",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Type",
-   "options": "Seminar\nTheory\nWorkshop\nConference\nExam\nOnline\nVirtual Training\nTraining",
-   "reqd": 1
   },
   {
    "depends_on": "eval:doc.type == 'Seminar' || doc.type == 'Workshop' || doc.type == 'Exam'",
@@ -190,21 +186,83 @@
    "options": "Email"
   },
   {
-   "fieldname": "international_or_domestic",
-   "fieldtype": "Select",
-   "label": "International or Domestic",
-   "options": "Domestic\nInternational",
-   "reqd": 1
-  },
-  {
    "fieldname": "training_institute",
    "fieldtype": "Data",
    "label": "Training Institute"
+  },
+  {
+   "fieldname": "ex_country_in_country",
+   "fieldtype": "Select",
+   "label": "Ex Country / In Country",
+   "options": "Ex-Country\nIn-Country",
+   "reqd": 1
+  },
+  {
+   "fieldname": "training_program",
+   "fieldtype": "Select",
+   "label": "Program Type",
+   "options": "Ex-Country Training Program (HRD Planned)\nEx-Country Training Program (Additional)\nIn-Country Training Programs (HRD Plan)\nIn-Country Training Programs (Additional)\nSeminar/Conference\nWorkshop\nMeeting"
+  },
+  {
+   "fieldname": "fiscal_year",
+   "fieldtype": "Link",
+   "label": "Fiscal Year",
+   "options": "Fiscal Year"
+  },
+  {
+   "fieldname": "funded_by",
+   "fieldtype": "Data",
+   "label": "Funded By"
+  },
+  {
+   "fieldname": "section_break_j2m7u",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "budget_projected",
+   "fieldtype": "Currency",
+   "label": "Budget Projected"
+  },
+  {
+   "fieldname": "column_break_3xouh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "actual_expense",
+   "fieldtype": "Currency",
+   "label": "Actual Expense"
+  },
+  {
+   "fieldname": "column_break_mo2ss",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "difference",
+   "fieldtype": "Currency",
+   "label": "Difference"
+  },
+  {
+   "fieldname": "section_break_hhyi1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "no_of_employee",
+   "fieldtype": "Int",
+   "label": "No. of Employee"
+  },
+  {
+   "fieldname": "column_break_hkyig",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-04 11:53:01.569794",
+ "modified": "2026-02-03 09:34:37.640873",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Event",
