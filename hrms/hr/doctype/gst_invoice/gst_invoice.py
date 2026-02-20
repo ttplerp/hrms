@@ -20,7 +20,7 @@ class GSTInvoice(Document):
 		pass
 	
 	def before_cancel(self):
-		if "Accounts User" not in frappe.get_roles(frappe.session.user):
+		if "Accounts User" not in frappe.get_roles(frappe.session.user) or "GST Invoice User" not in frappe.get_roles(frappe.session.user):
 			frappe.throw("Cancel is not permitted")
 
 	@frappe.whitelist()
