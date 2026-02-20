@@ -10,6 +10,7 @@
   "employee",
   "emp_name",
   "date_of_joining",
+  "current_holiday_list",
   "column_break_3",
   "company",
   "transfer_type",
@@ -17,6 +18,7 @@
   "new_company",
   "description",
   "rejection_reason",
+  "new_holiday_list",
   "sb_supervisor_details",
   "supervisor_name",
   "supervisor_designation",
@@ -58,7 +60,8 @@
   "sb_benefits",
   "employee_benefits_status",
   "workflow_state",
-  "amended_from"
+  "amended_from",
+  "journal_entry"
  ],
  "fields": [
   {
@@ -409,12 +412,31 @@
    "fieldtype": "Table",
    "label": "Optional Branch",
    "options": "Employee Transfer Branch"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "journal_entry",
+   "fieldtype": "Data",
+   "label": "Advance Transfer JV ",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee.holiday_list",
+   "fieldname": "current_holiday_list",
+   "fieldtype": "Data",
+   "label": "Current Holiday List"
+  },
+  {
+   "fieldname": "new_holiday_list",
+   "fieldtype": "Link",
+   "label": "New Holiday List",
+   "options": "Holiday List"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-22 11:16:31.918570",
+ "modified": "2026-02-03 12:23:54.010384",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Transfer",

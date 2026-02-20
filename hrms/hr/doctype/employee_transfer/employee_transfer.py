@@ -28,7 +28,23 @@ class EmployeeTransfer(Document):
 
 	def on_submit(self):
 		self.update_employee_master()
+		# if self.old_cost_center != self.new_cost_center:
+		# 	self.advance_transfer_jv()
 
+		# """
+        # Update Employee Holiday List ONLY if approved
+        # """
+		# if self.workflow_state != "Approved":
+		# 	return
+		# if not self.employee:
+		# 	return
+		# if not self.new_holiday_list:
+		# 	frappe.throw("New Holiday List is mandatory for Approved Transfer")
+		
+		# employee = frappe.get_doc("Employee", self.employee)
+		# employee.holiday_list = self.new_holiday_list
+		# employee.save(ignore_permissions=True)
+		# frappe.db.commit()
 		
 	def on_cancel(self):
 		self.update_employee_master(cancel=True)
@@ -55,6 +71,7 @@ class EmployeeTransfer(Document):
 		employee.expense_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")
 		employee.leave_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")
 		employee.shift_request_approver = frappe.db.get_value("Employee",self.new_reports_to,"user_id") if not cancel and self.new_reports_to else frappe.db.get_value("Employee",self.old_reports_to,"user_id")
+		employee.holiday_list = self.new_holiday_list if not cancel else self.current_holiday_list
   
 		if cancel:
 			for t in frappe.db.get_all("Employee Transfer", {"employee": self.employee, "name": ("!=", self.name),
@@ -114,6 +131,61 @@ class EmployeeTransfer(Document):
 			# if datediff < 4:
 			# 		frappe.throw("You are not eligble for transfer since you have not served in your current branch for at least 4 years")
 
+	def advance_transfer_jv(self):
+		# check if employee has any advance from now date not from doc from date
+		advance = frappe.db.get_value("Employee Advance", {"employee": self.employee, "docstatus": 1, "workflow_state": "Claimed", "recovery_start_date": ("<=", getdate()), "recovery_end_date": (">=", getdate())}, "name")
+		if not advance:
+			return
+		account_select = frappe.db.get_value("Company", self.company, "salary_advance_account")
+		from_date = getdate(str(getdate().year) + "-" + str("01-01"))
+		to_date = getdate()
+		advance_balance = frappe.db.sql(""" 
+				select sum(debit) - sum(credit) as balance
+				from `tabGL Entry`
+				where party_type = 'Employee'
+					and party = '{0}'
+					and account = '{1}'
+					and posting_date between '{2}' and '{3}'
+					and cost_center = '{4}'
+					and is_cancelled = 0
+			""".format(self.employee, account_select, from_date, to_date, self.old_cost_center))
+		
+		if advance_balance and advance_balance[0][0] and advance_balance[0][0] > 0:
+			jv = frappe.new_doc("Journal Entry")
+			jv.voucher_type = "Journal Entry"
+			jv.title = "Balance Advance Transfer {0} - {1}".format(self.employee, self.emp_name)
+			jv.posting_date = getdate()
+			jv.company = self.company
+			jv.branch = self.old_branch
+			jv.remark = "Balance Advance Transfer on Employee Transfer for Employee: {0}".format(self.employee)
+			
+			jv.append("accounts", {
+				"account": account_select,
+				"party_type": "Employee",
+				"party": self.employee,
+				"cost_center": self.new_cost_center,
+				"debit_in_account_currency": advance_balance[0][0],
+				"reference_type": self.doctype,
+				"reference_name": self.name,
+				"is_advance": "Yes",
+				"business_activity": "Common"
+			})
+			jv.append("accounts", {
+				"account": account_select,
+				"party_type": "Employee",
+				"party": self.employee,
+				"cost_center": self.old_cost_center,
+				"credit_in_account_currency": advance_balance[0][0],
+				"reference_type": self.doctype,
+				"reference_name": self.name,
+				"business_activity": "Common"
+			})
+
+			jv.save(ignore_permissions=True)
+			# jv.submit()
+			frappe.db.set_value(self.doctype, self.name, "journal_entry", jv.name)
+			# frappe.msgprint(_("Journal Entry {0} created for advance transfer").format(frappe.bold(jv.name)))
+		
 @frappe.whitelist()
 def make_employee_benefit(source_name, target_doc=None, skip_item_mapping=False):
 	def update_item(source, target):
