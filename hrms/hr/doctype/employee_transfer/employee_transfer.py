@@ -28,8 +28,8 @@ class EmployeeTransfer(Document):
 
 	def on_submit(self):
 		self.update_employee_master()
-		# if self.old_cost_center != self.new_cost_center:
-		# 	self.advance_transfer_jv()
+		if self.old_cost_center != self.new_cost_center:
+			self.advance_transfer_jv()
 
 		# """
         # Update Employee Holiday List ONLY if approved
