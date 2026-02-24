@@ -521,7 +521,7 @@ class EmployeeAdvance(Document):
 		eas.employee_advance_id = self.name
 		eas.employee = self.employee
 		eas.advance_account = self.advance_account
-		eas.cost_center = self.cost_center
+		eas.cost_center = frappe.get_value("Employee", self.employee, "cost_center")
 		eas.advance_amount = self.advance_amount
 		eas.business_activity = "Common"
 		eas.salary_component = self.salary_component
