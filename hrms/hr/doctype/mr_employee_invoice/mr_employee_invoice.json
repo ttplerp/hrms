@@ -47,6 +47,7 @@
   "total_arrears_and_allowance",
   "column_break_10",
   "other_deduction",
+  "salary_tax",
   "total_advance",
   "total_tds_amount",
   "section_break_e28kc",
@@ -321,8 +322,7 @@
   {
    "fieldname": "total_advance",
    "fieldtype": "Currency",
-   "label": "Total Advance",
-   "read_only": 1
+   "label": "Total Advance"
   },
   {
    "fieldname": "total_tds_amount",
@@ -370,12 +370,17 @@
    "fieldtype": "Currency",
    "label": "TDS Amount",
    "read_only": 1
+  },
+  {
+   "fieldname": "salary_tax",
+   "fieldtype": "Currency",
+   "label": "Salary Tax"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-20 13:17:13.443266",
+ "modified": "2026-02-04 09:55:55.926869",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Employee Invoice",

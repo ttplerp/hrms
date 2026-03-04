@@ -18,6 +18,7 @@
   "account",
   "cost_center",
   "amount",
+  "gst_amount",
   "tax_amount"
  ],
  "fields": [
@@ -98,12 +99,18 @@
    "fieldtype": "Link",
    "label": "Item Group",
    "options": "Item Group"
+  },
+  {
+   "fieldname": "gst_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "GST Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-01-18 18:02:52.158239",
+ "modified": "2026-02-10 12:12:47.404290",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance Settlement Item",

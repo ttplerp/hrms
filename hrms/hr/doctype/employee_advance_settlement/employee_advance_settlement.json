@@ -8,8 +8,6 @@
  "field_order": [
   "title",
   "advance_type",
-  "tds_percent",
-  "tds_account",
   "column_break_2",
   "posting_date",
   "edit_posting_date",
@@ -27,15 +25,23 @@
   "advance_amount",
   "total_deducted_amount",
   "balance_amount",
+  "apply_gst",
   "column_break_16",
+  "settlement_amount",
   "salary_structure",
   "salary_component",
   "sb_advance_details",
   "expense_branch",
   "items",
-  "settlement_amount",
+  "section_break_apm7i",
+  "tds_account",
+  "tds_percent",
   "tds_amount",
   "credit_account",
+  "column_break_a8hho",
+  "taxes_and_charges",
+  "gst_account",
+  "gst_amount",
   "accounting_details_section",
   "company",
   "business_activity",
@@ -353,12 +359,46 @@
    "label": "Expense Branch",
    "mandatory_depends_on": "eval: doc.advance_type == \"Project Imprest\"",
    "options": "Branch"
+  },
+  {
+   "default": "0",
+   "fieldname": "apply_gst",
+   "fieldtype": "Check",
+   "label": "Apply GST"
+  },
+  {
+   "fieldname": "column_break_a8hho",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "apply_gst",
+   "fieldname": "taxes_and_charges",
+   "fieldtype": "Link",
+   "label": "Purchase Taxes and Charges Template",
+   "options": "Purchase Taxes and Charges Template"
+  },
+  {
+   "depends_on": "apply_gst",
+   "fieldname": "gst_account",
+   "fieldtype": "Link",
+   "label": "GST Account",
+   "options": "Account"
+  },
+  {
+   "depends_on": "apply_gst",
+   "fieldname": "gst_amount",
+   "fieldtype": "Currency",
+   "label": "GST Amount"
+  },
+  {
+   "fieldname": "section_break_apm7i",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-01 19:19:58.254339",
+ "modified": "2026-02-06 14:25:27.130424",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Employee Advance Settlement",

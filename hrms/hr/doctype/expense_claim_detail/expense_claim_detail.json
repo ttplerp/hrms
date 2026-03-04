@@ -20,6 +20,7 @@
   "default_account",
   "section_break_6",
   "amount",
+  "gst_amount",
   "column_break_8",
   "sanctioned_amount",
   "accounting_dimensions_section",
@@ -195,12 +196,18 @@
    "fieldname": "bill_date",
    "fieldtype": "Date",
    "label": "Bill Date"
+  },
+  {
+   "fieldname": "gst_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "GST Amount"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-08-10 13:47:02.488886",
+ "modified": "2026-02-16 15:16:30.906914",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Expense Claim Detail",
