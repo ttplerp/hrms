@@ -54,6 +54,9 @@ class ExpenseClaim(AccountsController):
 		action = frappe.request.form.get('action')
 		if action in ("Forward to Approver","Forward to Reviewer") and frappe.session.user == self.expense_approver:
 			frappe.throw(_("Not allowed to <b>Forward To</b> yourself. Change the <b>Expense Approver</b> Field value before forwarding."))
+		
+		if self.workflow_state in ("Approved") and frappe.session.user != self.expense_approver:
+			frappe.throw(_("Only the assigned approver <b>{}</b> can approve this claim.").format(self.expense_approver))
 
 	def send_notification(self):
 		action = frappe.request.form.get('action')  
