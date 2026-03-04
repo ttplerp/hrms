@@ -230,7 +230,8 @@ class EmployeeBenefits(Document):
 		je.naming_series = "Journal Voucher"
 		je.remark = str(self.purpose) + 'Benefit payments for ' + str(self.employee_name) + "("+str(self.employee)+")"
 
-		expense_bank_account = get_bank_account(self.branch)
+		# expense_bank_account = get_bank_account(self.branch)
+		expense_bank_account = frappe.db.get_value("Company", self.company, "expense_payable_account")
 		tax_account = frappe.db.get_value("Company", self.company, "salary_tax_account")
 		
 		total_amount = tax_amount = 0

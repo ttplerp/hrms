@@ -497,9 +497,10 @@ class TravelClaim(Document):
             cost_center = frappe.db.get_value("Employee", self.employee, "cost_center")
         if not cost_center:
             frappe.throw("Setup Cost Center for employee in Employee Information")
-        expense_bank_account = get_bank_account(self.branch)
+        # expense_bank_account = get_bank_account(self.branch)
+        expense_bank_account = frappe.db.get_value("Company", self.company, "expense_payable_account")
         if not expense_bank_account:
-            frappe.throw("Setup Default Expense Bank Account for your Branch")
+            frappe.throw("Setup Expense Payable Account in Company")
         
         gl_account = ""	
         if self.travel_type == "Travel":

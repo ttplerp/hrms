@@ -71,7 +71,8 @@ class SWSApplication(Document):
 		# je_ref = ""
 		# je.flags.ignore_permissions = 1 
 		cost_center = frappe.db.get_value("Branch",self.branch,"cost_center")
-		expense_bank_account = get_bank_account(self.branch)
+		# expense_bank_account = get_bank_account(self.branch)
+		expense_bank_account = frappe.db.get_value("Company", self.company, "expense_payable_account")
 		# je.update({
 		# 	"voucher_type": "Journal Entry",
 		# 	"company": self.company,

@@ -56,9 +56,10 @@ class LeaveEncashment(Document):
 			frappe.throw("Setup Leave Encashment Account in Company")
 
 		tax_account = frappe.db.get_value("Company", self.company, "salary_tax_account")
-		expense_bank_account = get_bank_account(self.branch)
+		# expense_bank_account = get_bank_account(self.branch)
+		expense_bank_account = frappe.db.get_value("Company", self.company, "expense_payable_account")
 		if not expense_bank_account:
-			frappe.throw("Setup Default Expense Bank Account for your Branch")
+			frappe.throw("Setup Expense Payable Account in Company")
 		if not tax_account:
 			frappe.throw("Setup Tax Account in Company")
 

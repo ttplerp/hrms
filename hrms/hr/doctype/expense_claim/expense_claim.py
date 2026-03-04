@@ -227,7 +227,7 @@ class ExpenseClaim(AccountsController):
 				frappe.throw("Setup Expense Bank Account in Branch or Default Expense Bank Account in Company Accounts Settings")
 
 		# expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
-		employee_payable_account = frappe.db.get_value("Company", self.company, "default_bank_account")
+		employee_payable_account = frappe.db.get_value("Company", self.company, "expense_payable_account")
 		
 		# if not expense_account:
 		# 	frappe.throw("Setup Leave Encashment Account in Company Settings")
