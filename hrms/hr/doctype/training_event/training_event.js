@@ -93,6 +93,11 @@ frappe.ui.form.on("Training Event Employee", {
 	employee: function(frm) {
 		frm.events.set_employee_query(frm);
 	},
+    course_fee: calculate_row_total,
+	air_fare: calculate_row_total,
+	travel_insurance: calculate_row_total,
+	dsa_incidental_and_mileage: calculate_row_total,
+	mileage: calculate_row_total,
 	// create_travel_request: function(frm, cdt, cdn){
 	// 	var item = locals[cdt][cdn];
 	// 	// Follwoing line temporarily replaced by SHIV on 2020/09/17, need to restore back
@@ -111,7 +116,8 @@ frappe.ui.form.on("Training Event Employee", {
 
     employees_remove: function (frm) {
         calculate_employee_totals(frm);
-    }
+    },
+    
 });
 
 function calculate_employee_totals(frm) {
@@ -160,4 +166,20 @@ function toggle_employee_cost_fields(frm) {
     });
 
     frm.refresh_field("employees");
+}
+
+function calculate_row_total(frm, cdt, cdn) {
+	let row = locals[cdt][cdn];
+
+	let total =
+		flt(row.course_fee) +
+		flt(row.air_fare) +
+		flt(row.travel_insurance) +
+		flt(row.dsa_incidental_and_mileage) +
+		flt(row.mileage);
+
+	frappe.model.set_value(cdt, cdn, "total", total);
+
+	// update parent total
+	calculate_employee_totals(frm);
 }
