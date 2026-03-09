@@ -68,6 +68,7 @@
   "ict",
   "sws",
   "acc",
+  "ada_approver",
   "column_break_60",
   "approver_name_afd",
   "approver_name_spd",
@@ -77,6 +78,7 @@
   "approver_name_ict",
   "approver_name_sws",
   "approver_nameacc",
+  "ada_name",
   "tb_notifications",
   "sb_encashment_settings",
   "encashment_approval_notification_template",
@@ -1038,7 +1040,20 @@
    "fieldname": "approver_nameacc",
    "fieldtype": "Data",
    "label": "Approver Name(ACC)"
-  }
+  },
+  {
+    "fieldname": "ada_approver",
+    "fieldtype": "Link",
+    "label": "Asset Declaration Administrator Approver",
+    "options": "Employee"
+   },
+   {
+    "fetch_from": "ada_approver.employee_name",
+    "fieldname": "ada_name",
+    "fieldtype": "Data",
+    "label": "Asset Declaration Administrator Name",
+    "read_only": 1
+   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,

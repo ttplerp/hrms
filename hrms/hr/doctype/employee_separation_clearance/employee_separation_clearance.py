@@ -74,6 +74,8 @@ class EmployeeSeparationClearance(Document):
 		receipients = []
 		if self.supervisor:
 			receipients.append(self.supervisor)
+		if self.asset_declaration_administrator:
+			receipients.append(self.asset_declaration_administrator)
 		if self.afd:
 			receipients.append(self.afd)
 		if self.spd:
@@ -172,6 +174,12 @@ class EmployeeSeparationClearance(Document):
 			self.supervisor = frappe.db.get_value("Employee",supervisor_officiate[0].officiate,"user_id")
 		else:
 			self.supervisor = frappe.db.get_value("Employee",frappe.db.get_value("Employee",self.employee, "reports_to"),"user_id")
+		#----------------------------Asset Declaration Administrator---------------------------------------------------------------------------------------------------------------------------------------|
+		ada_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "ada_approver"))
+		if ada_officiate:
+			self.asset_declaration_administrator = frappe.db.get_value("Employee",ada_officiate[0].officiate,"user_id")
+		else:
+			self.asset_declaration_administrator = frappe.db.get_value("Employee",frappe.db.get_single_value("HR Settings", "ada_approver"),"user_id")
 		#--------------------------- Accounts & Finance Division-----------------------------------------------------------------------------------------------------------------------------------------------------|
 		afd_officiate = get_officiating_employee(frappe.db.get_single_value("HR Settings", "afd"))
 		if afd_officiate:
@@ -239,6 +247,8 @@ def get_permission_query_conditions(user):
 				and `tabEmployee`.user_id = '{user}')
 		or
 		(`tabEmployee Separation Clearance`.supervisor = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
+		or
+		(`tabEmployee Separation Clearance`.asset_declaration_administrator = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or
 		(`tabEmployee Separation Clearance`.afd = '{user}' and `tabEmployee Separation Clearance`.docstatus = 0)
 		or

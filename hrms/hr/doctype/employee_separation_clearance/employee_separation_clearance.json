@@ -26,6 +26,9 @@
   "supervisor",
   "supervisor_clearance",
   "supervisor_remarks",
+  "asset_declaration_administrator",
+  "ada_clearance",
+  "ada_remarks",
   "afd",
   "afd_clearance",
   "afd_remarks",
@@ -380,7 +383,30 @@
    "label": "Clearance Acc",
    "mandatory_depends_on": "eval:frappe.session.user == doc.acc",
    "read_only_depends_on": "eval:frappe.session.user != doc.acc"
-  }
+  },
+  
+  {
+    "fieldname": "asset_declaration_administrator",
+    "fieldtype": "Link",
+    "label": "Asset Declaration Administrator",
+    "options": "User",
+    "read_only": 1
+   },
+   {
+    "default": "0",
+    "fieldname": "ada_clearance",
+    "fieldtype": "Check",
+    "label": "Clearance Acquired(Asset Declaration Administrator)",    
+    "mandatory_depends_on": "eval:frappe.session.user == doc.asset_declaration_administrator",
+    "read_only_depends_on": "eval:frappe.session.user != doc.asset_declaration_administrator"
+   },
+   {
+    "fieldname": "ada_remarks",
+    "fieldtype": "Small Text",
+    "label": "Asset Declaration Administrator's Clearance",
+    "mandatory_depends_on": "eval:frappe.session.user == doc.asset_declaration_administrator",
+    "read_only_depends_on": "eval:frappe.session.user != doc.asset_declaration_administrator"
+   }
  ],
  "is_submittable": 1,
  "links": [],
