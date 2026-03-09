@@ -1051,7 +1051,7 @@
    "fetch_from": "ada_approver.employee_name",
    "fieldname": "ada_name",
    "fieldtype": "Data",
-   "label": "Asset Declaration Administrator Name",
+   "label": "Asset Approver Name",
    "read_only": 1
   }
  ],
@@ -1059,7 +1059,7 @@
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-03-09 15:16:22.090037",
+ "modified": "2026-03-09 15:36:11.092044",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
