@@ -1042,24 +1042,24 @@
    "label": "Approver Name(ACC)"
   },
   {
-    "fieldname": "ada_approver",
-    "fieldtype": "Link",
-    "label": "Asset Declaration Administrator Approver",
-    "options": "Employee"
-   },
-   {
-    "fetch_from": "ada_approver.employee_name",
-    "fieldname": "ada_name",
-    "fieldtype": "Data",
-    "label": "Asset Declaration Administrator Name",
-    "read_only": 1
-   }
+   "fieldname": "ada_approver",
+   "fieldtype": "Link",
+   "label": "Asset Approver",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "ada_approver.employee_name",
+   "fieldname": "ada_name",
+   "fieldtype": "Data",
+   "label": "Asset Declaration Administrator Name",
+   "read_only": 1
+  }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-02-14 20:01:28.339993",
+ "modified": "2026-03-09 15:16:22.090037",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",
