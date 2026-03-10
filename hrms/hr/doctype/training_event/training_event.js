@@ -49,6 +49,11 @@ frappe.ui.form.on('Training Event', {
 				frappe.set_route("List", "Training Feedback");
 			});
 		}
+        if (frm.doc.employees) {
+            frm.doc.employees.forEach(function(row) {
+                calculate_row_total(frm, row.doctype, row.name);
+            });
+        }
 		frm.events.set_employee_query(frm);
 		toggle_employee_cost_fields(frm);
         
