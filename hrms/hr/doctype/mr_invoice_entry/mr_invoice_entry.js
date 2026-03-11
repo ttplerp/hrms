@@ -123,30 +123,29 @@ frappe.ui.form.on('MR Invoice Entry', {
     },
     
     calculate_totals: function(frm) {
-        let total_grand_total = 0;
-        let total_salary_tax = 0;
-        let total_net_payable = 0;
+        let grand_total = 0;
+        let salary_tax = 0;
+        let net_payable_amount = 0;
         
         $.each(frm.doc.items || [], function(i, item) {
-            let grand_total = flt(item.grand_total) || 0;
-            let salary_tax = flt(grand_total * 0.15);
-            let net_payable = flt(grand_total - salary_tax);
+            let item_grand_total = flt(item.grand_total) || 0;
+            let item_salary_tax = flt(item.salary_tax) || 0;
+            let item_net_payable = flt(item.net_payable_amount) || 0;
             
-            // Update the row
-            frappe.model.set_value(item.doctype, item.name, 'salary_tax', salary_tax);
-            frappe.model.set_value(item.doctype, item.name, 'net_payable_amount', net_payable);
-            
-            total_grand_total += grand_total;
-            total_salary_tax += salary_tax;
-            total_net_payable += net_payable;
+            grand_total += item_grand_total;
+            salary_tax += item_salary_tax;
+            net_payable_amount += item_net_payable;
         });
         
-        // Update main totals
-        frm.set_value('total_grand_total', flt(total_grand_total));
-        frm.set_value('total_salary_tax', flt(total_salary_tax));
-        frm.set_value('total_net_payable_amount', flt(total_net_payable));
+        // Update main totals with corrected field names
+        frm.set_value('grand_total', flt(grand_total, 2));
+        frm.set_value('salary_tax', flt(salary_tax, 2));
+        frm.set_value('net_payable_amount', flt(net_payable_amount, 2));
         
         frm.refresh_field('items');
+        frm.refresh_field('grand_total');
+        frm.refresh_field('salary_tax');
+        frm.refresh_field('net_payable_amount');
     }
 });
 
@@ -154,8 +153,9 @@ frappe.ui.form.on('MR Invoice Entry', {
 frappe.ui.form.on('MR Invoice Entry Item', {
     grand_total: function(frm, cdt, cdn) {
         var item = locals[cdt][cdn];
-        let salary_tax = flt(flt(item.grand_total) * 0.15);
-        let net_payable = flt(flt(item.grand_total) - salary_tax);
+        // Calculate salary tax (15% of grand_total)
+        let salary_tax = round(flt(item.grand_total) * 0.15, 2);
+        let net_payable = flt(flt(item.grand_total) - salary_tax, 2);
         
         frappe.model.set_value(cdt, cdn, 'salary_tax', salary_tax);
         frappe.model.set_value(cdt, cdn, 'net_payable_amount', net_payable);
@@ -166,7 +166,7 @@ frappe.ui.form.on('MR Invoice Entry Item', {
     salary_tax: function(frm, cdt, cdn) {
         // Recalculate net payable if salary tax is manually changed
         var item = locals[cdt][cdn];
-        let net_payable = flt(flt(item.grand_total) - flt(item.salary_tax));
+        let net_payable = flt(flt(item.grand_total) - flt(item.salary_tax), 2);
         frappe.model.set_value(cdt, cdn, 'net_payable_amount', net_payable);
         frm.events.calculate_totals(frm);
     }
