@@ -24,7 +24,7 @@ class TrainingEvent(Document):
 		if self.employees:
 			to_remove = []
 			for d in self.employees:
-				if frappe.db.get_value("Employee", d.employee, "status") == 'Left' or not frappe.db.exists("Employee", d.employee):
+				if not frappe.db.exists("Employee", d.employee):
 					to_remove.append(d)
 			[self.remove(d) for d in to_remove]
 
