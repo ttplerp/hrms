@@ -87,7 +87,7 @@ frappe.ui.form.on('Training Event', {
 			return {
 				filters: {
 					name: ["NOT IN", emp],
-					status: "Active"
+					status: ["in", ["Active", "Left"]]
 				}
 			};
 		});
