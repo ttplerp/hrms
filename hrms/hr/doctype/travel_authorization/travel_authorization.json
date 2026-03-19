@@ -55,6 +55,7 @@
   "advance_amount_nu",
   "travel_authorization_details",
   "supervisor",
+  "set_approver_manually",
   "supervisor_designation",
   "supervisor_manager",
   "posting_date",
@@ -253,9 +254,11 @@
   {
    "fieldname": "supervisor",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Approver Email ID",
    "options": "User",
-   "read_only": 1
+   "read_only": 1,
+   "read_only_depends_on": "eval:doc.set_approver_manually == 0;"
   },
   {
    "fieldname": "column_break_12",
@@ -387,6 +390,7 @@
    "reqd": 1
   },
   {
+   "fetch_from": "supervisor.full_name",
    "fieldname": "supervisor_name",
    "fieldtype": "Data",
    "label": "Approver Name",
@@ -512,11 +516,17 @@
    "fieldtype": "Check",
    "label": "Within Same Locality",
    "no_copy": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "set_approver_manually",
+   "fieldtype": "Check",
+   "label": "Set Approver Manually"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-01 12:42:32.204371",
+ "modified": "2026-03-19 10:08:33.857143",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Authorization",

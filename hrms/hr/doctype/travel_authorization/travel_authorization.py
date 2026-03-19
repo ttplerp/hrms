@@ -19,7 +19,8 @@ class TravelAuthorization(Document):
         self.branch = frappe.db.get_value("Employee", self.employee, "branch")
         self.cost_center = frappe.db.get_value("Employee", self.employee, "cost_center")
         
-        validate_workflow_states(self)
+        if self.set_approver_manually !=1:
+            validate_workflow_states(self)
         #self.validate_project()
         self.assign_end_date()
         self.validate_advance()
@@ -658,8 +659,12 @@ def get_exchange_rate(from_currency, to_currency, date=None):
     
     ex_rate = frappe.db.sql("""select exchange_rate 
                     from `tabCurrency Exchange`
-                    where from_currency = '{from_currency}'
-                    and to_currency = '{to_currency}'
+                    where 
+                    (
+                    (from_currency = '{from_currency}' and to_currency = '{to_currency}')
+                        or 
+                    (from_currency = '{to_currency}' and to_currency = '{from_currency}')
+                    )
                     and `date` = '{data}'
                     order by `date` desc
                     limit 1

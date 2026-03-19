@@ -30,6 +30,12 @@ frappe.ui.form.on('Travel Authorization', {
 	},
 
 	refresh: function (frm) {
+		if (frappe.user.has_role(['HR Manager'])){
+			frm.set_df_property('set_approver_manually', 'read_only', 0);
+		}else{
+			frm.set_df_property('set_approver_manually', 'read_only', 1);
+		}
+
 		frm.set_query('reference_type', () => {
 			return {
 				filters: {

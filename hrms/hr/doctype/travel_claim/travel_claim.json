@@ -66,6 +66,7 @@
   "travel_authorization_details",
   "supervisor_name",
   "supervisor",
+  "set_approver_manually",
   "supervisor_manager_name",
   "supervisor_manager",
   "column_break_12",
@@ -310,9 +311,11 @@
   {
    "fieldname": "supervisor",
    "fieldtype": "Link",
+   "ignore_user_permissions": 1,
    "label": "Supervisor Email ID",
    "options": "User",
-   "read_only": 1
+   "read_only": 1,
+   "read_only_depends_on": "eval:doc.set_approver_manually == 0;"
   },
   {
    "fieldname": "column_break_12",
@@ -428,6 +431,7 @@
    "reqd": 1
   },
   {
+   "fetch_from": "supervisor.full_name",
    "fieldname": "supervisor_name",
    "fieldtype": "Data",
    "label": "Supervisor",
@@ -606,11 +610,17 @@
    "fieldtype": "Data",
    "label": "Place",
    "options": "In-Country\nOut-Country"
+  },
+  {
+   "default": "0",
+   "fieldname": "set_approver_manually",
+   "fieldtype": "Check",
+   "label": "Set Approver Manually"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-01 17:38:25.564638",
+ "modified": "2026-03-19 10:12:49.347656",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim",

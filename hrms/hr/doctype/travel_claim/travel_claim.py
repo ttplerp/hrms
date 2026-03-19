@@ -16,7 +16,10 @@ from erpnext.accounts.doctype.accounts_settings.accounts_settings import get_ban
 class TravelClaim(Document):
     def validate(self):
         # self.workflow_action()
-        validate_workflow_states(self)
+        if self.set_approver_manually !=1:
+            validate_workflow_states(self)
+        else:
+            self.supervisor_designation = frappe.get_value('Employee', {'user_id': self.supervisor}, 'designation')
         self.validate_dates()
         self.validate_duplicate()
         self.validate_cost_center()
@@ -458,9 +461,9 @@ class TravelClaim(Document):
         """
     def check_double_date_inside(self):
         for i in self.get('items'):
-        	for j in self.get('items'):
-        		if i.name != j.name and str(i.date) <= str(j.till_date) and str(i.till_date) >= str(j.date):
-        			frappe.throw(_("Row#{}: Dates are overlapping with Row#{}").format(i.idx, j.idx))
+            for j in self.get('items'):
+                if i.name != j.name and str(i.date) <= str(j.till_date) and str(i.till_date) >= str(j.date):
+                    frappe.throw(_("Row#{}: Dates are overlapping with Row#{}").format(i.idx, j.idx))
     
     def check_double_dates(self):
         if self.items:
