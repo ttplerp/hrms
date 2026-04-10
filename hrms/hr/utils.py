@@ -409,7 +409,7 @@ def get_leave_allocations(date, leave_type):
 		from `tabLeave Allocation` la, `tabEmployee` e
 		where
 			la.employee = e.name
-			and e.status = 'Active' and e.employment_status != 'Study Leave' and
+			and e.status = 'Active' and e.employment_status not in ('Study Leave', 'EOL') and
 			%s between la.from_date and la.to_date and la.docstatus=1
 			and leave_type=%s""",
 		(date, leave_type),
