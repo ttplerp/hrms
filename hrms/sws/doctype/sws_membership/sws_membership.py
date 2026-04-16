@@ -86,11 +86,11 @@ class SWSMembership(Document):
 				select smi.name from `tabSWS Membership Item` smi, `tabSWS Membership` sm 
 				where smi.parent = sm.name
 				and smi.cid_no ='{0}'
-				and smi.employee !='{1}'
+				and smi.employee ='{1}'
 				and smi.relationship = '{2}'
 				""".format(a.cid_no,self.employee,a.relationship))
 			if exists:
-				frappe.throw("CID ({}) is already registered by other employee".format(a.cid_no))
+				frappe.throw("This CID ({}) is already registered here".format(a.cid_no))
 
 			# family_details = frappe.db.sql("""
 			# 	select efd.relationship from `tabEmployee Family Details` efd, `tabEmployee` emp 
