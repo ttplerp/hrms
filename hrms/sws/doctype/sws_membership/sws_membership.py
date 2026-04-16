@@ -88,7 +88,8 @@ class SWSMembership(Document):
 				and smi.cid_no ='{0}'
 				and smi.employee ='{1}'
 				and smi.relationship = '{2}'
-				""".format(a.cid_no,self.employee,a.relationship))
+				and sm.name != '{3}'
+				""".format(a.cid_no,self.employee,a.relationship,self.name), as_dict=True)
 			if exists:
 				frappe.throw("This CID ({}) is already registered here".format(a.cid_no))
 
