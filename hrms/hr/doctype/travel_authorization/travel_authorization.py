@@ -725,7 +725,7 @@ def get_permission_query_conditions(user):
                 and (select region from `tabEmployee` where `tabEmployee`.name = `tabTravel Authorization`.employee limit 1) = (select region from `tabEmployee` where `tabEmployee`.user_id = '{user}' limit 1)
                 and `tabEmployee`.user_id = '{user}')
         or
-        (`tabTravel Authorization`.supervisor = '{user}' and `tabTravel Authorization`.workflow_state not in ('Draft','Approved','Rejected','Rejected By Supervisor','Cancelled'))
+        (`tabTravel Authorization`.supervisor = '{user}' and `tabTravel Authorization`.workflow_state not in ('Draft','Rejected By Supervisor','Cancelled'))
         or 
         (`tabTravel Authorization`.supervisor_manager = '{user}' and `tabTravel Authorization`.workflow_state not in ('Draft', 'Rejected', 'Cancelled','Approved','Rejected By Supervisor'))
     )""".format(user=user)
