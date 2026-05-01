@@ -83,8 +83,8 @@
   "apply_at_bdb",
   "difficulty_in_applying",
   "might_have_effective",
-  "date_of_feedback",
-  "feedback"
+  "feedback",
+  "date_of_feedback"
  ],
  "fields": [
   {
@@ -540,7 +540,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-05-01 11:50:29.025781",
+ "modified": "2026-05-01 13:59:03.396198",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Feedback",
