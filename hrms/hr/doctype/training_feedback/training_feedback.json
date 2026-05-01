@@ -15,7 +15,6 @@
   "event_name",
   "trainer_name",
   "section_break_6",
-  "feedback",
   "amended_from",
   "tab_one",
   "sb_course",
@@ -27,8 +26,6 @@
   "materials_rating_ui",
   "ability_to_hold_interest_rating",
   "ability_to_hold_interest_ui",
-  "use_of_relevant_examples",
-  "use_of_relevant_ui",
   "audio_visual",
   "audio_visual_ui",
   "pace_of_course_was_comfortable",
@@ -86,7 +83,8 @@
   "apply_at_bdb",
   "difficulty_in_applying",
   "might_have_effective",
-  "date_of_feedback"
+  "date_of_feedback",
+  "feedback"
  ],
  "fields": [
   {
@@ -220,18 +218,6 @@
   },
   {
    "description": "*Rating from Poor to Excellent",
-   "fieldname": "use_of_relevant_examples",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Use of relevant examples"
-  },
-  {
-   "fieldname": "use_of_relevant_ui",
-   "fieldtype": "HTML",
-   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">Use of relevant examples</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"use_of_relevant_examples\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
-  },
-  {
-   "description": "*Rating from Poor to Excellent",
    "fieldname": "audio_visual",
    "fieldtype": "Data",
    "hidden": 1,
@@ -274,7 +260,7 @@
   {
    "fieldname": "i_would_recommend_ui",
    "fieldtype": "HTML",
-   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">I would recommend this training to a co-worker</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Poor\">\n      <span class=\"radio-label\">Poor</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Fair\">\n      <span class=\"radio-label\">Fair</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Average\">\n      <span class=\"radio-label\">Average</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Good\">\n      <span class=\"radio-label\">Good</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Excellent\">\n      <span class=\"radio-label\">Excellent</span>\n    </label>\n  </div>\n</div>"
+   "options": "<div class=\"radio-rating-scale\">\n  <div class=\"rating-question\">I would recommend this training to a co-worker</div>\n  <div class=\"radio-options\">\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"Yes\">\n      <span class=\"radio-label\">Yes</span>\n    </label>\n    <label class=\"radio-option\">\n      <input class=\"rating-radio\" name=\"i_would_recommend_this_training\" type=\"radio\" value=\"No\">\n      <span class=\"radio-label\">No</span>\n    </label>\n  </div>\n</div>"
   },
   {
    "fieldname": "overall_course_rating",
@@ -554,7 +540,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-09 15:17:10.366160",
+ "modified": "2026-05-01 11:50:29.025781",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Training Feedback",
