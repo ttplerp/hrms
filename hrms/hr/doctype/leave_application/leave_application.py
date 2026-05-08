@@ -103,7 +103,7 @@ class LeaveApplication(Document):
                 self.leave_approver_name = officiating[1]
                 self.leave_approver_designation = officiating[2]
         if self.workflow_state == "Waiting Supervisor Approval" and self.docstatus == 0:
-            supervisor = frappe.db.get_value("Employee", frappe.db.get_value("Employee", self.employee, "reports_to"), ["user_id", "employee_name", "designation"])
+            supervisor = frappe.db.get_value("Employee", frappe.db.get_value("Employee", self.employee, "leave_approver"), ["user_id", "employee_name", "designation"])
             officiating = get_officiating_employee(frappe.db.get_value("Employee", {"user_id":supervisor[0]}))
             if not officiating:
                 self.leave_approver = supervisor[0]
