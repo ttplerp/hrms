@@ -1,8 +1,7 @@
 import frappe
 from frappe import _
 from datetime import datetime, timedelta
-from frappe.utils import nowdate, get_first_day, get_last_day, add_months
-from frappe.utils import getdate
+from frappe.utils import nowdate, get_first_day, get_last_day
 
 SHIFT_START = "09:00:00"
 SHIFT_END = "17:00:00"
@@ -11,34 +10,19 @@ def execute(filters=None):
     if not filters:
         filters = {}
         
-    fiscal_year = filters.get("fiscal_year")
-    month_name = filters.get("month")
+    from_date = filters.get("from_date")
+    to_date = filters.get("to_date")
 
-    # Default fiscal year = current active
-    if not fiscal_year:
-        fiscal_year = frappe.db.get_value("Fiscal Year", {"closed": 0}, "name") \
-            or frappe.db.get_value("Fiscal Year", {}, "name")
+    # Default current month if empty
+    if not from_date:
+        from_date = get_first_day(nowdate())
 
-    # Default month = current
-    if not month_name:
-        month_name = datetime.now().strftime("%B")
-
-    # Get month number
-    month_number = datetime.strptime(month_name, "%B").month
-
-    # Get fiscal year start & end
-    fiscal_year_doc = frappe.get_doc("Fiscal Year", fiscal_year)
-    fiscal_start = getdate(fiscal_year_doc.year_start_date)
-    fiscal_end = getdate(fiscal_year_doc.year_end_date)
-
-    # Compute from_date & to_date
-    from_date = datetime(fiscal_start.year, month_number, 1)
-    if fiscal_start.month > month_number:
-        from_date = datetime(fiscal_start.year + 1, month_number, 1)
-    to_date = get_last_day(from_date)
+    if not to_date:
+        to_date = get_last_day(nowdate())
 
     columns = get_columns()
     data = get_grouped_attendance(from_date, to_date)
+
     return columns, data
 
 def get_columns():
