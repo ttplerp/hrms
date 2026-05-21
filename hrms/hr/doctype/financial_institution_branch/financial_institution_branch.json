@@ -38,12 +38,13 @@
    "fieldname": "financial_system_code",
    "fieldtype": "Data",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Financial System Code"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-05-07 11:55:38.949913",
+ "modified": "2026-04-06 16:11:34.668237",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Financial Institution Branch",

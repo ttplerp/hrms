@@ -12,6 +12,7 @@ from frappe import _
 from frappe.model.mapper import get_mapped_doc
 from frappe.model.document import Document
 from hrms.hr.utils import set_employee_name
+from erpnext.custom_patch import bulk_save_salary_structure
 from hrms.hr.hr_custom_functions import get_month_details, get_payroll_settings, get_salary_tax
 # from hrms.hr.doctype.sws_membership.sws_membership import get_sws_contribution
 from erpnext.accounts.accounts_custom_functions import get_number_of_days
@@ -531,7 +532,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 				if d['salary_component'] == 'Salary Tax':
 					if not tax_included:
 						# tax_amt = get_salary_tax(math.floor(flt(gross_amt) - flt(gis_amt) - flt(pf_amt) - (flt(comm_amt) * 0.5)))
-						# 15% of gross amount (New changes Sanga)
+						# 15% of gross amount (new changes sanga)
 						tax_amt = get_salary_tax(math.floor(flt(gross_amt) - (flt(gross_amt) * 0.15)))
 						tax_amt = roundoff(tax_amt)
 						d['amount'] = flt(tax_amt)

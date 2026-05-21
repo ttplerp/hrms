@@ -340,7 +340,7 @@
    "label": "Bank Name",
    "oldfieldname": "bank_name",
    "oldfieldtype": "Data",
-   "options": "Bank",
+   "options": "Financial Institution",
    "read_only": 1
   },
   {
@@ -553,7 +553,7 @@
  "idx": 9,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-25 11:40:28.657885",
+ "modified": "2024-09-24 10:06:16.594086",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Slip",

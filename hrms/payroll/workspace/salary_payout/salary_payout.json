@@ -61,24 +61,6 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Assignment",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Salary Structure Assignment",
-   "link_count": 0,
-   "link_to": "Salary Structure Assignment",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Payroll",
    "link_count": 2,
    "onboard": 0,
@@ -335,9 +317,37 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Assignment",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Structure Assignment",
+   "link_count": 0,
+   "link_to": "Salary Structure Assignment",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Salary Structure",
+   "link_count": 0,
+   "link_to": "Salary Structure",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2024-05-01 14:28:44.161735",
+ "modified": "2025-01-22 12:23:43.024204",
  "modified_by": "Administrator",
  "module": "Payroll",
  "name": "Salary Payout",
@@ -354,7 +364,14 @@
    "format": "{} Draft",
    "label": "Salary Slip",
    "link_to": "Salary Slip",
-   "stats_filter": "{\"status\":[\"=\",\"Draft\"]}",
+   "type": "DocType"
+  },
+  {
+   "color": "Red",
+   "doc_view": "List",
+   "format": "{} Draft",
+   "label": "Payroll Entry",
+   "link_to": "Payroll Entry",
    "type": "DocType"
   },
   {
@@ -363,15 +380,6 @@
    "label": "Salary Register",
    "link_to": "Salary Register",
    "type": "Report"
-  },
-  {
-   "color": "Red",
-   "doc_view": "List",
-   "format": "{} Draft",
-   "label": "Payroll Entry",
-   "link_to": "Payroll Entry",
-   "stats_filter": "{\"status\":[\"=\",\"Draft\"]}",
-   "type": "DocType"
   }
  ],
  "title": "Salary Payout"

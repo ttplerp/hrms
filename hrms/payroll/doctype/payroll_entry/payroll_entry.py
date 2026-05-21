@@ -86,7 +86,7 @@ class PayrollEntry(Document):
 			{}
 			order by t1.branch, t1.name
 		""".format(self.fiscal_year, self.month, cond), as_dict=True)
-
+		# frappe.throw(str(emp_list))
 		if not emp_list:
 			frappe.msgprint(_("No employees found for processing or Salary Slips already created"))
 		return emp_list
@@ -496,7 +496,7 @@ class PayrollEntry(Document):
 					else ifnull(sc.is_remittable,0)
 				end)                       as is_remittable,
 				sca.account                 as gl_head,
-				sum(ifnull(t1.employer_pf,0))   as amount,
+				sum(ifnull(t1.employer_pf, 0))   as amount,
 				(case
 					when ifnull(sc.make_party_entry,0) = 1 then 'Payable'
 					else 'Other'
@@ -659,7 +659,6 @@ class PayrollEntry(Document):
 		posting        = frappe._dict()
 		cc_wise_totals = frappe._dict()
 		tot_payable_amt= 0
-		# frappe.throw(str(cc))
 		for rec in cc:
 			# To Payables
 			tot_payable_amt += (-1*flt(rec.amount) if rec.component_type == 'Deduction' else flt(rec.amount))
@@ -687,20 +686,21 @@ class PayrollEntry(Document):
 					# remit_amount += flt(rec.amount)
 					if r == default_gpf_account:
 						for i in self.get_cc_wise_entries(salary_component_pf):
-							remit_amount += flt(i.amount)
-							posting.setdefault(rec.salary_component,[]).append({
-								"account"       : r,
-								"debit_in_account_currency" : flt(i.amount),
-								"cost_center"   : i.cost_center,
-								"business_activity" : i.business_activity,
-								"party_check"   : 0,
-								"account_type"   : i.account_type if i.party_type == "Employee" else "",
-								"party_type"     : i.party_type if i.party_type == "Employee" else "",
-								"party"          : i.party if i.party_type == "Employee" else "",
-								"reference_type": self.doctype,
-								"reference_name": self.name,
-								"salary_component": rec.salary_component
-							})
+							if flt(i.amount) > 0:
+								remit_amount += flt(i.amount)
+								posting.setdefault(rec.salary_component,[]).append({
+									"account"       : r,
+									"debit_in_account_currency" : flt(i.amount),
+									"cost_center"   : i.cost_center,
+									"business_activity" : i.business_activity,
+									"party_check"   : 0,
+									"account_type"   : i.account_type if i.party_type == "Employee" else "",
+									"party_type"     : i.party_type if i.party_type == "Employee" else "",
+									"party"          : i.party if i.party_type == "Employee" else "",
+									"reference_type": self.doctype,
+									"reference_name": self.name,
+									"salary_component": rec.salary_component
+								})
 					else:
 						remit_amount += flt(rec.amount)
 						posting.setdefault(rec.salary_component,[]).append({
@@ -761,7 +761,7 @@ class PayrollEntry(Document):
 				"salary_component": "Net Pay"
 			})
 		# if frappe.session.user == "Administrator":
-		# 	frappe.throw(str(posting))
+			# frappe.throw(str(posting))
 		# Final Posting to accounts
 		if posting:
 			jv_name, v_title = None, ""
@@ -797,6 +797,7 @@ class PayrollEntry(Document):
 					})
 				doc.flags.ignore_permissions = 1 
 				doc.insert()
+				# frappe.throw(str(i))
 
 				if i == "to_payables":
 					doc.submit() #Added by Thukten to submit Payable from HR
