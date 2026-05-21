@@ -10,6 +10,9 @@ frappe.ready(function() {
 			});
 		}
 	});
+	// frappe.web_form.on('bank_name', (field, value) => {
+	// 	frappe.web_form.fields_dict.bank_branch.set_data(["Option1","Option2"])
+	// });
 });
 
 function populate_detail(did, cid, dob){

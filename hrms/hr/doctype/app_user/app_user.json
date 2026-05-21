@@ -1,0 +1,76 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-29 12:26:44.157767",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "desuup_id",
+  "desuup_name",
+  "mobile_no",
+  "column_break_4",
+  "cid",
+  "email"
+ ],
+ "fields": [
+  {
+   "fieldname": "desuup_id",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Desuup Id"
+  },
+  {
+   "fieldname": "desuup_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Desuup Name"
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Mobile No"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cid",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "CID"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Email"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-10-29 12:26:44.157767",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "App User",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

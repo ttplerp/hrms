@@ -27,7 +27,9 @@
   "column_break_18",
   "late_entry",
   "early_exit",
-  "amended_from"
+  "amended_from",
+  "cid",
+  "gender"
  ],
  "fields": [
   {
@@ -199,16 +201,29 @@
   {
    "fieldname": "column_break_18",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "employee.cid",
+   "fieldname": "cid",
+   "fieldtype": "Int",
+   "label": "CID"
+  },
+  {
+   "fetch_from": "employee.gender",
+   "fieldname": "gender",
+   "fieldtype": "Data",
+   "label": "Gender"
   }
  ],
  "icon": "fa fa-ok",
  "idx": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-18 17:26:09.703215",
+ "modified": "2025-12-01 13:02:56.226121",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Attendance",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -256,5 +271,6 @@
  "search_fields": "employee,employee_name,attendance_date,status",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "employee_name"
 }

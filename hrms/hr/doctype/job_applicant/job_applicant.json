@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "HR-APP-.YYYY.-.#####",
+ "autoname": "JAPP.YY.MM.#####",
  "creation": "2013-01-29 19:25:37",
  "description": "Applicant for a Job",
  "doctype": "DocType",
@@ -10,14 +10,16 @@
  "engine": "InnoDB",
  "field_order": [
   "details_section",
+  "desuup",
   "applicant_name",
   "email_id",
   "phone_number",
-  "country",
-  "column_break_3",
+  "vacancy",
   "job_title",
-  "designation",
   "status",
+  "column_break_3",
+  "reason",
+  "resume_attachment",
   "source_and_rating_section",
   "source",
   "source_name",
@@ -27,34 +29,39 @@
   "section_break_6",
   "notes",
   "cover_letter",
-  "resume_attachment",
   "resume_link",
   "section_break_16",
   "currency",
   "column_break_18",
   "lower_range",
-  "upper_range"
+  "upper_range",
+  "amended_from"
  ],
  "fields": [
   {
    "bold": 1,
+   "fetch_from": "desuup.desuup_name",
    "fieldname": "applicant_name",
    "fieldtype": "Data",
    "in_global_search": 1,
    "label": "Applicant Name",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "bold": 1,
+   "fetch_from": "desuup.email_id",
    "fieldname": "email_id",
    "fieldtype": "Data",
    "label": "Email Address",
    "options": "Email",
-   "reqd": 1
+   "read_only": 1
   },
   {
+   "allow_on_submit": 1,
+   "default": "Open",
    "fieldname": "status",
    "fieldtype": "Select",
+   "ignore_user_permissions": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Status",
@@ -65,13 +72,6 @@
    "fieldname": "column_break_3",
    "fieldtype": "Column Break",
    "width": "50%"
-  },
-  {
-   "fieldname": "job_title",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Job Opening",
-   "options": "Job Opening"
   },
   {
    "fieldname": "source",
@@ -89,6 +89,7 @@
   {
    "fieldname": "section_break_6",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Resume"
   },
   {
@@ -108,16 +109,12 @@
    "read_only": 1
   },
   {
+   "fetch_from": "desuup.mobile_number",
    "fieldname": "phone_number",
    "fieldtype": "Data",
    "label": "Phone Number",
-   "options": "Phone"
-  },
-  {
-   "fieldname": "country",
-   "fieldtype": "Link",
-   "label": "Country",
-   "options": "Country"
+   "options": "Phone",
+   "read_only": 1
   },
   {
    "fieldname": "resume_link",
@@ -127,12 +124,12 @@
   {
    "fieldname": "applicant_rating",
    "fieldtype": "Rating",
-   "in_list_view": 1,
    "label": "Applicant Rating"
   },
   {
    "fieldname": "section_break_16",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Salary Expectation"
   },
   {
@@ -174,6 +171,7 @@
   {
    "fieldname": "source_and_rating_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Source and Rating"
   },
   {
@@ -181,18 +179,48 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "job_opening.designation",
-   "fieldname": "designation",
+   "fieldname": "desuup",
    "fieldtype": "Link",
-   "label": "Designation",
-   "options": "Designation"
+   "label": "Desuup",
+   "options": "Desuup",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vacancy",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Job Vacancy",
+   "options": "Vacancy"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Job Applicant",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fetch_from": "vacancy.title",
+   "fieldname": "job_title",
+   "fieldtype": "Data",
+   "label": "Job Title",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "reason",
+   "fieldtype": "Text",
+   "label": "Reason"
   }
  ],
  "icon": "fa fa-user",
  "idx": 1,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2022-01-12 16:28:53.196881",
+ "modified": "2026-05-04 15:12:08.921445",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Job Applicant",
@@ -211,7 +239,7 @@
    "write": 1
   }
  ],
- "search_fields": "applicant_name, email_id, job_title, phone_number",
+ "search_fields": "applicant_name, email_id, phone_number,vacancy",
  "sender_field": "email_id",
  "sort_field": "modified",
  "sort_order": "ASC",

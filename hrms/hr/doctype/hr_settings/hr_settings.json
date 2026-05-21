@@ -10,6 +10,7 @@
   "emp_created_by",
   "standard_working_hours",
   "column_break_9",
+  "max_no_installment",
   "retirement_age",
   "include_holidays_in_total_working_days",
   "reminders_section",
@@ -519,13 +520,18 @@
    "fieldtype": "Link",
    "label": "eNote Status Notification",
    "options": "Email Template"
+  },
+  {
+   "fieldname": "max_no_installment",
+   "fieldtype": "Int",
+   "label": "Maximum Installment for Salary Advance"
   }
  ],
  "icon": "fa fa-cog",
  "idx": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-10-23 14:13:55.819459",
+ "modified": "2024-12-06 10:50:21.113830",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "HR Settings",

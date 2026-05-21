@@ -8,17 +8,20 @@
  "engine": "InnoDB",
  "field_order": [
   "personal_details_section",
-  "photo",
   "desuung_id",
   "salutation",
-  "column_break_5",
-  "profile_id",
   "desuup_name",
-  "cid_number",
   "gender",
   "date_of_birth",
+  "profile_id",
+  "cid_number",
   "employment_type",
+  "column_break_5",
+  "cv",
+  "eligible_for_dgrk",
+  "photo",
   "section_break_9",
+  "column_break_12",
   "company",
   "status",
   "batch_number",
@@ -26,6 +29,7 @@
   "blood_group",
   "column_break_15",
   "training_location",
+  "country",
   "dzongkhag",
   "gewog",
   "village",
@@ -35,23 +39,34 @@
   "column_break_32",
   "bank_account_type",
   "bank_account_number",
-  "training_history_section",
-  "training_history",
   "skill_and_interest_section",
   "skill",
   "col_break_1",
   "interest",
   "contact_address",
-  "present_address",
-  "present_dzongkhag",
   "present_country",
-  "column_break_23",
+  "present_dzongkhag",
+  "present_gewog",
   "email_id",
+  "column_break_23",
+  "present_address",
   "mobile_number",
+  "tab_break_45",
   "desuup_qualification",
   "desuup_qualification_table",
   "employment_history",
-  "desuup_employement_history_table"
+  "desuup_employement_history_table",
+  "section_break_50",
+  "desuup_deployment_history",
+  "training_history_section",
+  "training_history",
+  "tab_break_54",
+  "pelsung_cohort",
+  "user_account_details_tab",
+  "create_user",
+  "user",
+  "erpnext_user",
+  "app_blacklist"
  ],
  "fields": [
   {
@@ -94,7 +109,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Gender",
-   "options": "\nMale\nFemale\nOthers",
+   "options": "\nMale\nFemale",
    "reqd": 1
   },
   {
@@ -115,6 +130,7 @@
    "reqd": 1
   },
   {
+   "default": "Active",
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
@@ -122,8 +138,10 @@
   },
   {
    "fieldname": "batch_number",
-   "fieldtype": "Data",
-   "label": "Batch Number"
+   "fieldtype": "Link",
+   "label": "Batch Number",
+   "options": "Desuung Batch",
+   "reqd": 1
   },
   {
    "fieldname": "marital_status",
@@ -147,18 +165,21 @@
   },
   {
    "fieldname": "dzongkhag",
-   "fieldtype": "Data",
-   "label": "Dzongkhag"
+   "fieldtype": "Link",
+   "label": "Dzongkhag",
+   "options": "Dzongkhags"
   },
   {
    "fieldname": "gewog",
-   "fieldtype": "Data",
-   "label": "Gewog"
+   "fieldtype": "Link",
+   "label": "Gewog",
+   "options": "Gewogs"
   },
   {
    "fieldname": "village",
-   "fieldtype": "Data",
-   "label": "Village"
+   "fieldtype": "Link",
+   "label": "Village",
+   "options": "Village"
   },
   {
    "collapsible": 1,
@@ -204,8 +225,9 @@
   },
   {
    "fieldname": "present_dzongkhag",
-   "fieldtype": "Data",
-   "label": "Present Dzongkhag"
+   "fieldtype": "Link",
+   "label": "Present Dzongkhag",
+   "options": "Dzongkhags"
   },
   {
    "fieldname": "column_break_23",
@@ -236,7 +258,7 @@
    "collapsible": 1,
    "fieldname": "employment_history",
    "fieldtype": "Section Break",
-   "label": "Employment Details"
+   "label": "Employment Histories"
   },
   {
    "fieldname": "desuup_employement_history_table",
@@ -246,13 +268,15 @@
   {
    "fieldname": "profile_id",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Profile ID",
    "read_only": 1
   },
   {
    "fieldname": "present_country",
-   "fieldtype": "Data",
-   "label": "Present Country"
+   "fieldtype": "Link",
+   "label": "Present Country",
+   "options": "Country"
   },
   {
    "fieldname": "photo",
@@ -297,11 +321,93 @@
    "fieldname": "bank_account_number",
    "fieldtype": "Data",
    "label": "Bank A/C No."
+  },
+  {
+   "fieldname": "erpnext_user",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:(!doc.user)",
+   "fieldname": "create_user",
+   "fieldtype": "Button",
+   "label": "Create User"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User"
+  },
+  {
+   "fieldname": "tab_break_45",
+   "fieldtype": "Tab Break",
+   "label": "Desuup Histories"
+  },
+  {
+   "fieldname": "section_break_50",
+   "fieldtype": "Section Break",
+   "label": "Deployment Histories"
+  },
+  {
+   "fieldname": "desuup_deployment_history",
+   "fieldtype": "Table",
+   "options": "Desuup Deployment History"
+  },
+  {
+   "fieldname": "present_gewog",
+   "fieldtype": "Link",
+   "label": "Present Gewog",
+   "options": "Gewogs"
+  },
+  {
+   "default": "Bhutan",
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "tab_break_54",
+   "fieldtype": "Tab Break",
+   "label": "Pelsung Details"
+  },
+  {
+   "fieldname": "pelsung_cohort",
+   "fieldtype": "Link",
+   "label": "Pelsung Cohort",
+   "options": "Pelsung Cohort"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_dgrk",
+   "fieldtype": "Check",
+   "label": "Eligible for DGRK"
+  },
+  {
+   "fieldname": "user_account_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "User Account Details"
+  },
+  {
+   "default": "0",
+   "fieldname": "app_blacklist",
+   "fieldtype": "Check",
+   "label": "Blacklist from App"
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cv",
+   "fieldtype": "Attach",
+   "label": "CV"
   }
  ],
+ "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-06 17:32:28.026497",
+ "modified": "2026-05-04 14:26:15.824666",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Desuup",

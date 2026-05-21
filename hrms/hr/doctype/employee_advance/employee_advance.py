@@ -157,7 +157,7 @@ class EmployeeAdvance(Document):
 					and salary_component ='Salary Advance Deduction'
 					and posting_date between'{2}' and '{3}' """.format(self.employee,self.name, year_start_date,self.recovery_end_date))[0][0]
 	
-		remaining_pay = (flt(self.basic_pay) * flt(max_month_allow_from_employee_group))- flt(pervious_advance) 
+		remaining_pay = (flt(self.basic_pay) * flt(max_month_allow_from_employee_group)) - flt(pervious_advance) 
 		if flt(self.advance_amount) <= 0:
 			frappe.throw("Enter valid <b>Advance Amount</b>")
 		# elif flt(self.advance_amount) >= (flt(remaining_pay)+1):

@@ -15,8 +15,8 @@ frappe.ui.form.on("Job Applicant", {
 				}
 			};
 		});
-		frm.events.create_custom_buttons(frm);
-		frm.events.make_dashboard(frm);
+		//frm.events.create_custom_buttons(frm);
+		//frm.events.make_dashboard(frm);
 	},
 
 	create_custom_buttons: function(frm) {

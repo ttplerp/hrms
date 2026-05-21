@@ -332,7 +332,9 @@ class SalaryStructure(Document):
 
 			# Calculating Salary Tax
 			if ed == 'deductions':
-				calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
+				# calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
+				# 15% of Gross Amount (New Changes Sanga)
+				calc_amt = get_salary_tax(math.floor(flt(total_earning) - (total_earning*0.15)))
 				calc_amt = roundoff(calc_amt)
 				total_deduction += calc_amt
 				calc_map.append({'salary_component': 'Salary Tax', 'amount': flt(calc_amt)})
@@ -528,7 +530,9 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 			else:
 				if d['salary_component'] == 'Salary Tax':
 					if not tax_included:
-						tax_amt = get_salary_tax(math.floor(flt(gross_amt) - flt(gis_amt) - flt(pf_amt) - (flt(comm_amt) * 0.5)))
+						# tax_amt = get_salary_tax(math.floor(flt(gross_amt) - flt(gis_amt) - flt(pf_amt) - (flt(comm_amt) * 0.5)))
+						# 15% of gross amount (New changes Sanga)
+						tax_amt = get_salary_tax(math.floor(flt(gross_amt) - (flt(gross_amt) * 0.15)))
 						tax_amt = roundoff(tax_amt)
 						d['amount'] = flt(tax_amt)
 						tax_included = 1
