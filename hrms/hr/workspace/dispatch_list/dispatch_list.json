@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Dispatch</span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Dispatch\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Notesheet\",\"col\":4}}]",
+ "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">ePayment</span>\",\"col\":12}}]",
  "creation": "2023-01-13 10:56:16.044581",
  "docstatus": 0,
  "doctype": "Workspace",
@@ -10,24 +10,6 @@
  "idx": 0,
  "label": "Dispatch List",
  "links": [
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Notesheet",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Notesheet",
-   "link_count": 0,
-   "link_to": "Notesheet",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
   {
    "hidden": 0,
    "is_query_report": 0,
@@ -67,7 +49,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-05-01 14:28:43.639265",
+ "modified": "2026-03-25 12:06:01.901047",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dispatch List",

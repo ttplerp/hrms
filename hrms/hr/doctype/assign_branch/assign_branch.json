@@ -6,13 +6,13 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "company",
   "employee_type",
   "employee",
   "employee_name",
   "column_break_2",
   "user",
   "current_branch",
-  "company",
   "section_break_4",
   "get_all_branch",
   "section_break_8",
@@ -44,6 +44,7 @@
    "fieldname": "user",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "User",
    "options": "User",
    "read_only": 1
@@ -58,12 +59,10 @@
    "read_only": 1
   },
   {
-   "fetch_from": "employee.company",
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company",
-   "read_only": 1,
    "reqd": 1
   },
   {
@@ -97,7 +96,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-01-26 23:31:59.400621",
+ "modified": "2025-01-13 14:24:16.078866",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Assign Branch",

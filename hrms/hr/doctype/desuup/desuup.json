@@ -69,6 +69,7 @@
    "fieldname": "desuung_id",
    "fieldtype": "Data",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Desuung ID",
    "reqd": 1,
    "unique": 1
@@ -107,12 +108,12 @@
    "fieldtype": "Section Break"
   },
   {
+   "default": "De-suung Skilling",
    "fieldname": "company",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
    "label": "Company",
-   "options": "Company",
-   "reqd": 1
+   "options": "Company"
   },
   {
    "fieldname": "status",
@@ -123,13 +124,15 @@
   {
    "fieldname": "batch_number",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Batch Number"
   },
   {
    "fieldname": "marital_status",
    "fieldtype": "Select",
    "label": "Marital Status",
-   "options": "\nSingle\nMarried\nDivorce\nDivorced\nWidowed\nsingle\nmarried\ndivorce"
+   "options": "\nSingle\nMarried\nDivorce\nDivorced\nWidowed\nsingle\nsigle\nmarried\ndivorce"
   },
   {
    "fieldname": "blood_group",
@@ -301,7 +304,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-06 17:32:28.026497",
+ "modified": "2024-08-08 16:47:47.922270",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Desuup",
@@ -336,5 +339,6 @@
  "search_fields": "desuup_name,gender",
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }

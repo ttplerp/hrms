@@ -2,9 +2,23 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Assign Branch', {
-	// refresh: function(frm) {
+	refresh: function(frm) {
+		frm.set_query("branch", "items", function (doc){
+			return {
+				filters: {
+					company: doc.company,
+				}
+			}
+		});
+		frm.set_query("employee", function (doc){
+			return {
+				filters: {
+					company: doc.company,
+				}
+			}
+		});
+	},
 
-	// }
 	get_all_branch: function(frm) {
 		//load_accounts(frm.doc.company)
 		frm.clear_table("items");

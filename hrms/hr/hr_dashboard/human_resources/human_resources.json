@@ -10,20 +10,10 @@
    "card": "Employee Exits (This Year)"
   },
   {
-   "card": "Employees Joining (Next Quarter)"
-  },
-  {
-   "card": "Employees Relieving (Next Quarter)"
-  },
-  {
    "card": "Leave Pending Approval"
   }
  ],
  "charts": [
-  {
-   "chart": "Hiring vs Attrition Count",
-   "width": "Full"
-  },
   {
    "chart": "Employees by Age",
    "width": "Full"
@@ -53,16 +43,16 @@
    "width": "Half"
   }
  ],
- "creation": "2022-08-24 17:57:50.156258",
- "dashboard_name": "Human Resource",
+ "creation": "2025-12-10 12:10:01.485384",
+ "dashboard_name": "Human Resources",
  "docstatus": 0,
  "doctype": "Dashboard",
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2025-12-10 14:16:19.942751",
+ "modified": "2025-12-10 14:15:14.110056",
  "modified_by": "Administrator",
  "module": "HR",
- "name": "Human Resource",
- "owner": "birendra.bhuejel@thimphutechpark.bt"
+ "name": "Human Resources",
+ "owner": "Administrator"
 }

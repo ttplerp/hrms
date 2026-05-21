@@ -10,7 +10,8 @@ class UpdateBankAccount(Document):
 
 	def validate_desuup(self):
 		if self.did:
-			doc=frappe.get_doc("Desuup", self.did)
+			doc = frappe.get_doc("Desuup", self.did)
+			# frappe.throw(str(doc.cid_number)+' '+str(self.cid_number)+' <-> '+str(doc.date_of_birth)+' '+str(self.date_of_birth))
 			if self.cid_number != doc.cid_number or self.date_of_birth != doc.date_of_birth:
 				frappe.throw("<b> {} </b> : Desuup Details like DOB and CID don't match with record maintained in ERP ".format(self.did))
 			else:

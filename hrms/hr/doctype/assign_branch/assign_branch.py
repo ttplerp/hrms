@@ -59,8 +59,8 @@ class AssignBranch(Document):
 	#Populate branches with active branches 
 	@frappe.whitelist()
 	def get_all_branches(self):
-		cost_center_for = frappe.db.get_value("Branch", self.current_branch, "cost_center_for")
-		query = "select name as branch from tabBranch where disabled != 1 and cost_center_for = '{}'".format(cost_center_for) 
+		# cost_center_for = frappe.db.get_value("Branch", self.current_branch, "cost_center_for")
+		query = "select name as branch from tabBranch where disabled != 1 and company = '{}'".format(self.company) 
 		entries = frappe.db.sql(query, as_dict=True)
 		self.set('items', [])
 

@@ -10,7 +10,7 @@ frappe.ui.form.on('Employee Transfer', {
 					"company": frm.doc.company,
 					"is_section":0,
 					"is_division": 0,
-					"is_unit":0
+					// "is_unit":0
 				}
 			};
 		});
