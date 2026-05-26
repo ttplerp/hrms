@@ -56,8 +56,6 @@
   "desuup_qualification_table",
   "employment_history",
   "desuup_employement_history_table",
-  "section_break_50",
-  "desuup_deployment_history",
   "training_history_section",
   "training_history",
   "tab_break_54",
@@ -345,16 +343,6 @@
    "label": "Desuup Histories"
   },
   {
-   "fieldname": "section_break_50",
-   "fieldtype": "Section Break",
-   "label": "Deployment Histories"
-  },
-  {
-   "fieldname": "desuup_deployment_history",
-   "fieldtype": "Table",
-   "options": "Desuup Deployment History"
-  },
-  {
    "fieldname": "present_gewog",
    "fieldtype": "Link",
    "label": "Present Gewog",
@@ -408,7 +396,7 @@
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-08 16:47:47.922270",
+ "modified": "2026-05-26 15:15:48.878905",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Desuup",
