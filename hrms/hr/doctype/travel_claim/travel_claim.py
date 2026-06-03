@@ -338,7 +338,7 @@ class TravelClaim(Document):
                     
                     if i.halt != 1:
                         
-                        i.amount = (flt(i.days_allocated)*(flt(i.dsa)*flt(i.dsa_percent)/100)) + (flt(i.mileage_rate) * flt(i.distance)) + flt(i.porter_pony_charges)
+                        i.amount = (flt(i.days_allocated)*(flt(i.dsa)*flt(i.dsa_percent)/100)) + (flt(i.mileage_rate) * flt(i.distance)) + flt(i.porter_pony_charges) + flt(i.insurance_claim or 0)
                     else:
                         
                         percent='100'

@@ -24,6 +24,8 @@
   "mileage_rate",
   "visa_fees",
   "visa_fees_currency",
+  "insurance_claim",
+  "insurance_currency",
   "column_break_12",
   "distance",
   "passport_fees",
@@ -198,7 +200,8 @@
   },
   {
    "fieldname": "column_break_14",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "options": "Currency"
   },
   {
    "fieldname": "dsa",
@@ -336,11 +339,26 @@
    "label": "Reference Name",
    "options": "reference_type",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "insurance_claim",
+   "fieldtype": "Currency",
+   "label": "Insurance Claim",
+   "options": "insurance_currency"
+  },
+  {
+   "default": "BTN",
+   "depends_on": "eval:parent.place_type == \"Out-Country\";",
+   "fieldname": "insurance_currency",
+   "fieldtype": "Link",
+   "label": "Insurance Currency",
+   "options": "Currency"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2025-03-28 16:44:42.980332",
+ "modified": "2026-06-03 12:15:15.611431",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Travel Claim Item",

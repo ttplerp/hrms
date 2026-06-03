@@ -3,8 +3,8 @@
 
 cur_frm.add_fetch("employee", "branch", "branch");
 frappe.ui.form.on('Travel Claim', {
-	setup: function(frm){
-		if(frappe.session.user == "Administrator"){
+	setup: function (frm) {
+		if (frappe.session.user == "Administrator") {
 			frm.ignore_doctypes_on_cancel_all = ['Travel Authorization', 'CBS Entry Upload', 'Journal Entry', 'GL Entry'];
 		}
 	},
@@ -12,25 +12,25 @@ frappe.ui.form.on('Travel Claim', {
 		/*var row = cur_frm.open_grid_row();
 		if(!row.grid_form.fields_dict.dsa_per_day.value) {
 			row.grid_form.fields_dict.dsa.set_value(frm.doc.dsa_per_day)
-                	row.grid_form.fields_dict.dsa.refresh()
+					row.grid_form.fields_dict.dsa.refresh()
 		}*/
 	},
-	travel_type: function(frm){
-		if(frm.doc.travel_type == "Project Visit" || frm.doc.travel_type == "Maintenance"){
+	travel_type: function (frm) {
+		if (frm.doc.travel_type == "Project Visit" || frm.doc.travel_type == "Maintenance") {
 			frm.set_value("for_maintenance_project", 1);
 		}
-		else{
+		else {
 			frm.set_value("for_maintenance_project", 0);
 		}
 		frm.refresh_field("for_maintenance_project");
 	},
 	refresh: function (frm) {
-		if (frappe.user.has_role(['HR Manager'])){
+		if (frappe.user.has_role(['HR Manager'])) {
 			frm.set_df_property('set_approver_manually', 'read_only', 0);
-		}else{
+		} else {
 			frm.set_df_property('set_approver_manually', 'read_only', 1);
 		}
-		
+
 		frm.set_query('reference_type', () => {
 			return {
 				filters: {
@@ -38,8 +38,8 @@ frappe.ui.form.on('Travel Claim', {
 				}
 			};
 		});
-		if(frm.doc.workflow_state == "Waiting Project Manager Approval"){
-			if(frm.doc.reference_type == "Project" || frm.doc.reference_type == "Task"){
+		if (frm.doc.workflow_state == "Waiting Project Manager Approval") {
+			if (frm.doc.reference_type == "Project" || frm.doc.reference_type == "Task") {
 				frm.set_query('reference_name', () => {
 					return {
 						query: "erpnext.controllers.queries.filter_projects",
@@ -152,20 +152,20 @@ function get_project_or_maintenance_cost_center(frm) {
 
 frappe.ui.form.on("Travel Claim Item", {
 	"form_render": function (frm, cdt, cdn) {
-		
+
 		frappe.model.set_value(cdt, cdn, "travel_authorization", frm.doc.ta);
 		frappe.model.set_value(cdt, cdn, "currency_exchange_date", frm.doc.ta_date);
 		frm.refresh_field("items");
 		var item = frappe.get_doc(cdt, cdn)
-		
-		if (item.idx!=0){
+
+		if (item.idx != 0) {
 			// console.log(frm.fields_dict['items'].grid.grid_rows_by_docname[cdn]);
-			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[3].read_only=0
+			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].docfields[3].read_only = 0
 			//frappe.model.set_value(cdt, cdn, "halt", 0)
-			
+
 
 		}
-		if (item.halt==0){
+		if (item.halt == 0) {
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('to_place', true)
 			frm.fields_dict['items'].grid.grid_rows_by_docname[cdn].toggle_editable('from_place', true)
 		}
@@ -229,7 +229,7 @@ frappe.ui.form.on("Travel Claim Item", {
 	"date": function (frm, cdt, cdn) {
 		update_days(frm, cdt, cdn);
 		var items = frappe.get_doc(cdt, cdn)
-		if(items.halt==0){
+		if (items.halt == 0) {
 			frappe.model.set_value(cdt, cdn, "till_date", items.date)
 		}
 	},
@@ -238,13 +238,13 @@ frappe.ui.form.on("Travel Claim Item", {
 	},
 })
 
-function update_days(frm, cdt, cdn){
+function update_days(frm, cdt, cdn) {
 	frm.doc.items.forEach(function (d) {
-		if(d.halt==1){
-			const date1=new Date(d.date);
-			const date2=new Date(d.till_date);
-			let no_days=(date2-date1)/ (1000*60*60*24);
-			no_days+=1
+		if (d.halt == 1) {
+			const date1 = new Date(d.date);
+			const date2 = new Date(d.till_date);
+			let no_days = (date2 - date1) / (1000 * 60 * 60 * 24);
+			no_days += 1
 			console.log(no_days);
 			frappe.model.set_value(cdt, cdn, "no_days", String(no_days))
 
@@ -318,14 +318,14 @@ function do_update(frm, cdt, cdn) {
 		item.dsa_percent = 0
 	} */
 	var amount = 0;
-	if(frm.doc.place_type == "In-Country"){
-		amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) + (flt(item.mileage_rate) * flt(item.distance)) + flt(item.porter_pony_charges) + flt(item.fare_amount)) 
+	if (frm.doc.place_type == "In-Country") {
+		amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) + (flt(item.mileage_rate) * flt(item.distance)) + flt(item.porter_pony_charges) + flt(item.fare_amount))
 		if (item.halt == 1) {
-			amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) * flt(item.no_days))+flt(item.porter_pony_charges);
+			amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) * flt(item.no_days)) + flt(item.porter_pony_charges);
 		}
 	}
-	else if(frm.doc.place_type == "Out-Country"){
-		amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) + (flt(item.mileage_rate) * flt(item.distance)) + flt(item.fare_amount)); 
+	else if (frm.doc.place_type == "Out-Country") {
+		amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) + (flt(item.mileage_rate) * flt(item.distance)) + flt(item.fare_amount));
 		if (item.halt == 1) {
 			amount = flt((flt(item.dsa_percent) / 100 * flt(item.dsa)) * flt(item.no_days));
 		}
@@ -338,7 +338,7 @@ function do_update(frm, cdt, cdn) {
 				"to_currency": "BTN",
 				"date": item.currency_exchange_date
 			},
-			async:false,
+			async: false,
 			callback: function (r) {
 				if (r.message) {
 					frappe.model.set_value(cdt, cdn, "exchange_rate", flt(r.message))
@@ -354,7 +354,7 @@ function do_update(frm, cdt, cdn) {
 		frappe.model.set_value(cdt, cdn, "amount", flt(amount));
 	}
 	//If there is visa fee
-	if(item.visa_fees_currency != "BTN"){
+	if (item.visa_fees_currency != "BTN") {
 		frappe.call({
 			method: "hrms.hr.doctype.travel_authorization.travel_authorization.get_exchange_rate",
 			args: {
@@ -363,11 +363,11 @@ function do_update(frm, cdt, cdn) {
 				"date": item.currency_exchange_date
 			},
 			async: false,
-			callback: function(vf){
-				if(vf.message){
-					frappe.model.set_value(cdt, cdn, "actual_amount", flt(vf.message)*flt(item.visa_fees) + flt(amount))	
-					frappe.model.set_value(cdt, cdn, "amount", flt(vf.message)*flt(item.visa_fees) + flt(amount))
-					amount = flt(vf.message)*flt(item.visa_fees) + flt(amount);
+			callback: function (vf) {
+				if (vf.message) {
+					frappe.model.set_value(cdt, cdn, "actual_amount", flt(vf.message) * flt(item.visa_fees) + flt(amount))
+					frappe.model.set_value(cdt, cdn, "amount", flt(vf.message) * flt(item.visa_fees) + flt(amount))
+					amount = flt(vf.message) * flt(item.visa_fees) + flt(amount);
 				}
 
 			}
@@ -379,7 +379,7 @@ function do_update(frm, cdt, cdn) {
 		amount = flt(item.visa_fees) + flt(amount)
 	}
 	//If there is passport fee
-	if(item.passport_fees_currency != "BTN"){
+	if (item.passport_fees_currency != "BTN") {
 		frappe.call({
 			method: "hrms.hr.doctype.travel_authorization.travel_authorization.get_exchange_rate",
 			args: {
@@ -388,11 +388,11 @@ function do_update(frm, cdt, cdn) {
 				"date": item.currency_exchange_date
 			},
 			async: false,
-			callback: function(vf){
-				if(vf.message){
-					frappe.model.set_value(cdt, cdn, "actual_amount", flt(vf.message)*flt(item.passport_fees) + flt(amount))	
-					frappe.model.set_value(cdt, cdn, "amount", flt(vf.message)*flt(item.passport_fees) + flt(amount))
-					amount = flt(vf.message)*flt(item.passport_fees) + flt(amount)
+			callback: function (vf) {
+				if (vf.message) {
+					frappe.model.set_value(cdt, cdn, "actual_amount", flt(vf.message) * flt(item.passport_fees) + flt(amount))
+					frappe.model.set_value(cdt, cdn, "amount", flt(vf.message) * flt(item.passport_fees) + flt(amount))
+					amount = flt(vf.message) * flt(item.passport_fees) + flt(amount)
 				}
 
 			}
@@ -404,7 +404,7 @@ function do_update(frm, cdt, cdn) {
 		amount = flt(item.passport_fees) + flt(amount);
 	}
 	//If there is incidental expenses
-	if(item.incidental_fees_currency != "BTN"){
+	if (item.incidental_fees_currency != "BTN") {
 		frappe.call({
 			method: "hrms.hr.doctype.travel_authorization.travel_authorization.get_exchange_rate",
 			args: {
@@ -413,11 +413,11 @@ function do_update(frm, cdt, cdn) {
 				"date": item.currency_exchange_date
 			},
 			async: false,
-			callback: function(vf){
-				if(vf.message){
-					frappe.model.set_value(cdt, cdn, "actual_amount", flt(vf.message)*flt(item.incidental_fees) + flt(amount))	
-					frappe.model.set_value(cdt, cdn, "amount", flt(vf.message)*flt(item.incidental_fees) + flt(amount))
-					amount = flt(vf.message)*flt(item.incidental_fees) + flt(amount);
+			callback: function (vf) {
+				if (vf.message) {
+					frappe.model.set_value(cdt, cdn, "actual_amount", flt(vf.message) * flt(item.incidental_fees) + flt(amount))
+					frappe.model.set_value(cdt, cdn, "amount", flt(vf.message) * flt(item.incidental_fees) + flt(amount))
+					amount = flt(vf.message) * flt(item.incidental_fees) + flt(amount);
 				}
 
 			}
@@ -426,6 +426,34 @@ function do_update(frm, cdt, cdn) {
 	else {
 		frappe.model.set_value(cdt, cdn, "actual_amount", flt(item.incidental_fees) + flt(amount))
 		frappe.model.set_value(cdt, cdn, "amount", flt(item.incidental_fees) + flt(amount))
+	}
+	// If insurance fee exists
+	if (item.insurance_claim) {
+
+		if (item.insurance_currency && item.insurance_currency != "BTN") {
+			frappe.call({
+				method: "hrms.hr.doctype.travel_authorization.travel_authorization.get_exchange_rate",
+				args: {
+					"from_currency": item.insurance_currency,
+					"to_currency": "BTN",
+					"date": item.currency_exchange_date
+				},
+				async: false,
+				callback: function (res) {
+					if (res.message) {
+						let ins_amt = flt(res.message) * flt(item.insurance_claim);
+						amount += ins_amt;
+
+						frappe.model.set_value(cdt, cdn, "actual_amount", flt(amount));
+						frappe.model.set_value(cdt, cdn, "amount", flt(amount));
+					}
+				}
+			});
+		} else {
+			amount += flt(item.insurance_claim);
+			frappe.model.set_value(cdt, cdn, "actual_amount", flt(amount));
+			frappe.model.set_value(cdt, cdn, "amount", flt(amount));
+		}
 	}
 	// frappe.model.set_value(cdt, cdn, "amount", format_currency(amount, item.currency))
 	refresh_field("amount");
@@ -484,11 +512,11 @@ frappe.ui.form.on("Travel Claim", "after_save", function (frm, cdt, cdn) {
 	}
 });
 
-cur_frm.fields_dict['items'].grid.get_field("cost_center").get_query = function(doc, cdt, cdn) {
+cur_frm.fields_dict['items'].grid.get_field("cost_center").get_query = function (doc, cdt, cdn) {
 	return {
 		filters: [
-			["Cost Center", "is_group", "=",0],
-			["Cost Center", "disabled", "=",0],
+			["Cost Center", "is_group", "=", 0],
+			["Cost Center", "disabled", "=", 0],
 		]
 	}
 }
