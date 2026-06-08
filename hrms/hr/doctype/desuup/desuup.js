@@ -60,9 +60,9 @@ frappe.ui.form.on('Desuup', {
 		})
 	},
 	create_user: function(frm) {
-		if (!frm.doc.email_id) {
+		/*if (!frm.doc.email_id) {
 			frappe.throw(__("Please enter Preferred Contact Email"));
-		}
+		}*/
 		frappe.call({
 			method: "hrms.hr.doctype.desuup.desuup.create_user",
 			args: {
@@ -70,7 +70,7 @@ frappe.ui.form.on('Desuup', {
 				email: frm.doc.email_id
 			},
 			callback: function (r) {
-				frm.set_value("user_id", r.message);
+				frm.set_value("user", r.message);
 			}
 		});
 	}

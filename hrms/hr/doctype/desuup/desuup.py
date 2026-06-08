@@ -34,11 +34,11 @@ class Desuup(Document):
 @frappe.whitelist()
 def create_user(desuup, user=None, email=None):
     emp = frappe.get_doc("Desuup", desuup)
-    if not emp.cid_number:
+    if not emp.cid_number or len(emp.cid_number) != 11:
         frappe.throw("CID is mandatory to create user")
 
-    if not emp.email_id:
-        frappe.throw("Email is mandatory to create user")
+    #if not emp.email_id:
+    #    frappe.throw("Email is mandatory to create user")
 
     if not emp.mobile_number:
         frappe.throw("Phone number is mandatory to create user")
@@ -46,14 +46,14 @@ def create_user(desuup, user=None, email=None):
     user = frappe.new_doc("User")
     user.update(
         {
-            "email": emp.email_id,
+            "email": emp.email_id.strip() if emp.email_id else emp.email_id,
             "enabled": 1,
             "is_desuup": 1,
-            "first_name": emp.desuup_name,
+            "first_name": emp.desuup_name.strip() if emp.desuup_name else emp.desuup_name,
             "gender": emp.gender,
             "birth_date": emp.date_of_birth,
             "phone": emp.mobile_number.removeprefix("+975").removeprefix("975"),
-            "username": emp.cid_number
+            "username": emp.cid_number.strip() if emp.cid_number else emp.cid_number
         }
     )
     user.append_roles("Desuup")
@@ -65,5 +65,5 @@ def create_user(desuup, user=None, email=None):
 
 def auto_create_users():
     val = 0
-    for d in frappe.db.sql("select name from tabDesuup where user is null and mobile_number is not null", as_dict=1):
+    for d in frappe.db.sql("select name from tabDesuup where user is null and mobile_number is not null and cid_number is not null and LENGTH(cid_number) = 11", as_dict=1):
         create_user(d.name)
