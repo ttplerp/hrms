@@ -27,8 +27,8 @@ class TravelClaim(Document):
             notify_workflow_states(self)
         # if self.travel_type not in ("Training", "Meeting and Seminars") and self.supervisor:
         #     self.set_supervisor_manager()
-        if self.training_event:
-            self.update_training_event()
+        # if self.training_event:
+        #     self.update_training_event()
                 
     # def workflow_action(self):
     #     action = frappe.request.form.get('action') 
@@ -125,8 +125,8 @@ class TravelClaim(Document):
         self.check_journal_entry()
         if self.ta:
             self.ta = None
-        if self.training_event:
-            self.update_training_event(cancel=True)
+        # if self.training_event:
+        #     self.update_training_event(cancel=True)
 
     # Following method created by SHIV on 2020/09/22
     def check_journal_entry(self):

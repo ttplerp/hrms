@@ -30,8 +30,8 @@ class TravelAuthorization(Document):
         # self.workflow_action()
         if self.workflow_state != "Approved":
             notify_workflow_states(self)
-        if self.training_event:
-            self.update_training_event()
+        # if self.training_event:
+        #     self.update_training_event()
         if not self.currency:
             self.currency = 'BTN'
             
@@ -106,8 +106,8 @@ class TravelAuthorization(Document):
         #if not self.cancellation_reason:
         #	frappe.throw("Cancellation Reason is Mandatory when Cancelling Travel Authorization")
         self.cancel_attendance()	
-        if self.training_event:
-            self.update_training_event(cancel=True)
+        # if self.training_event:
+        #     self.update_training_event(cancel=True)
         notify_workflow_states(self)
 
     def on_update_after_submit(self):
