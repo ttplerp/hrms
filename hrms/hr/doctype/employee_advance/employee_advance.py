@@ -13,6 +13,23 @@ from erpnext.accounts.doctype.journal_entry.journal_entry import get_default_ban
 from hrms.payroll.doctype.salary_structure.salary_structure import get_basic_and_gross_pay, get_salary_tax
 from hrms.hr.utils import validate_active_employee
 
+# --- ADD THIS FUNCTION HERE ---
+def get_fiscal_year_end_date(date=None):
+    """Get the end date of the fiscal year (July to June)"""
+    if not date:
+        date = today()
+    
+    date_obj = getdate(date)
+    year = date_obj.year
+    
+    # If the date is from January to June, the fiscal year ends on June 30 of the current year
+    if date_obj.month <= 6:
+        return getdate(f"{year}-06-30")
+    else:
+        # If the date is from July to December, the fiscal year ends on June 30 of the next year
+        return getdate(f"{year + 1}-06-30")
+# --- END OF ADDED FUNCTION ---
+
 
 class EmployeeAdvanceOverPayment(frappe.ValidationError):
 	pass
@@ -117,7 +134,7 @@ class EmployeeAdvance(Document):
 				doc.save(ignore_permissions=True)
 				self.db_set("salary_structure", doc.name)
 			else:
-				frappe.throw(_("No active salary structure found for employee {0} {1}").format(self.employee, self.employee_name), title="No Data Found")
+				frappe.throw(_("No active salary structure found for employee {0} {1}").format(self.employee, self.employee_name), title="No Data Found")		
 
 	@frappe.whitelist()
 	def get_accumulated_advance_amount(self):
@@ -134,7 +151,10 @@ class EmployeeAdvance(Document):
 	@frappe.whitelist()
 	def validate_advance_amount(self):
 		self.recovery_start_date = get_first_day(today())
-		self.recovery_end_date = get_year_ending(today())
+		# Changed from get_year_ending(today()) to custom fiscal year end
+		self.recovery_end_date = get_fiscal_year_end_date(today())
+		# self.recovery_start_date = get_first_day(today())
+		# self.recovery_end_date = get_year_ending(today())
 		year_start_date = get_year_start(today())
 		ssl = frappe.db.sql("""select name,docstatus,str_to_date(concat(yearmonth,"01"),"%Y%m%d") as salary_month
 					from `tabSalary Slip`
@@ -203,8 +223,35 @@ class EmployeeAdvance(Document):
 				date_change = self.max_no_of_installment - self.deduction_month
 				self.recovery_end_date = add_months(str(self.recovery_end_date), - date_change)
 
+	# @frappe.whitelist()
+	# def	set_pay_details(self):
+	# 	pay = get_basic_and_gross_pay(employee=self.employee, effective_date=today())
+	# 	self.basic_pay = flt(pay.get("basic_pay"))
+	# 	self.net_pay = frappe.db.sql("""select sum(net_pay) 
+	# 		from `tabSalary Structure` 
+	# 		where employee = '{}' 
+	# 		and is_active = "Yes" """.format(self.employee))[0][0]
+	# 	self.recovery_start_date = get_first_day(today())
+	# 	self.recovery_end_date = get_year_ending(today())
+		
+	# 	ssl = frappe.db.sql("""select name,docstatus,str_to_date(concat(yearmonth,"01"),"%Y%m%d") as salary_month
+	# 				from `tabSalary Slip`
+	# 				where employee = '{0}'
+	# 				and str_to_date(concat(yearmonth,"01"),"%Y%m%d") >= '{1}'
+	# 				and docstatus = 1
+	# 				order by yearmonth desc limit 1
+	# 	""".format(self.employee,str(self.recovery_start_date)),as_dict=True)
+	# 	for ss in ssl:
+	# 		self.recovery_start_date = add_months(str(ss.salary_month),1)
+
+	# 	self.max_no_of_installment = month_diff(self.recovery_end_date,self.recovery_start_date)
+	# 	self.deduction_month = self.max_no_of_installment
+	# 	self.max_months_limit = frappe.get_value("Employee Group", self.employee_group, "salary_advance_max_months")
+	# 	self.max_advance_limit = flt(self.max_months_limit) * flt(self.basic_pay)
+	# 	self.monthly_deduction = ceil(flt(self.advance_amount)/ flt(self.deduction_month))
+
 	@frappe.whitelist()
-	def	set_pay_details(self):
+	def set_pay_details(self):
 		pay = get_basic_and_gross_pay(employee=self.employee, effective_date=today())
 		self.basic_pay = flt(pay.get("basic_pay"))
 		self.net_pay = frappe.db.sql("""select sum(net_pay) 
@@ -212,7 +259,8 @@ class EmployeeAdvance(Document):
 			where employee = '{}' 
 			and is_active = "Yes" """.format(self.employee))[0][0]
 		self.recovery_start_date = get_first_day(today())
-		self.recovery_end_date = get_year_ending(today())
+		# Changed from get_year_ending(today()) to custom fiscal year end
+		self.recovery_end_date = get_fiscal_year_end_date(today())
 		
 		ssl = frappe.db.sql("""select name,docstatus,str_to_date(concat(yearmonth,"01"),"%Y%m%d") as salary_month
 					from `tabSalary Slip`
