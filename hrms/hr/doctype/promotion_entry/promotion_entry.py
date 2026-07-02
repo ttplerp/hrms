@@ -313,7 +313,7 @@ class PromotionEntry(Document):
 	def submit_employee_promotions(self):
 		self.check_permission('write')
 		ep_list = self.get_employee_promotion_list(ep_status=0)
-		if len(ep_list) > 500:
+		if len(ep_list) > 30:
 			frappe.enqueue(submit_employee_promotions_for_employees, timeout=600, promotion_entry=self, employee_promotions=ep_list)
 		else:
 			submit_employee_promotions_for_employees(self, ep_list, publish_progress=False)
