@@ -282,7 +282,7 @@ class EmployeeAdvance(Document):
 		else:
 			# FORCE deduction_month to be max
 			self.max_no_of_installment = month_diff(self.recovery_end_date, self.recovery_start_date)
-			self.deduction_month = self.max_no_of_installment  # <--- ADD THIS LINE
+			# self.deduction_month = self.max_no_of_installment  # <--- ADD THIS LINE
 			check_advance = flt(self.advance_amount) / flt(self.deduction_month)
 			self.monthly_deduction = ceil(check_advance)
 			self.db_set("deduction_month", self.deduction_month)  # Update in database
@@ -307,7 +307,7 @@ class EmployeeAdvance(Document):
 			self.max_no_of_installment = month_diff(self.recovery_end_date, self.recovery_start_date)
 			
 			# FORCE deduction_month to max and don't allow changes
-			self.deduction_month = self.max_no_of_installment
+			# self.deduction_month = self.max_no_of_installment
 			
 			check_advance = flt(self.advance_amount) / flt(self.deduction_month)
 			if flt(check_advance) > flt(self.net_pay):
