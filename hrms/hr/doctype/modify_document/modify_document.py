@@ -7,7 +7,7 @@ from frappe.model.document import Document
 class ModifyDocument(Document):
 	def validate(self):
 		doc = frappe.get_doc(self.document_type, self.document_no)
-		if doc.docstatus == 1 and self.change_state_to == "Draft":
+		if doc.docstatus == 1 and self.change_state_to == "Change to Draft":
 			frappe.throw("Not allowed to change to Draft as its already submitted")
 
 		if self.document_type=="Payroll Entry":
