@@ -19,6 +19,7 @@
   "period",
   "place_of_study",
   "sponsership",
+  "designation_applying_for",
   "sb_emp_details",
   "employee",
   "employee_name",
@@ -414,11 +415,18 @@
    "label": "Approved By",
    "options": "User",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.purpose === 'Internal Recruitment'",
+   "fieldname": "designation_applying_for",
+   "fieldtype": "Link",
+   "label": "Applying for Designation",
+   "options": "Designation"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-12-10 10:45:11.286893",
+ "modified": "2026-07-16 11:09:57.767260",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Internal Clearance",
