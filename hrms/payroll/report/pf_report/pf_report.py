@@ -50,6 +50,13 @@ def get_columns(data):
 			"width": 120
 		},
 		{
+			"fieldname": "mobile_number",
+			"label": "Mobile Number",
+			"fieldtype": "Data",
+			"width": 140
+		},
+
+		{
 			"fieldname": "pf_number",
 			"label": "PF Number",
 			"fieldtype": "Data",
@@ -138,7 +145,7 @@ def get_columns(data):
 def construct_query(filters):
 	conditions, filters = get_conditions(filters)
 	query =("""
-			select t1.employee as employee, t3.employee_name as employee_name, t1.designation as designation, t1.employment_type as employment_type, t3.passport_number as passport_number, t3.pf_number as pf_number,
+			select t1.employee as employee, t3.employee_name as employee_name, t1.designation as designation, t1.employment_type as employment_type, t3.passport_number as passport_number,t3.cell_number AS mobile_number, t3.pf_number as pf_number,
 				sum(case when t2.salary_component = 'Basic Pay' then ifnull(t2.amount,0) else 0 end) as basicpay,
 				sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employeepf,
 				sum(case when t2.salary_component = 'PF' then ifnull(t2.amount,0) else 0 end) as employerpf,
@@ -169,6 +176,7 @@ def get_data(query, filters):
 				"designation":	d.designation,
 				"employement_type": d.employment_type,
 				"cid": d.passport_number,
+				"mobile_number": d.mobile_number,
 				"pf_number": d.pf_number,
 				"basic_pay": d.basicpay,
 				"employee_pf":d.employeepf,
@@ -176,7 +184,7 @@ def get_data(query, filters):
 				"total":d.total,
 				"company":d.company,
 				"cost_center":d.cost_center,
-				"beanch":	d.branch,
+				"branch": d.branch,
 				"department": d.department,
 				"division": d.division,
 				"section": d.section,
