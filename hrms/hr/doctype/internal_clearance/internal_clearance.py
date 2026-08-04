@@ -113,23 +113,24 @@ class InternalClearance(Document):
         
     def notify_audits(self):
         audit=frappe.db.sql("select verifier_mail from `tabInternal Audit Clearance Verifier List` where parent ='Audit Settings' and parentfield='auditlist'", as_dict=True)
-        audit_list=[]
-        for au in audit:
-            audit_list.append(au.verifier_mail)
-        
-        if len(audit_list)==0:
-            frappe.msgprint(_("The Audit List in the Audit Settings  are missing."))
-        
-        parent_doc = frappe.get_doc(self.doctype, self.name)
-        args = parent_doc.as_dict()
-        
-        try:
-            email_template = frappe.get_doc("Email Template", "Internal Audit Clearance Notification to Auditor")
-            message = frappe.render_template(email_template.response, args)
-            subject = email_template.subject
-            self.send_mail(audit_list,message,subject)
-        except :
-            frappe.msgprint(_("Internal Audit Clearance notification is missing."))
+        if audit:
+            audit_list=[]
+            for au in audit:
+                audit_list.append(au.verifier_mail)
+            
+            if len(audit_list)==0:
+                frappe.msgprint(_("The Audit List in the Audit Settings  are missing."))
+            
+            parent_doc = frappe.get_doc(self.doctype, self.name)
+            args = parent_doc.as_dict()
+            
+            try:
+                email_template = frappe.get_doc("Email Template", "Internal Audit Clearance Notification to Auditor")
+                message = frappe.render_template(email_template.response, args)
+                subject = email_template.subject
+                self.send_mail(audit_list,message,subject)
+            except :
+                frappe.msgprint(_("Internal Audit Clearance notification is missing."))
         
     
     def notify_reviewers(self, recipients):
