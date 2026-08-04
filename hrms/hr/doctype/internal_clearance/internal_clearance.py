@@ -22,12 +22,12 @@ class InternalClearance(Document):
     def workflow_action(self):  
         action = frappe.request.form.get('action')
         
-        if action == "Save":
-            if self.owner !=frappe.session.user and frappe.session.user not in self.iad and \
-                frappe.session.user not in self.afd and frappe.session.user and \
-                frappe.session.user not in self.ictcr and frappe.session.user not in self.icthr:
+        # if action == "Save":
+        #     if self.owner !=frappe.session.user and frappe.session.user not in self.iad and \
+        #         frappe.session.user not in self.afd and frappe.session.user and \
+        #         frappe.session.user not in self.ictcr and frappe.session.user not in self.icthr:
                 
-                frappe.throw("Only the Owner and Verifier and Approver can edit.")
+        #         frappe.throw("Only the Owner and Verifier and Approver can edit.")
     
         if action in ("Verify","Approve"):
             self.verifyUpdate()
