@@ -46,8 +46,7 @@ class SalarySlip(TransactionBase):
 		company_currency = get_company_currency(self.company)
 		self.total_in_words = money_in_words(self.rounded_total, company_currency)
 		self.check_house_rent_deduction()
-		#Added by tshering wangchuk as salary tax is not calaculated for overtime
-		# self.update_salary_tax()
+		
 	
  
 	def update_salary_tax(self):
@@ -62,37 +61,41 @@ class SalarySlip(TransactionBase):
 			elif earning.salary_component == "Communication Allowance":
 				comm_amt = earning.amount
 
-		# Calculate tax amount for "Overtime Allowance"
 		# Check if Salary Tax already exists in deductions
-		salary_tax_exists = any(d.salary_component == "Salary Tax" for d in self.deductions)
+		salary_tax_exists = False
+		tax_row_to_remove = None
+		
+		for idx, d in enumerate(self.deductions):
+			if d.salary_component == "Salary Tax":
+				salary_tax_exists = True
+				# Calculate tax
+				calculated_tax = round(get_salary_tax(flt(((self.gross_pay)-flt(self.gross_pay)*0.15),0)))
+				
+				if calculated_tax > 0:
+					d.amount = calculated_tax
+				else:
+					# Mark for removal if tax is 0 or negative
+					tax_row_to_remove = idx
+				break
 
-		# Run the following code only if Salary Tax is not already present
+		# Remove the zero tax row if marked
+		if tax_row_to_remove is not None:
+			self.deductions.pop(tax_row_to_remove)
+			# frappe.msgprint(_("Salary Tax removed as amount is zero"))
+
+		# Add new tax entry only if it doesn't exist and tax > 0
 		if not salary_tax_exists:
 			for i in self.earnings:
 				if i.salary_component == "Overtime Allowance":
-					# Calculate the tax amount based on your logic
-					tax_amt = get_salary_tax(math.floor(flt(self.gross_pay) - flt(pf) - (flt(comm_amt) * 0.5)))
+					tax_amt = get_salary_tax(flt(((self.gross_pay)-flt(self.gross_pay)*0.15),0))
 
-					# If tax amount is greater than 0, append it to deductions as a negative value
+					# ONLY add if tax amount is greater than 0
 					if tax_amt > 0:
 						self.append('deductions', {
 							"salary_component": "Salary Tax",
-							"amount": tax_amt  # Add as a negative amount to represent deduction
+							"amount": tax_amt
 						})
-
-
-				# frappe.throw(str(tax_amt))
-
-
-			
-	 
-		# total_earning = self.gross_pay
-  		# pf_amt = 
-		# gis_amt
-	 	# comm_allowance
-		# calc_amt = get_salary_tax(self.gross_pay)
-		# frappe.throw(str(calc_amt))
-
+						
 	def validate_dates(self):
 		if date_diff(self.end_date, self.start_date) < 0:
 			frappe.throw(_("To date cannot be before From date"))

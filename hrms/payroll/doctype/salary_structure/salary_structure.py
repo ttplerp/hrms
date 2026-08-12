@@ -336,9 +336,9 @@ class SalaryStructure(Document):
 			# Calculating Salary Tax
 			if ed == 'deductions':
 				# calc_amt = get_salary_tax(math.floor(flt(total_earning)-flt(pf_amt)-flt(gis_amt)-(comm_allowance*0.5)))
-				calc_amt = round(get_salary_tax(flt(total_earning)-flt(total_earning)*0.15))
+				calc_amt = round(get_salary_tax(flt(((total_earning)-flt(total_earning)*0.15),0)))
 				calc_amt = roundoff(calc_amt)
-				total_deduction += calc_amt
+				total_deduction = calc_amt
 				calc_map.append({'salary_component': 'Salary Tax', 'amount': flt(calc_amt)})
 
 			# Updating existing Earnings and Deductions tables
@@ -559,6 +559,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 		tax_included = 0
 		for d in calc_map['deductions']:
 			if not flt(gross_amt):
+
 				d['amount'] = 0
 			else:
 				if d['salary_component'] == 'Salary Tax':
@@ -582,6 +583,7 @@ def make_salary_slip(source_name, target_doc=None, calc_days={}):
 			"field_map": {
 				"total_earning": "gross_pay",
 				"name": "salary_structure",
+
 			}
 		}
 	}, target_doc, postprocess, ignore_child_tables=True)

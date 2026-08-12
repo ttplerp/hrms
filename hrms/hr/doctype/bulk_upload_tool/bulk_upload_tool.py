@@ -92,6 +92,9 @@ class BulkUploadTool(Document):
 																				
 							if not getdate(doc.date) > getdate(nowdate()):
 								doc.submit()
+					# Periodically commit to free row locks
+						if count % 20 == 0:
+							frappe.db.commit()
 					else:
 						# frappe.throw(str(row[2]).strip('\''))
 						status = ''

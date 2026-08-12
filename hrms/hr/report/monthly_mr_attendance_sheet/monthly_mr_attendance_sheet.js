@@ -1,4 +1,118 @@
-// Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
+// // Copyright (c) 2025, Frappe Technologies Pvt. Ltd. and contributors
+// // For license information, please see license.txt
+// /* eslint-disable */
+
+// frappe.query_reports["Monthly MR Attendance Sheet"] = {
+// 	"filters": [
+// 		{
+// 			"fieldname":"year",
+// 			"label": __("Year"),
+// 			"fieldtype": "Select",
+// 			"reqd": 1
+// 		},
+// 		{
+// 			"fieldname": "month",
+// 			"label": __("Month"),
+// 			"fieldtype": "Select",
+// 			"reqd": 1 ,
+// 			"options": [
+// 				{ "value": 1, "label": __("Jan") },
+// 				{ "value": 2, "label": __("Feb") },
+// 				{ "value": 3, "label": __("Mar") },
+// 				{ "value": 4, "label": __("Apr") },
+// 				{ "value": 5, "label": __("May") },
+// 				{ "value": 6, "label": __("June") },
+// 				{ "value": 7, "label": __("July") },
+// 				{ "value": 8, "label": __("Aug") },
+// 				{ "value": 9, "label": __("Sep") },
+// 				{ "value": 10, "label": __("Oct") },
+// 				{ "value": 11, "label": __("Nov") },
+// 				{ "value": 12, "label": __("Dec") },
+// 			],
+// 			"default": frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth() + 1
+// 		},
+// 		{
+// 			"fieldname":"mr_employee",
+// 			"label": __("MR Employee"),
+// 			"fieldtype": "Link",
+// 			"options": "Muster Roll Employee",
+// 			get_query: () => {
+// 				var company = frappe.query_report.get_filter_value('company');
+// 				return {
+// 					filters: {
+// 						'company': company
+// 					}
+// 				};
+// 			}
+// 		},
+// 		{
+// 			"fieldname":"branch",
+// 			"label": __("Branch"),
+// 			"fieldtype": "Link",
+// 			"options": "Branch",
+// 		},
+// 		{
+// 			"fieldname": "project",
+// 			"label": __("Project"),
+// 			"fieldtype": "Link",
+// 			"options": "Project"
+// 		},
+
+// 		// {
+// 		// 	"fieldname":"group_by",
+// 		// 	"label": __("Group By"),
+// 		// 	"fieldtype": "Select",
+// 		// 	"options": ["","Branch","Grade","Department","Designation"]
+// 		// },
+// 		// {
+// 		// 	"fieldname":"summarized_view",
+// 		// 	"label": __("Summarized View"),
+// 		// 	"fieldtype": "Check",
+// 		// 	"Default": 0,
+// 		// },
+// 		{
+// 			"fieldname":"company",
+// 			"label": __("Company"),
+// 			"fieldtype": "Link",
+// 			"options": "Company",
+// 			"default": frappe.defaults.get_user_default("Company"),
+// 			"reqd": 1
+// 		},
+// 	],
+// 	onload: function() {
+// 		return  frappe.call({
+// 			method: "hrms.hr.report.monthly_mr_attendance_sheet.monthly_mr_attendance_sheet.get_attendance_years",
+// 			callback: function(r) {
+// 				var year_filter = frappe.query_report.get_filter('year');
+// 				year_filter.df.options = r.message;
+// 				year_filter.df.default = r.message.split("\n")[0];
+// 				year_filter.refresh();
+// 				year_filter.set_input(year_filter.df.default);
+// 			}
+// 		});
+// 	},
+// 	formatter: function(value, row, column, data, default_formatter) {
+// 		value = default_formatter(value, row, column, data);
+// 		const summarized_view = frappe.query_report.get_filter_value('summarized_view');
+// 		const group_by = frappe.query_report.get_filter_value('group_by');
+
+// 		if (!summarized_view) {
+// 			if ((group_by && column.colIndex > 3) || (!group_by && column.colIndex > 2)) {
+// 				if (value == 'P' || value == 'T')
+// 					value = "<span style='color:green'>" + value + "</span>";
+// 				else if (value == 'A')
+// 					value = "<span style='color:red'>" + value + "</span>";
+// 				else if (value == 'HD')
+// 					value = "<span style='color:orange'>" + value + "</span>";
+// 				else if (value == 'L')
+// 					value = "<span style='color:#318AD8'>" + value + "</span>";
+// 			}
+// 		}
+
+// 		return value;
+// 	}
+// }
+// Copyright (c) 2025, Frappe Technologies Pvt. Ltd.
 // For license information, please see license.txt
 /* eslint-disable */
 
@@ -21,8 +135,8 @@ frappe.query_reports["Monthly MR Attendance Sheet"] = {
 				{ "value": 3, "label": __("Mar") },
 				{ "value": 4, "label": __("Apr") },
 				{ "value": 5, "label": __("May") },
-				{ "value": 6, "label": __("June") },
-				{ "value": 7, "label": __("July") },
+				{ "value": 6, "label": __("Jun") },
+				{ "value": 7, "label": __("Jul") },
 				{ "value": 8, "label": __("Aug") },
 				{ "value": 9, "label": __("Sep") },
 				{ "value": 10, "label": __("Oct") },
@@ -32,17 +146,23 @@ frappe.query_reports["Monthly MR Attendance Sheet"] = {
 			"default": frappe.datetime.str_to_obj(frappe.datetime.get_today()).getMonth() + 1
 		},
 		{
+			"fieldname":"project",
+			"label": __("Project"),
+			"fieldtype": "Link",
+			"options": "Project"
+		},
+		{
 			"fieldname":"mr_employee",
 			"label": __("MR Employee"),
 			"fieldtype": "Link",
 			"options": "Muster Roll Employee",
 			get_query: () => {
 				var company = frappe.query_report.get_filter_value('company');
-				return {
-					filters: {
-						'company': company
-					}
-				};
+				var project = frappe.query_report.get_filter_value('project');
+				let filters = { company: company };
+				if (project) filters['project'] = project;
+
+				return { filters: filters };
 			}
 		},
 		{
@@ -51,18 +171,6 @@ frappe.query_reports["Monthly MR Attendance Sheet"] = {
 			"fieldtype": "Link",
 			"options": "Branch",
 		},
-		// {
-		// 	"fieldname":"group_by",
-		// 	"label": __("Group By"),
-		// 	"fieldtype": "Select",
-		// 	"options": ["","Branch","Grade","Department","Designation"]
-		// },
-		// {
-		// 	"fieldname":"summarized_view",
-		// 	"label": __("Summarized View"),
-		// 	"fieldtype": "Check",
-		// 	"Default": 0,
-		// },
 		{
 			"fieldname":"company",
 			"label": __("Company"),
@@ -72,8 +180,9 @@ frappe.query_reports["Monthly MR Attendance Sheet"] = {
 			"reqd": 1
 		},
 	],
+
 	onload: function() {
-		return  frappe.call({
+		return frappe.call({
 			method: "hrms.hr.report.monthly_mr_attendance_sheet.monthly_mr_attendance_sheet.get_attendance_years",
 			callback: function(r) {
 				var year_filter = frappe.query_report.get_filter('year');
@@ -84,23 +193,14 @@ frappe.query_reports["Monthly MR Attendance Sheet"] = {
 			}
 		});
 	},
+
 	formatter: function(value, row, column, data, default_formatter) {
 		value = default_formatter(value, row, column, data);
-		const summarized_view = frappe.query_report.get_filter_value('summarized_view');
-		const group_by = frappe.query_report.get_filter_value('group_by');
 
-		if (!summarized_view) {
-			if ((group_by && column.colIndex > 3) || (!group_by && column.colIndex > 2)) {
-				if (value == 'P' || value == 'T')
-					value = "<span style='color:green'>" + value + "</span>";
-				else if (value == 'A')
-					value = "<span style='color:red'>" + value + "</span>";
-				else if (value == 'HD')
-					value = "<span style='color:orange'>" + value + "</span>";
-				else if (value == 'L')
-					value = "<span style='color:#318AD8'>" + value + "</span>";
-			}
-		}
+		if (value == 'P' || value == 'T') value = `<span style="color:green">${value}</span>`;
+		else if (value == 'A') value = `<span style="color:red">${value}</span>`;
+		else if (value == 'HD') value = `<span style="color:orange">${value}</span>`;
+		else if (value == 'L') value = `<span style="color:#318AD8">${value}</span>`;
 
 		return value;
 	}
