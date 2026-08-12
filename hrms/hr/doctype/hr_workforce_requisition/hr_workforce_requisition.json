@@ -1,0 +1,123 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:WFR-{YYYY}-{MM}-{###}",
+ "creation": "2026-04-24 14:25:23.712291",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "requisition_type",
+  "requesting_branch",
+  "column_break_fdxir",
+  "requested_from",
+  "requested_by",
+  "section_break_0z8i0",
+  "workforce_requisition",
+  "section_break_ifkui",
+  "approver_id",
+  "column_break_1bhel",
+  "approver_name",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "requisition_type",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "in_list_view": 1,
+   "label": "Requisition Type",
+   "options": "\nProject Site To VCSC\nVSCS To Head Office"
+  },
+  {
+   "fieldname": "requesting_branch",
+   "fieldtype": "Link",
+   "label": "Requesting Branch",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "HR Workforce Requisition",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_fdxir",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "requested_from",
+   "fieldtype": "Link",
+   "label": "Requested To",
+   "options": "Branch"
+  },
+  {
+   "fieldname": "requested_by",
+   "fieldtype": "Link",
+   "label": "Requested By",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "section_break_0z8i0",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "workforce_requisition",
+   "fieldtype": "Table",
+   "label": "Workforce Requisition",
+   "options": "Workforce Requirement"
+  },
+  {
+   "fieldname": "section_break_ifkui",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "requested_by.reports_to_name",
+   "fieldname": "approver_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Approver Name"
+  },
+  {
+   "fieldname": "column_break_1bhel",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "requested_by.reports_to",
+   "fieldname": "approver_id",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Approver ID"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-08-07 11:59:00.843394",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "HR Workforce Requisition",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
