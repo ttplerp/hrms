@@ -591,7 +591,6 @@ def get_permission_query_conditions(user):
     user_roles = frappe.get_roles(user)
 
     if user == "Administrator":
-        frappe.throw(str("hi"))
         return
     if (
         "HR Manager" in user_roles
