@@ -1,155 +1,621 @@
 {
  "actions": [],
- "allow_events_in_timeline": 1,
  "allow_import": 1,
  "allow_rename": 1,
- "creation": "2022-11-29 22:18:01.153560",
+ "creation": "2013-03-07 18:50:29",
  "doctype": "DocType",
- "editable_grid": 1,
+ "document_type": "Document",
  "engine": "InnoDB",
  "field_order": [
-  "muster_roll_group",
-  "passport_number",
-  "cid_number",
-  "person_name",
-  "column_break_brsat",
-  "status",
-  "joining_date",
-  "separation_date",
-  "remarks",
-  "section_break_1",
+  "employee",
+  "employee_name",
+  "employment_type",
+  "employee_group",
+  "employee_grade",
   "designation",
-  "grade",
-  "muster_roll_type",
-  "qualification",
-  "image",
-  "column_break_4",
-  "gender",
-  "blood_group",
-  "care_of",
-  "team_lead",
-  "list_in_job_card",
-  "section_break_8",
-  "column_break_8",
-  "wage_detail_section",
-  "musterroll",
-  "section_break_12",
-  "salary",
-  "rate_per_day",
-  "set_manually",
-  "column_break_14",
-  "rate_per_hour",
-  "user_details_section",
-  "user_id",
-  "section_break_z68ni",
+  "cb_3",
   "company",
-  "holiday_list",
-  "column_break_26",
   "branch",
   "cost_center",
-  "project",
-  "tds_details_section",
-  "has_tds_deduction",
-  "column_break_mbbrj",
-  "tds_percent",
-  "tds_account",
-  "payments_tab",
-  "sb_bank_info",
-  "salary_mode",
-  "bank_name",
-  "bank_branch",
-  "column_break_32",
-  "bank_account_type",
-  "bank_ac_no",
-  "personal_details_tab",
-  "phone_no",
-  "column_break_ymchb",
-  "email",
-  "address_section",
-  "dzongkhag",
-  "district",
-  "column_break_5fsyg",
-  "gewog",
-  "block",
-  "village",
-  "section_break_16",
-  "internal_work_history",
-  "date_of_transfer",
-  "sb_additional_info",
-  "reference_doctype",
-  "column_break_30",
-  "reference_docname",
-  "temp_doctype",
-  "temp_docname",
-  "pms_tab",
-  "include_in_performance_evaluation",
-  "pms_employee_group",
-  "evaluators",
-  "profile_tab",
-  "is_desuup",
-  "desuup_id",
-  "column_break_a4awx",
-  "batch_number",
-  "disciplinary_actions_section",
-  "misconducts"
+  "department",
+  "division",
+  "section",
+  "letter_head",
+  "cb_6",
+  "is_active",
+  "is_default",
+  "from_date",
+  "to_date",
+  "time_sheet_earning_detail",
+  "salary_slip_based_on_timesheet",
+  "cb_9",
+  "salary_component",
+  "hour_rate",
+  "sb_eligibility",
+  "eligible_for_hydro_allowance",
+  "ha_method",
+  "ha",
+  "eligible_for_contract_allowance",
+  "contract_allowance_method",
+  "contract_allowance",
+  "eligible_for_communication_allowance",
+  "communication_allowance_method",
+  "communication_allowance",
+  "eligible_for_head_allowance",
+  "head_allowance_method",
+  "head_allowance",
+  "eligible_for_house_allowances",
+  "house_payment_method",
+  "house_allowances",
+  "eligible_for_underground",
+  "underground_method",
+  "underground",
+  "eligible_for_shift",
+  "shift_method",
+  "shift",
+  "cb_10",
+  "eligible_for_long_distance_allowance",
+  "ld_method",
+  "ld",
+  "eligible_for_corporate_allowance",
+  "ca_method",
+  "ca",
+  "eligible_for_conveyance_allowance",
+  "con_method",
+  "con",
+  "eligible_for_shift_allowance",
+  "shift_allowance_method",
+  "shift_allowance",
+  "eligible_for_deputation",
+  "deputation_method",
+  "deputation",
+  "eligible_for_special_incentives",
+  "si_method",
+  "si",
+  "cb_12",
+  "eligible_for_project_allowance",
+  "project_allowance_method",
+  "project_allowance",
+  "eligible_for_officiating_allowance",
+  "officiating_allowance_method",
+  "officiating_allowance",
+  "eligible_for_fixed_allowance",
+  "fixed_allowance_method",
+  "fixed_allowance",
+  "lumpsum_temp_transfer_amount",
+  "eligible_for_site_allowance",
+  "site_method",
+  "site",
+  "eligible_for_difficulty_allowance",
+  "difficulty_allowance_method",
+  "difficulty_allowance",
+  "eligible_for_commitment_allowance",
+  "commitment_allowance_method",
+  "commitment_allowance_value",
+  "sb_other_benefits",
+  "eligible_for_gis",
+  "eligible_for_pf",
+  "eligible_for_health_contribution",
+  "eligible_for_tax",
+  "eligible_for_sws",
+  "cb_16",
+  "eligible_for_leave_encashment",
+  "eligible_for_ltc",
+  "eligible_for_overtime_and_payment",
+  "cb_17",
+  "eligible_for_pbva",
+  "eligible_for_annual_bonus",
+  "earning_deduction",
+  "earnings",
+  "cb_18",
+  "deductions",
+  "net_pay_detail",
+  "total_earning",
+  "total_deduction",
+  "net_pay",
+  "cb_21",
+  "business_activity",
+  "actual_basic"
  ],
  "fields": [
   {
-   "fieldname": "section_break_1",
-   "fieldtype": "Section Break",
-   "label": "Employee Details"
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_standard_filter": 1,
+   "label": "Employee",
+   "oldfieldname": "employee",
+   "oldfieldtype": "Link",
+   "options": "Employee",
+   "reqd": 1
   },
   {
-   "fieldname": "person_name",
+   "fieldname": "employee_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Full Name",
-   "reqd": 1
+   "label": "Employee Name",
+   "oldfieldname": "employee_name",
+   "oldfieldtype": "Data",
+   "read_only": 1
   },
   {
-   "fieldname": "column_break_4",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Status",
-   "options": "\nActive\nInactive\nTerminated",
-   "reqd": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "list_in_job_card",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "List in Job Card"
-  },
-  {
-   "fieldname": "section_break_8",
-   "fieldtype": "Section Break",
-   "label": "Work Status"
-  },
-  {
-   "fieldname": "project",
+   "fieldname": "employment_type",
    "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Project",
-   "options": "Project"
+   "label": "Employment Type",
+   "options": "Employment Type",
+   "read_only": 1
   },
   {
-   "fieldname": "column_break_8",
-   "fieldtype": "Column Break"
+   "fieldname": "employee_group",
+   "fieldtype": "Link",
+   "label": "Employee Group",
+   "options": "Employee Group",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_grade",
+   "fieldtype": "Link",
+   "label": "Employee Grade",
+   "options": "Employee Grade",
+   "read_only": 1
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "label": "Designation",
+   "oldfieldname": "designation",
+   "oldfieldtype": "Select",
+   "options": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "in_filter": 1,
+   "label": "Company",
+   "options": "Company"
   },
   {
    "fieldname": "branch",
    "fieldtype": "Link",
-   "in_list_view": 1,
+   "in_filter": 1,
+   "in_standard_filter": 1,
    "label": "Branch",
+   "oldfieldname": "branch",
+   "oldfieldtype": "Select",
    "options": "Branch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "label": "Department",
+   "oldfieldname": "department",
+   "oldfieldtype": "Select",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "division",
+   "fieldtype": "Link",
+   "label": "Division",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section",
+   "fieldtype": "Link",
+   "label": "Section",
+   "options": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "business_activity",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Business Activity",
+   "options": "Business Activity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "letter_head",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Letter Head",
+   "options": "Letter Head"
+  },
+  {
+   "default": "Yes",
+   "depends_on": "eval:doc.employee",
+   "fieldname": "is_active",
+   "fieldtype": "Select",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "label": "Is Active",
+   "oldfieldname": "is_active",
+   "oldfieldtype": "Select",
+   "options": "\nYes\nNo",
    "reqd": 1
+  },
+  {
+   "default": "No",
+   "fieldname": "is_default",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Is Default",
+   "no_copy": 1,
+   "options": "Yes\nNo",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.employee",
+   "fetch_from": "employee.date_of_joining",
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "From Date",
+   "oldfieldname": "from_date",
+   "oldfieldtype": "Date"
+  },
+  {
+   "depends_on": "eval:doc.employee && doc.is_active == \"No\"",
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "To Date",
+   "oldfieldname": "to_date",
+   "oldfieldtype": "Date"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_contract_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Contract allowance"
+  },
+  {
+   "depends_on": "eligible_for_contract_allowance",
+   "fieldname": "contract_allowance_method",
+   "fieldtype": "Select",
+   "label": "Payment Method(Contract)",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "default": "30",
+   "depends_on": "eval:doc.eligible_for_contract_allowance==1",
+   "fieldname": "contract_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Contranct)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_communication_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Communication Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_communication_allowance",
+   "fieldname": "communication_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Communication Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_communication_allowance==1",
+   "fieldname": "communication_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Communication)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_underground",
+   "fieldtype": "Check",
+   "label": "Eligible for Underground Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_underground",
+   "fieldname": "underground_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Underground Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "default": "45",
+   "depends_on": "eval:doc.eligible_for_underground==1",
+   "fieldname": "underground",
+   "fieldtype": "Int",
+   "label": "Value(Underground)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_shift",
+   "fieldtype": "Check",
+   "label": "Eligible for Shift Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_shift",
+   "fieldname": "shift_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Shift Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_shift==1",
+   "fieldname": "shift",
+   "fieldtype": "Int",
+   "label": "Value(Shift Allowance)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_deputation",
+   "fieldtype": "Check",
+   "label": "Eligible for Deputation",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_deputation",
+   "fieldname": "deputation_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Deputation Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_deputation==1",
+   "fieldname": "deputation",
+   "fieldtype": "Int",
+   "label": "Value(Deputation)",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_officiating_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Officiating Allowance",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_officiating_allowance",
+   "fieldname": "officiating_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Officiating Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_officiating_allowance==1",
+   "fieldname": "officiating_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Officiating)",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "lumpsum_temp_transfer_amount",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Lumpsum Amount",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_pbva",
+   "fieldtype": "Check",
+   "label": "Eligible for PBVA",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_leave_encashment",
+   "fieldtype": "Check",
+   "label": "Eligible for Leave Encashment",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_ltc",
+   "fieldtype": "Check",
+   "label": "Eligible for LTC",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_overtime_and_payment",
+   "fieldtype": "Check",
+   "label": "Eligible for Overtime and Payment",
+   "print_hide": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_gis",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Eligible for GIS",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_pf",
+   "fieldtype": "Check",
+   "label": "Eligible for PF",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_health_contribution",
+   "fieldtype": "Check",
+   "label": "Eligible for Health Contribution",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_annual_bonus",
+   "fieldtype": "Check",
+   "label": "Eligible for Annual Bonus",
+   "print_hide": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_tax",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Eligible for Tax",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "time_sheet_earning_detail",
+   "fieldtype": "Section Break",
+   "hidden": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "salary_slip_based_on_timesheet",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Salary Slip Based on Timesheet"
+  },
+  {
+   "description": "Salary Component for timesheet based payroll.",
+   "fieldname": "salary_component",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Salary Component",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "hour_rate",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Hour Rate",
+   "precision": "2",
+   "print_hide": 1
+  },
+  {
+   "description": "Salary breakup based on Earning and Deduction.",
+   "fieldname": "earning_deduction",
+   "fieldtype": "Section Break",
+   "oldfieldname": "earning_deduction",
+   "oldfieldtype": "Section Break"
+  },
+  {
+   "fieldname": "earnings",
+   "fieldtype": "Table",
+   "label": "Earnings",
+   "oldfieldname": "earning_details",
+   "oldfieldtype": "Table",
+   "options": "Salary Detail"
+  },
+  {
+   "fieldname": "deductions",
+   "fieldtype": "Table",
+   "label": "Deductions",
+   "oldfieldname": "deduction_details",
+   "oldfieldtype": "Table",
+   "options": "Salary Detail"
+  },
+  {
+   "fieldname": "net_pay_detail",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_earning",
+   "fieldtype": "Currency",
+   "label": "Total Earning",
+   "oldfieldname": "total_earning",
+   "oldfieldtype": "Currency",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_deduction",
+   "fieldtype": "Currency",
+   "label": "Total Deduction",
+   "oldfieldname": "total_deduction",
+   "oldfieldtype": "Currency",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_pay",
+   "fieldtype": "Currency",
+   "label": "Net Pay",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "actual_basic",
+   "fieldtype": "Currency",
+   "hidden": 1,
+   "label": "Actual Basic",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_other_benefits",
+   "fieldtype": "Section Break",
+   "label": "Other Benefits & Deductions",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "sb_eligibility",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cb_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_6",
+   "fieldtype": "Column Break",
+   "width": "50%"
+  },
+  {
+   "fieldname": "cb_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_18",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_21",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "eligible_for_sws",
+   "fieldtype": "Check",
+   "label": "Eligible for SWS",
+   "print_hide": 1
+  },
+  {
+   "fieldname": "cb_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb_17",
+   "fieldtype": "Column Break"
   },
   {
    "fetch_from": "branch.cost_center",
@@ -157,471 +623,294 @@
    "fieldtype": "Link",
    "label": "Cost Center",
    "options": "Cost Center",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
-   "fieldname": "joining_date",
-   "fieldtype": "Date",
-   "label": "Joining Date",
-   "reqd": 1
+   "default": "0",
+   "fieldname": "eligible_for_hydro_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Hydro Allowance",
+   "print_hide": 1
   },
   {
-   "depends_on": "eval:doc.status == 'Left'",
-   "fieldname": "separation_date",
-   "fieldtype": "Date",
-   "label": "Separation Date",
-   "mandatory_depends_on": "eval:doc.status == 'Left'"
+   "default": "0",
+   "fieldname": "eligible_for_conveyance_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Conveyance Allowance",
+   "print_hide": 1
   },
   {
-   "fieldname": "blood_group",
-   "fieldtype": "Link",
-   "label": "Blood Group",
-   "options": "Blood Group",
-   "reqd": 1
+   "default": "0",
+   "fieldname": "eligible_for_site_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Site Allowance",
+   "print_hide": 1
   },
   {
-   "fieldname": "section_break_12",
-   "fieldtype": "Section Break",
-   "label": "Wages Details"
+   "depends_on": "eligible_for_hydro_allowance",
+   "fieldname": "ha_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Hydro Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
   },
   {
-   "default": "0.0",
-   "fieldname": "salary",
+   "default": "0",
+   "depends_on": "eval:doc.eligible_for_hydro_allowance==1",
+   "fieldname": "ha",
+   "fieldtype": "Int",
+   "label": "Value(Hydro Allowance)",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eligible_for_conveyance_allowance",
+   "fieldname": "con_method",
+   "fieldtype": "Select",
+   "label": "Eligible for  Conveyance Allowance Payment Method",
+   "options": "Lumpsum\nPercent",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_conveyance_allowance==1",
+   "fieldname": "con",
    "fieldtype": "Currency",
-   "hidden": 1,
-   "label": "Salary Per Month",
-   "read_only": 1
+   "label": "Value(Conveyance Allowance)",
+   "print_hide": 1
   },
   {
-   "fieldname": "rate_per_day",
+   "depends_on": "eligible_for_site_allowance",
+   "fieldname": "site_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Site Allowance Payment Method",
+   "options": "Lumpsum\nPercent",
+   "print_hide": 1
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_site_allowance==1",
+   "fieldname": "site",
    "fieldtype": "Currency",
-   "label": "Rate Per Day",
-   "read_only_depends_on": "eval:!doc.set_manually"
+   "label": "Value(Site Allowance)",
+   "precision": "2",
+   "print_hide": 1
   },
   {
-   "fieldname": "column_break_14",
-   "fieldtype": "Column Break"
+   "default": "0",
+   "fieldname": "eligible_for_difficulty_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Difficulty Allowance"
   },
   {
-   "fieldname": "rate_per_hour",
+   "default": "Percent",
+   "depends_on": "eval:doc.eligible_for_difficulty_allowance==1",
+   "fieldname": "difficulty_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Difficulty Allowance Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "depends_on": "eval:doc.eligible_for_difficulty_allowance==1",
+   "fieldname": "difficulty_allowance",
+   "fieldtype": "Data",
+   "label": "Value (Difficulty Allowance)"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_corporate_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Corporate Allowance"
+  },
+  {
+   "default": "Percent",
+   "depends_on": "eligible_for_corporate_allowance",
+   "fieldname": "ca_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Corporate Allowance Payment Method",
+   "options": "Lumpsum\nPercent"
+  },
+  {
+   "depends_on": "eligible_for_corporate_allowance",
+   "fieldname": "ca",
+   "fieldtype": "Int",
+   "label": "Value(Corporate Allowance)"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_project_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Project Allowance"
+  },
+  {
+   "depends_on": "eligible_for_project_allowance",
+   "fieldname": "project_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Project Allowance)"
+  },
+  {
+   "default": "Percent",
+   "depends_on": "eligible_for_project_allowance",
+   "fieldname": "project_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Project Allowance Payment Method",
+   "options": "Percent\nLumpsum"
+  },
+  {
+   "default": "0",
+   "fieldname": "eligible_for_head_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Head Allowance"
+  },
+  {
+   "default": "Lumpsum",
+   "depends_on": "eligible_for_head_allowance",
+   "fieldname": "head_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Head Allowance Payment Method",
+   "options": "\nPercent\nLumpsum"
+  },
+  {
+   "depends_on": "eligible_for_head_allowance",
+   "fieldname": "head_allowance",
    "fieldtype": "Currency",
-   "label": "Rate Per Hour (Overtime)     (Daily Rate / 5)"
-  },
-  {
-   "fieldname": "sb_bank_info",
-   "fieldtype": "Section Break",
-   "label": "Bank Account Details"
-  },
-  {
-   "fieldname": "salary_mode",
-   "fieldtype": "Select",
-   "label": "Salary Mode",
-   "options": "Bank\nCash"
-  },
-  {
-   "fieldname": "column_break_32",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "eval: doc.salary_mode=='Bank';",
-   "fieldname": "bank_name",
-   "fieldtype": "Link",
-   "label": "Bank Name",
-   "mandatory_depends_on": "eval: doc.salary_mode=='Bank';",
-   "options": "Financial Institution"
-  },
-  {
-   "depends_on": "eval: doc.salary_mode=='Bank';",
-   "fieldname": "bank_branch",
-   "fieldtype": "Link",
-   "label": "Bank Branch",
-   "mandatory_depends_on": "eval: doc.salary_mode=='Bank';",
-   "options": "Financial Institution Branch"
-  },
-  {
-   "depends_on": "eval: doc.salary_mode=='Bank';",
-   "fieldname": "bank_account_type",
-   "fieldtype": "Link",
-   "label": "Bank Account Type",
-   "mandatory_depends_on": "eval: doc.salary_mode=='Bank';",
-   "options": "Bank Account Type"
-  },
-  {
-   "depends_on": "eval: doc.salary_mode=='Bank';",
-   "fieldname": "bank_ac_no",
-   "fieldtype": "Data",
-   "label": "Bank Account Number",
-   "mandatory_depends_on": "eval: doc.salary_mode=='Bank';"
-  },
-  {
-   "fieldname": "section_break_16",
-   "fieldtype": "Section Break",
-   "label": "INTERNAL WORK HISTORY"
-  },
-  {
-   "fieldname": "internal_work_history",
-   "fieldtype": "Table",
-   "options": "Employee Internal Work History",
-   "read_only": 1
-  },
-  {
-   "fieldname": "user_id",
-   "fieldtype": "Link",
-   "label": "User ID",
-   "options": "User"
-  },
-  {
-   "fieldname": "column_break_26",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "company",
-   "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company",
-   "reqd": 1
-  },
-  {
-   "fieldname": "date_of_transfer",
-   "fieldtype": "Date",
-   "hidden": 1,
-   "label": "Date Of Transfer"
-  },
-  {
-   "fieldname": "sb_additional_info",
-   "fieldtype": "Section Break",
-   "label": "ADDITIONAL INFO"
-  },
-  {
-   "fieldname": "reference_doctype",
-   "fieldtype": "Data",
-   "label": "Reference Doctype",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_30",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "reference_docname",
-   "fieldtype": "Data",
-   "label": "Reference Docname",
-   "read_only": 1
-  },
-  {
-   "fieldname": "temp_doctype",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Temp Doctype",
-   "read_only": 1
-  },
-  {
-   "fieldname": "temp_docname",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Temp Docname",
-   "read_only": 1
-  },
-  {
-   "fieldname": "wage_detail_section",
-   "fieldtype": "Section Break",
-   "hidden": 1,
-   "label": "Wage Detail"
-  },
-  {
-   "fieldname": "musterroll",
-   "fieldtype": "Table",
-   "options": "Musterroll"
-  },
-  {
-   "fieldname": "designation",
-   "fieldtype": "Link",
-   "label": "Designation",
-   "options": "Muster Roll Designation",
-   "reqd": 1
-  },
-  {
-   "fieldname": "gender",
-   "fieldtype": "Select",
-   "label": "Gender",
-   "options": "\nMale\nFemale\nOther",
-   "reqd": 1
-  },
-  {
-   "fieldname": "qualification",
-   "fieldtype": "Link",
-   "label": "Qualification",
-   "options": "Muster Roll Qualification",
-   "reqd": 1
-  },
-  {
-   "fieldname": "muster_roll_type",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "ignore_user_permissions": 1,
-   "label": "Muster Roll Type",
-   "options": "Muster Roll Type"
-  },
-  {
-   "depends_on": "eval:doc.include_in_performance_evaluation",
-   "fieldname": "evaluators",
-   "fieldtype": "Table",
-   "options": "Performance Evaluator",
-   "read_only": 1
-  },
-  {
-   "depends_on": "eval:doc.include_in_performance_evaluation",
-   "fieldname": "pms_employee_group",
-   "fieldtype": "Link",
-   "label": "PMS Employee Group",
-   "mandatory_depends_on": "eval:doc.include_in_performance_evaluation",
-   "options": "Employee Group"
-  },
-  {
-   "fieldname": "muster_roll_group",
-   "fieldtype": "Select",
-   "label": "Muster Roll Group",
-   "options": "\nNational\nNon-National",
-   "reqd": 1,
-   "set_only_once": 1
+   "label": "Value (Head Allowance)"
   },
   {
    "default": "0",
-   "fieldname": "include_in_performance_evaluation",
+   "fieldname": "eligible_for_special_incentives",
    "fieldtype": "Check",
-   "label": " Include in Performance Evaluation"
+   "label": "Eligible for Special Incentives"
   },
   {
-   "default": "0",
-   "fieldname": "has_tds_deduction",
-   "fieldtype": "Check",
-   "label": "Has TDS Deduction"
-  },
-  {
-   "default": "3",
-   "depends_on": "has_tds_deduction",
-   "fieldname": "tds_percent",
+   "default": "Lumpsum",
+   "depends_on": "eligible_for_special_incentives",
+   "fieldname": "si_method",
    "fieldtype": "Select",
-   "label": "TDS Percent",
-   "mandatory_depends_on": "has_tds_deduction",
-   "options": "\n2\n3\n5"
+   "label": "Eligible for Special Incentives Payment Method",
+   "options": "\nLumpsum\nPercent"
   },
   {
-   "fieldname": "tds_details_section",
-   "fieldtype": "Section Break",
-   "label": "TDS Details"
-  },
-  {
-   "fieldname": "column_break_mbbrj",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "has_tds_deduction",
-   "fieldname": "tds_account",
-   "fieldtype": "Link",
-   "label": "TDS Account",
-   "mandatory_depends_on": "has_tds_deduction",
-   "options": "Account",
-   "read_only": 1
-  },
-  {
-   "fieldname": "phone_no",
-   "fieldtype": "Phone",
-   "label": "Phone No"
-  },
-  {
-   "fieldname": "column_break_ymchb",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "email",
-   "fieldtype": "Data",
-   "label": "Email"
-  },
-  {
-   "depends_on": "eval:doc.muster_roll_group=='Non-National';",
-   "fieldname": "team_lead",
-   "fieldtype": "Link",
-   "label": "Team Lead",
-   "options": "Team Lead"
-  },
-  {
-   "fieldname": "holiday_list",
-   "fieldtype": "Link",
-   "label": "Holiday List",
-   "options": "Holiday List"
-  },
-  {
-   "fieldname": "grade",
-   "fieldtype": "Link",
-   "label": "Grade",
-   "options": "Muster Roll Grade",
-   "reqd": 1
+   "depends_on": "eligible_for_special_incentives",
+   "fieldname": "si",
+   "fieldtype": "Currency",
+   "label": "Value(Special Incentives)"
   },
   {
    "default": "0",
-   "fieldname": "set_manually",
+   "fieldname": "eligible_for_long_distance_allowance",
    "fieldtype": "Check",
-   "label": "Set Manually"
+   "label": "Eligible for Long Distance Allowance"
   },
   {
-   "depends_on": "eval:doc.muster_roll_group == \"Non-National\"",
-   "fieldname": "passport_number",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Passport/Work Permit Number",
-   "mandatory_depends_on": "eval:doc.muster_roll_group == \"Non-National\"",
-   "set_only_once": 1,
-   "unique": 1
+   "default": "Lumpsum",
+   "depends_on": "eval:doc.eligible_for_long_distance_allowance==1",
+   "fieldname": "ld_method",
+   "fieldtype": "Select",
+   "label": "Long Distance Allowance Payment Method",
+   "mandatory_depends_on": "eval:doc.eligible_for_long_distance_allowance==1",
+   "options": "Lumpsum\nPercent"
   },
   {
-   "depends_on": "eval:doc.muster_roll_group == \"National\"",
-   "fieldname": "cid_number",
-   "fieldtype": "Data",
-   "label": "CID Number",
-   "mandatory_depends_on": "eval:doc.muster_roll_group == \"National\"",
-   "no_copy": 1,
-   "set_only_once": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "column_break_brsat",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "profile_tab",
-   "fieldtype": "Tab Break",
-   "label": "Profile"
+   "depends_on": "eval:doc.eligible_for_long_distance_allowance==1",
+   "fieldname": "ld",
+   "fieldtype": "Currency",
+   "label": "Value(Long Distance Allowance)",
+   "mandatory_depends_on": "eval:doc.eligible_for_long_distance_allowance==1"
   },
   {
    "default": "0",
-   "fieldname": "is_desuup",
+   "fieldname": "eligible_for_house_allowances",
    "fieldtype": "Check",
-   "label": "Is Desuup"
+   "label": "Eligible for Housing Allowances",
+   "print_hide": 1
   },
   {
-   "depends_on": "eval:doc.is_desuup",
-   "fieldname": "desuup_id",
-   "fieldtype": "Data",
-   "label": "Desuup ID",
-   "mandatory_depends_on": "eval:doc.is_desuup"
+   "depends_on": "eval:doc.eligible_for_house_allowances==1",
+   "fieldname": "house_allowances",
+   "fieldtype": "Currency",
+   "label": "Value(House Allowance)",
+   "print_hide": 1
   },
   {
-   "fieldname": "column_break_a4awx",
-   "fieldtype": "Column Break"
+   "depends_on": "eligible_for_house_allowances",
+   "fieldname": "house_payment_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Housing Allowances Payment Method",
+   "options": "\nPercent\nLumpsum",
+   "print_hide": 1
   },
   {
-   "depends_on": "eval:doc.is_desuup",
-   "fieldname": "batch_number",
-   "fieldtype": "Data",
-   "label": "Batch Number",
-   "mandatory_depends_on": "eval:doc.is_desuup"
+   "default": "0",
+   "fieldname": "eligible_for_shift_allowance",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Eligible for Shift Allowance",
+   "print_hide": 1
   },
   {
-   "depends_on": "eval:doc.status != 'Active';",
-   "fieldname": "remarks",
-   "fieldtype": "Small Text",
-   "label": "Remarks",
-   "mandatory_depends_on": "eval:doc.status != 'Active';"
+   "depends_on": "eligible_for_shift_allowance",
+   "fieldname": "shift_allowance_method",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Eligible for Shift Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
   },
   {
-   "fieldname": "personal_details_tab",
-   "fieldtype": "Tab Break",
-   "label": "Personal Details"
+   "depends_on": "eval:doc.eligible_for_shift_allowance==1",
+   "fieldname": "shift_allowance",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Value(Shift Allowance)",
+   "print_hide": 1
   },
   {
-   "fieldname": "pms_tab",
-   "fieldtype": "Tab Break",
-   "label": "PMS"
+   "default": "0",
+   "fieldname": "eligible_for_fixed_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Fixed Allowance",
+   "print_hide": 1
   },
   {
-   "fieldname": "payments_tab",
-   "fieldtype": "Tab Break",
-   "label": "Payments"
+   "depends_on": "eligible_for_fixed_allowance",
+   "fieldname": "fixed_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Fixed Allowance Payment Method",
+   "options": "Percent\nLumpsum",
+   "print_hide": 1
   },
   {
-   "fieldname": "address_section",
-   "fieldtype": "Section Break",
-   "label": "Address"
+   "depends_on": "eval:doc.eligible_for_fixed_allowance==1",
+   "fieldname": "fixed_allowance",
+   "fieldtype": "Int",
+   "label": "Value(Fixed Allowance)",
+   "print_hide": 1
   },
   {
-   "fieldname": "village",
-   "fieldtype": "Data",
-   "label": "Village"
+   "default": "0",
+   "fieldname": "eligible_for_commitment_allowance",
+   "fieldtype": "Check",
+   "label": "Eligible for Commitment Allowance"
   },
   {
-   "depends_on": "eval:doc.muster_roll_group==\"National\"",
-   "fieldname": "gewog",
-   "fieldtype": "Link",
-   "label": "Gewog",
-   "options": "Gewog"
+   "depends_on": "eligible_for_commitment_allowance",
+   "fieldname": "commitment_allowance_method",
+   "fieldtype": "Select",
+   "label": "Eligible for Commitment Allowance Method",
+   "options": "\nPercent\nLumpsum"
   },
   {
-   "depends_on": "eval:doc.muster_roll_group==\"National\"",
-   "fieldname": "dzongkhag",
-   "fieldtype": "Link",
-   "label": "Dzongkhag",
-   "options": "Dzongkhag"
-  },
-  {
-   "fieldname": "column_break_5fsyg",
-   "fieldtype": "Column Break"
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "user_details_section",
-   "fieldtype": "Section Break",
-   "label": "User Details"
-  },
-  {
-   "fieldname": "section_break_z68ni",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "care_of",
-   "fieldtype": "Link",
-   "label": "Care of (Thrikhadar)",
-   "mandatory_depends_on": "eval:doc.muster_roll_group != 'National';",
-   "options": "Muster Roll Employee"
-  },
-  {
-   "fieldname": "disciplinary_actions_section",
-   "fieldtype": "Tab Break",
-   "label": "Disciplinary Actions"
-  },
-  {
-   "allow_bulk_edit": 1,
-   "fieldname": "misconducts",
-   "fieldtype": "Table",
-   "label": "Misconducts",
-   "options": "Employee Disciplinary Record Item"
-  },
-  {
-   "depends_on": "eval:doc.muster_roll_group==\"Non-National\"",
-   "fieldname": "district",
-   "fieldtype": "Data",
-   "label": "District"
-  },
-  {
-   "depends_on": "eval:doc.muster_roll_group==\"Non-National\"",
-   "fieldname": "block",
-   "fieldtype": "Data",
-   "label": "Block"
-  },
-  {
-   "fieldname": "image",
-   "fieldtype": "Attach Image",
-   "label": "Image"
+   "depends_on": "eligible_for_commitment_allowance",
+   "fieldname": "commitment_allowance_value",
+   "fieldtype": "Int",
+   "label": "Value (Commitment Allowance)"
   }
  ],
- "image_field": "image",
- "index_web_pages_for_search": 1,
+ "icon": "fa fa-file-text",
+ "idx": 1,
  "links": [],
- "modified": "2025-08-19 14:41:22.314741",
+ "modified": "2026-01-28 16:19:42.680526",
  "modified_by": "Administrator",
- "module": "HR",
- "name": "Muster Roll Employee",
+ "module": "Payroll",
+ "name": "Salary Structure",
  "owner": "Administrator",
  "permissions": [
   {
@@ -629,30 +918,7 @@
    "delete": 1,
    "email": 1,
    "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "HR User",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
+   "import": 1,
    "print": 1,
    "read": 1,
    "report": 1,
@@ -666,36 +932,14 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "Muster Roll Creator",
+   "role": "Employee",
    "share": 1
-  },
-  {
-   "create": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Projects User",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Projects GM",
-   "share": 1,
-   "write": 1
   }
  ],
- "search_fields": "person_name, branch",
+ "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

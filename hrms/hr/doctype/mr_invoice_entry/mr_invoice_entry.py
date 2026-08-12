@@ -26,6 +26,7 @@ class MRInvoiceEntry(Document):
 		total_grand_total = 0
 		total_salary_tax = 0
 		total_net_payable = 0
+		grand_total_after_advance=0
 		
 		for item in self.items:
 			if item.grand_total:
@@ -33,8 +34,8 @@ class MRInvoiceEntry(Document):
 				item.salary_tax = round(get_salary_tax(flt(item.grand_total) - (flt(item.grand_total) * 0.15)),)
 				
 				# Calculate net payable amount
-				item.net_payable_amount = flt(flt(item.grand_total) - flt(item.salary_tax), 2)- flt(item.total_advance)
-				
+				item.net_payable_amount = flt(flt(item.grand_total) - flt(item.salary_tax), 2)
+				item.grand_total_after_advance=flt(flt(item.grand_total) - flt(item.total_advance), 2)
 				# Accumulate totals
 				total_grand_total += flt(item.grand_total)
 				total_salary_tax += flt(item.salary_tax)
@@ -107,40 +108,45 @@ class MRInvoiceEntry(Document):
 	def post_to_account(self):
 		total_payable_amount = 0
 		total_tax_amount = 0
-		total_advance_amount = 0
+		total_net_payable = 0  # ← ADD THIS NEW VARIABLE
 		accounts = []
-
-		# Bank account
+		
+		# Use the bank account from the document or fallback to company default
 		bank_account = frappe.db.get_value("Company", self.company, "default_bank_account")
 		if not bank_account:
 			frappe.throw('Set default bank account in company {}'.format(self.company))
-
-		# Salary tax account
+		
+		# Get salary tax account from company
 		salary_tax_account = frappe.db.get_value("Company", self.company, "salary_tax_account")
 		if not salary_tax_account:
 			frappe.throw('Set salary tax account in company {}'.format(self.company))
-
-		# Payable account
+		
+		# Get the payable account based on muster roll group
 		account_field = "national_wage_payable" if self.muster_roll_group == "National" else "foreign_wage_payable"
 		payable_account = frappe.db.get_single_value("Projects Settings", account_field)
+		
 		if not payable_account:
 			frappe.throw(_("Mr Payable account is not set in Projects Settings"))
-
-		# Loop over MR Employee Invoices
+		
+		# Get MR Employee Invoices for this entry
 		for d in frappe.db.sql('''
-				select name from `tabMR Employee Invoice`
-				where docstatus = 1 and mr_invoice_entry = %s
-				and branch = %s and outstanding_amount > 0
-			''', (self.name, self.branch), as_dict=True):
-
+				select name from `tabMR Employee Invoice` 
+				where docstatus = 1 and mr_invoice_entry = '{}'
+				and branch = '{}' and outstanding_amount > 0 
+				'''.format(self.name, self.branch), as_dict=True):
 			mr_invoice = frappe.get_doc("MR Employee Invoice", d.name)
-			total_payable_amount += flt(mr_invoice.net_payable_amount, 2)
-			total_advance_amount += flt(mr_invoice.total_advance, 2)
-
-			# Debit for employee
+			
+			# Calculate grand_total_after_advance for this invoice
+			grand_total_after_advance = flt(mr_invoice.grand_total) - flt(mr_invoice.total_advance)
+			total_payable_amount += grand_total_after_advance
+			
+			# Add SUM of net_payable_amount for all employees
+			total_net_payable += flt(mr_invoice.net_payable_amount)  # ← ADD THIS LINE
+			
+			# Add payable entries for each employee (DEBIT)
 			accounts.append({
-				"account": payable_account,
-				"debit_in_account_currency": flt(mr_invoice.grand_total, 2),
+				"account": payable_account,  
+				"debit_in_account_currency": grand_total_after_advance,
 				"cost_center": mr_invoice.cost_center,
 				"party_check": 1,
 				"party_type": "Muster Roll Employee",
@@ -149,8 +155,8 @@ class MRInvoiceEntry(Document):
 				"reference_type": mr_invoice.doctype,
 				"reference_doctype": mr_invoice.name,
 			})
-
-			# Credit for salary tax if exists
+			
+			# If salary tax exists for this invoice, add tax entry (CREDIT)
 			if mr_invoice.salary_tax and mr_invoice.salary_tax > 0:
 				total_tax_amount += flt(mr_invoice.salary_tax, 2)
 				accounts.append({
@@ -164,15 +170,15 @@ class MRInvoiceEntry(Document):
 					"reference_type": mr_invoice.doctype,
 					"reference_doctype": mr_invoice.name,
 				})
-
-		# Add single bank credit line with sum of all amounts
-		total_bank_amount = flt(total_payable_amount  + total_advance_amount, 2)
+		
+		# Add bank account entry (CREDIT) - USE THE SUM, NOT THE LAST INVOICE
+		total_bank_amount = flt(total_net_payable)  # ← FIXED: Use sum of all net_payable_amount
 		accounts.append({
 			"account": bank_account,
 			"credit_in_account_currency": total_bank_amount,
 			"cost_center": self.cost_center
 		})
-
+		
 		# Create Journal Entry
 		je = frappe.new_doc("Journal Entry")
 		je.flags.ignore_permissions = 1
@@ -180,9 +186,9 @@ class MRInvoiceEntry(Document):
 			"doctype": "Journal Entry",
 			"voucher_type": "Bank Entry",
 			"naming_series": "Bank Payment Voucher",
-			"title": "MR Employee Invoice Payment",
-			"user_remark": "MR Employee Invoice Payment of {} for year {} (Tax: {}, Advance: {})".format(
-				self.month, self.fiscal_year, total_tax_amount, total_advance_amount
+			"title": "MR Employee Invoice Payment ",
+			"user_remark": "Note: MR Employee Invoice Payment of {} for year {} (Including Tax: {})".format(
+				self.month, self.fiscal_year, total_tax_amount
 			),
 			"posting_date": self.posting_date,
 			"company": self.company,
@@ -193,102 +199,21 @@ class MRInvoiceEntry(Document):
 			"accounts": accounts
 		})
 		je.insert()
-
-		# Update invoice statuses
+		
+		# Update MR Employee Invoice statuses
 		for d in frappe.db.sql('''
-				select name from `tabMR Employee Invoice`
-				where docstatus = 1 and mr_invoice_entry = %s
-				and branch = %s and outstanding_amount > 0
-			''', (self.name, self.branch), as_dict=True):
+				select name from `tabMR Employee Invoice` 
+				where docstatus = 1 and mr_invoice_entry = '{}'
+				and branch = '{}' and outstanding_amount > 0 
+				'''.format(self.name, self.branch), as_dict=True):
 			frappe.db.set_value("MR Employee Invoice", d.name, {
 				"payment_status": "Paid",
 				"outstanding_amount": 0
 			})
-
+		
 		self.db_set("status", "Paid")
 		frappe.msgprint(_('Journal Entry {0} posted to accounts').format(
 			frappe.get_desk_link("Journal Entry", je.name)))
-			
-	# @frappe.whitelist()
-	# def post_to_account(self):
-	# 	total_payable_amount = 0
-	# 	accounts = []
-		
-	# 	# Use the bank account from the document or fallback to company default
-	# 	bank_account = frappe.db.get_value("Company", self.company, "default_bank_account")
-	# 	if not bank_account:
-	# 		frappe.throw('Set default bank account in company {}'.format(self.company))
-		
-	# 	# Get the payable account based on muster roll group
-	# 	account_field = "national_wage_payable" if self.muster_roll_group == "National" else "foreign_wage_payable"
-	# 	payable_account = frappe.db.get_single_value("Projects Settings", account_field)
-		
-	# 	if not payable_account:
-	# 		frappe.throw(_("Mr Payable account is not set in Projects Settings"))
-		
-	# 	# Get MR Employee Invoices for this entry
-	# 	for d in frappe.db.sql('''
-	# 			select name from `tabMR Employee Invoice` 
-	# 			where docstatus = 1 and mr_invoice_entry = '{}'
-	# 			and branch = '{}' and outstanding_amount > 0 
-	# 			'''.format(self.name, self.branch), as_dict=True):
-	# 		mr_invoice = frappe.get_doc("MR Employee Invoice", d.name)
-	# 		total_payable_amount += flt(mr_invoice.grand_total, 2)
-			
-	# 		# Add payable entries for each employee
-	# 		accounts.append({
-	# 			"account": payable_account,  # Using dynamic account based on muster roll group
-	# 			"debit_in_account_currency": flt(mr_invoice.grand_total, 2),
-	# 			"cost_center": mr_invoice.cost_center,
-	# 			"party_check": 1,
-	# 			"party_type": "Muster Roll Employee",
-	# 			"party": mr_invoice.mr_employee,
-	# 			"party_name": mr_invoice.mr_employee_name,
-	# 			"reference_type": mr_invoice.doctype,
-	# 			"reference_doctype": mr_invoice.name,
-	# 		})
-		
-	# 	# Add bank account entry
-	# 	accounts.append({
-	# 		"account": bank_account,
-	# 		"credit_in_account_currency": flt(total_payable_amount, 2),
-	# 		"cost_center": self.cost_center
-	# 	})
-		
-	# 	# Create Journal Entry
-	# 	je = frappe.new_doc("Journal Entry")
-	# 	je.flags.ignore_permissions = 1
-	# 	je.update({
-	# 		"doctype": "Journal Entry",
-	# 		"voucher_type": "Bank Entry",
-	# 		"naming_series": "Bank Payment Voucher",
-	# 		"title": "MR Employee Invoice Payment ",
-	# 		"user_remark": "Note: MR Employee Invoice Payment of {} for year {}".format(self.month, self.fiscal_year),
-	# 		"posting_date": self.posting_date,
-	# 		"company": self.company,
-	# 		"total_amount_in_words": money_in_words(total_payable_amount),
-	# 		"branch": self.branch,
-	# 		"reference_type": self.doctype,
-	# 		"reference_doctype": self.name,
-	# 		"accounts": accounts
-	# 	})
-	# 	je.insert()
-		
-	# 	# Update MR Employee Invoice statuses
-	# 	for d in frappe.db.sql('''
-	# 			select name from `tabMR Employee Invoice` 
-	# 			where docstatus = 1 and mr_invoice_entry = '{}'
-	# 			and branch = '{}' and outstanding_amount > 0 
-	# 			'''.format(self.name, self.branch), as_dict=True):
-	# 		frappe.db.set_value("MR Employee Invoice", d.name, {
-	# 			"payment_status": "Paid",
-	# 			"outstanding_amount": 0
-	# 		})
-		
-	# 	self.db_set("status", "Paid")
-	# 	frappe.msgprint(_('Journal Entry {0} posted to accounts').format(
-	# 		frappe.get_desk_link("Journal Entry", je.name)))
-
 	# @frappe.whitelist()
 	# def post_to_account(self):
 	# 	total_payable_amount = 0
@@ -319,12 +244,15 @@ class MRInvoiceEntry(Document):
 	# 			and branch = '{}' and outstanding_amount > 0 
 	# 			'''.format(self.name, self.branch), as_dict=True):
 	# 		mr_invoice = frappe.get_doc("MR Employee Invoice", d.name)
-	# 		total_payable_amount += flt(mr_invoice.grand_total, 2)
+			
+	# 		# Calculate grand_total_after_advance for this invoice
+	# 		grand_total_after_advance = flt(mr_invoice.grand_total) - flt(mr_invoice.total_advance)
+	# 		total_payable_amount += grand_total_after_advance
 			
 	# 		# Add payable entries for each employee
 	# 		accounts.append({
-	# 			"account": payable_account,  # Using dynamic account based on muster roll group
-	# 			"debit_in_account_currency": flt(mr_invoice.grand_total, 2),
+	# 			"account": payable_account,  
+	# 			"debit_in_account_currency": grand_total_after_advance,
 	# 			"cost_center": mr_invoice.cost_center,
 	# 			"party_check": 1,
 	# 			"party_type": "Muster Roll Employee",
@@ -350,17 +278,15 @@ class MRInvoiceEntry(Document):
 	# 			})
 		
 	# 	# Add bank account entry (total payable + total tax)
-	# 	total_bank_amount = flt(total_payable_amount + total_tax_amount, 2)
+	# 	total_bank_amount = flt(mr_invoice.net_payable_amount)
 	# 	accounts.append({
 	# 		"account": bank_account,
-	# 		"credit_in_account_currency": flt(mr_invoice.net_payable_amount, 2),
+	# 		"credit_in_account_currency": total_bank_amount,  # Changed from mr_invoice.net_payable_amount
 	# 		"cost_center": self.cost_center
 	# 	})
-	# 	accounts.append({
-	# 		"account": bank_account,
-	# 		"credit_in_account_currency": flt(mr_invoice.total_advance, 2),
-	# 		"cost_center": self.cost_center
-	# 	})
+		
+	# 	# Remove the frappe.throw that was for debugging
+	# 	# frappe.throw(str(accounts))
 		
 	# 	# Create Journal Entry
 	# 	je = frappe.new_doc("Journal Entry")
@@ -436,10 +362,10 @@ class MRInvoiceEntry(Document):
 		cond = ""
 		if not self.branch or not self.month or not self.fiscal_year:
 			frappe.throw("Either Branch/Month/Fiscal Year is missing")
-		
+
 		if self.individual == 1:
-			cond = "and name = '{}'".format(self.mr_employee)
-		
+			cond = "and mre.name = '{}'".format(self.mr_employee)	
+
 		self.set("items", [])
 		mr_cond = ""
 		

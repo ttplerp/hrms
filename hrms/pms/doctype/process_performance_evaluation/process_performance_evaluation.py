@@ -165,7 +165,7 @@ class ProcessPerformanceEvaluation(Document):
         
         if emp_list: 
                    
-            if len(emp_list) > 300:
+            if len(emp_list) > 1000:
                 frappe.enqueue(
                     create_performance_evaluation_for_employees,
                     timeout=600,
@@ -175,14 +175,14 @@ class ProcessPerformanceEvaluation(Document):
             else:
                 create_performance_evaluation_for_employees(emp_list, args, publish_progress=False)
                 # since this method is called via frm.call this doc needs to be updated manually
-                self.reload()
+                #self.reload()
             
             # create_performance_evaluation_for_employees(emp_list, args, publish_progress=False)
             # self.reload()
 
         if mr_emp_list:
             create_performance_evaluation_for_mr_employees(mr_emp_list, args, publish_progress=True)
-            self.reload()
+            #self.reload()
 
 def get_existing_performance_evaluation(employees, args):
     return frappe.db.sql_list(

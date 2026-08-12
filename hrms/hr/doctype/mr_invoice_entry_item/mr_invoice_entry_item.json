@@ -18,6 +18,7 @@
   "other_deduction",
   "salary_tax",
   "grand_total",
+  "grand_total_after_advance",
   "net_payable_amount",
   "column_break_8",
   "total_ot_hrs",
@@ -160,12 +161,17 @@
    "fieldname": "salary_tax",
    "fieldtype": "Currency",
    "label": "Salary Tax"
+  },
+  {
+   "fieldname": "grand_total_after_advance",
+   "fieldtype": "Currency",
+   "label": "Grand Total After Advance"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-02-04 09:43:56.182345",
+ "modified": "2026-04-10 10:48:37.253063",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "MR Invoice Entry Item",

@@ -34,6 +34,7 @@ class EmployeeAdvance(Document):
     def validate(self):
         validate_workflow_states(self)
         validate_active_employee(self.employee)
+        self.validate_supervisor_remarks_for_workflow()
         self.validate_employment_status()
         self.set_status()
         self.validate_advance_amount()
@@ -44,7 +45,12 @@ class EmployeeAdvance(Document):
         if self.advance_type in ("Salary Advance"):
             if self.deduction_month <= 0:
                 frappe.throw(str("No. of installment must be greater than 0."))
-        
+                
+    def validate_supervisor_remarks_for_workflow(self):        
+        if self.workflow_state == "Waiting Approval":
+            if not self.supervisor_remarks or self.supervisor_remarks.strip() == "":
+                frappe.throw("Supervisor Remarks is Mandetory")
+     
     def validate_advance_amount(self):
         if self.advance_type == "Salary Advance" and flt(self.advance_amount) > 200000.00:
             frappe.throw(
