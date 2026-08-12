@@ -27,11 +27,6 @@ frappe.ui.form.on("Salary Slip", {
 	onload: function(frm){
 		if((cint(frm.doc.__islocal) == 1) && !frm.doc.amended_from){
 			if(!frm.doc.month) {
-				// var today=new Date();
-				// var month = (today.getMonth()).toString();
-				// console.log("month",month);
-				// if(month.length>1) frm.doc.month = month;
-				// else frm.doc.month = '0'+month;
 				frm.doc.month = frappe.datetime.get_today().substr(5,2);
 			}
 			if(!frm.doc.fiscal_year) frm.doc.fiscal_year = sys_defaults['fiscal_year'];
@@ -41,16 +36,58 @@ frappe.ui.form.on("Salary Slip", {
 	
 	refresh: function(frm) {
 		frm.trigger("toggle_fields");
-		/*																													//Commented by SHIV on 2018/09/18
-		frm.fields_dict['earnings'].grid.set_column_disp("default_amount", false);
-		frm.fields_dict['deductions'].grid.set_column_disp("default_amount", false);
-		frm.fields_dict['earnings'].grid.set_column_disp("section_break_5", false);
-		frm.fields_dict['deductions'].grid.set_column_disp("section_break_5", false);
-		*/
+		// Remove tax entries with amount = 0
+		frm.trigger("remove_zero_tax_entries");
+	},
+	
+	// Function to remove tax entries with amount = 0
+	remove_zero_tax_entries: function(frm) {
+		if (frm.doc.earnings) {
+			var earnings_to_remove = [];
+			$.each(frm.doc.earnings, function(i, row) {
+				// Check if it's a tax component with amount = 0
+				if (row.salary_component && 
+					(row.salary_component.toLowerCase().includes('tax') || 
+					 row.salary_component.toLowerCase().includes('income tax')) && 
+					(!row.amount || row.amount == 0)) {
+					earnings_to_remove.push(i);
+				}
+			});
+			// Remove from the end to avoid index issues
+			earnings_to_remove.reverse();
+			$.each(earnings_to_remove, function(i, idx) {
+				frm.doc.earnings.splice(idx, 1);
+			});
+		}
+		
+		if (frm.doc.deductions) {
+			var deductions_to_remove = [];
+			$.each(frm.doc.deductions, function(i, row) {
+				// Check if it's a tax component with amount = 0
+				if (row.salary_component && 
+					(row.salary_component.toLowerCase().includes('tax') || 
+					 row.salary_component.toLowerCase().includes('income tax')) && 
+					(!row.amount || row.amount == 0)) {
+					deductions_to_remove.push(i);
+				}
+			});
+			// Remove from the end to avoid index issues
+			deductions_to_remove.reverse();
+			$.each(deductions_to_remove, function(i, idx) {
+				frm.doc.deductions.splice(idx, 1);
+			});
+		}
+		
+		refresh_field('earnings');
+		refresh_field('deductions');
 	},
 	
 	employee: function(frm){
 		calculate_others(frm.doc);
+		// Re-check for zero tax entries after employee change
+		setTimeout(function() {
+			frm.trigger("remove_zero_tax_entries");
+		}, 500);
 	},
 	
 	company: function(frm) {
@@ -83,16 +120,14 @@ frappe.ui.form.on("Salary Slip", {
 	toggle_fields: function(frm) {
 		frm.toggle_display(['start_date', 'end_date', 'hourly_wages', 'timesheets'],
 			cint(frm.doc.salary_slip_based_on_timesheet)==1);
-		/* 																											//Commented by SHIV on 2018/09/18
-		frm.toggle_display(['fiscal_year', 'month', 'total_days_in_month', 'leave_without_pay', 'payment_days'],
-			cint(frm.doc.salary_slip_based_on_timesheet)==0);
-		*/
 	}
 })
 
 frappe.ui.form.on('Salary Detail', {
 	amount: function(frm, cdt, cdn){
 		calculate_others(frm.doc);
+		// After amount changes, check and remove zero tax entries
+		frm.trigger("remove_zero_tax_entries");
 	},
 	
 	depends_on_lwp: function(frm, cdt, cdn){
@@ -121,7 +156,6 @@ cur_frm.fields_dict.employee.get_query = function(doc,cdt,cdn) {
 	}
 }
 
-// Added by SHIV on 2018/09/18
 var calculate_others = function(doc){
 	if (doc.employee){
 		cur_frm.call({
@@ -130,9 +164,6 @@ var calculate_others = function(doc){
 		});
 	}
 }
-
-
-
 
 
 
