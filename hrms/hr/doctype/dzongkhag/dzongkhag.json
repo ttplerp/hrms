@@ -11,7 +11,8 @@
   "dzongkhag_name",
   "description",
   "cb_1",
-  "rental_dzo_abbr"
+  "rental_dzo_abbr",
+  "allow_in_online_housing_application"
  ],
  "fields": [
   {
@@ -36,11 +37,17 @@
    "fieldname": "rental_dzo_abbr",
    "fieldtype": "Data",
    "label": "Abbr"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_in_online_housing_application",
+   "fieldtype": "Check",
+   "label": "Allow in Online Housing Application"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-07-13 16:59:37.857775",
+ "modified": "2026-08-17 15:10:52.130738",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dzongkhag",
