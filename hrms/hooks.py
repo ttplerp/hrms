@@ -118,7 +118,11 @@ permission_query_conditions = {
 	"Employee Transfer": "hrms.hr.doctype.employee_transfer.employee_transfer.get_permission_query_conditions",
 	"Employee Checkin": "hrms.hr.doctype.employee_checkin.employee_checkin.get_permission_query_conditions",
 	"Attendance": "hrms.hr.doctype.attendance.attendance.get_permission_query_conditions",
-	"Exit Interview": "hrms.hr.doctype.exit_interview.exit_interview.get_permission_query_conditions"
+	"Exit Interview": "hrms.hr.doctype.exit_interview.exit_interview.get_permission_query_conditions",
+	"Staff Welfare Loan":"hrms.sws.doctype.staff_welfare_loan.staff_welfare_loan.get_permission_query_conditions",
+	"Training Feedback":"hrms.hr.doctype.training_feedback.training_feedback.get_permission_query_conditions",
+	"Increment Entry":"hrms.payroll.doctype.increment_entry.increment_entry.get_permission_query_conditions",
+	"Transfer Request": "hrms.hr.doctype.transfer_request.transfer_request.get_permission_query_conditions",
 }
 #
 # has_permission = {
@@ -182,6 +186,12 @@ doc_events = {
 		"on_update": "hrms.overrides.employee_master.update_approver_role",
 		"on_trash": "hrms.overrides.employee_master.update_employee_transfer",
 	},
+    # "Training Event": {
+	# 	"on_submit": "hrms.hr.doctype.training_event.training_event.update_training_program_participants",
+	# 	"on_update": "hrms.hr.doctype.training_event.training_event.update_training_program_participants",
+    #     "on_cancel": "hrms.hr.doctype.training_event.training_event.update_training_program_participants",
+	# }
+
 }
 
 # Scheduled Tasks

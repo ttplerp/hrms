@@ -1,0 +1,209 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:TR-{YY}-{####}",
+ "creation": "2026-08-18 09:11:01.523425",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "transfer_detail",
+  "employee",
+  "employee_name",
+  "posting_date",
+  "column_break_8fqn3",
+  "transfer_type",
+  "transfer_calendar",
+  "application_start_date",
+  "application_end_date",
+  "transfer_reason_sec",
+  "reason_for_transfer",
+  "reason_for_rejection",
+  "branch_section",
+  "current_branch",
+  "new_branch",
+  "approver_section",
+  "supervisor",
+  "supervisor_name",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "transfer_detail",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "column_break_8fqn3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "transfer_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Transfer Type",
+   "options": "\nPersonal Request\nMutual Swipe\nIn the interest of company"
+  },
+  {
+   "fieldname": "transfer_calendar",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Transfer Calendar",
+   "options": "Transfer Calendar"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Transfer Request",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fetch_from": "transfer_calendar.start_date",
+   "fieldname": "application_start_date",
+   "fieldtype": "Date",
+   "label": "Application Start Date",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fetch_from": "transfer_calendar.end_date",
+   "fieldname": "application_end_date",
+   "fieldtype": "Date",
+   "label": "Application End Date",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "transfer_reason_sec",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "reason_for_transfer",
+   "fieldtype": "Small Text",
+   "label": "Reason for Transfer"
+  },
+  {
+   "fieldname": "reason_for_rejection",
+   "fieldtype": "Small Text",
+   "label": "Reason for Rejection"
+  },
+  {
+   "fieldname": "branch_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "employee.branch",
+   "fieldname": "current_branch",
+   "fieldtype": "Data",
+   "label": "Current Branch"
+  },
+  {
+   "fieldname": "new_branch",
+   "fieldtype": "Table",
+   "label": "New Branch Option",
+   "options": "Employee Transfer Branch"
+  },
+  {
+   "fieldname": "approver_section",
+   "fieldtype": "Section Break",
+   "label": "Approver Details"
+  },
+  {
+   "fieldname": "supervisor",
+   "fieldtype": "Data",
+   "label": "Supervisor",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "supervisor_name",
+   "fieldtype": "Data",
+   "label": "Supervisor Name",
+   "no_copy": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-08-18 11:21:38.448727",
+ "modified_by": "Administrator",
+ "module": "HR",
+ "name": "Transfer Request",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Employee",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
