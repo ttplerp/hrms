@@ -341,3 +341,12 @@ def submit_salary_increments_for_employees(increment_entry, salary_increments, p
 
 	if not_submitted_si:
 		frappe.msgprint(_("Could not submit some Salary Increments"))
+
+def get_permission_query_conditions(user):
+	if not user: user = frappe.session.user
+	user_roles = frappe.get_roles(user)
+
+	if user == "Administrator":
+		return
+	if "HR User" in user_roles or "HR Manager" in user_roles:
+		return
