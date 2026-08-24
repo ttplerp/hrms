@@ -3,6 +3,5 @@
 
 frappe.ui.form.on('HR Workforce Requisition', {
 	// refresh: function(frm) {
-
 	// }
 });
