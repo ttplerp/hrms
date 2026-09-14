@@ -40,7 +40,7 @@ frappe.ui.form.on('Employee Benefits', {
 					var item = frm.doc.items[i];
 					total_amount += item.amount;
 				}
-				console.log("testing..." + total_amount);
+				// console.log("testing..." + total_amount);
 				frm.set_value("total_amount",total_amount);
 		        },
 	purpose: function(frm){
@@ -65,7 +65,7 @@ frappe.ui.form.on("Separation Item", {
 		frappe.model.set_value(cdt, cdn, "distance", null);
 		frappe.model.set_value(cdt, cdn, "terrain_rate", null);
 		frappe.model.set_value(cdt, cdn, "load_capacity", null);
-		if(frm.doc.purpose != "Separation" && frm.doc.purpose != "Upgradation"){
+		if(frm.doc.purpose != "Separation" && frm.doc.purpose != "Others"){
 			if(row.benefit_type == "Provision for Leave Encashment"){
 				frappe.model.set_value(cdt, cdn, "amount", null);
 				frappe.model.set_value(cdt, cdn, "earned_leave_balance", null);

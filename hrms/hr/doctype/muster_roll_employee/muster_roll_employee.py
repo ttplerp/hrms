@@ -51,8 +51,9 @@ class MusterRollEmployee(Document):
                 a.rate_per_hour = (flt(a.rate_per_day) * 1.5) / 8	
 
     def check_status(self):
-        if self.status == "Left" and self.separation_date:
-            self.docstatus = 1
+        # if self.status == "Left" and self.separation_date:
+        #     self.docstatus = 1
+        pass
 
     def populate_work_history(self):
         if not self.internal_work_history:

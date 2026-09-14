@@ -23,9 +23,9 @@ class TravelRequest(AccountsController):
 		self.validate_travel_dates()
 		self.check_leave_applications()
 		self.set_dsa_percent()
-		self.set_currency_exchange()
 		self.update_amount()
 		self.update_total_amount()
+		self.set_currency_exchange()
 		if self.travel_type == "Domestic":
 			self.validate_advance_amount()
 		if self.workflow_state == "Verified By Supervisor":

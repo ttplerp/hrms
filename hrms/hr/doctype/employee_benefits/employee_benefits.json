@@ -140,8 +140,7 @@
   {
    "fieldname": "separation_date",
    "fieldtype": "Date",
-   "label": "Separation/Transfer Date",
-   "reqd": 1
+   "label": "Separation/Transfer Date"
   },
   {
    "depends_on": "eval:doc.purpose == \"Separation\"",
