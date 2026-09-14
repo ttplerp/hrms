@@ -108,13 +108,15 @@ class EmployeeAdvance(Document):
 			if advance_status:
 				frappe.throw("Employee Advance for employee {} has been already Clamed ".format(self.employee_name))
 	def check_duplicate_advance(self):
+		from_date = frappe.defaults.get_user_default("year_start_date")
 		if frappe.db.sql("""
 				select count(reference) 
 				from `tabEmployee Advance` 
-				where reference = '{}'
-				and name != '{}'
+				where reference = '{0}'
+				and name != '{1}'
 				and docstatus != 2
-			""".format(self.reference, self.name))[0][0] >= 1 :
+				and posting_date between "{2}" and "{3}"
+			""".format(self.reference, self.name, from_date, today()))[0][0] >= 1 :
 			frappe.throw("Advance for Travel Request '{}' is already created".format(self.name))
 	def update_salary_structure(self, cancel=False):
 		if cancel:

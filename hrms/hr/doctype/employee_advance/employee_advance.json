@@ -258,7 +258,7 @@
   },
   {
    "fieldname": "reference_type",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "hidden": 1,
    "label": "Reference Type",
    "options": "DocType",

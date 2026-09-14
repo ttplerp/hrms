@@ -73,11 +73,13 @@ class OvertimeApplication(Document):
 					frappe.throw(_("Row#{}: To Date/Time is overlapping with Row#{}").format(a.idx, b.idx))
 
 			# check if the dates are already claimed
-			for i in frappe.db.sql(""" select oa.name from `tabOvertime Application` oa, `tabOvertime Application Item` oai 
-						where oa.employee = %(employee)s and oai.parent = oa.name and oa.name != %(name)s and oa.docstatus < 2
-						and %(from_date)s <= oai.to_date and %(to_date)s >= oai.from_date
-					""", {"employee": self.employee, "name": self.name, "from_date": a.from_date, "to_date": a.to_date}, as_dict=True):
-				frappe.throw(_("Row#{}: Dates are overlapping with another request {}").format(a.idx, frappe.get_desk_link("Overtime Application", i.name)))
+				for i in frappe.db.sql(""" select oa.name, oa.workflow_state from `tabOvertime Application` oa, `tabOvertime Application Item` oai 
+							where oa.employee = %(employee)s and oai.parent = oa.name and oa.name != %(name)s and oa.docstatus < 2
+							and %(from_date)s <= oai.to_date and %(to_date)s >= oai.from_date
+						""", {"employee": self.employee, "name": self.name, "from_date": a.from_date, "to_date": a.to_date}, as_dict=True):
+
+					if i.workflow_state not in ["Draft", "Rejected", "Cancelled"]:
+						frappe.throw(_("Row#{}: Dates are overlapping with another request {}").format(a.idx, frappe.get_desk_link("Overtime Application", i.name)))
 
 def get_permission_query_conditions(user):
 	if not user: user = frappe.session.user

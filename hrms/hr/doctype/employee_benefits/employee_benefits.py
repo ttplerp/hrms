@@ -18,7 +18,7 @@ import math
 class EmployeeBenefits(Document):
 	def validate(self):
 		validate_workflow_states(self)
-		if not self.employee_separation_id  and not self.employee_transfer_id and self.purpose != "Upgradation":
+		if not self.employee_separation_id  and not self.employee_transfer_id and self.purpose != "Others":
 			frappe.throw("This document should be created through either Employee Separation or Employee Transfer")
 
 		self.validate_gratuity()

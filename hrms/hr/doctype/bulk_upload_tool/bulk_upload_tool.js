@@ -25,7 +25,10 @@ frappe.ui.form.on('Bulk Upload Tool', {
             method:"upload_data",
             doc:frm.doc,
             callback:function(r){
-                
+                if(r.message){
+					frappe.errprint(str(r.message.messages))
+					frappe.errprint(str(r.message.error))
+				}
             },
             freeze: true,
 			freeze_message: '<span style="color:white; background-color: red; padding: 10px 50px; border-radius: 5px;">Uploading Data.....</span>'
