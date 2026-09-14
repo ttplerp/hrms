@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import msgprint
-from frappe.utils import cstr, add_days, date_diff, cint, flt, getdate, nowdate
+from frappe.utils import cstr, add_days, date_diff, cint, flt, getdate, nowdate, get_last_day
 from frappe import _
 from frappe.utils.csvutils import UnicodeWriter
 from frappe.model.document import Document
@@ -49,6 +49,11 @@ class BulkUploadTool(Document):
 		if not rows:
 			msg = [_("Please select a csv/excel file")]
 			return {"messages": msg, "error": msg}
+		month_map = {
+			"Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04",
+			"May": "05", "Jun": "06", "Jul": "07", "Aug": "08",
+			"Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
+		}
 		ret = []
 		error = False
 		total_count = len(rows) - 1
@@ -56,103 +61,271 @@ class BulkUploadTool(Document):
 		refresh_interval = 1
 		from frappe.utils.csvutils import check_record, import_doc
 
+		# for i, row in enumerate(rows[1:]):
+		# 	if not row:
+		# 		continue
+		# 	count += 1
+		# 	try:
+		# 		row_idx = i + 6
+		# 		year = row[5]
+		# 		month = row[6]
+
+		# 		for day_idx, day_value in enumerate(row[7:], start=1):
+		# 			if not str(day_value).strip():
+		# 				continue
+
+		# 			day = str(day_idx) if day_idx > 9 else "0" + str(day_idx)
+		# 			month_number = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].index(row[6]) + 1
+		# 			month_str = str(month_number).zfill(2)
+		# 			year = row[5]
+		# 			date_str = f"{year}-{month_str}-{day}" 
+
+		# 			if self.upload_type == "Overtime":
+		# 				old = frappe.db.get_value("Muster Roll Overtime Entry", {"mr_employee": str(row[3]).strip('\''), "date": date_str, "docstatus": 1}, ["docstatus", "name", "number_of_hours"], as_dict=1)
+		# 				if old:
+		# 					doc = frappe.get_doc("Muster Roll Overtime Entry", old.name)
+		# 					doc.db_set('number_of_hours', flt(day_value))
+		# 				if not old and flt(day_value) > 0:
+		# 					doc = frappe.new_doc("Muster Roll Overtime Entry")
+		# 					doc.branch = row[0]
+		# 					doc.cost_center = row[1]
+		# 					doc.unit = row[2]
+		# 					doc.mr_employee = str(row[3]).strip('\'')
+		# 					doc.mr_employee_name = str(row[4]).strip('\'')
+		# 					doc.date = date_str
+		# 					doc.number_of_hours = flt(day_value)
+		# 					doc.reference = self.name
+
+		# 					if not getdate(doc.date) > getdate(nowdate()):
+		# 						doc.submit()
+		# 			else:
+		# 				status = ''
+		# 				if str(day_value) in ("P", "p", "1"):
+		# 					status = 'Present'
+		# 				elif str(day_value) in ("H", "h"):
+		# 					status = 'Half Day'
+		# 				elif str(day_value) in ("A", "a", "0"):
+		# 					status = 'Absent'
+		# 				else:
+		# 					status = ''
+
+		# 				old = frappe.db.get_value("Muster Roll Attendance", {"mr_employee": str(row[3]).strip('\''), "date": date_str, "docstatus": 1}, ["status", "name"], as_dict=1)
+		# 				if old:
+		# 					doc = frappe.get_doc("Muster Roll Attendance", old.name)
+		# 					doc.db_set('status', status if status in ('Present', 'Absent','Half Day') else doc.status)
+		# 					doc.db_set('branch', row[0])
+		# 					doc.db_set('cost_center', row[1])
+		# 					doc.db_set('unit', row[2])
+		# 				if not old and status in ('Present', 'Absent','Half Day'):
+		# 					doc = frappe.new_doc("Muster Roll Attendance")
+		# 					doc.status = status
+		# 					doc.branch = row[0]
+		# 					doc.cost_center = row[1]
+		# 					doc.unit = row[2]
+		# 					doc.mr_employee = str(row[3]).strip('\'')
+		# 					doc.mr_employee_name = str(row[4]).strip('\'')
+		# 					doc.date = date_str
+		# 					doc.reference = self.name
+
+		# 					# if not getdate(doc.date) > getdate(nowdate()):
+		# 					doc.submit()
+		# 			successful += 1
+
+		# 	except Exception as e:
+		# 		failed += 1
+		# 		error = True
+		# 		ret.append('Error for row (#%d) %s : %s' % (row_idx, len(row) > 1 and row[5] or "", cstr(e)))
+		# 		frappe.errprint(frappe.get_traceback())
+		# if error:
+		# 	frappe.db.rollback()
+		# else:
+		# 	frappe.db.commit()
+
+		# show_progress = 0
+		# if count <= refresh_interval:
+		# 	show_progress = 1
+		# elif refresh_interval > total_count:
+		# 	show_progress = 1
+		# elif count % refresh_interval == 0:
+		# 	show_progress = 1
+		# elif count > total_count - refresh_interval:
+		# 	show_progress = 1
+
+		# if show_progress:
+		# 	description = " Processing OT Of {}({}): ".format(frappe.bold(str(row[4]).strip('\'')), frappe.bold(row[3])) + "[" + str(count) + "/" + str(total_count) + "]"
+		# 	frappe.publish_progress(count * 100 / total_count,
+		# 							title=_("Posting Overtime Entry..."),
+		# 							description=description)
+		# 	pass
+		# return {"messages": ret, "error": error}
+
+		employees = set()
+		years = set()
+		months = set()
+
+		for row in rows[1:]:
+			if not row:
+				continue
+			employees.add(str(row[3]).strip('\''))
+			years.add(str(row[5]))
+			months.add(month_map.get(row[6]))
+
+		# last_day = calendar.monthrange(year, month)[1]
+		start_date = f"{min(years)}-{min(months)}-01"
+		# end_date = f"{max(years)}-{max(months)}-31"
+		end_date = get_last_day(f"{max(years)}-{str(max(months)).zfill(2)}-01")
+
+		# ----------------------------------------
+		# 🔥 STEP 2: Prefetch existing records
+		# ----------------------------------------
+		if self.upload_type == "Overtime":
+			existing = frappe.db.get_all(
+				"Muster Roll Overtime Entry",
+				filters={
+					"docstatus": 1,
+					"date": ["between", [start_date, end_date]],
+					"mr_employee": ["in", list(employees)]
+				},
+				fields=["name", "mr_employee", "date", "number_of_hours"]
+			)
+		else:
+			existing = frappe.db.get_all(
+				"Muster Roll Attendance",
+				filters={
+					"docstatus": 1,
+					"date": ["between", [start_date, end_date]],
+					"mr_employee": ["in", list(employees)]
+				},
+				fields=["name", "mr_employee", "date", "status"]
+			)
+
+		# Map for quick lookup
+		existing_map = {
+			(d.mr_employee, str(d.date)): d for d in existing
+		}
+
+		# ----------------------------------------
+		# 🔥 STEP 3: Main Processing Loop
+		# ----------------------------------------
 		for i, row in enumerate(rows[1:]):
 			if not row:
 				continue
+
 			count += 1
+			row_idx = i + 6
+
 			try:
-				row_idx = i + 6
-				year = row[5]
-				month = row[6]
+				year = str(row[5])
+				month_str = month_map.get(row[6])
 
 				for day_idx, day_value in enumerate(row[7:], start=1):
+
 					if not str(day_value).strip():
 						continue
 
-					day = str(day_idx) if day_idx > 9 else "0" + str(day_idx)
-					month_number = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].index(row[6]) + 1
-					month_str = str(month_number).zfill(2)
-					year = row[5]
-					date_str = f"{year}-{month_str}-{day}" 
+					day = str(day_idx).zfill(2)
+					date_str = f"{year}-{month_str}-{day}"
 
+					employee = str(row[3]).strip('\'')
+
+					key = (employee, date_str)
+					old = existing_map.get(key)
+
+					# ----------------------------------------
+					# 🔥 OVERTIME
+					# ----------------------------------------
 					if self.upload_type == "Overtime":
-						old = frappe.db.get_value("Muster Roll Overtime Entry", {"mr_employee": str(row[3]).strip('\''), "date": date_str, "docstatus": 1}, ["docstatus", "name", "number_of_hours"], as_dict=1)
+
 						if old:
-							doc = frappe.get_doc("Muster Roll Overtime Entry", old.name)
-							doc.db_set('number_of_hours', flt(day_value))
-						if not old and flt(day_value) > 0:
+							frappe.db.set_value(
+								"Muster Roll Overtime Entry",
+								old.name,
+								"number_of_hours",
+								flt(day_value)
+							)
+
+						elif flt(day_value) > 0:
 							doc = frappe.new_doc("Muster Roll Overtime Entry")
 							doc.branch = row[0]
 							doc.cost_center = row[1]
 							doc.unit = row[2]
-							doc.mr_employee = str(row[3]).strip('\'')
+							doc.mr_employee = employee
 							doc.mr_employee_name = str(row[4]).strip('\'')
 							doc.date = date_str
 							doc.number_of_hours = flt(day_value)
 							doc.reference = self.name
 
 							if not getdate(doc.date) > getdate(nowdate()):
+								doc.insert(ignore_permissions=True)
 								doc.submit()
-					else:
-						status = ''
-						if str(day_value) in ("P", "p", "1"):
-							status = 'Present'
-						elif str(day_value) in ("H", "h"):
-							status = 'Half Day'
-						elif str(day_value) in ("A", "a", "0"):
-							status = 'Absent'
-						else:
-							status = ''
 
-						old = frappe.db.get_value("Muster Roll Attendance", {"mr_employee": str(row[3]).strip('\''), "date": date_str, "docstatus": 1}, ["status", "name"], as_dict=1)
+					# ----------------------------------------
+					# 🔥 ATTENDANCE
+					# ----------------------------------------
+					else:
+						if str(day_value) in ("P", "p", "1"):
+							status = "Present"
+						elif str(day_value) in ("H", "h"):
+							status = "Half Day"
+						elif str(day_value) in ("A", "a", "0"):
+							status = "Absent"
+						else:
+							continue
+
 						if old:
-							doc = frappe.get_doc("Muster Roll Attendance", old.name)
-							doc.db_set('status', status if status in ('Present', 'Absent','Half Day') else doc.status)
-							doc.db_set('branch', row[0])
-							doc.db_set('cost_center', row[1])
-							doc.db_set('unit', row[2])
-						if not old and status in ('Present', 'Absent','Half Day'):
+							frappe.db.set_value(
+								"Muster Roll Attendance",
+								old.name,
+								{
+									"status": status,
+									"branch": row[0],
+									"cost_center": row[1],
+									"unit": row[2],
+								}
+							)
+
+						else:
 							doc = frappe.new_doc("Muster Roll Attendance")
 							doc.status = status
 							doc.branch = row[0]
 							doc.cost_center = row[1]
 							doc.unit = row[2]
-							doc.mr_employee = str(row[3]).strip('\'')
+							doc.mr_employee = employee
 							doc.mr_employee_name = str(row[4]).strip('\'')
 							doc.date = date_str
 							doc.reference = self.name
 
-							# if not getdate(doc.date) > getdate(nowdate()):
+							doc.insert(ignore_permissions=True)
 							doc.submit()
+
 					successful += 1
+
+				# ----------------------------------------
+				# 🔥 Batch commit every 100 rows
+				# ----------------------------------------
+				if count % 100 == 0:
+					frappe.db.commit()
 
 			except Exception as e:
 				failed += 1
 				error = True
-				ret.append('Error for row (#%d) %s : %s' % (row_idx, len(row) > 1 and row[5] or "", cstr(e)))
-				frappe.errprint(frappe.get_traceback())
+				ret.append(f"Error for row #{row_idx}: {str(e)}")
+				frappe.log_error(frappe.get_traceback(), "Muster Roll Upload Error")
+
+		# ----------------------------------------
+		# 🔥 Final commit / rollback
+		# ----------------------------------------
 		if error:
 			frappe.db.rollback()
 		else:
 			frappe.db.commit()
 
-		show_progress = 0
-		if count <= refresh_interval:
-			show_progress = 1
-		elif refresh_interval > total_count:
-			show_progress = 1
-		elif count % refresh_interval == 0:
-			show_progress = 1
-		elif count > total_count - refresh_interval:
-			show_progress = 1
-
-		if show_progress:
-			description = " Processing OT Of {}({}): ".format(frappe.bold(str(row[4]).strip('\'')), frappe.bold(row[3])) + "[" + str(count) + "/" + str(total_count) + "]"
-			frappe.publish_progress(count * 100 / total_count,
-									title=_("Posting Overtime Entry..."),
-									description=description)
-			pass
-		return {"messages": ret, "error": error}
+		return {
+			"messages": ret,
+			"error": error,
+			"success": successful,
+			"failed": failed
+		}
 
 @frappe.whitelist()
 def download_template(file_type, branch, month, fiscal_year, upload_type, unit):

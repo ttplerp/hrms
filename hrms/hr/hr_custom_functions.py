@@ -307,7 +307,7 @@ def get_salary_tax(gross_amt):
 	max_limit = frappe.db.sql("""select max(b.to_amount)
 		from `tabIncome Tax Slab` a, `tabTaxable Salary Slab` b
 		where now() between a.effective_from and ifnull(a.effective_till, now())
-		and b.parent = a.name
+		and b.parent = a.name and a.docstatus = 1
 	""")
 	if not (gross_amt or max_limit):
 		return tax_amount
@@ -319,7 +319,7 @@ def get_salary_tax(gross_amt):
 		result = frappe.db.sql("""select ifnull(b.tax,0) from
 			`tabIncome Tax Slab` a, `tabTaxable Salary Slab` b
 			where now() between a.effective_from and ifnull(a.effective_till, now())
-			and b.parent = a.name
+			and b.parent = a.name and a.docstatus = 1
 			and %s between ifnull(b.from_amount,0) and ifnull(b.to_amount,0)
 			limit 1
 			""", flt(gross_amt))
