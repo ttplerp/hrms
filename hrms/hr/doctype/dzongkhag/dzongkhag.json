@@ -12,7 +12,9 @@
   "description",
   "cb_1",
   "rental_dzo_abbr",
-  "allow_in_online_housing_application"
+  "allow_in_online_housing_application",
+  "allow_for_civil_servant",
+  "allow_for_corporate_and_private"
  ],
  "fields": [
   {
@@ -43,11 +45,23 @@
    "fieldname": "allow_in_online_housing_application",
    "fieldtype": "Check",
    "label": "Allow in Online Housing Application"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_for_civil_servant",
+   "fieldtype": "Check",
+   "label": "Allow for Civil Servant"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_for_corporate_and_private",
+   "fieldtype": "Check",
+   "label": "Allow for corporate and private"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-08-17 15:10:52.130738",
+ "modified": "2026-09-18 11:36:58.053298",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dzongkhag",
