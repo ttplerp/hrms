@@ -49,6 +49,32 @@ frappe.ui.form.on('Training Event', {
 				frappe.set_route("List", "Training Feedback");
 			});
 		}
+
+		// Let a submitted Training Event be reverted to Draft for editing,
+		// instead of going through Cancel + Amend.
+		if (frm.doc.docstatus === 1) {
+			frm.add_custom_button(__("Edit"), function () {
+				frappe.confirm(
+					__("This will revert {0} back to Draft so you can make changes. You will need to Submit it again afterwards. Continue?", [frm.doc.name]),
+					function () {
+						frappe.call({
+							method: "hrms.hr.doctype.training_event.training_event.set_as_draft",
+							args: {
+								training_event: frm.doc.name
+							},
+							freeze: true,
+							freeze_message: __("Reverting to Draft..."),
+							callback: function (r) {
+								if (!r.exc) {
+									frm.reload_doc();
+								}
+							}
+						});
+					}
+				);
+			}).removeClass("btn-default").addClass("btn-warning");
+		}
+
         if (frm.doc.employees) {
             frm.doc.employees.forEach(function(row) {
                 calculate_row_total(frm, row.doctype, row.name);
@@ -56,7 +82,7 @@ frappe.ui.form.on('Training Event', {
         }
 		frm.events.set_employee_query(frm);
 		toggle_employee_cost_fields(frm);
-        
+
         frm.set_query("travel_claim", "employees", function (doc, cdt, cdn) {
             let row = locals[cdt][cdn];
 
@@ -122,7 +148,7 @@ frappe.ui.form.on("Training Event Employee", {
     employees_remove: function (frm) {
         calculate_employee_totals(frm);
     },
-    
+
 });
 
 function calculate_employee_totals(frm) {

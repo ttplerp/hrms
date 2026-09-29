@@ -47,6 +47,29 @@ class TrainingEvent(Document):
 
 		self.db_update_all()
 
+
+@frappe.whitelist()
+def set_as_draft(training_event):
+	doc = frappe.get_doc("Training Event", training_event)
+
+	# Reuse the existing "cancel" permission as the gate for this action,
+	# since reverting a submitted document to draft is at least as
+	# consequential as cancelling it.
+	doc.check_permission("cancel")
+
+	if doc.docstatus != 1:
+		frappe.throw(_("{0} is not a submitted Training Event.").format(training_event))
+
+	doc.db_set("docstatus", 0, notify=True)
+
+	doc.add_comment(
+		"Info",
+		_("Reverted to Draft for editing by {0}. It was previously submitted and will need to be Submitted again.").format(
+			frappe.utils.get_fullname(frappe.session.user)
+		),
+	)
+
+
 # @frappe.whitelist()
 # def create_travel_request(source_name, target_doc=None):
 # 	def set_missing_values(source, target):
@@ -82,7 +105,7 @@ class TrainingEvent(Document):
 # 			target.place_type = "In-Country"
 # 		else:
 # 			target.place_type = "Out-Country"
-# 		target.travel_type = "Training" 
+# 		target.travel_type = "Training"
 # 		# target.travel_type = source.international_or_domestic
 # 		target.training_event = source.name
 # 		target.training_event_child_ref = frappe.flags.args.get("child_ref")
