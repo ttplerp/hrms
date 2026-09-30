@@ -365,7 +365,7 @@ class TravelAuthorization(Document):
                 
                 
         elif self.place_type=="Out-Country":
-            if "India" in self.countrys:
+            if self.countrys in ("India - Others", "India - Main State"):
                 roles=frappe.get_roles(self.owner)
             
                 if "CEO" in roles:
@@ -472,7 +472,7 @@ class TravelAuthorization(Document):
             start_day = 1
             return_day = 1
             
-            if "India" in self.countrys:
+            if self.countrys in ("India - Others", "India - Main State"):
                 roles=frappe.get_roles(self.owner)
                 if "CEO" in roles:
                     train_dsa=flt(frappe.db.get_value("DSA Out Country", self.countrys, "ceo"))*percent
@@ -551,7 +551,7 @@ def make_travel_claim(source_name, target_doc=None):
         target.incidental_expense=source_parent.incidental_expense 
         
         target.dsa = source_parent.dsa_per_day
-        target.country=source_parent.countrys
+        # target.country=source_parent.countrys
             
         if target.currency == "BTN":
             target.exchange_rate = 1
