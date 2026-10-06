@@ -43,6 +43,7 @@ class IncrementEntry(Document):
 		cond = self.get_filter_condition()
 		cond += self.get_joining_relieving_condition()
 		data = []
+		
 		emp_list = frappe.db.sql("""
 			select t1.name as employee, t1.employee_name, t1.grade, t1.department, t1.designation
 			from `tabEmployee` t1
@@ -176,7 +177,21 @@ class IncrementEntry(Document):
 
 	# Following method created by SHIV on 2018/10/10
 	def get_employee_payscale(self, employee):
-		effective_date = "-".join([self.fiscal_year, self.get_month_id(), "01"])
+
+		# Fix: Properly construct the effective date
+		fiscal_start_year, fiscal_end_year = str(self.fiscal_year).split('-')
+		month = self.get_month_id()
+		
+		# Determine which year to use based on month
+		if int(month) >= 7:
+			year = "20" + fiscal_start_year
+		else:
+			year = "20" + fiscal_end_year
+		
+		effective_date = "-".join([year, month, "01"])
+
+		# effective_date = "-".join([self.fiscal_year, self.get_month_id(), "01"])
+		# frappe.throw(str(effective_date))
 		old_basic = 0
 		new_basic = 0
 		increment = 0
@@ -237,6 +252,8 @@ class IncrementEntry(Document):
 		self.number_of_employees = len(employees)
 
 def get_salary_structure(employee, effective_date):
+	# frappe.throw(str(effective_date))
+	# date="2026-07-22"
 	sst = frappe.db.sql("""
 			select name from `tabSalary Structure`
 			where employee = '{0}'
@@ -245,6 +262,9 @@ def get_salary_structure(employee, effective_date):
 			and from_date <= ifnull(to_date,'{1}') 
 			order by ifnull(to_date,'{1}'),from_date desc limit 1
 		""".format(employee,str(effective_date)))
+	frappe.msgprint(str(sst))
+
+	
 
 	if sst:
 		return sst[0][0]

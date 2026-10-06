@@ -7,6 +7,7 @@ from frappe.model.document import Document
 class Desuup(Document):
     def validate(self):
         self.validate_address()
+        self.update_user()
 
     def validate_address(self):
         if self.dzongkhag:
@@ -30,6 +31,11 @@ class Desuup(Document):
                 frappe.throw("Present Dzongkhag is required")
             if not frappe.db.exists("Gewogs", {"name": self.present_gewog, "dzongkhag": self.present_dzongkhag}):
                 frappe.throw("Invalid Present Gewog")
+    
+    def update_user(self):
+        if self.mobile_number and self.user  and self.mobile_number != frappe.db.get_value("Desuup", self.name, "mobile_number"):
+            user = frappe.get_doc("User", self.user)
+            user.db_set("phone", self.mobile_number, update_modified=False)
 
 @frappe.whitelist()
 def create_user(desuup, user=None, email=None):
@@ -46,12 +52,12 @@ def create_user(desuup, user=None, email=None):
     user = frappe.new_doc("User")
     user.update(
         {
-            "email": emp.email_id.strip() if emp.email_id else emp.email_id,
+            "email": emp.email_id.strip() if emp.email_id else "",
             "enabled": 1,
             "is_desuup": 1,
             "first_name": emp.desuup_name.strip() if emp.desuup_name else emp.desuup_name,
             "gender": emp.gender,
-            "birth_date": emp.date_of_birth,
+            #"birth_date": emp.date_of_birth,
             "phone": emp.mobile_number.removeprefix("+975").removeprefix("975"),
             "username": emp.cid_number.strip() if emp.cid_number else emp.cid_number
         }
@@ -61,9 +67,23 @@ def create_user(desuup, user=None, email=None):
     user.flags.no_welcome_mail = True
     emp.db_set("user", emp.cid_number)
     user.insert()
+    print("User created for " + emp.name)
     return user.name
 
 def auto_create_users():
-    val = 0
-    for d in frappe.db.sql("select name from tabDesuup where user is null and mobile_number is not null and cid_number is not null and LENGTH(cid_number) = 11", as_dict=1):
-        create_user(d.name)
+    created = failed = pending = 0
+    for d in frappe.db.sql("select name from tabDesuup where (user is null or user = '') and mobile_number is not null and mobile_number != '' and cid_number is not null and cid_number != '' and LENGTH(cid_number) = 11", as_dict=1):
+        try:
+            frappe.db.savepoint("create_desuup_user")
+            create_user(d.name)
+        except Exception as e:
+            frappe.db.rollback(save_point="create_desuup_user")
+            failed += 1
+            print("Issue creating user for " + str(d.name) + " : " + str(e))
+            continue
+        created += 1
+        pending += 1
+        if pending >= 10:
+            frappe.db.commit()
+            pending = 0
+    print(f"Users created : {created}, failed: {failed}")
