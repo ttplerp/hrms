@@ -12,9 +12,16 @@
   "description",
   "cb_1",
   "rental_dzo_abbr",
+  "section_break_5",
+  "online_housing_application",
   "allow_in_online_housing_application",
   "allow_for_civil_servant",
-  "allow_for_corporate_and_private"
+  "allow_for_corporate_and_private",
+  "column_break_9",
+  "allotment",
+  "allow_in_allotment",
+  "civil_servant_allotment",
+  "corporate_and_private_allotment"
  ],
  "fields": [
   {
@@ -57,11 +64,47 @@
    "fieldname": "allow_for_corporate_and_private",
    "fieldtype": "Check",
    "label": "Allow for corporate and private"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_in_allotment",
+   "fieldtype": "Check",
+   "label": "Allow in Allotment"
+  },
+  {
+   "default": "0",
+   "fieldname": "civil_servant_allotment",
+   "fieldtype": "Check",
+   "label": "Civil Servant (Allotment)"
+  },
+  {
+   "default": "0",
+   "fieldname": "corporate_and_private_allotment",
+   "fieldtype": "Check",
+   "label": "Corporate and Private Allotment"
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "online_housing_application",
+   "fieldtype": "Heading",
+   "label": "Online Housing Application"
+  },
+  {
+   "fieldname": "allotment",
+   "fieldtype": "Heading",
+   "label": "Allotment"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-18 11:36:58.053298",
+ "modified": "2026-10-15 10:33:55.469792",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Dzongkhag",
