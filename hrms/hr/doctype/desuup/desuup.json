@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
+ "allow_rename": 1,
  "autoname": "field:desuung_id",
  "creation": "2022-11-18 16:39:42.478560",
  "doctype": "DocType",
@@ -411,7 +412,7 @@
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-10-16 11:44:38.633167",
+ "modified": "2026-10-16 16:28:39.147433",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Desuup",
