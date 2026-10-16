@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "personal_details_section",
+  "heart_points",
   "desuung_id",
   "salutation",
   "desuup_name",
@@ -18,6 +19,7 @@
   "employment_type",
   "column_break_5",
   "cv",
+  "is_gyalsup",
   "eligible_for_dgrk",
   "photo",
   "section_break_9",
@@ -391,12 +393,25 @@
    "fieldname": "cv",
    "fieldtype": "Attach",
    "label": "CV"
+  },
+  {
+   "default": "0",
+   "fieldname": "heart_points",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Heart Points"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_gyalsup",
+   "fieldtype": "Check",
+   "label": "Is Gyalsup"
   }
  ],
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-09-28 10:57:25.618808",
+ "modified": "2026-10-16 11:44:38.633167",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Desuup",
