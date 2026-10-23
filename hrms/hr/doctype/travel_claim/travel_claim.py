@@ -29,6 +29,20 @@ class TravelClaim(Document):
         #     self.set_supervisor_manager()
         # if self.training_event:
         #     self.update_training_event()
+        self.validate_item_rows()
+
+    def validate_item_rows(self):
+        auth_doc=frappe.get_doc("Travel Authorization", self.ta)
+                
+        travel_claim_limit = len(self.get("items"))
+        travel_auth_limit = 0
+        
+        for docs in auth_doc.get_all_children():
+            if docs.doctype=="Travel Authorization Item":
+                travel_auth_limit+=1
+
+        if travel_claim_limit < travel_auth_limit:
+            frappe.throw("You cannot delete items from the travel claim which was already there in travel auth")
                 
     # def workflow_action(self):
     #     action = frappe.request.form.get('action') 
@@ -679,28 +693,20 @@ class TravelClaim(Document):
             ta.db_set("travel_claim", self.name)
 
         auth_doc=frappe.get_doc("Travel Authorization", self.ta)
-        
         travel_claim_limit = len(self.get("items"))
         travel_auth_limit = 0
-        
         for docs in auth_doc.get_all_children():
             if docs.doctype=="Travel Authorization Item":
                 travel_auth_limit+=1
 
-        
-
-        if travel_claim_limit< travel_auth_limit:
+        if travel_claim_limit < travel_auth_limit:
             frappe.throw("You cannot delete items from the travel claim which was already there in travel auth")
 
-        
+        # update the travel authorization items with the travel claim items
         for child_doc in self.get("items"):
-            
             for child_d in auth_doc.get_all_children():
-
                 if child_d.doctype=="Travel Authorization Item":
-                    
                     if child_doc.idx==child_d.idx:
-                        
                         child_d.date=child_doc.date
                         child_d.till_date=child_doc.till_date
                         child_d.halt=child_doc.halt
@@ -710,13 +716,13 @@ class TravelClaim(Document):
                         child_d.no_days=child_doc.no_days
                         child_d.country=child_doc.country
                         child_d.save()
-
+        # append new items to travel authorization
         start=0
-        if travel_claim_limit> travel_auth_limit:
+        if travel_claim_limit > travel_auth_limit:
             start=travel_auth_limit
             
             for child_doc in self.get("items"):
-                if child_doc.idx>start:
+                if child_doc.idx > start:
                     doc=frappe.get_doc("Travel Authorization", self.ta)
                     doc.append("items",
                     {
