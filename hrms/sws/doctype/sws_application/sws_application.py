@@ -259,26 +259,29 @@ def get_event_amount(sws_event, reference, employee):
 	d2 = datetime.strptime(frappe.utils.nowdate(), '%Y-%m-%d')
 	date_diff = relativedelta(d2,d1).years
 	# frappe.msgprint(str(date_diff))
-	if date_diff <= 1:
-		event_amount = frappe.db.sql("""
-                    select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = 'Within 1 year'
-                               """.format(sws_event), as_dict = True)
-	elif date_diff > 1 and date_diff <= 2:
-		event_amount = frappe.db.sql("""
-                    select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = 'Within 2 years'
-                               """.format(sws_event), as_dict = True)
-	elif date_diff > 2 and date_diff <= 3:
-		event_amount = frappe.db.sql("""
-                    select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = 'Within 3 years'
-                               """.format(sws_event), as_dict = True)
-	elif date_diff > 3 and date_diff <= 4:
-		event_amount = frappe.db.sql("""
-                    select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = 'Within 4 years'
-                               """.format(sws_event), as_dict = True)
-	elif date_diff >= 5:
-		event_amount = frappe.db.sql("""
-                    select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = '5 years and above'
-                               """.format(sws_event), as_dict = True)
+	event_amount = frappe.db.sql("""
+				select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = 'Within 1 year'
+							""".format(sws_event), as_dict = True)
+	# if date_diff <= 1:
+	# 	event_amount = frappe.db.sql("""
+    #                 select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = 'Within 1 year'
+    #                            """.format(sws_event), as_dict = True)
+	# elif date_diff > 1 and date_diff <= 2:
+	# 	event_amount = frappe.db.sql("""
+    #                 select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = 'Within 2 years'
+    #                            """.format(sws_event), as_dict = True)
+	# elif date_diff > 2 and date_diff <= 3:
+	# 	event_amount = frappe.db.sql("""
+    #                 select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = 'Within 3 years'
+    #                            """.format(sws_event), as_dict = True)
+	# elif date_diff > 3 and date_diff <= 4:
+	# 	event_amount = frappe.db.sql("""
+    #                 select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = 'Within 4 years'
+    #                            """.format(sws_event), as_dict = True)
+	# elif date_diff >= 5:
+	# 	event_amount = frappe.db.sql("""
+    #                 select amount from `tabSWS Event Item` where parent = '{0}' and noof_years = '5 years and above'
+    #                            """.format(sws_event), as_dict = True)
 
 	return event_amount
 
