@@ -36,6 +36,9 @@ class Desuup(Document):
         if self.mobile_number and self.user  and self.mobile_number != frappe.db.get_value("Desuup", self.name, "mobile_number"):
             user = frappe.get_doc("User", self.user)
             user.db_set("phone", self.mobile_number, update_modified=False)
+        if self.email_id and self.user  and self.email_id != frappe.db.get_value("Desuup", self.name, "email_id"):
+            user = frappe.get_doc("User", self.user)
+            user.db_set("email", self.email_id, update_modified=False)
 
 @frappe.whitelist()
 def create_user(desuup, user=None, email=None):
