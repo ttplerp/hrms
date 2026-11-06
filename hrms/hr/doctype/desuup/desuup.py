@@ -65,7 +65,7 @@ def create_user(desuup, user=None, email=None):
             "username": emp.cid_number.strip() if emp.cid_number else emp.cid_number
         }
     )
-    user.append_roles("Desuup")
+    # user.append_roles("Desuup")
     user.flags.ignore_permissions = True
     user.flags.no_welcome_mail = True
     emp.db_set("user", emp.cid_number)
