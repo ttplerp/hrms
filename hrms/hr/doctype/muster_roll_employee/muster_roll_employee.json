@@ -63,15 +63,16 @@
   "bank_ac_no",
   "personal_details_tab",
   "phone_no",
+  "emergency_phone_no",
   "column_break_ymchb",
   "email",
   "address_section",
   "dzongkhag",
   "district",
   "column_break_5fsyg",
+  "village",
   "gewog",
   "block",
-  "village",
   "section_break_16",
   "internal_work_history",
   "date_of_transfer",
@@ -81,6 +82,8 @@
   "reference_docname",
   "temp_doctype",
   "temp_docname",
+  "family_details_tab",
+  "family_details",
   "pms_tab",
   "include_in_performance_evaluation",
   "pms_employee_group",
@@ -613,12 +616,28 @@
    "fieldname": "image",
    "fieldtype": "Attach Image",
    "label": "Image"
+  },
+  {
+   "fieldname": "emergency_phone_no",
+   "fieldtype": "Phone",
+   "label": "Emergency Phone No"
+  },
+  {
+   "fieldname": "family_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Family Details"
+  },
+  {
+   "fieldname": "family_details",
+   "fieldtype": "Table",
+   "label": "Family Detail",
+   "options": "Family Detail Item"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-19 14:41:22.314741",
+ "modified": "2026-11-12 11:00:32.148025",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
