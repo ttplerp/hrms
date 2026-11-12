@@ -587,7 +587,7 @@ class TravelClaim(Document):
                                 where parent="{}"
                             ) as X group by cost_center
                             """.format(self.name), as_dict=True):
-            if a.dsa_amt > 0:
+            if flt(a.dsa_amt) > 0:
                 je.append("accounts", {
                         "account": expense_account,
                         "reference_type": "Travel Claim",
@@ -597,7 +597,7 @@ class TravelClaim(Document):
                         "debit": flt(a.dsa_amt,2),
                         "business_activity": self.business_activity,
                 })
-            if a.milleage_amt > 0:      
+            if flt(a.milleage_amt) > 0:
                 je.append("accounts", {
                     "account": mileage_acc,
                     "reference_type": "Travel Claim",
