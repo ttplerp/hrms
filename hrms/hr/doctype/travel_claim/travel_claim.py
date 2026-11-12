@@ -582,7 +582,7 @@ class TravelClaim(Document):
                                         then distance
                                         else 0
                                     end as distance, 
-                                    distance * mileage_rate as milleage_amt
+                                    CAST(distance AS DECIMAL(10, 2)) * CAST(mileage_rate AS SIGNED) as milleage_amt
                                 from `tabTravel Claim Item` 
                                 where parent="{}"
                             ) as X group by cost_center
