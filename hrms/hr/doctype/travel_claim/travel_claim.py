@@ -574,7 +574,8 @@ class TravelClaim(Document):
             frappe.throw("Please set the {} mileage account in company settings".format(self.travel_type))
         
         for a in frappe.db.sql("""
-                            select cost_center, sum(amount), sum(distance), sum(milleage_amt), 
+                            select cost_center, sum(amount), sum(distance), 
+                                sum(milleage_amt) as milleage_amt, 
                                 sum(amount) - sum(milleage_amt) as dsa_amt
                             from (
                                 select cost_center, amount, 
