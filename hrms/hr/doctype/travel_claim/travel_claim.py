@@ -574,12 +574,18 @@ class TravelClaim(Document):
             frappe.throw("Please set the {} mileage account in company settings".format(self.travel_type))
         
         for a in frappe.db.sql("""
-                            select cost_center, sum(amount), sum(distance), 
-                                sum(distance)*16 as milleage_amt, 
-                                sum(amount) - sum(distance)*16 as dsa_amt
-                               from `tabTravel Claim Item` 
-                            where parent="{}" 
-                            group by cost_center;
+                            select cost_center, sum(amount), sum(distance), sum(milleage_amt), 
+                                sum(amount) - sum(milleage_amt) as dsa_amt
+                            from (
+                                select cost_center, amount, 
+                                    case when mileage_rate > 0
+                                        then distance
+                                        else 0
+                                    end as distance, 
+                                    distance * mileage_rate as milleage_amt
+                                from `tabTravel Claim Item` 
+                                where parent="{}"
+                            ) as X group by cost_center
                             """.format(self.name), as_dict=True):
             if a.dsa_amt > 0:
                 je.append("accounts", {
