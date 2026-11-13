@@ -152,10 +152,6 @@ function get_project_or_maintenance_cost_center(frm) {
 
 frappe.ui.form.on("Travel Claim Item", {
 	"form_render": function (frm, cdt, cdn) {
-
-		frappe.model.set_value(cdt, cdn, "travel_authorization", frm.doc.ta);
-		frappe.model.set_value(cdt, cdn, "currency_exchange_date", frm.doc.ta_date);
-		frm.refresh_field("items");
 		var item = frappe.get_doc(cdt, cdn)
 
 		if (item.idx != 0) {
