@@ -37,6 +37,8 @@ class EmployeeSeparationClearance(Document):
 	def check_signatures(self):
 		if self.supervisor_clearance == 0:
 			frappe.throw("Supervisor has not granted clearance.")
+		if not self.ada_clearance:
+			frappe.throw(_("Asset has not granted clearance."))
 		if self.afd_clearance == 0:
 			frappe.throw("Accounts & Finance Division has not granted clearance.")
 		if self.spd_clearance == 0:
@@ -65,8 +67,8 @@ class EmployeeSeparationClearance(Document):
 
 	def check_duplicates(self):
 		duplicates = frappe.db.sql("""
-            select name from `tabEmployee Separation Clearance` where employee_separation_id = '{0}'  and name != '{1}' and docstatus != 2
-                """.format(self.employee_separation_id,self.name))
+			select name from `tabEmployee Separation Clearance` where employee_separation_id = '{0}'  and name != '{1}' and docstatus != 2
+				""".format(self.employee_separation_id,self.name))
 		if duplicates:
 			frappe.throw("There is already a pending Separation Clearance created for the Employee Separation '{}'".format(self.employee_separation_id))
 	
