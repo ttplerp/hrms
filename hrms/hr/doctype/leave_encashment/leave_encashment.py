@@ -113,8 +113,8 @@ class LeaveEncashment(Document):
 			create_leave_ledger_entry(self, args, submit)
 			
 	def check_duplicate_entry(self):
-		count = frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) \
-					if frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": 1}) else 0
+		count = frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": ["!=", 2]}) \
+					if frappe.db.count(self.doctype,{"employee": self.employee, "leave_period": self.leave_period, "leave_type": self.leave_type, "docstatus": ["!=", 2]}) else 0
 		employee_grp = frappe.db.get_value("Employee",self.employee,"employee_group")
 		frequency = frappe.db.get_value("Employee Group",employee_grp,"encashment_frequency")
 		
