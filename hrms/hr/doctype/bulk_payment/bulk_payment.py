@@ -30,20 +30,35 @@ class BulkPayment(Document):
 		return filters
 	
 	def post_journal_entry(self):
-		default_bank_account = frappe.db.get_value("Company", self.company, "default_bank_account")
+
+		default_bank_account = frappe.db.get_value(
+			"Company", self.company, "default_bank_account"
+		)
+
 		if not default_bank_account:
 			frappe.throw("Setup Default Expense Bank Account for your Company")
 
-		expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
+		expense_account = frappe.db.get_value(
+			"Company", self.company, "leave_encashment_account"
+		)
+
 		if not expense_account:
 			frappe.throw("Setup Leave Encashment Account in HR Accounts Settings")
 
-		tax_account = frappe.db.get_value("Company", self.company, "salary_tax_account")
+		tax_account = frappe.db.get_value(
+			"Company", self.company, "salary_tax_account"
+		)
+
 		if not tax_account:
 			frappe.throw("Setup Tax Account in HR Accounts Settings")
-		
-		default_payable_account = frappe.db.get_value("Company", self.company, "leave_encashment_payable")
-		company_cc              = frappe.db.get_value("Company", self.company, "company_cost_center")
+
+		default_payable_account = frappe.db.get_value(
+			"Company", self.company, "leave_encashment_payable"
+		)
+
+		company_cc = frappe.db.get_value(
+			"Company", self.company, "company_cost_center"
+		)
 
 		if not default_payable_account:
 			frappe.throw(
@@ -53,93 +68,175 @@ class BulkPayment(Document):
 				title=_("Missing Account"),
 			)
 
+		# --------------------------------------------------
+		# DEBUG FUNCTION
+		# --------------------------------------------------
+
+		def debug_journal_entry(je, title):
+
+			rows = []
+
+			for idx, row in enumerate(je.accounts, 1):
+
+				rows.append({
+					"row": idx,
+					"account": row.account,
+					"cost_center": row.cost_center,
+					"debit": flt(row.debit),
+					"credit": flt(row.credit),
+					"debit_in_account_currency": flt(
+						row.debit_in_account_currency
+					),
+					"credit_in_account_currency": flt(
+						row.credit_in_account_currency
+					),
+				})
+
+			frappe.log_error(
+				title=title,
+				message=frappe.as_json(rows, indent=2)
+			)
+
+			for idx, row in enumerate(je.accounts, 1):
+
+				if not flt(row.debit) and not flt(row.credit):
+
+					frappe.throw(
+						_(
+							"{0}: Row {1} has zero Debit and Credit.<br>"
+							"Account: {2}<br>"
+							"Cost Center: {3}<br>"
+							"Debit: {4}<br>"
+							"Credit: {5}"
+						).format(
+							title,
+							idx,
+							row.account,
+							row.cost_center,
+							row.debit,
+							row.credit
+						),
+						title=_("Zero Value Journal Entry Row")
+					)
+
+		# --------------------------------------------------
+		# CALCULATE TOTALS
+		# --------------------------------------------------
+
 		cc = {}
-		tax_amount = net_amount = 0 
+
+		tax_amount = 0
+		net_amount = 0
+
 		for d in self.items:
-			tax_amount += d.tax_amount
-			net_amount += d.net_amount
+
+			tax_amount += flt(d.tax_amount)
+			net_amount += flt(d.net_amount)
+
 			if d.cost_center not in cc:
-				cc.update({
-					d.cost_center: {
-			   			"total_amount": d.total_amount,
-			   			"tax_amount": d.tax_amount,
-			   			"net_amount": d.net_amount,
-					}
-		   		})
+
+				cc[d.cost_center] = {
+					"total_amount": flt(d.total_amount),
+					"tax_amount": flt(d.tax_amount),
+					"net_amount": flt(d.net_amount),
+				}
+
 			else:
-				cc[d.cost_center]['total_amount'] += flt(d.total_amount)
-				cc[d.cost_center]['tax_amount'] += flt(d.tax_amount)
-				cc[d.cost_center]['net_amount'] += flt(d.net_amount)
-		
-		#Payables Journal Entry -----------------------------------------------
+
+				cc[d.cost_center]["total_amount"] += flt(d.total_amount)
+				cc[d.cost_center]["tax_amount"] += flt(d.tax_amount)
+				cc[d.cost_center]["net_amount"] += flt(d.net_amount)
+
+		# --------------------------------------------------
+		# 1. PAYABLES JOURNAL ENTRY
+		# --------------------------------------------------
+
 		payables_je = frappe.new_doc("Journal Entry")
-		payables_je.voucher_type= "Journal Entry"
+
+		payables_je.voucher_type = "Journal Entry"
 		payables_je.naming_series = "Journal Voucher"
-		payables_je.title = "Leave Encashment "+str(self.posting_date)+" - To Payables"
-		payables_je.remark =  "Leave Encashment "+str(self.posting_date)+" - To Payables"
-		payables_je.posting_date = self.posting_date               
+		payables_je.title = "Leave Encashment " + str(self.posting_date) + " - To Payables"
+		payables_je.remark = "Leave Encashment " + str(self.posting_date) + " - To Payables"
+		payables_je.posting_date = self.posting_date
 		payables_je.company = self.company
 		payables_je.branch = self.branch
-		
+
+		# Expense Account - Debit
 		for rec in cc:
+
 			payables_je.append("accounts", {
-					"account": expense_account,
-					"reference_type": self.doctype,
-					"reference_name": self.name,
-					"cost_center": rec,
-					"debit_in_account_currency": flt(cc[rec]['total_amount']),
-					"debit": flt(cc[rec]['total_amount']),
-				})
-		
-		#Encashment Tax
-		if tax_amount > 0:
+				"account": expense_account,
+				"reference_type": self.doctype,
+				"reference_name": self.name,
+				"cost_center": rec,
+				"debit_in_account_currency": flt(cc[rec]["total_amount"]),
+				"debit": flt(cc[rec]["total_amount"]),
+			})
+
+		# Encashment Tax - Credit
+		if flt(tax_amount) > 0:
+
 			payables_je.append("accounts", {
-					"account": tax_account,
-					"reference_type": self.doctype,
-					"reference_name": self.name,
-					"cost_center": company_cc,
-					"credit_in_account_currency": flt(tax_amount),
-					"party_check": 0,
-					"credit": flt(tax_amount),
-				})
-		#Encashment Payble
-		payables_je.append("accounts", {
-				"account": default_payable_account,
+				"account": tax_account,
 				"reference_type": self.doctype,
 				"reference_name": self.name,
 				"cost_center": company_cc,
-				"credit_in_account_currency": flt(net_amount),
-				"credit": flt(net_amount),
-				"party_check": 0
+				"credit_in_account_currency": flt(tax_amount),
+				"party_check": 0,
+				"credit": flt(tax_amount),
 			})
+
+		# Encashment Payable - Credit
+		payables_je.append("accounts", {
+			"account": default_payable_account,
+			"reference_type": self.doctype,
+			"reference_name": self.name,
+			"cost_center": company_cc,
+			"credit_in_account_currency": flt(net_amount),
+			"credit": flt(net_amount),
+			"party_check": 0
+		})
+
+		debug_journal_entry(
+			payables_je,
+			"Leave Encashment - Payables JE"
+		)
 
 		payables_je.flags.ignore_permissions = 1
 		payables_je.insert()
 		payables_je.submit()
-		
-		#Payables JE End -----------------------------------------------------
-		sthc_je = frappe.new_doc("Journal Entry")
-		sthc_je.voucher_type= "Bank Entry"
-		sthc_je.naming_series = "Bank Payment Voucher"
-		sthc_je.title = "Leave Encashment Tax for "+ self.posting_date
-		sthc_je.remark =  "Leave Encashment Tax for "+self.posting_date
-		sthc_je.posting_date = self.posting_date            
-		sthc_je.company = self.company
-		sthc_je.branch = self.branch
-		
-		#Salary Tax
-		if tax_amount > 0:
+
+		# --------------------------------------------------
+		# 2. SALARY TAX BANK ENTRY
+		# --------------------------------------------------
+
+		if flt(tax_amount) > 0:
+
+			sthc_je = frappe.new_doc("Journal Entry")
+
+			sthc_je.voucher_type = "Bank Entry"
+			sthc_je.naming_series = "Bank Payment Voucher"
+			sthc_je.title = "Leave Encashment Tax for " + str(self.posting_date)
+			sthc_je.remark = "Leave Encashment Tax for " + str(self.posting_date)
+			sthc_je.posting_date = self.posting_date
+			sthc_je.company = self.company
+			sthc_je.branch = self.branch
+
+			# Salary Tax - Debit
 			sthc_je.append("accounts", {
-					"account": frappe.db.get_value("Salary Component", "Salary Tax", "gl_head"),
-					"reference_type": self.doctype,
-					"reference_name": self.name,
-					"cost_center": company_cc,
-					"debit_in_account_currency": flt(tax_amount),
-					"debit": flt(tax_amount),
-					"party_check": 0
-				})
-		#To Bank Account
-		sthc_je.append("accounts", {
+				"account": frappe.db.get_value(
+					"Salary Component", "Salary Tax", "gl_head"
+				),
+				"reference_type": self.doctype,
+				"reference_name": self.name,
+				"cost_center": company_cc,
+				"debit_in_account_currency": flt(tax_amount),
+				"debit": flt(tax_amount),
+				"party_check": 0
+			})
+
+			# Bank Account - Credit
+			sthc_je.append("accounts", {
 				"account": default_bank_account,
 				"reference_type": self.doctype,
 				"reference_name": self.name,
@@ -148,42 +245,218 @@ class BulkPayment(Document):
 				"credit": flt(tax_amount),
 			})
 
-		sthc_je.flags.ignore_permissions = 1 
-		sthc_je.insert()
+			debug_journal_entry(
+				sthc_je,
+				"Leave Encashment - Tax Bank JE"
+			)
 
-		#Payables to Bank Entry -----------------------------------------------
+			sthc_je.flags.ignore_permissions = 1
+			sthc_je.insert()
+
+		# --------------------------------------------------
+		# 3. PAYABLES TO BANK ENTRY
+		# --------------------------------------------------
+
 		pb_je = frappe.new_doc("Journal Entry")
-		pb_je.voucher_type= "Bank Entry"
+
+		pb_je.voucher_type = "Bank Entry"
 		pb_je.naming_series = "Bank Payment Voucher"
-		pb_je.title = "Leave Encashment for the fiscal year of "+self.posting_date
-		pb_je.remark = "Leave Encashment for the fiscal year of "+self.posting_date
+		pb_je.title = "Leave Encashment for the fiscal year of " + str(self.posting_date)
+		pb_je.remark = "Leave Encashment for the fiscal year of " + str(self.posting_date)
 		pb_je.posting_date = self.posting_date
 		pb_je.company = self.company
 		pb_je.branch = self.branch
-		
-		#Salary Payable
-		pb_je.append("accounts", {
-				"account": default_payable_account,
-				"reference_type": self.doctype,
-				"reference_name": self.name,
-				"cost_center": company_cc,
-				"debit_in_account_currency": flt(net_amount),
-				"debit": flt(net_amount),
-				"party_check": 0
-			})
-		#To Bank Account
-		pb_je.append("accounts", {
-				"account": default_bank_account,
-				"reference_type": self.doctype,
-				"reference_name": self.name,
-				"cost_center": company_cc,
-				"credit_in_account_currency": flt(net_amount),
-				"credit": flt(net_amount),
-			})
 
-		pb_je.flags.ignore_permissions = 1 
+		# Salary Payable - Debit
+		pb_je.append("accounts", {
+			"account": default_payable_account,
+			"reference_type": self.doctype,
+			"reference_name": self.name,
+			"cost_center": company_cc,
+			"debit_in_account_currency": flt(net_amount),
+			"debit": flt(net_amount),
+			"party_check": 0
+		})
+
+		# Bank Account - Credit
+		pb_je.append("accounts", {
+			"account": default_bank_account,
+			"reference_type": self.doctype,
+			"reference_name": self.name,
+			"cost_center": company_cc,
+			"credit_in_account_currency": flt(net_amount),
+			"credit": flt(net_amount),
+		})
+
+		debug_journal_entry(
+			pb_je,
+			"Leave Encashment - Payables Bank JE"
+		)
+
+		pb_je.flags.ignore_permissions = 1
 		pb_je.insert()
+
+		# --------------------------------------------------
+		# COMMIT
+		# --------------------------------------------------
+
 		frappe.db.commit()
+
+	# def post_journal_entry(self):
+	# 	default_bank_account = frappe.db.get_value("Company", self.company, "default_bank_account")
+	# 	if not default_bank_account:
+	# 		frappe.throw("Setup Default Expense Bank Account for your Company")
+
+	# 	expense_account = frappe.db.get_value("Company", self.company, "leave_encashment_account")
+	# 	if not expense_account:
+	# 		frappe.throw("Setup Leave Encashment Account in HR Accounts Settings")
+
+	# 	tax_account = frappe.db.get_value("Company", self.company, "salary_tax_account")
+	# 	if not tax_account:
+	# 		frappe.throw("Setup Tax Account in HR Accounts Settings")
+		
+	# 	default_payable_account = frappe.db.get_value("Company", self.company, "leave_encashment_payable")
+	# 	company_cc              = frappe.db.get_value("Company", self.company, "company_cost_center")
+
+	# 	if not default_payable_account:
+	# 		frappe.throw(
+	# 			_("Please set encashment payable account Company {0}").format(
+	# 				get_link_to_form("Company", self.company)
+	# 			),
+	# 			title=_("Missing Account"),
+	# 		)
+
+	# 	cc = {}
+	# 	tax_amount = net_amount = 0 
+	# 	for d in self.items:
+	# 		tax_amount += d.tax_amount
+	# 		net_amount += d.net_amount
+	# 		if d.cost_center not in cc:
+	# 			cc.update({
+	# 				d.cost_center: {
+	# 		   			"total_amount": d.total_amount,
+	# 		   			"tax_amount": d.tax_amount,
+	# 		   			"net_amount": d.net_amount,
+	# 				}
+	# 	   		})
+	# 		else:
+	# 			cc[d.cost_center]['total_amount'] += flt(d.total_amount)
+	# 			cc[d.cost_center]['tax_amount'] += flt(d.tax_amount)
+	# 			cc[d.cost_center]['net_amount'] += flt(d.net_amount)
+		
+	# 	#Payables Journal Entry -----------------------------------------------
+	# 	payables_je = frappe.new_doc("Journal Entry")
+	# 	payables_je.voucher_type= "Journal Entry"
+	# 	payables_je.naming_series = "Journal Voucher"
+	# 	payables_je.title = "Leave Encashment "+str(self.posting_date)+" - To Payables"
+	# 	payables_je.remark =  "Leave Encashment "+str(self.posting_date)+" - To Payables"
+	# 	payables_je.posting_date = self.posting_date               
+	# 	payables_je.company = self.company
+	# 	payables_je.branch = self.branch
+		
+	# 	for rec in cc:
+	# 		payables_je.append("accounts", {
+	# 				"account": expense_account,
+	# 				"reference_type": self.doctype,
+	# 				"reference_name": self.name,
+	# 				"cost_center": rec,
+	# 				"debit_in_account_currency": flt(cc[rec]['total_amount']),
+	# 				"debit": flt(cc[rec]['total_amount']),
+	# 			})
+		
+	# 	#Encashment Tax
+	# 	if tax_amount > 0:
+	# 		payables_je.append("accounts", {
+	# 				"account": tax_account,
+	# 				"reference_type": self.doctype,
+	# 				"reference_name": self.name,
+	# 				"cost_center": company_cc,
+	# 				"credit_in_account_currency": flt(tax_amount),
+	# 				"party_check": 0,
+	# 				"credit": flt(tax_amount),
+	# 			})
+	# 	#Encashment Payble
+	# 	payables_je.append("accounts", {
+	# 			"account": default_payable_account,
+	# 			"reference_type": self.doctype,
+	# 			"reference_name": self.name,
+	# 			"cost_center": company_cc,
+	# 			"credit_in_account_currency": flt(net_amount),
+	# 			"credit": flt(net_amount),
+	# 			"party_check": 0
+	# 		})
+
+	# 	payables_je.flags.ignore_permissions = 1
+	# 	payables_je.insert()
+	# 	payables_je.submit()
+		
+	# 	#Payables JE End -----------------------------------------------------
+	# 	sthc_je = frappe.new_doc("Journal Entry")
+	# 	sthc_je.voucher_type= "Bank Entry"
+	# 	sthc_je.naming_series = "Bank Payment Voucher"
+	# 	sthc_je.title = "Leave Encashment Tax for "+ self.posting_date
+	# 	sthc_je.remark =  "Leave Encashment Tax for "+self.posting_date
+	# 	sthc_je.posting_date = self.posting_date            
+	# 	sthc_je.company = self.company
+	# 	sthc_je.branch = self.branch
+		
+	# 	#Salary Tax
+	# 	if tax_amount > 0:
+	# 		sthc_je.append("accounts", {
+	# 				"account": frappe.db.get_value("Salary Component", "Salary Tax", "gl_head"),
+	# 				"reference_type": self.doctype,
+	# 				"reference_name": self.name,
+	# 				"cost_center": company_cc,
+	# 				"debit_in_account_currency": flt(tax_amount),
+	# 				"debit": flt(tax_amount),
+	# 				"party_check": 0
+	# 			})
+	# 	#To Bank Account
+	# 	sthc_je.append("accounts", {
+	# 			"account": default_bank_account,
+	# 			"reference_type": self.doctype,
+	# 			"reference_name": self.name,
+	# 			"cost_center": company_cc,
+	# 			"credit_in_account_currency": flt(tax_amount),
+	# 			"credit": flt(tax_amount),
+	# 		})
+
+	# 	sthc_je.flags.ignore_permissions = 1 
+	# 	sthc_je.insert()
+
+	# 	#Payables to Bank Entry -----------------------------------------------
+	# 	pb_je = frappe.new_doc("Journal Entry")
+	# 	pb_je.voucher_type= "Bank Entry"
+	# 	pb_je.naming_series = "Bank Payment Voucher"
+	# 	pb_je.title = "Leave Encashment for the fiscal year of "+self.posting_date
+	# 	pb_je.remark = "Leave Encashment for the fiscal year of "+self.posting_date
+	# 	pb_je.posting_date = self.posting_date
+	# 	pb_je.company = self.company
+	# 	pb_je.branch = self.branch
+		
+	# 	#Salary Payable
+	# 	pb_je.append("accounts", {
+	# 			"account": default_payable_account,
+	# 			"reference_type": self.doctype,
+	# 			"reference_name": self.name,
+	# 			"cost_center": company_cc,
+	# 			"debit_in_account_currency": flt(net_amount),
+	# 			"debit": flt(net_amount),
+	# 			"party_check": 0
+	# 		})
+	# 	#To Bank Account
+	# 	pb_je.append("accounts", {
+	# 			"account": default_bank_account,
+	# 			"reference_type": self.doctype,
+	# 			"reference_name": self.name,
+	# 			"cost_center": company_cc,
+	# 			"credit_in_account_currency": flt(net_amount),
+	# 			"credit": flt(net_amount),
+	# 		})
+
+	# 	pb_je.flags.ignore_permissions = 1 
+	# 	pb_je.insert()
+	# 	frappe.db.commit()
 
 	@frappe.whitelist()
 	def fill_reference_details(self):

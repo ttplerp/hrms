@@ -12,6 +12,8 @@
   "passport_number",
   "cid_number",
   "person_name",
+  "tpn_number",
+  "dob",
   "column_break_brsat",
   "status",
   "joining_date",
@@ -632,12 +634,22 @@
    "fieldtype": "Table",
    "label": "Family Detail",
    "options": "Family Detail Item"
+  },
+  {
+   "fieldname": "tpn_number",
+   "fieldtype": "Int",
+   "label": "TPN Number"
+  },
+  {
+   "fieldname": "dob",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
   }
  ],
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-11-12 11:00:32.148025",
+ "modified": "2026-11-18 15:27:01.801623",
  "modified_by": "Administrator",
  "module": "HR",
  "name": "Muster Roll Employee",
